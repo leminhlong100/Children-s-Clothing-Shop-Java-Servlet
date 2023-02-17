@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dao.client.AuthDAO;
-import entity.Account;
+import entity.Customer;
 
 
 @WebServlet("/Login")
@@ -23,7 +23,7 @@ public class LoginControl extends HttpServlet {
 		String passWord = request.getParameter("password");
 		String pid = request.getParameter("pid");
 	
-		Account a = AuthDAO.login(userName, passWord);
+		Customer a = AuthDAO.login(userName, passWord);
 		if(a==null) {
 			request.setAttribute("error", "Tài khoản hoặc mật khẩu sai");
 			request.getRequestDispatcher("/client/Login.jsp").forward(request, response);

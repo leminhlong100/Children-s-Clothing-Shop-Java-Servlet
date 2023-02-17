@@ -162,8 +162,7 @@ if (session.getAttribute("acc") != null) {
 					<div class="col-md-2"></div>
 					<div class="col-md-5">
 						<div class="form-style form-login">
-							<c:url var="foget" value="/ForgetPasswordController" />
-							<form accept-charset="utf-8" action="${foget}"
+							<form accept-charset="utf-8" action="/account/recover"
 								id="recover_customer_password" method="post">
 								<input name="FormType" type="hidden"
 									value="recover_customer_password" /> <input name="utf8"
@@ -184,17 +183,11 @@ if (session.getAttribute("acc") != null) {
 								<p>
 									<fmt:message key="Email" bundle="${lang}"></fmt:message>
 								</p>
-								<input type="email" value="${emailNot}" name="Email" />
-								<button type="submit" class="btn-cart">
+								<input type="email" value="" name="Email" />
+								<button class="btn-cart">
 									<fmt:message key="send.information" bundle="${lang}"></fmt:message>
 								</button>
 							</form>
-							<div class="row">
-									<p style="color: red;">${errorForget}</p>
-							</div>
-							<div class="row">
-									<p style="color: green;">${sucForget}</p>
-							</div>
 						</div>
 					</div>
 				</div>

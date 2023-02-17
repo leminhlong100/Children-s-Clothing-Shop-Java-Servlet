@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dao.client.AuthDAO;
-import entity.Account;
+import entity.Customer;
 
 @WebServlet("/EditControl")
 public class EditControl extends HttpServlet {
@@ -21,7 +21,7 @@ public class EditControl extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		String query = request.getQueryString();
 		HttpSession session = request.getSession();
-		Account account = (Account) session.getAttribute("acc");
+		Customer account = (Customer) session.getAttribute("acc");
 		if (query != null) {
 			if (query.equalsIgnoreCase("editInfo")) {
 				String name = request.getParameter("name");
@@ -40,7 +40,7 @@ public class EditControl extends HttpServlet {
 				String renewpass = request.getParameter("renewpass");
 			
 				if (newpass.equals(renewpass)) {
-					Account editAccount = AuthDAO.checkAccountOldPassword(String.valueOf(account.getId()), oldpass);
+					Customer editAccount = AuthDAO.checkAccountOldPassword(String.valueOf(account.getId()), oldpass);
 					if(editAccount!=null) {
 						if(account.getEmail().equalsIgnoreCase(editAccount.getEmail())) {
 							AuthDAO.editAccountPassword(String.valueOf(account.getId()), renewpass);

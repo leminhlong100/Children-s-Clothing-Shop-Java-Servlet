@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.client.BillDAO;
 import entity.Bill;
-import entity.BillProduct;
+import entity.BillDetail;
 
 @WebServlet("/DetailBill")
 public class DetailBillCotrol extends HttpServlet {
@@ -26,7 +26,7 @@ public class DetailBillCotrol extends HttpServlet {
 			throws ServletException, IOException {
 		String id = request.getParameter("id");
 		Bill b = BillDAO.getBillByBid(id);
-		List<BillProduct> billProduct = BillDAO.getBillProductByBid(id);
+		List<BillDetail> billProduct = BillDAO.getBillProductByBid(id);
 		request.setAttribute("bill", b);
 		request.setAttribute("billProducts", billProduct);
 		request.getRequestDispatcher("/client/BillDetail.jsp").forward(request, response);

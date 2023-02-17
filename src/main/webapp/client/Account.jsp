@@ -16,6 +16,7 @@ if (session.getAttribute("acc") == null) {
 <!DOCTYPE html>
 <html lang="vi">
 <head>
+
 <title><fmt:message key="account.information" bundle="${lang}"></fmt:message></title>
 <link rel="icon" type="image" href="../image/HaLoicon.png" />
 <jsp:include page="./link/Link.jsp"></jsp:include>

@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import entity.BillProduct;
+import entity.BillDetail;
 
 @WebServlet("/MinusBillProductControl")
 public class MinusBillProductControl extends HttpServlet {
@@ -24,7 +24,7 @@ public class MinusBillProductControl extends HttpServlet {
 		HttpSession session = request.getSession();
 		Object obj = session.getAttribute("cart");
 		if (obj != null) {
-			Map<String, BillProduct> map = (Map<String, BillProduct>) obj;
+			Map<String, BillDetail> map = (Map<String, BillDetail>) obj;
 			if(map.get(key).getQuantity()>1) {
 				map.get(key).setQuantity(map.get(key).getQuantity() - 1);
 			}

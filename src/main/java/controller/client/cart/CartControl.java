@@ -14,9 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dao.client.BillDAO;
-import entity.Account;
+import entity.Customer;
 import entity.Bill;
-import entity.BillProduct;
+import entity.BillDetail;
 
 @WebServlet("/CartControl")
 public class CartControl extends HttpServlet {
@@ -27,24 +27,24 @@ public class CartControl extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
 		HttpSession session = request.getSession();
-		Account account = (Account) session.getAttribute("acc");
+		Customer account = (Customer) session.getAttribute("acc");
 		Object obj = session.getAttribute("cart");// luu tam vao session
 		if (account == null) {
 			response.sendRedirect(request.getContextPath()+"/client/Login.jsp");
 		} else {
 			List<Bill> listBills = BillDAO.getListBillByUid(String.valueOf(account.getId()));
 
-			Map<Integer, List<BillProduct>> map = new HashMap<>();
+			Map<Integer, List<BillDetail>> map = new HashMap<>();
 			double total = 0;
 			for (int i = 0; i < listBills.size(); i++) {
-				List<BillProduct> listProducts = BillDAO.getBillProductByBid(String.valueOf(listBills.get(i).getId()));
+				List<BillDetail> listProducts = BillDAO.getBillProductByBid(String.valueOf(listBills.get(i).getId()));
 				map.put(i, listProducts);
 
 			}
 			if (obj != null) {
-				Map<String, BillProduct> cartTemporary = (Map<String, BillProduct>) obj;
-				for (Entry<String, BillProduct> entry : cartTemporary.entrySet()) {
-					BillProduct billProduct = entry.getValue();
+				Map<String, BillDetail> cartTemporary = (Map<String, BillDetail>) obj;
+				for (Entry<String, BillDetail> entry : cartTemporary.entrySet()) {
+					BillDetail billProduct = entry.getValue();
 					// tinh tong gia
 					total += billProduct.getQuantity() * billProduct.getUnitPrice();
 				}

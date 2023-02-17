@@ -1,28 +1,28 @@
 package entity;
 
 public class Category {
-	private int id;
-	private String name;
+	private int idCategory;
+	private String nameCategory;
 	public Category(int id, String name) {
 		super();
-		this.id = id;
-		this.name = name;
+		this.idCategory = id;
+		this.nameCategory = name;
 	}
 	@Override
 	public String toString() {
-		return "Category [id=" + id + ", name=" + name + "]";
+		return "Category [id=" + idCategory + ", name=" + nameCategory + "]";
 	}
 	public int getId() {
-		return id;
+		return idCategory;
 	}
 	public void setId(int id) {
-		this.id = id;
+		this.idCategory = id;
 	}
 	public String getName() {
-		return name;
+		return nameCategory;
 	}
 	public void setName(String name) {
-		this.name = name;
+		this.nameCategory = name;
 	}
 	
 }

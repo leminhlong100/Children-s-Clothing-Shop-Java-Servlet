@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import context.DBContext;
-import entity.Account;
+import entity.Customer;
 import entity.Bill;
 
 public class BillAdminDAO {
@@ -28,7 +28,7 @@ public class BillAdminDAO {
 		return list;
 	}
 
-	public static Account getAccountByBid(String bid) {
+	public static Customer getAccountByBid(String bid) {
 		String query = "select a.* from Account a join Bill b on a.uid=b.uid where bid = ? ";
 		try {
 			Connection conn =  DBContext.getConnection();
@@ -36,7 +36,7 @@ public class BillAdminDAO {
 			ps.setString(1, bid);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				return new Account(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
+				return new Customer(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
 						rs.getString(6), rs.getString(7));
 			}
 		} catch (Exception e) {

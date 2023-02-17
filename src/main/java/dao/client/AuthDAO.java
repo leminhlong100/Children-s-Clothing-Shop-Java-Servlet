@@ -3,7 +3,7 @@ package dao.client;
 import java.sql.*;
 
 import context.DBContext;
-import entity.Account;
+import entity.Customer;
 import util.EnCode;
 
 public class AuthDAO {
@@ -11,7 +11,7 @@ public class AuthDAO {
 		super();
 	}
 
-	public static Account login(String email, String pass) {
+	public static Customer login(String email, String pass) {
 		pass = EnCode.toSHA1(pass);
 		String query = "select * from Account where email = ? and password  = ?";
 		try {
@@ -21,7 +21,7 @@ public class AuthDAO {
 			ps.setString(2, pass);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				return new Account(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
+				return new Customer(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
 						rs.getString(6), rs.getString(7));
 			}
 		} catch (Exception e) {
@@ -29,24 +29,8 @@ public class AuthDAO {
 		return null;
 
 	}
-	public static Account checkAccountExist( String email) {
 
-		String query = "select * from Account where email = ?";
-		try {
-			Connection conn = DBContext.getConnection();
-			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setString(1, email);
-			
-			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
-				return new Account(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
-						rs.getString(6), rs.getString(7));
-			}
-		} catch (Exception e) {
-		}
-		return null;
-	}
-	public static Account checkAccountExist(String user, String email) {
+	public static Customer checkAccountExist(String user, String email) {
 
 		String query = "select * from Account where [user] = ? and email = ?";
 		try {
@@ -56,7 +40,7 @@ public class AuthDAO {
 			ps.setString(2, email);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				return new Account(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
+				return new Customer(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
 						rs.getString(6), rs.getString(7));
 			}
 		} catch (Exception e) {
@@ -80,7 +64,7 @@ public class AuthDAO {
 		}
 	}
 
-	public static Account checkAccountExistByid(String uid) {
+	public static Customer checkAccountExistByid(String uid) {
 
 		String query = "select * from Account where UID = ?";
 		try {
@@ -89,7 +73,7 @@ public class AuthDAO {
 			ps.setString(1, uid);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				return new Account(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
+				return new Customer(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
 						rs.getString(6), rs.getString(7));
 			}
 		} catch (Exception e) {
@@ -112,7 +96,7 @@ public class AuthDAO {
 		}
 	}
 
-	public static Account checkAccountOldPassword(String uid, String pass) {
+	public static Customer checkAccountOldPassword(String uid, String pass) {
 		pass = EnCode.toSHA1(pass);
 		String query = "select * from Account where [uid] = ? and password = ?";
 		try {
@@ -122,7 +106,7 @@ public class AuthDAO {
 			ps.setString(2, pass);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				return new Account(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
+				return new Customer(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
 						rs.getString(6), rs.getString(7));
 			}
 		} catch (Exception e) {
@@ -142,21 +126,10 @@ public class AuthDAO {
 		} catch (Exception e) {
 		}
 	}
-	public static void editAccountPasswordByEmail(String email, String newpass) {
-		String query = "update Account set [password] = ? where [email] = ?;";
-		newpass = EnCode.toSHA1(newpass);
-		try {
-			Connection conn = DBContext.getConnection();
-			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setString(1, newpass);
-			ps.setString(2, email);
-			ps.executeUpdate();
-		} catch (Exception e) {
-		}
-	}
 
 	public static void main(String[] args) {
-		signup("La Thi Thuy Hao", "123", "rynvia1522@gmail.com", "Đà Lạt", "0374781483");
+		editAccountInfo("Lê Minh Long", "Ấp Phú Thuận,xã Châu Hòa, huyện Giồng Trôm Tỉnh Bến Tre", "0374781483", "1");
+		System.out.println(login("leminhlong@gmail.com", "123"));
 	}
 
 }

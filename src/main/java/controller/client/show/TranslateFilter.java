@@ -22,9 +22,6 @@ public class TranslateFilter extends HttpFilter implements Filter {
 		request.setCharacterEncoding("UTF-8");
 		HttpServletRequest rep = (HttpServletRequest) request;
 		String lang = request.getParameter("lang");
-		if(lang==null) {
-			lang = "vi_VN";
-		}
 		if(lang!=null) {
 			rep.getSession().setAttribute("LANG", lang);	
 		}

@@ -10,7 +10,7 @@ import entity.Product;
 public class IndexDAO {
 	public static List<Product> getSellProduct() {
 		List<Product> list = new ArrayList<>();
-		String query = "select top 4 * from Product order by price ";
+		String query = "select  * from Product order by price limit 4";
 		try {
 			Connection conn =  DBContext.getConnection();
 			PreparedStatement ps = conn.prepareStatement(query);
@@ -28,7 +28,7 @@ public class IndexDAO {
 
 	public static List<Product> getSellProductTwo() {
 		List<Product> list = new ArrayList<>();
-		String query = "select top 4 * from Product order by price  desc";
+		String query = "select * from Product order by price  desc limit 4";
 		try {
 			Connection conn =  DBContext.getConnection();
 			PreparedStatement ps = conn.prepareStatement(query);
@@ -82,7 +82,7 @@ public class IndexDAO {
 
 	public static List<Product> getNewProductBoy() {
 		List<Product> list = new ArrayList<>();
-		String query = "select top 4 * from Product where cateID in (2,7)  order by pid desc";
+		String query = "select  * from Product where cateID in (2,7)  order by pid desc limit 4";
 		try {
 			Connection conn =  DBContext.getConnection();
 			PreparedStatement ps = conn.prepareStatement(query);
@@ -100,7 +100,7 @@ public class IndexDAO {
 
 	public static List<Product> getNewProductGirl() {
 		List<Product> list = new ArrayList<>();
-		String query = "select top 4 * from Product where cateID in (4,8)  order by pid desc";
+		String query = "select  * from Product where cateID in (4,8)  order by pid desc limit 4";
 		try {
 			Connection conn =  DBContext.getConnection();
 			PreparedStatement ps = conn.prepareStatement(query);
@@ -118,7 +118,7 @@ public class IndexDAO {
 
 	public static List<Product> getNewProductAccessory() {
 		List<Product> list = new ArrayList<>();
-		String query = "select top 4 * from Product where cateID in (1,3,5,6)  order by pid desc";
+		String query = "select * from Product where cateID in (1,3,5,6)  order by pid desc limit 4";
 		try {
 			Connection conn =  DBContext.getConnection();
 			PreparedStatement ps = conn.prepareStatement(query);
