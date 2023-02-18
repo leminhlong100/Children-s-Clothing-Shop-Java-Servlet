@@ -155,7 +155,7 @@
 															<tr>
 																<td>${o.product.name}<strong> x
 																		${o.quantity}</strong></td>
-																<td>${o.product.price}.0<fmt:message key="$"
+																<td>${o.product.price}<fmt:message key="$"
 																		bundle="${lang}"></fmt:message></td>
 															</tr>
 														</c:forEach>
@@ -168,7 +168,7 @@
 														</tr>
 														<tr>
 															<th><fmt:message key="Tax" bundle="${lang}"></fmt:message></th>
-															<td>.0<fmt:message key="$" bundle="${lang}"></fmt:message></td>
+															<td>0.0<fmt:message key="$" bundle="${lang}"></fmt:message></td>
 														</tr>
 														<tr>
 															<th><fmt:message key="Total" bundle="${lang}"></fmt:message></th>

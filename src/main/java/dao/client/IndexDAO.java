@@ -6,21 +6,22 @@ import java.util.List;
 
 import context.DBContext;
 import entity.Product;
+import entity.View;
 
 public class IndexDAO {
 	public static List<Product> getSellProduct() {
 		List<Product> list = new ArrayList<>();
-		String query = "select  * from Product order by price limit 4";
+		String query = "SELECT idProduct,nameProduct,priceProduct,discount,idCategorie FROM product p join producers s on p.idProducer = s.idProducer where p.isActice ='1' and s.isActice and (p.products_sold/p.quantity_available)>0.5 order by priceProduct asc limit 4 ;";
 		try {
-			Connection conn =  DBContext.getConnection();
+			Connection conn = DBContext.getConnection();
 			PreparedStatement ps = conn.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				list.add(new Product(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4), rs.getString(5),
-						rs.getString(6), rs.getDouble(8)));
+				list.add(new Product(rs.getInt("idProduct"), rs.getString("nameProduct"), rs.getDouble("priceProduct"),
+						rs.getDouble("discount"), UtilDAO.findListImageByIdProduct(rs.getInt("idProduct"))));
 			}
 		} catch (Exception e) {
-		
+			e.printStackTrace();
 		}
 
 		return list;
@@ -28,17 +29,17 @@ public class IndexDAO {
 
 	public static List<Product> getSellProductTwo() {
 		List<Product> list = new ArrayList<>();
-		String query = "select * from Product order by price  desc limit 4";
+		String query = "SELECT idProduct,nameProduct,priceProduct,discount,idCategorie FROM product p join producers s on p.idProducer = s.idProducer where p.isActice ='1' and s.isActice and (p.products_sold/p.quantity_available)>0.5 order by priceProduct asc limit 4,4 ;";
 		try {
-			Connection conn =  DBContext.getConnection();
+			Connection conn = DBContext.getConnection();
 			PreparedStatement ps = conn.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				list.add(new Product(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4), rs.getString(5),
-						rs.getString(6), rs.getDouble(8)));
+				list.add(new Product(rs.getInt("idProduct"), rs.getString("nameProduct"), rs.getDouble("priceProduct"),
+						rs.getDouble("discount"), UtilDAO.findListImageByIdProduct(rs.getInt("idProduct"))));
 			}
 		} catch (Exception e) {
-	
+
 		}
 
 		return list;
@@ -46,17 +47,19 @@ public class IndexDAO {
 
 	public static List<Product> getOutstandingProduct() {
 		List<Product> list = new ArrayList<>();
-		String query = "select * from product where pid in (44,45,46)";
+		String query = "SELECT idProduct,nameProduct,priceProduct,discount\r\n"
+				+ "FROM product p join producers s on p.idProducer = s.idProducer \r\n"
+				+ "where p.isActice ='1' and s.isActice order by idProduct desc limit 3 ;";
 		try {
-			Connection conn =  DBContext.getConnection();
+			Connection conn = DBContext.getConnection();
 			PreparedStatement ps = conn.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				list.add(new Product(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4), rs.getString(5),
-						rs.getString(6), rs.getDouble(8)));
+				list.add(new Product(rs.getInt("idProduct"), rs.getString("nameProduct"), rs.getDouble("priceProduct"),
+						rs.getDouble("discount"), UtilDAO.findListImageByIdProduct(rs.getInt("idProduct"))));
 			}
 		} catch (Exception e) {
-		
+
 		}
 
 		return list;
@@ -64,17 +67,19 @@ public class IndexDAO {
 
 	public static List<Product> getOutstandingProductShoes() {
 		List<Product> list = new ArrayList<>();
-		String query = "select * from product where pid in (10,11)";
+		String query = "SELECT idProduct,nameProduct,priceProduct,discount\r\n"
+				+ "FROM product p join producers s on p.idProducer = s.idProducer \r\n"
+				+ "where p.isActice ='1' and s.isActice and p.idCategorie in(1,3,5,6) limit 2 ;";
 		try {
-			Connection conn =  DBContext.getConnection();
+			Connection conn = DBContext.getConnection();
 			PreparedStatement ps = conn.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				list.add(new Product(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4), rs.getString(5),
-						rs.getString(6), rs.getDouble(8)));
+				list.add(new Product(rs.getInt("idProduct"), rs.getString("nameProduct"), rs.getDouble("priceProduct"),
+						rs.getDouble("discount"), UtilDAO.findListImageByIdProduct(rs.getInt("idProduct"))));
 			}
 		} catch (Exception e) {
-		
+
 		}
 
 		return list;
@@ -82,17 +87,19 @@ public class IndexDAO {
 
 	public static List<Product> getNewProductBoy() {
 		List<Product> list = new ArrayList<>();
-		String query = "select  * from Product where cateID in (2,7)  order by pid desc limit 4";
+		String query = "SELECT idProduct,nameProduct,priceProduct,discount\r\n"
+				+ "FROM product p join producers s on p.idProducer = s.idProducer \r\n"
+				+ "where p.isActice ='1' and s.isActice and p.idCategorie in(2,7,9,11);";
 		try {
-			Connection conn =  DBContext.getConnection();
+			Connection conn = DBContext.getConnection();
 			PreparedStatement ps = conn.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				list.add(new Product(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4), rs.getString(5),
-						rs.getString(6), rs.getDouble(8)));
+				list.add(new Product(rs.getInt("idProduct"), rs.getString("nameProduct"), rs.getDouble("priceProduct"),
+						rs.getDouble("discount"), UtilDAO.findListImageByIdProduct(rs.getInt("idProduct"))));
 			}
 		} catch (Exception e) {
-		
+
 		}
 
 		return list;
@@ -100,17 +107,19 @@ public class IndexDAO {
 
 	public static List<Product> getNewProductGirl() {
 		List<Product> list = new ArrayList<>();
-		String query = "select  * from Product where cateID in (4,8)  order by pid desc limit 4";
+		String query = "SELECT idProduct,nameProduct,priceProduct,discount\r\n"
+				+ "FROM product p join producers s on p.idProducer = s.idProducer \r\n"
+				+ "where p.isActice ='1' and s.isActice and p.idCategorie in(4,8,10,11);";
 		try {
-			Connection conn =  DBContext.getConnection();
+			Connection conn = DBContext.getConnection();
 			PreparedStatement ps = conn.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				list.add(new Product(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4), rs.getString(5),
-						rs.getString(6), rs.getDouble(8)));
+				list.add(new Product(rs.getInt("idProduct"), rs.getString("nameProduct"), rs.getDouble("priceProduct"),
+						rs.getDouble("discount"), UtilDAO.findListImageByIdProduct(rs.getInt("idProduct"))));
 			}
 		} catch (Exception e) {
-		
+
 		}
 
 		return list;
@@ -118,17 +127,19 @@ public class IndexDAO {
 
 	public static List<Product> getNewProductAccessory() {
 		List<Product> list = new ArrayList<>();
-		String query = "select * from Product where cateID in (1,3,5,6)  order by pid desc limit 4";
+		String query = "SELECT idProduct,nameProduct,priceProduct,discount\r\n"
+				+ "FROM product p join producers s on p.idProducer = s.idProducer \r\n"
+				+ "where p.isActice ='1' and s.isActice and p.idCategorie in(1,3,5,6,12,13);";
 		try {
-			Connection conn =  DBContext.getConnection();
+			Connection conn = DBContext.getConnection();
 			PreparedStatement ps = conn.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				list.add(new Product(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4), rs.getString(5),
-						rs.getString(6), rs.getDouble(8)));
+				list.add(new Product(rs.getInt("idProduct"), rs.getString("nameProduct"), rs.getDouble("priceProduct"),
+						rs.getDouble("discount"), UtilDAO.findListImageByIdProduct(rs.getInt("idProduct"))));
 			}
 		} catch (Exception e) {
-			
+
 		}
 
 		return list;
@@ -136,23 +147,34 @@ public class IndexDAO {
 
 	public static List<Product> getSuperSellProduct() {
 		List<Product> list = new ArrayList<>();
-		String query = "select * from Product ";
+		String query = "SELECT idProduct,nameProduct,priceProduct,discount\r\n"
+				+ "FROM product p join producers s on p.idProducer = s.idProducer \r\n"
+				+ "where p.isActice ='1' and s.isActice and (100/p.discount*(p.discount-p.priceProduct)>15);";
 		try {
-			Connection conn =  DBContext.getConnection();
+			Connection conn = DBContext.getConnection();
 			PreparedStatement ps = conn.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				Product p = new Product(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4),
-						rs.getString(5), rs.getString(6), rs.getDouble(8));
-				if (100 / p.getOlePrice() * (p.getOlePrice() - p.getPrice()) > 15) {
-					list.add(p);
-				}
+				list.add(new Product(rs.getInt("idProduct"), rs.getString("nameProduct"), rs.getDouble("priceProduct"),
+						rs.getDouble("discount"), UtilDAO.findListImageByIdProduct(rs.getInt("idProduct"))));
 			}
 		} catch (Exception e) {
-		
+
 		}
 
 		return list;
 	}
-	
+
+	public static void main(String[] args) {
+//		System.out.println(IndexDAO.getSellProduct());
+//		System.out.println(IndexDAO.getSellProductTwo());
+//		System.out.println(IndexDAO.getOutstandingProduct());
+//		System.out.println(IndexDAO.getOutstandingProductShoes());
+		System.out.println(IndexDAO.getNewProductBoy());
+//		System.out.println(IndexDAO.getNewProductGirl());
+//		System.out.println(IndexDAO.getNewProductAccessory());
+//		System.out.println(IndexDAO.getSuperSellProduct());
+
+
+	}
 }

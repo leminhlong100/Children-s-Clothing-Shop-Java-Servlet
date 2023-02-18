@@ -21,11 +21,67 @@
 		<jsp:include page="./client/header/Header.jsp"></jsp:include>
 		<h1 class="hidden-xs hidden-sm hidden-md hidden-lg">HaLo's Shop</h1>
 		<div class="sk-home-slider"></div>
+<div id="add_succes" style="display:none;">
+	<p><i class="fa fa-check fa-2x"></i>Thêm sản phẩm thành công</p>
+</div>
+			<h1 class="hidden-xs hidden-sm hidden-md hidden-lg">Kidshop</h1>
 
+<div class="sk-home-slider">
+	<div id="sk-home-slider" class="owl-carousel">
+		
+		<div class="item">
+			<a href="#" title="Kidshop">
+				<figure class="banner" style="background-image: url('//bizweb.dktcdn.net/100/117/632/themes/157694/assets/slideshow_image_1.jpg?1564585558451');"></figure>
+			</a>
+		</div>
+		
+		
+		<div class="item">
+			<a href="#" title="Kidshop">
+				<figure class="banner" style="background-image: url('//bizweb.dktcdn.net/100/117/632/themes/157694/assets/slideshow_image_2.jpg?1564585558451');"></figure>
+			</a>
+		</div>
+		
+		
+		<div class="item">
+			<a href="#" title="Kidshop">
+				<figure class="banner" style="background-image: url('//bizweb.dktcdn.net/100/117/632/themes/157694/assets/slideshow_image_3.jpg?1564585558451');"></figure>
+			</a>
+		</div>
+		
+	</div>
+</div>
 		<div class="sk-homepage-layout-leftSidebar">
 			<div class="container">
 				<div class="row">
 					<aside class="col-lg-3 col-md-3 hidden-sm hidden-xs">
+						<div class="sk-leftSidebar-widget trademark-widget">
+		<div class="col-md-6 col-sm-6 trademark-widget-item">
+			<a href="#" style="background-image: url('//bizweb.dktcdn.net/100/117/632/themes/157694/assets/logo1.png?1564585558451');"></a>
+		</div>
+		<div class="col-md-6 col-sm-6 trademark-widget-item">
+			<a href="#" style="background-image: url('//bizweb.dktcdn.net/100/117/632/themes/157694/assets/logo2.png?1564585558451');"></a>
+		</div>
+		<div class="col-md-6 col-sm-6 trademark-widget-item">
+			<a href="hjasdf" style="background-image: url('//bizweb.dktcdn.net/100/117/632/themes/157694/assets/logo3.png?1564585558451');"></a>
+		</div>
+		<div class="col-md-6 col-sm-6 trademark-widget-item">
+			<a href="#" style="background-image: url('//bizweb.dktcdn.net/100/117/632/themes/157694/assets/logo4.png?1564585558451');"></a>
+		</div>
+		<div class="col-md-6 col-sm-6 trademark-widget-item">
+			<a href="#" style="background-image: url('//bizweb.dktcdn.net/100/117/632/themes/157694/assets/logo5.png?1564585558451');"></a>
+		</div>
+		<div class="col-md-6 col-sm-6 trademark-widget-item">
+			<a href="#" style="background-image: url('//bizweb.dktcdn.net/100/117/632/themes/157694/assets/logo6.png?1564585558451');"></a>
+		</div>
+		<div class="col-md-6 col-sm-6 trademark-widget-item">
+			<a href="#" style="background-image: url('//bizweb.dktcdn.net/100/117/632/themes/157694/assets/logo7.png?1564585558451');"></a>
+		</div>
+		<div class="col-md-6 col-sm-6 trademark-widget-item">
+			<a href="#" style="background-image: url('//bizweb.dktcdn.net/100/117/632/themes/157694/assets/logo8.png?1564585558451');"></a>
+		</div>
+		<div class="clearfix"></div>
+	</div>
 						<div class="sk-leftSidebar-widget sellingProducts-widget">
 							<div class="sk-widget-title pink-bg-widget">
 								<h5>
@@ -41,22 +97,23 @@
 								<div id="sellingProducts-slider" class="owl-carousel owl-theme">
 									<div class="item">
 										<c:forEach var="o" items="${listSellProduct}">
+										<c:if test="${o.quantity-productsale>30}"></c:if>
 											<div class="sellingProducts-item">
 												<div class="col-md-5 col-sm-5 sellingProducts-image-wrap">
 													<c:url var="detail" value="DetailControl"></c:url>
 													<a class="sellingProducts-image"
-														href="${detail}?pid=${o.id}"> <img src="${o.image}"
+														href="${detail}?pid=${o.idProduct}"> <img src="./images/${o.imageProducts.get(0).getImage()}"
 														alt="" class="img-responsive">
 													</a>
 												</div>
 												<div class="col-md-7 col-sm-7">
 													<div class="item-info">
 														<h3 class="item-title">
-															<a href="${detail}?pid=${o.id}">${o.name}</a>
+															<a href="${detail}?pid=${o.idProduct}">${o.nameProduct}</a>
 														</h3>
 														<div class="price-box">
-															<span class="price">${o.price} VNĐ</span> <span
-																class="price-compare"> ${o.olePrice} VNĐ</span>
+															<span class="price">${o.priceProduct} VNĐ</span> <span
+																class="price-compare"> ${o.discount} VNĐ</span>
 														</div>
 													</div>
 												</div>
@@ -69,18 +126,18 @@
 											<div class="sellingProducts-item">
 												<div class="col-md-5 col-sm-5 sellingProducts-image-wrap">
 													<a class="sellingProducts-image"
-														href="${detail}?pid=${o.id}"> <img src="${o.image}"
+														href="${detail}?pid=${o.idProduct}"> <img src="./images/${o.imageProducts.get(0).getImage()}"
 														alt="" class="img-responsive">
 													</a>
 												</div>
 												<div class="col-md-7 col-sm-7">
 													<div class="item-info">
 														<h3 class="item-title">
-															<a href="${detail}?pid=${o.id}">${o.name}</a>
+															<a href="${detail}?pid=${o.idProduct}">${o.nameProduct}</a>
 														</h3>
 														<div class="price-box">
-															<span class="price">${o.price} VNĐ</span> <span
-																class="price-compare"> ${o.olePrice} VNĐ</span>
+															<span class="price">${o.priceProduct} VNĐ</span> <span
+																class="price-compare"> ${o.discount} VNĐ</span>
 														</div>
 													</div>
 												</div>
@@ -115,28 +172,28 @@
 											<div class="item">
 												<div class="discounts-product-item">
 													<div class="discounts-product-image">
-														<a href="${detail}?pid=${o.id}"> <img src="${o.image}"
-															alt="${o.image}" class="img-responsive">
+														<a href="${detail}?pid=${o.idProduct}"> <img src="./images/${o.imageProducts.get(0).getImage()}"
+															alt="./images/${o.imageProducts.get(0).getImage()}" class="img-responsive">
 														</a>
 													</div>
 													<div class="discounts-product-info text-center">
 
 														<div class="price-box">
-															<span class="price"> ${o.price} VNĐ</span> <span
-																class="price-compare"> ${o.olePrice} VNĐ </span>
+															<span class="price"> ${o.priceProduct} VNĐ</span> <span
+																class="price-compare"> ${o.discount} VNĐ </span>
 														</div>
 
 														<h3 class="item-title">
-															<a href="${detail}?pid=${o.id}" title="Váy">${o.title}</a>
+															<a href="${detail}?pid=${o.discount}" title="Váy">${o.nameProduct}</a>
 														</h3>
 														<div class="text-center">
 															<form action="/cart/add" method="post" class="variants"
 																id="product-actions-3915726"
 																enctype="multipart/form-data">
-																<a href="${detail}?pid=${o.id}">
+																<a href="${detail}?pid=${o.discount}">
 																	<button class="button btn-cart btn-more product-atc"
 																		title="Mua hàng" type="button">
-																		<span><img src="./image/Muangay.png" alt="" /></span>
+																		<span><img src="./images/Muangay.png" alt="" /></span>
 																	</button>
 																</a>
 															</form>
@@ -153,29 +210,29 @@
 											<div class="col-md-6 col-sm-6">
 												<div class="discounts-product-right">
 													<div class="discounts-product-image">
-														<a href="${detail}?pid=${o.id}"> <img
-															src="${o.image }" alt="${o.image }"
+														<a href="${detail}?pid=${o.idProduct}"> <img
+															src="./images/${o.imageProducts.get(0).getImage()}" alt="./images/${o.imageProducts.get(0).getImage()}"
 															class="img-responsive">
 														</a>
 
 														<div class="price-box">
-															<span class="price">${o.price}VNĐ</span>
+															<span class="price">${o.priceProduct}VNĐ</span>
 														</div>
 
 													</div>
 													<div class="discounts-product-info">
 														<h3 class="item-title">
-															<a href="${detail}?pid=${o.id}" title="${o.title }">${o.title}</a>
+															<a href="${detail}?pid=${o.idProduct}" title="${o.nameProduct }">${o.nameProduct}</a>
 														</h3>
 													</div>
 													<div class="text-center">
 														<form action="/cart/add" method="post" class="variants"
 															id="product-actions-3915714"
 															enctype="multipart/form-data">
-															<a href="${detail}?pid=${o.id}"><button
+															<a href="${detail}?pid=${o.idProduct}"><button
 																	class="button btn-cart btn-more product-atc"
 																	title="Mua hàng" type="button">
-																	<span><img src="./image/Muangay.png" alt="" /></span>
+																	<span><img src="./images/Muangay.png" alt="" /></span>
 																</button></a>
 														</form>
 													</div>
@@ -221,29 +278,29 @@
 											<div class="col-md-3 col-sm-3 col-xs-12">
 												<div class="discounts-product-right">
 													<div class="discounts-product-image">
-														<a href="${detail}?pid=${o.id}"> <img src="${o.image}"
-															alt="${o.image}" class="img-responsive">
+														<a href="${detail}?pid=${o.idProduct}"> <img src="./images/${o.imageProducts.get(0).getImage()}"
+															alt="./images/${o.imageProducts.get(0).getImage()}" class="img-responsive">
 														</a>
 
 														<div class="price-box">
-															<span class="price">${o.price} VNĐ</span> <span
-																class="price-compare"> ${o.olePrice} VNĐ</span>
+															<span class="price">${o.priceProduct} VNĐ</span> <span
+																class="price-compare"> ${o.discount} VNĐ</span>
 														</div>
 
 													</div>
 													<div class="discounts-product-info">
 														<h3 class="item-title">
-															<a href="${detail}?pid=${o.id}" title="${o.title }">${o.title }</a>
+															<a href="${detail}?pid=${o.idProduct}" title="${o.nameProduct }">${o.nameProduct }</a>
 														</h3>
 													</div>
 													<div class="text-center">
 														<form action="/cart/add" method="post" class="variants"
 															id="product-actions-3915812"
 															enctype="multipart/form-data">
-															<a href="${detail}?pid=${o.id}"><button
+															<a href="${detail}?pid=${o.idProduct}"><button
 																	class="button btn-cart btn-more product-atc"
 																	title="Mua hàng" type="button">
-																	<span><img src="./image/Muangay.png" alt="" /></span>
+																	<span><img src="./images/Muangay.png" alt="" /></span>
 																</button></a>
 														</form>
 													</div>
@@ -257,29 +314,29 @@
 											<div class="col-md-3 col-sm-3 col-xs-12">
 												<div class="discounts-product-right">
 													<div class="discounts-product-image">
-														<a href="${detail}?pid=${o.id}"> <img src="${o.image}"
-															alt="${o.image}" class="img-responsive">
+														<a href="${detail}?pid=${o.idProduct}"> <img src="./images/${o.imageProducts.get(0).getImage()}"
+															alt="./images/${o.imageProducts.get(0).getImage()}" class="img-responsive">
 														</a>
 
 														<div class="price-box">
-															<span class="price">${o.price} VNĐ</span> <span
-																class="price-compare"> ${o.olePrice} VNĐ</span>
+															<span class="price">${o.priceProduct} VNĐ</span> <span
+																class="price-compare"> ${o.discount} VNĐ</span>
 														</div>
 
 													</div>
 													<div class="discounts-product-info">
 														<h3 class="item-title">
-															<a href="${detail}?pid=${o.id}" title="${o.title }">${o.title }</a>
+															<a href="${detail}?pid=${o.idProduct}" title="${o.nameProduct }">${o.nameProduct }</a>
 														</h3>
 													</div>
 													<div class="text-center">
 														<form action="/cart/add" method="post" class="variants"
 															id="product-actions-3915812"
 															enctype="multipart/form-data">
-															<a href="${detail}?pid=${o.id}"><button
+															<a href="${detail}?pid=${o.idProduct}"><button
 																	class="button btn-cart btn-more product-atc"
 																	title="Mua hàng" type="button">
-																	<span><img src="./image/Muangay.png" alt="" /></span>
+																	<span><img src="./images/Muangay.png" alt="" /></span>
 																</button></a>
 														</form>
 													</div>
@@ -293,29 +350,29 @@
 											<div class="col-md-3 col-sm-3 col-xs-12">
 												<div class="discounts-product-right">
 													<div class="discounts-product-image">
-														<a href="${detail}?pid=${o.id}"> <img src="${o.image}"
-															alt="${o.image}" class="img-responsive">
+														<a href="${detail}?pid=${o.idProduct}"> <img src="./images/${o.imageProducts.get(0).getImage()}"
+															alt="./images/${o.imageProducts.get(0).getImage()}" class="img-responsive">
 														</a>
 
 														<div class="price-box">
-															<span class="price">${o.price} VNĐ</span> <span
-																class="price-compare"> ${o.olePrice} VNĐ</span>
+															<span class="price">${o.priceProduct} VNĐ</span> <span
+																class="price-compare"> ${o.discount} VNĐ</span>
 														</div>
 
 													</div>
 													<div class="discounts-product-info">
 														<h3 class="item-title">
-															<a href="${detail}?pid=${o.id}" title="${o.title }">${o.title }</a>
+															<a href="${detail}?pid=${o.idProduct}" title="${o.nameProduct }">${o.nameProduct }</a>
 														</h3>
 													</div>
 													<div class="text-center">
 														<form action="/cart/add" method="post" class="variants"
 															id="product-actions-3915812"
 															enctype="multipart/form-data">
-															<a href="${detail}?pid=${o.id}"><button
+															<a href="${detail}?pid=${o.idProduct}"><button
 																	class="button btn-cart btn-more product-atc"
 																	title="Mua hàng" type="button">
-																	<span><img src="./image/Muangay.png" alt="" /></span>
+																	<span><img src="./images/Muangay.png" alt="" /></span>
 																</button></a>
 														</form>
 													</div>
@@ -414,28 +471,28 @@
 							<c:forEach var="o" items="${listgetSuperSellProduct }">
 								<div class="discounts-product-right">
 									<div class="discounts-product-image">
-										<a href="${detail}?pid=${o.id}"> <img src="${o.image}"
+										<a href="${detail}?pid=${o.idProduct}"> <img src="./images/${o.imageProducts.get(0).getImage()}"
 											alt="Váy liên thân KIDS - KF5" class="img-responsive">
 										</a>
 
 										<div class="price-box">
-											<span class="price">${o.price} VNĐ</span> <span
-												class="price-compare"> ${o.olePrice} VNĐ</span>
+											<span class="price">${o.priceProduct} VNĐ</span> <span
+												class="price-compare"> ${o.discount} VNĐ</span>
 										</div>
 
 									</div>
 									<div class="discounts-product-info">
 										<h3 class="item-title">
-											<a href="${detail}?pid=${o.id}" title="${o.title }">${o.title }</a>
+											<a href="${detail}?pid=${o.idProduct}" title="${o.nameProduct }">${o.nameProduct }</a>
 										</h3>
 									</div>
 									<div class="text-center">
 										<form action="/cart/add" method="post" class="variants"
 											id="product-actions-3915726" enctype="multipart/form-data">
-											<a href="${detail}?pid=${o.id}"><button
+											<a href="${detail}?pid=${o.idProduct}"><button
 													class="button btn-cart btn-more product-atc"
 													title="Mua hàng" type="button">
-													<span><img src="./image/Muangay.png" alt="" /></span>
+													<span><img src="./images/Muangay.png" alt="" /></span>
 												</button></a>
 										</form>
 									</div>

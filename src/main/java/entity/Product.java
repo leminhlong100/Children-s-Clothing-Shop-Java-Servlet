@@ -1,54 +1,64 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Product implements Serializable {
 	private int idProduct;
 	private String nameProduct;
 	private double priceProduct;
-	private String date;
-	private String dateAdd; // ngay dat
+	private String dateAdd; // ngay nhap
 	private String description; // mo ta
 	private int quantity;
-	private View view;
-	private Star star;
-	private String comment;
+	private List<View> views;
+	private List<Star> stars;
+	private List<Comment> comments;
 	private String productsale; // so luong sp da ban
 	private double discount; // giam gia;
 	private Supplier supplier; // nha cung cap
 	private Producer producer; // nha san suat
 	private Category category; // phan loai
-	private boolean isAtice;
+	private List<ImageProduct> imageProducts;
 
-	public Product(int idProduct, String nameProduct, double priceProduct, String date, String dateAdd,
-			String description, int quantity, View view, Star star, String comment, String productsale, double discount,
-			Supplier supplier, Producer producer, Category category, boolean isAtice) {
+	public Product(int idProduct, String nameProduct, double priceProduct, String dateAdd, String description,
+			int quantity, List<View> views, List<Star> stars, List<Comment> comments, String productsale,
+			double discount, Supplier supplier, Producer producer, Category category,
+			List<ImageProduct> imageProducts) {
 		super();
 		this.idProduct = idProduct;
 		this.nameProduct = nameProduct;
 		this.priceProduct = priceProduct;
-		this.date = date;
 		this.dateAdd = dateAdd;
 		this.description = description;
 		this.quantity = quantity;
-		this.view = view;
-		this.star = star;
-		this.comment = comment;
+		this.views = views;
+		this.stars = stars;
+		this.comments = comments;
 		this.productsale = productsale;
 		this.discount = discount;
 		this.supplier = supplier;
 		this.producer = producer;
 		this.category = category;
-		this.isAtice = isAtice;
+		this.imageProducts = imageProducts;
+	}
+
+	public Product(int idProduct, String nameProduct, double priceProduct, double discount,
+			List<ImageProduct> imageProducts) {
+		super();
+		this.idProduct = idProduct;
+		this.nameProduct = nameProduct;
+		this.priceProduct = priceProduct;
+		this.discount = discount;
+		this.imageProducts = imageProducts;
 	}
 
 	@Override
 	public String toString() {
 		return "Product [idProduct=" + idProduct + ", nameProduct=" + nameProduct + ", priceProduct=" + priceProduct
-				+ ", date=" + date + ", dateAdd=" + dateAdd + ", description=" + description + ", quantity=" + quantity
-				+ ", view=" + view + ", star=" + star + ", comment=" + comment + ", productsale=" + productsale
-				+ ", discount=" + discount + ", supplier=" + supplier + ", producer=" + producer + ", category="
-				+ category + ", isAtice=" + isAtice + "]";
+				+ ", dateAdd=" + dateAdd + ", description=" + description + ", quantity=" + quantity + ", views="
+				+ views + ", stars=" + stars + ", comments=" + comments + ", productsale=" + productsale + ", discount="
+				+ discount + ", supplier=" + supplier + ", producer=" + producer + ", category=" + category
+				+ ", imageProducts=" + imageProducts + "]" + "\n";
 	}
 
 	public int getIdProduct() {
@@ -75,14 +85,6 @@ public class Product implements Serializable {
 		this.priceProduct = priceProduct;
 	}
 
-	public String getDate() {
-		return date;
-	}
-
-	public void setDate(String date) {
-		this.date = date;
-	}
-
 	public String getDateAdd() {
 		return dateAdd;
 	}
@@ -107,28 +109,28 @@ public class Product implements Serializable {
 		this.quantity = quantity;
 	}
 
-	public View getView() {
-		return view;
+	public List<View> getViews() {
+		return views;
 	}
 
-	public void setView(View view) {
-		this.view = view;
+	public void setViews(List<View> views) {
+		this.views = views;
 	}
 
-	public Star getStar() {
-		return star;
+	public List<Star> getStars() {
+		return stars;
 	}
 
-	public void setStar(Star star) {
-		this.star = star;
+	public void setStars(List<Star> stars) {
+		this.stars = stars;
 	}
 
-	public String getComment() {
-		return comment;
+	public List<Comment> getComments() {
+		return comments;
 	}
 
-	public void setComment(String comment) {
-		this.comment = comment;
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
 	}
 
 	public String getProductsale() {
@@ -171,11 +173,12 @@ public class Product implements Serializable {
 		this.category = category;
 	}
 
-	public boolean isAtice() {
-		return isAtice;
+	public List<ImageProduct> getImageProducts() {
+		return imageProducts;
 	}
 
-	public void setAtice(boolean isAtice) {
-		this.isAtice = isAtice;
+	public void setImageProducts(List<ImageProduct> imageProducts) {
+		this.imageProducts = imageProducts;
 	}
+
 }

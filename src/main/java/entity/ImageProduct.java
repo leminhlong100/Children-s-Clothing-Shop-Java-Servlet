@@ -2,17 +2,17 @@ package entity;
 
 public class ImageProduct {
 	private int idImageProduct;
-	private Product product;
+	private int idproduct;
 	private String image;
-	public ImageProduct(int idImageProduct, Product product, String image) {
+	public ImageProduct(int idImageProduct, int idproduct, String image) {
 		super();
 		this.idImageProduct = idImageProduct;
-		this.product = product;
+		this.idproduct = idproduct;
 		this.image = image;
 	}
 	@Override
 	public String toString() {
-		return "ImageProduct [idImageProduct=" + idImageProduct + ", product=" + product + ", image=" + image + "]";
+		return "ImageProduct [idImageProduct=" + idImageProduct + ", idproduct=" + idproduct + ", image=" + image + "]";
 	}
 	public int getIdImageProduct() {
 		return idImageProduct;
@@ -20,11 +20,11 @@ public class ImageProduct {
 	public void setIdImageProduct(int idImageProduct) {
 		this.idImageProduct = idImageProduct;
 	}
-	public Product getProduct() {
-		return product;
+	public int getIdproduct() {
+		return idproduct;
 	}
-	public void setProduct(Product product) {
-		this.product = product;
+	public void setIdproduct(int idproduct) {
+		this.idproduct = idproduct;
 	}
 	public String getImage() {
 		return image;

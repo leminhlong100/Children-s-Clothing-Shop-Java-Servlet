@@ -2,10 +2,10 @@ package entity;
 
 public class Producer { // nha san suat
 	private int idProducer;
-	private int nameProducer;
+	private String nameProducer;
 	private String information;
 	private String logo;
-	public Producer(int idProducer, int nameProducer, String information, String logo) {
+	public Producer(int idProducer, String nameProducer, String information, String logo) {
 		super();
 		this.idProducer = idProducer;
 		this.nameProducer = nameProducer;
@@ -23,10 +23,10 @@ public class Producer { // nha san suat
 	public void setIdProducer(int idProducer) {
 		this.idProducer = idProducer;
 	}
-	public int getNameProducer() {
+	public String getNameProducer() {
 		return nameProducer;
 	}
-	public void setNameProducer(int nameProducer) {
+	public void setNameProducer(String nameProducer) {
 		this.nameProducer = nameProducer;
 	}
 	public String getInformation() {

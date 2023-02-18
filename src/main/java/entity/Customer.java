@@ -4,16 +4,18 @@ public class Customer {
 	private int idCustomer;
 	private String userName;
 	private String passWord;
+	private String name;
 	private String address;
 	private String email;
 	private String phoneNumber;
 	private int id_role_member;
-	public Customer(int idCustomer, String userName, String passWord, String address, String email, String phoneNumber,
-			int id_role_member) {
+	public Customer(int idCustomer, String userName, String passWord, String name, String address, String email,
+			String phoneNumber, int id_role_member) {
 		super();
 		this.idCustomer = idCustomer;
 		this.userName = userName;
 		this.passWord = passWord;
+		this.name = name;
 		this.address = address;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
@@ -21,9 +23,9 @@ public class Customer {
 	}
 	@Override
 	public String toString() {
-		return "Account [idCustomer=" + idCustomer + ", userName=" + userName + ", passWord=" + passWord + ", address="
-				+ address + ", email=" + email + ", phoneNumber=" + phoneNumber + ", id_role_member=" + id_role_member
-				+ "]";
+		return "Customer [idCustomer=" + idCustomer + ", userName=" + userName + ", passWord=" + passWord + ", name="
+				+ name + ", address=" + address + ", email=" + email + ", phoneNumber=" + phoneNumber
+				+ ", id_role_member=" + id_role_member + "]";
 	}
 	public int getIdCustomer() {
 		return idCustomer;
@@ -42,6 +44,12 @@ public class Customer {
 	}
 	public void setPassWord(String passWord) {
 		this.passWord = passWord;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String getAddress() {
 		return address;
@@ -69,4 +77,3 @@ public class Customer {
 	}
 	
 }
-	

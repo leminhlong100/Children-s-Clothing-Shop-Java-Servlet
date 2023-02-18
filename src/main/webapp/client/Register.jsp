@@ -170,6 +170,9 @@
 									</div>
 								</div>
 							</form>
+							<div class="row">
+									<p style="color: red;">${errorRe}</p>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -271,7 +274,7 @@
 												var mobile = $('#mobile').val();
 												var vnf_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
 												if (mobile != '') {
-													if (vnf_regex.test(mobile) == false) {
+													if (vnf_regex.test(mobile) == false||mobile.length>10) {
 														$('#errorNumberPhone')
 																.text(
 																		"<fmt:message key="Please.enter.the.correct.phone.number.format" bundle="${lang}"></fmt:message>");

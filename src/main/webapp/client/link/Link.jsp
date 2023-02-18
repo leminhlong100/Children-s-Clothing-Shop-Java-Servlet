@@ -6,6 +6,7 @@
 <fmt:setBundle basename="web.lang.resource.app" var="lang" />
 <c:url value="/client/assets" var="url"></c:url>
 <!-- CSS -->
+<link href="//bizweb.dktcdn.net/100/117/632/themes/157694/assets/style.css?1564585558451" rel="stylesheet" type="text/css" media="all" />
 <link rel="stylesheet" href="${url}/css/checkout.css">
 <link rel="stylesheet" href="${url}/css/bootstrap.min.css">
 <link rel="stylesheet" href="${url}/css/style.css">
