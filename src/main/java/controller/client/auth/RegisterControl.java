@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.client.AuthDAO;
-import entity.Account;
+import entity.Customer;
 
 @WebServlet("/Register")
 public class RegisterControl extends HttpServlet {
@@ -27,12 +27,11 @@ public class RegisterControl extends HttpServlet {
 		if (!passWord.equals(repassWord)) {
 			response.sendRedirect("Register.jsp");
 		} else {
-			Account a = AuthDAO.checkAccountExist(user, email);
+			Customer a = AuthDAO.checkAccountExist(user, email);
 			if (a == null) {
 				AuthDAO.signup(user, repassWord, email, address, phone);
 				request.getRequestDispatcher("/client/Login.jsp").forward(request, response);
 			} else {
-				request.setAttribute("errorRe", "Tài khoản đã tồn tại");
 				request.getRequestDispatcher("/client/Register.jsp").forward(request, response);
 			}
 		}

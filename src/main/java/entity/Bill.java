@@ -4,82 +4,96 @@ import java.io.Serializable;
 import java.sql.Date;
 
 public class Bill implements Serializable {
-	private int id;
-	private Account buyer;// nguoi mua
-	private String buyDate;// ngay mua
-	private long priceTotal;// tong tien
+	private int idBill;
+	private String dateAdd; // ngay dat
+	private String deliveryDate; // ngay mua
+	private String StatusPay; // Trinh trang thanh toan
+	private Customer customer;
+	private double endow; // giam gia
 	private String status;
-	private String node;
+	private String address;
 
-	
-
-	public Bill(int id, Account buyer, String buyDate, long priceTotal, String status, String node) {
+	public Bill(int idBill, String dateAdd, String deliveryDate, String statusPay, Customer customer, double endow,
+			String status, String address) {
 		super();
-		this.id = id;
-		this.buyer = buyer;
-		this.buyDate = buyDate;
-		this.priceTotal = priceTotal;
+		this.idBill = idBill;
+		this.dateAdd = dateAdd;
+		this.deliveryDate = deliveryDate;
+		StatusPay = statusPay;
+		this.customer = customer;
+		this.endow = endow;
 		this.status = status;
-		this.node = node;
+		this.address = address;
+	}
+
+	@Override
+	public String toString() {
+		return "Bill [idBill=" + idBill + ", dateAdd=" + dateAdd + ", deliveryDate=" + deliveryDate + ", StatusPay="
+				+ StatusPay + ", customer=" + customer + ", endow=" + endow + ", status=" + status + ", address="
+				+ address + "]";
+	}
+
+	public int getIdBill() {
+		return idBill;
+	}
+
+	public void setIdBill(int idBill) {
+		this.idBill = idBill;
+	}
+
+	public String getDateAdd() {
+		return dateAdd;
+	}
+
+	public void setDateAdd(String dateAdd) {
+		this.dateAdd = dateAdd;
+	}
+
+	public String getDeliveryDate() {
+		return deliveryDate;
+	}
+
+	public void setDeliveryDate(String deliveryDate) {
+		this.deliveryDate = deliveryDate;
+	}
+
+	public String getStatusPay() {
+		return StatusPay;
+	}
+
+	public void setStatusPay(String statusPay) {
+		StatusPay = statusPay;
+	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+	public double getEndow() {
+		return endow;
+	}
+
+	public void setEndow(double endow) {
+		this.endow = endow;
 	}
 
 	public String getStatus() {
 		return status;
-	}
-	
-
-	public String getNode() {
-		return node;
-	}
-
-	public void setNode(String node) {
-		this.node = node;
 	}
 
 	public void setStatus(String status) {
 		this.status = status;
 	}
 
-	public Bill() {
-		super();
+	public String getAddress() {
+		return address;
 	}
 
-	public int getId() {
-		return id;
+	public void setAddress(String address) {
+		this.address = address;
 	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public Account getBuyer() {
-		return buyer;
-	}
-
-	public void setBuyer(Account buyer) {
-		this.buyer = buyer;
-	}
-
-	public String getBuyDate() {
-		return buyDate;
-	}
-
-	public void setBuyDate(String buyDate) {
-		this.buyDate = buyDate;
-	}
-
-	public long getPriceTotal() {
-		return priceTotal;
-	}
-
-	public void setPriceTotal(long priceTotal) {
-		this.priceTotal = priceTotal;
-	}
-	
-	@Override
-	public String toString() {
-		return "Bill [id=" + id + ", buyer=" + buyer + ", buyDate=" + buyDate + ", priceTotal=" + priceTotal
-				+ ", status=" + status + "]";
-	}
-
 }

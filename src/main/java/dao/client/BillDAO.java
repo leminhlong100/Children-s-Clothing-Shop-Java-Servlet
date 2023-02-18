@@ -8,14 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import context.DBContext;
-import entity.Account;
+import entity.Customer;
 import entity.Bill;
-import entity.BillProduct;
+import entity.BillDetail;
 import entity.Product;
 
 public class BillDAO {
 	public static void createBill(Bill bill) {
-		String query = "insert into Bill ([uid]) values(?);";
+		String query = "insert into Bill (uid) values(?);";
 		try {
 			Connection conn = DBContext.getConnection();
 			PreparedStatement ps = conn.prepareStatement(query);
@@ -41,7 +41,7 @@ public class BillDAO {
 
 	}
 
-	public static void createBillProduct(BillProduct billProduct) {
+	public static void createBillProduct(BillDetail billProduct) {
 		String query = "insert into Billproduct (unitPrice,quantity, bid, pid) values(?,?,?,?);";
 		try {
 			Connection conn = DBContext.getConnection();
@@ -129,7 +129,7 @@ public class BillDAO {
 
 	public static List<Product> getListProductBybid(String bid) {
 		List<Product> list = new ArrayList<>();
-		String query = "select * from product p join Billproduct bp on p.pid = bp.pid where bid = ? \r\n" + "";
+		String query = "select * from product p join Billproduct bp where bid = ? ";
 		try {
 			Connection conn = DBContext.getConnection();
 			PreparedStatement ps = conn.prepareStatement(query);
@@ -164,10 +164,10 @@ public class BillDAO {
 
 	}
 
-	public static List<BillProduct> getBillProductByBid(String bid) {
-		List<BillProduct> list = new ArrayList<>();
-		String query = "select bpid,unitPrice,quantity,b.bid,pid from Billproduct bp join Bill b\r\n"
-				+ "on bp.bid=b.bid where  b.bid = ?";
+	public static List<BillDetail> getBillProductByBid(String bid) {
+		List<BillDetail> list = new ArrayList<>();
+		String query = "select bpid,unitPrice,quantity,b.bid,pid from Billproduct bp join Bill b"
+				+ " where  b.bid = ?";
 		int i = 0;
 		try {
 			Connection conn = DBContext.getConnection();
@@ -175,12 +175,12 @@ public class BillDAO {
 			ps.setString(1, bid);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				list.add(new BillProduct(rs.getInt(1), rs.getDouble(2), rs.getInt(3),
+				list.add(new BillDetail(rs.getInt(1), rs.getDouble(2), rs.getInt(3),
 						BillDAO.getBillforBillProduct(bid), BillDAO.getListProductBybid(bid).get(i)));
 				i++;
 			}
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 		return list;
 

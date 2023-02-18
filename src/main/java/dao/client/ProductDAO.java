@@ -48,23 +48,23 @@ public class ProductDAO {
 		String query = "";
 		switch (cid) {
 		case 0:
-			query = "select * from product order by " + sort + " " + type + " offset ? rows fetch next 12 rows only ";
+			query = "select * from product order by " + sort + " " + type + "  limit ?,12";
 			break;
 		case 1:
 			query = "select * from product where cateID in(7,2,5,9,13) order by " + sort + " " + type
-					+ " offset ? rows fetch next 12 rows only ";
+					+ "  limit ?,12";
 			break;
 		case 2:
 			query = "select * from product where cateID in(4,11,8,3,13) order by " + sort + " " + type
-					+ " offset ? rows fetch next 12 rows only ";
+					+ "  limit ?,12";
 			break;
 		case 3:
 			query = "select * from product where cateID in(1,3,5,6,12) order by " + sort + " " + type
-					+ " offset ? rows fetch next 12 rows only ";
+					+ "  limit ?,12";
 			break;
 		case 4:
 			query = "select * from product where oldPrice>price order by " + sort + " " + type
-					+ " offset ? rows fetch next 12 rows only ";
+					+ "  limit ?,12";
 			break;
 		default:
 			break;

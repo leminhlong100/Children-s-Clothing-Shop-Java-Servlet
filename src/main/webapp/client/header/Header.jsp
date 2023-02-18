@@ -87,7 +87,7 @@
 	<div class="mobile-logo-wrap text-center">
 		<c:url var="index" value="IndexControl"></c:url>
 		<a class="" href="${pageContext.request.contextPath}/${index}"> <img
-			src="${pageContext.request.contextPath}/image/logo.png"
+			src="${pageContext.request.contextPath}/images/logo.png"
 			alt="HaLoShop">
 		</a>
 	</div>
@@ -126,7 +126,7 @@
 			</div>
 			<a class="navbar-brand sk-logo-desktop"
 				href="${pageContext.request.contextPath}/${index}"> <img
-				src="${pageContext.request.contextPath}/image/logo.png"
+				src="${pageContext.request.contextPath}/images/logo.png"
 				alt="Kidshop">
 			</a>
 			<!-- Collect the nav links, forms, and other content for toggling -->

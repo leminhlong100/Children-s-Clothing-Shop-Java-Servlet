@@ -7,19 +7,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import context.DBContext;
-import entity.Account;
+import entity.Customer;
 import util.EnCode;
 
 public class AccountDAO {
-	public static List<Account> getListAccount() {
-		ArrayList<Account> list = new ArrayList<>();
+	public static List<Customer> getListAccount() {
+		ArrayList<Customer> list = new ArrayList<>();
 		String query = "select * from Account where isAdmin = 0 ";
 		try {
 			Connection conn = DBContext.getConnection();
 			PreparedStatement ps = conn.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				list.add(new Account(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
+				list.add(new Customer(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
 						rs.getString(6), rs.getString(7)));
 			}
 		} catch (Exception e) {
@@ -27,7 +27,7 @@ public class AccountDAO {
 		return list;
 	}
 
-	public static Account getAccountById(String uid) {
+	public static Customer getAccountById(String uid) {
 		String query = "select * from Account where uid = ? ";
 		try {
 			Connection conn = DBContext.getConnection();
@@ -35,7 +35,7 @@ public class AccountDAO {
 			ps.setString(1, uid);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				return new Account(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
+				return new Customer(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
 						rs.getString(6), rs.getString(7));
 			}
 		} catch (Exception e) {
@@ -55,7 +55,7 @@ public class AccountDAO {
 		}
 	}
 
-	public static void updateAccount(Account account) {
+	public static void updateAccount(Customer account) {
 		String pass = EnCode.toSHA1(account.getPass());
 		String query = "update Account set [user] = ?, password =?,email=?,address=?,phoneNumber=? where uid =?;";
 		try {

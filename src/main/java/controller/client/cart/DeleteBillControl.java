@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import entity.BillProduct;
+import entity.BillDetail;
 
 @WebServlet("/DeleteBillControl")
 public class DeleteBillControl extends HttpServlet {
@@ -25,7 +25,7 @@ public class DeleteBillControl extends HttpServlet {
 		HttpSession session = request.getSession();
 		Object obj = session.getAttribute("cart");
 		if (obj != null) {
-			Map<String, BillProduct> map = (Map<String, BillProduct>) obj;
+			Map<String, BillDetail> map = (Map<String, BillDetail>) obj;
 			map.remove(key);
 			session.setAttribute("cart", map);// update lai vao session
 		}

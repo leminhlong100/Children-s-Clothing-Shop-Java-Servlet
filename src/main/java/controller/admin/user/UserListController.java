@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.admin.AccountDAO;
-import entity.Account;
+import entity.Customer;
 
 @WebServlet("/UserListController")
 public class UserListController extends HttpServlet {
@@ -18,7 +18,7 @@ public class UserListController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		List<Account> accounts = AccountDAO.getListAccount();
+		List<Customer> accounts = AccountDAO.getListAccount();
 		request.setAttribute("accounts", accounts);
 		request.getRequestDispatcher("/admin/user.jsp").forward(request, response);
 	}

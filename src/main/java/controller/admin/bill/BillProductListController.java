@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.client.BillDAO;
 import entity.Bill;
-import entity.BillProduct;
+import entity.BillDetail;
 
 @WebServlet("/BillProductListController")
 public class BillProductListController extends HttpServlet {
@@ -22,9 +22,9 @@ public class BillProductListController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		List<Bill> listBills = BillDAO.getListBill();
-		Map<Integer, List<BillProduct>> map = new HashMap<>();
+		Map<Integer, List<BillDetail>> map = new HashMap<>();
 		for (int i = 0; i < listBills.size(); i++) {
-			List<BillProduct> listProducts = BillDAO.getBillProductByBid(String.valueOf(listBills.get(i).getId()));
+			List<BillDetail> listProducts = BillDAO.getBillProductByBid(String.valueOf(listBills.get(i).getId()));
 			map.put(i, listProducts);
 		}
 		request.setAttribute("products", map);

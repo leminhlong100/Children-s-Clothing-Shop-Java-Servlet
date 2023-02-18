@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dao.client.ProductDAO;
-import entity.Account;
-import entity.BillProduct;
+import entity.Customer;
+import entity.BillDetail;
 import entity.Product;
 
 @WebServlet("/AddToCartControl")
@@ -27,7 +27,7 @@ public class AddToCartControl extends HttpServlet {
 		HttpSession session = request.getSession();
 		String pId = request.getParameter("pid");
 
-		Account account = (Account) session.getAttribute("acc");
+		Customer account = (Customer) session.getAttribute("acc");
 		if (account == null) {
 			response.sendRedirect(request.getContextPath() + "/client/Login.jsp?pid=" + pId);
 		} else {
@@ -40,18 +40,18 @@ public class AddToCartControl extends HttpServlet {
 				quantity = Integer.parseInt(getQuantity);
 			}
 			if (obj == null) {
-				BillProduct billProduct = new BillProduct();
+				BillDetail billProduct = new BillDetail();
 				billProduct.setProduct(product);
 				billProduct.setQuantity(quantity);
 				billProduct.setUnitPrice(product.getPrice());
-				Map<String, BillProduct> map = new HashMap<>();
+				Map<String, BillDetail> map = new HashMap<>();
 				map.put(pId, billProduct);
 				session.setAttribute("cart", map);
 			} else {
-				Map<String, BillProduct> map = (Map<String, BillProduct>) obj;
-				BillProduct billProduct = map.get(pId);
+				Map<String, BillDetail> map = (Map<String, BillDetail>) obj;
+				BillDetail billProduct = map.get(pId);
 				if (billProduct == null) {
-					billProduct = new BillProduct();
+					billProduct = new BillDetail();
 					billProduct.setProduct(product);
 					billProduct.setQuantity(quantity);
 					billProduct.setUnitPrice(product.getPrice());

@@ -30,5 +30,4 @@ public class TranslateFilter extends HttpFilter implements Filter {
 		}
 		chain.doFilter(request, response);
 	}
-
 }

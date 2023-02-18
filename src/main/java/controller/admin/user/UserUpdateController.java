@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dao.admin.AccountDAO;
-import entity.Account;
+import entity.Customer;
 
 /**
  * Servlet implementation class UserUpdateController
@@ -29,7 +29,7 @@ public class UserUpdateController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String user_id = request.getParameter("uid");
-		Account account = AccountDAO.getAccountById(user_id);
+		Customer account = AccountDAO.getAccountById(user_id);
 		request.setAttribute("account", account);
 		request.getRequestDispatcher("/admin/edituser.jsp").forward(request, response);
 
@@ -45,7 +45,7 @@ public class UserUpdateController extends HttpServlet {
 		String user_phone = request.getParameter("user-phone");
 		String user_password = request.getParameter("user-password");
 		String user_address = request.getParameter("user-address");
-		Account a = new Account(Integer.parseInt(user_id), user_name, user_password, 0, user_email,
+		Customer a = new Customer(Integer.parseInt(user_id), user_name, user_password, 0, user_email,
 				user_phone,user_address);
 		AccountDAO.updateAccount(a);
 		HttpSession session = request.getSession();
