@@ -8,7 +8,7 @@
 <html lang="vi">
 <head>
 <title><fmt:message key="All.products" bundle="${lang}"></fmt:message></title>
-<link rel="icon" type="image" href="../image/HaLoicon.png" />
+<link rel="icon" type="image" href="../images/HaLoicon.png" />
 
 <jsp:include page="./link/Link.jsp"></jsp:include>
 </head>
@@ -89,16 +89,16 @@
 														<c:if test="${sort==null}">selected</c:if>>
 														<fmt:message key="default" bundle="${lang}"></fmt:message></option>
 													<option value="price-asc"
-														<c:if test="${sort=='price-asc'}">selected</c:if>>
+														<c:if test="${sort=='priceProduct-asc'}">selected</c:if>>
 														<fmt:message key="prices.increase" bundle="${lang}"></fmt:message></option>
 													<option value="price-desc"
-														<c:if test="${sort=='price-desc'}">selected</c:if>>
+														<c:if test="${sort=='priceProduct-desc'}">selected</c:if>>
 														<fmt:message key="prices.decrease" bundle="${lang}"></fmt:message></option>
 													<option value="name-asc"
-														<c:if test="${sort=='name-asc'}">selected</c:if>>
+														<c:if test="${sort=='nameProduct-asc'}">selected</c:if>>
 														<fmt:message key="A-Z" bundle="${lang}"></fmt:message></option>
 													<option value="name-desc"
-														<c:if test="${sort=='name-desc'}">selected</c:if>>
+														<c:if test="${sort=='nameProduct-desc'}">selected</c:if>>
 														<fmt:message key="Z-A" bundle="${lang}"></fmt:message></option>
 												</select>
 												<button type="submit"
@@ -117,26 +117,26 @@
 									<div class="col-md-3 col-sm-6 col-xs-12">
 										<div class="discounts-product-right">
 											<div class="discounts-product-image">
-												<a href="${detailP}?pid=${o.id}"> <img src="${o.image}"
-													alt="${o.image}" class="img-responsive">
+												<a href="${detailP}?pid=${o.idProduct}"> <img src="./images/${o.imageProducts.get(0).getImage()}"
+													alt="${o.imageProducts.get(0).getImage()}" class="img-responsive">
 												</a>
 
 												<div class="price-box">
-													<span class="price"> ${o.price} </span> <span
-														class="price-compare"> ${o.olePrice}₫ </span>
+													<span class="price"> ${o.priceProduct} </span> <span
+														class="price-compare"> ${o.discount}₫ </span>
 												</div>
 
 											</div>
 											<div class="discounts-product-info">
 												<h3 class="item-title">
-													<a href="${detailP}?pid=${o.id}" title="${o.title }">${o.title }</a>
+													<a href="${detailP}?pid=${o.idProduct}" title="${o.nameProduct }">${o.nameProduct }</a>
 												</h3>
 											</div>
 											<div class="text-center">
-												<a href="${detailP}?pid=${o.id}">
+												<a href="${detailP}?pid=${o.idProduct}">
 													<button class="button btn-cart btn-more product-atc"
 														title="Mua hàng" type="button">
-														<span><img src="./image/Muangay.png" alt="" /></span>
+														<span><img src="./images/Muangay.png" alt="" /></span>
 													</button>
 												</a>
 											</div>

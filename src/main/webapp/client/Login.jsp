@@ -77,7 +77,7 @@ if (session.getAttribute("acc") != null) {
 										</p>
 									</div>
 									<div class="col-md-10">
-										<input type="email" value="" name="email" />
+										<input type="text" value="" name="email" />
 									</div>
 								</div>
 								<div class="row">

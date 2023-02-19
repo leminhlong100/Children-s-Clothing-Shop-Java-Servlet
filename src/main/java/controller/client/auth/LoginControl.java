@@ -32,7 +32,8 @@ public class LoginControl extends HttpServlet {
 			session.setAttribute("acc", a);
 			session.setMaxInactiveInterval(1800);
 			if(pid==null) {
-				request.getRequestDispatcher("IndexControl").forward(request, response);
+//				request.getRequestDispatcher("IndexControl").forward(request, response);
+				response.sendRedirect("IndexControl");
 			}else {
 				response.sendRedirect("DetailControl?pid="+pid);
 			}
