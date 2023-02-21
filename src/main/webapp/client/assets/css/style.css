@@ -299,7 +299,8 @@ a:hover {
     font-size: 20px;
     background-color: #d081a5;
     color: #fff;
-    position: relative
+    position: relative;
+    border-radius: 10px;
 }
 .head-hotline-inner span {
     text-transform: uppercase;
@@ -979,6 +980,17 @@ input.checkbox-add {
   -ms-transition: all 0.5s;
   -o-transition: all 0.5s;
   transition: all 0.5s;
+}
+
+.head-hotline-inner {
+	z-index:99;
+	    float: right;
+    padding: 10px;
+    font-size: 20px;
+    background-color: #d081a5;
+    color: #fff;
+    position: relative;
+	border-radius: 20px;
 }
 
 
