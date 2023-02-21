@@ -120,20 +120,6 @@ if (session.getAttribute("acc") != null) {
 											+ encodeURIParams(a, !0);
 									window.location.href = b
 								}
-								function loginGoogle() {
-									var a = {
-										client_id : "997675985899-pu3vhvc2rngfcuqgh5ddgt7mpibgrasr.apps.googleusercontent.com",
-										redirect_uri : "https://store.mysapo.net/account/google_account_callback",
-										scope : "email profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile",
-										access_type : "online",
-										state : JSON.stringify({
-											redirect_url : window.location.href
-										}),
-										response_type : "code"
-									}, b = "https://accounts.google.com/o/oauth2/v2/auth"
-											+ encodeURIParams(a, !0);
-									window.location.href = b
-								}
 								function encodeURIParams(a, b) {
 									var c = [];
 									for ( var d in a)
@@ -153,8 +139,8 @@ if (session.getAttribute("acc") != null) {
 								onclick="loginFacebook()"><img width="129px" height="37px"
 								alt="facebook-login-button"
 								src="//bizweb.dktcdn.net/assets/admin/images/login/fb-btn.svg"></a>
-							<a href="javascript:void(0)" class="social-login--google"
-								onclick="loginGoogle()"><img width="129px" height="37px"
+							<a href="https://accounts.google.com/o/oauth2/auth?scope=email%20profile%20openid&redirect_uri=http://localhost:8080/TTLTW_2023/LoginGoogle&response_type=code&client_id=179083726954-c2jcc0955730he68g9vk8s8f2bgi6l3k.apps.googleusercontent.com&approval_prompt=force" class="social-login--google"
+								><img width="129px" height="37px"
 								alt="google-login-button"
 								src="//bizweb.dktcdn.net/assets/admin/images/login/gp-btn.svg"></a>
 						</div>
