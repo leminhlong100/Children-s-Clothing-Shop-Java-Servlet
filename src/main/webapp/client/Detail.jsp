@@ -9,8 +9,8 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8" />
-<title>${detail.name}</title>
-<link rel="icon" type="image" href="../image/HaLoicon.png" />
+<title>${detail.nameProduct}</title>
+<link rel="icon" type="image" href="../images/HaLoicon.png" />
 
 <jsp:include page="./link/Link.jsp"></jsp:include>
 </head>
@@ -35,16 +35,16 @@
 								<div class="sk-product-slider-wrap">
 									<div class="product-img-box">
 										<div id="sync1" class="owl-carousel css_detail_owl">
-											<c:forEach begin="1" end="5" var="i">
+											<c:forEach var="o" items="${detail.imageProducts}">
 												<div class="item large-image">
-													<img src="${detail.image}" alt="">
+													<img src="./images/${o.getImage()}" alt="">
 												</div>
 											</c:forEach>
 										</div>
 										<div id="sync2" class="owl-carousel">
-											<c:forEach begin="1" end="5" var="i">
+											<c:forEach var="o" items="${detail.imageProducts}">
 												<div class="item">
-													<img src="${detail.image}" alt="">
+													<img src="./images/${o.getImage()}" alt="">
 												</div>
 											</c:forEach>
 										</div>
@@ -54,13 +54,13 @@
 							<div class="col-md-6 col-sm-12 col-xs-12">
 
 								<div class="sk-page-detail-title">
-									<h1 itemprop="name" class="pd-name">${detail.name}</h1>
+									<h1 itemprop="name" class="pd-name">${detail.nameProduct}</h1>
 								</div>
 								<div class="sk-price-box clearfix">
 									<div class="pull-left">
 
 										<span><fmt:message key="price" bundle="${lang}"></fmt:message>:</span>
-										<span class="price">${detail.price} VNĐ</span>
+										<span class="price">${detail.priceProduct} VNĐ</span>
 									</div>
 									<div class="stock pull-left">
 
@@ -78,20 +78,20 @@
 											<select id="product-select" name="variantId"
 												class="single-option-selector">
 
-												<option value="6383545">Size 214 / ${detail.price}₫</option>
+												<option value="6383545">Size 214 / ${detail.priceProduct}₫</option>
 
-												<option value="6383546">Size 224 / ${detail.price}₫</option>
+												<option value="6383546">Size 224 / ${detail.priceProduct}₫</option>
 
-												<option value="6383547">Size 234 / ${detail.price}₫</option>
+												<option value="6383547">Size 234 / ${detail.priceProduct}₫</option>
 
-												<option value="6383548">Size 244 / ${detail.price}₫</option>
+												<option value="6383548">Size 244 / ${detail.priceProduct}₫</option>
 
 											</select>
 										</div>
 									</div>
 									<div class="pd-form-bottom clearfix">
 										<c:url var="addToCart" value="AddToCartControl"></c:url>
-										<form action="${addToCart}?pid=${ detail.id}" method="post">
+										<form action="${addToCart}?pid=${ detail.idProduct}" method="post">
 											<input type="number" class="single-input-selector" value="1"
 												min="1" name="quantity">
 

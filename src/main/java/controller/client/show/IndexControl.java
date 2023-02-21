@@ -1,5 +1,5 @@
 package controller.client.show;
-   
+
 import java.io.IOException;
 import java.util.List;
 
@@ -15,10 +15,13 @@ import entity.Product;
 @WebServlet("/IndexControl")
 public class IndexControl extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		Boolean isDispatched = (Boolean) request.getAttribute("isDispatched");
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
+		if (isDispatched == null || !isDispatched) {
 		List<Product> list = IndexDAO.getSellProduct();
 		List<Product> listSellProductTwo = IndexDAO.getSellProductTwo();
 		List<Product> listOutstandingProduct = IndexDAO.getOutstandingProduct();
@@ -36,6 +39,7 @@ public class IndexControl extends HttpServlet {
 		request.setAttribute("listNewProductAccessory", listNewProductAccessory);
 		request.setAttribute("listgetSuperSellProduct", listgetSuperSellProduct);
 		request.getRequestDispatcher("Index.jsp").forward(request, response);
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

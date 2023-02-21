@@ -19,8 +19,9 @@ public class AccountDAO {
 			PreparedStatement ps = conn.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				list.add(new Customer(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
-						rs.getString(6), rs.getString(7)));
+				list.add(new Customer(rs.getInt("idCustomer"), rs.getString("userName"), rs.getString("password"),
+						rs.getString("Name"), rs.getString("Address"), rs.getString("Email"),
+						rs.getString("NumberPhone"), rs.getInt("id_role_member")));
 			}
 		} catch (Exception e) {
 		}
@@ -35,8 +36,9 @@ public class AccountDAO {
 			ps.setString(1, uid);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				return new Customer(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
-						rs.getString(6), rs.getString(7));
+				return new Customer(rs.getInt("idCustomer"), rs.getString("userName"), rs.getString("password"),
+						rs.getString("Name"), rs.getString("Address"), rs.getString("Email"),
+						rs.getString("NumberPhone"), rs.getInt("id_role_member"));
 			}
 		} catch (Exception e) {
 		}
@@ -55,23 +57,23 @@ public class AccountDAO {
 		}
 	}
 
-	public static void updateAccount(Customer account) {
-		String pass = EnCode.toSHA1(account.getPass());
-		String query = "update Account set [user] = ?, password =?,email=?,address=?,phoneNumber=? where uid =?;";
-		try {
-			Connection conn = DBContext.getConnection();
-			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setString(1, account.getUser());
-			ps.setString(2, pass);
-			ps.setString(3, account.getEmail());
-			ps.setString(4, account.getPhoneNumber());
-			ps.setString(5, account.getAddress());
-			ps.setInt(6, account.getId());
-			ps.executeUpdate();
-		} catch (Exception e) {
-
-		}
-	}
+//	public static void updateAccount(Customer account) {
+//		String pass = EnCode.toSHA1(account.getPass());
+//		String query = "update Account set [user] = ?, password =?,email=?,address=?,phoneNumber=? where uid =?;";
+//		try {
+//			Connection conn = DBContext.getConnection();
+//			PreparedStatement ps = conn.prepareStatement(query);
+//			ps.setString(1, account.getUser());
+//			ps.setString(2, pass);
+//			ps.setString(3, account.getEmail());
+//			ps.setString(4, account.getPhoneNumber());
+//			ps.setString(5, account.getAddress());
+//			ps.setInt(6, account.getId());
+//			ps.executeUpdate();
+//		} catch (Exception e) {
+//
+//		}
+//	}
 	public static void main(String[] args) {
 		System.out.println(getListAccount());
 	}

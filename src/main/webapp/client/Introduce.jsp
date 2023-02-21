@@ -8,7 +8,7 @@
 <html lang="vi">
 <head>
 <title><fmt:message key="Introduce" bundle="${lang}"></fmt:message></title>
-<link rel="icon" type="image" href="../image/HaLoicon.png" />
+<link rel="icon" type="image" href="../images/HaLoicon.png" />
 
 <jsp:include page="./link/Link.jsp"></jsp:include>
 </head>
@@ -56,7 +56,7 @@
 								</p>
 
 								<p style="text-align: center;">
-									<img src="../image/design.png" />
+									<img src="../images/design.png" />
 								</p>
 
 								<p>

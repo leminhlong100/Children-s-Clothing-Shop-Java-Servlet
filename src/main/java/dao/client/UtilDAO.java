@@ -69,7 +69,7 @@ public class UtilDAO {
 				while (rs.next()) {
 					return new Customer(rs.getInt("idCustomer"), rs.getString("userName"), rs.getString("password"),
 							rs.getString("Name"), rs.getString("Address"), rs.getString("Email"),
-							rs.getString("NumberPhone"), rs.getInt("NumberPhone"));
+							rs.getString("NumberPhone"), rs.getInt("id_role_member"));
 				}
 			}
 		} catch (Exception e) {

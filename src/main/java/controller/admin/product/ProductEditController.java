@@ -39,14 +39,14 @@ public class ProductEditController extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=UTF-8");
 		Product product = ProductAdminDAO.getProductByID(request.getParameter("product-id"));
-		product.setName(request.getParameter("product-name"));
-		product.setOlePrice(Double.parseDouble(request.getParameter("product-oldPrice")));
-		product.setCateId(Integer.parseInt(request.getParameter("product-cate")));
-		product.setPrice(Double.parseDouble(request.getParameter("product-price")));
-		product.setPresentProduct(Integer.parseInt(request.getParameter("present-Product")));
-		product.setDescription(request.getParameter("product-desc"));
-		product.setTitle(request.getParameter("product-title"));
-		product.setSumProduct(Integer.parseInt(request.getParameter("sum-Product")));
+//		product.setName(request.getParameter("product-name"));
+//		product.setOlePrice(Double.parseDouble(request.getParameter("product-oldPrice")));
+//		product.setCateId(Integer.parseInt(request.getParameter("product-cate")));
+//		product.setPrice(Double.parseDouble(request.getParameter("product-price")));
+//		product.setPresentProduct(Integer.parseInt(request.getParameter("present-Product")));
+//		product.setDescription(request.getParameter("product-desc"));
+//		product.setTitle(request.getParameter("product-title"));
+//		product.setSumProduct(Integer.parseInt(request.getParameter("sum-Product")));
 		try {
 			Part part = request.getPart("product-image");
 
@@ -57,11 +57,11 @@ public class ProductEditController extends HttpServlet {
 				Files.createDirectory(Path.of(realPath));
 			}
 			part.write(realPath + "/" + filename);
-			product.setImage("./image/" + filename);
+//			product.setImage("./image/" + filename);
 		} catch (Exception e) {
 			
 		}
-		ProductAdminDAO.updateProduct(product);
+//		ProductAdminDAO.updateProduct(product);
 		HttpSession session = request.getSession();
 		String sessionID = ";jsessionid="+session.getId();
 		response.sendRedirect(request.getContextPath() + "/ProductListController"+sessionID);

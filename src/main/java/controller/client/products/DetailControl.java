@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.client.ProductDAO;
+import dao.client.UtilDAO;
 import entity.Product;
 
 @WebServlet("/DetailControl")
@@ -19,7 +20,8 @@ public class DetailControl extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
 		String id = request.getParameter("pid");
-		Product p = ProductDAO.getProductByID(id);
+		Product p = UtilDAO.findProductById(Integer.parseInt(id));
+		System.out.println(p);
 		request.setAttribute("detail", p);
 		request.getRequestDispatcher("/client/Detail.jsp").forward(request, response);
 	}

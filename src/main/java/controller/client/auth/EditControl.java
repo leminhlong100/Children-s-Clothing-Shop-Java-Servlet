@@ -27,8 +27,8 @@ public class EditControl extends HttpServlet {
 				String name = request.getParameter("name");
 				String address = request.getParameter("address");
 				String phoneNumber = request.getParameter("phoneNumber");
-				AuthDAO.editAccountInfo(name, address, phoneNumber, String.valueOf(account.getId()));
-				account.setUser(name);
+//				AuthDAO.editAccountInfo(name, address, phoneNumber, String.valueOf(account.getId()));
+//				account.setUser(name);
 				account.setAddress(address);
 				account.setPhoneNumber(phoneNumber);
 				session.setAttribute("acc", account);
@@ -40,20 +40,20 @@ public class EditControl extends HttpServlet {
 				String renewpass = request.getParameter("renewpass");
 			
 				if (newpass.equals(renewpass)) {
-					Customer editAccount = AuthDAO.checkAccountOldPassword(String.valueOf(account.getId()), oldpass);
-					if(editAccount!=null) {
-						if(account.getEmail().equalsIgnoreCase(editAccount.getEmail())) {
-							AuthDAO.editAccountPassword(String.valueOf(account.getId()), renewpass);
-							request.setAttribute("suc", "Đổi mật khẩu thành công");
+//					Customer editAccount = AuthDAO.checkAccountOldPassword(String.valueOf(account.getId()), oldpass);
+//					if(editAccount!=null) {
+//						if(account.getEmail().equalsIgnoreCase(editAccount.getEmail())) {
+//							AuthDAO.editAccountPassword(String.valueOf(account.getId()), renewpass);
+//							request.setAttribute("suc", "Đổi mật khẩu thành công");
 						}
 					}else {
 						request.setAttribute("error", "Mật khẩu củ sai");
 					}
 				}
 			}
-		}
-		request.getRequestDispatcher("/client/Account.jsp").forward(request, response);
-	}
+//		}
+//		request.getRequestDispatcher("/client/Account.jsp").forward(request, response);
+//	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

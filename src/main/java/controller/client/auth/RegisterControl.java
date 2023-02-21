@@ -29,7 +29,7 @@ public class RegisterControl extends HttpServlet {
 		} else {
 			Customer a = AuthDAO.checkAccountExist(user, email);
 			if (a == null) {
-				AuthDAO.signup(user, repassWord, email, address, phone);
+//				AuthDAO.signup(user, repassWord, email, address, phone);
 				request.getRequestDispatcher("/client/Login.jsp").forward(request, response);
 			} else {
 				request.getRequestDispatcher("/client/Register.jsp").forward(request, response);

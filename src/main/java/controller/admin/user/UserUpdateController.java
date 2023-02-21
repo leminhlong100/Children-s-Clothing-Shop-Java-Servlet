@@ -45,9 +45,9 @@ public class UserUpdateController extends HttpServlet {
 		String user_phone = request.getParameter("user-phone");
 		String user_password = request.getParameter("user-password");
 		String user_address = request.getParameter("user-address");
-		Customer a = new Customer(Integer.parseInt(user_id), user_name, user_password, 0, user_email,
-				user_phone,user_address);
-		AccountDAO.updateAccount(a);
+//		Customer a = new Customer(Integer.parseInt(user_id), user_name, user_password, 0, user_email,
+//				user_phone,user_address);
+//		AccountDAO.updateAccount(a);
 		HttpSession session = request.getSession();
 		String sessionID = ";jsessionid="+session.getId();
 		response.sendRedirect(request.getContextPath() + "/UserListController"+sessionID);
