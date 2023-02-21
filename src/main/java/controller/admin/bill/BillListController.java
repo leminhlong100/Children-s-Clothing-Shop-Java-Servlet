@@ -15,7 +15,7 @@ public class BillListController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.setAttribute("bill", BillAdminDAO.getListBill());
+//		request.setAttribute("bill", BillAdminDAO.getListBill());
 		request.getRequestDispatcher("/admin/show-bill.jsp").forward(request, response);
 	}
 

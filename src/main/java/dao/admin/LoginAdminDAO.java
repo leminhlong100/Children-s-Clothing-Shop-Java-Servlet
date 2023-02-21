@@ -20,8 +20,9 @@ public class LoginAdminDAO {
 			ps.setString(2, pass);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				return new Customer(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
-						rs.getString(6), rs.getString(7));
+				return new Customer(rs.getInt("idCustomer"), rs.getString("userName"), rs.getString("password"),
+						rs.getString("Name"), rs.getString("Address"), rs.getString("Email"),
+						rs.getString("NumberPhone"), rs.getInt("id_role_member"));
 			}
 		} catch (Exception e) {
 		}
