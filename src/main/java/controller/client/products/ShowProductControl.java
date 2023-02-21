@@ -26,7 +26,7 @@ public class ShowProductControl extends HttpServlet {
 			String sort = "";
 			sort = request.getParameter("sort");
 			if (sort == null) {
-				sort = "pid-asc";
+				sort = "idProduct-asc";
 			}
 
 			int cid = 0;

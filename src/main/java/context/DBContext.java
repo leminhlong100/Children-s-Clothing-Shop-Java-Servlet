@@ -25,8 +25,8 @@ public class DBContext {
 		dataSource.setJdbcUrl(url);
 		dataSource.setUsername(userID);
 		dataSource.setPassword(password);
-		dataSource.setMaximumPoolSize(5000);
-		dataSource.setMinimumIdle(100);
+		dataSource.setMaximumPoolSize(150);
+		dataSource.setMinimumIdle(20);
 
 	}
 

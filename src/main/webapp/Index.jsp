@@ -9,7 +9,7 @@
 <html lang="vi">
 <head>
 <title>HaLo's Shop</title>
-<link rel="icon" type="image" href="./image/HaLoicon.png" />
+<link rel="icon" type="image" href="./images/HaLoicon.png" />
 <jsp:include page="./client/link/Link.jsp"></jsp:include>
 </head>
 <body>

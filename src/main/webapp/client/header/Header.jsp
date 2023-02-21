@@ -18,11 +18,11 @@
 					<c:url var="admin" value="admin/login.jsp"></c:url>
 					<c:url var="logout" value="/LogoutControl"></c:url>
 					<c:if test="${sessionScope.acc != null}">
-						<c:if test="${sessionScope.acc.isAdmin == 1}">
+						<c:if test="${sessionScope.acc.id_role_member == 1}">
 							<li><a href="${pageContext.request.contextPath}/${edit}"><i
 									class="fa fa-user"></i> <fmt:message key="Hello"
 										bundle="${lang}"></fmt:message>: Admin
-									${sessionScope.acc.user} </a></li>
+									${sessionScope.acc.name} </a></li>
 							<li><a href="${pageContext.request.contextPath}/${admin}">
 									<fmt:message key="Website.management" bundle="${lang}"></fmt:message>
 							</a></li>
@@ -31,10 +31,10 @@
 										bundle="${lang}"></fmt:message>
 							</a></li>
 						</c:if>
-						<c:if test="${sessionScope.acc.isAdmin == 0}">
+						<c:if test="${sessionScope.acc.id_role_member == 0}">
 							<li><a href="${pageContext.request.contextPath}/${edit}"><i
 									class="fa fa-user"></i> <fmt:message key="Hello"
-										bundle="${lang}"></fmt:message>: ${sessionScope.acc.user} </a></li>
+										bundle="${lang}"></fmt:message>: ${sessionScope.acc.name} </a></li>
 							<li><a href="${logout}"><i class="fa fa-sign-out"></i> <fmt:message
 										key="log.out" bundle="${lang}"></fmt:message> </a></li>
 						</c:if>
