@@ -8,7 +8,7 @@ response.setHeader("Pragma", "no-cache");
 response.setHeader("Expires", "0");
 
 if (session.getAttribute("acc") != null) {
-	
+
 	response.sendRedirect(request.getContextPath() + "/IndexControl");
 }
 %>
@@ -16,6 +16,7 @@ if (session.getAttribute("acc") != null) {
 <fmt:setBundle basename="web.lang.resource.app" var="lang" />
 <!DOCTYPE html>
 <html lang="vi">
+<script src='https://www.google.com/recaptcha/api.js'></script>
 
 <head>
 <title><fmt:message key="log.in.to.your.account"
@@ -61,8 +62,9 @@ if (session.getAttribute("acc") != null) {
 							<form accept-charset="utf-8"
 								action="${login}?${pageContext.request.queryString}"
 								id="customer_login" method="post">
-								<input name="FormType" type="hidden" value="customer_login" required />
-								<input name="utf8" type="hidden" value="true"  required/>
+								<input name="FormType" type="hidden" value="customer_login"
+									required /> <input name="utf8" type="hidden" value="true"
+									required />
 								<h3 class="form-heading">
 									<fmt:message key="log.in" bundle="${lang}"></fmt:message>
 								</h3>
@@ -90,6 +92,9 @@ if (session.getAttribute("acc") != null) {
 										<input type="password" value="" name="password" />
 									</div>
 								</div>
+								<div class="g-recaptcha"
+									data-sitekey="6LcEOp4kAAAAAKd6WPwrePNY_OkIHz9GO7hDSmcb" data></div>
+
 								<div class="row">
 									<p style="color: red;">${error}</p>
 								</div>
@@ -139,9 +144,10 @@ if (session.getAttribute("acc") != null) {
 								onclick="loginFacebook()"><img width="129px" height="37px"
 								alt="facebook-login-button"
 								src="//bizweb.dktcdn.net/assets/admin/images/login/fb-btn.svg"></a>
-							<a href="https://accounts.google.com/o/oauth2/auth?scope=email%20profile%20openid&redirect_uri=http://localhost:8080/TTLTW_2023/LoginGoogle&response_type=code&client_id=179083726954-c2jcc0955730he68g9vk8s8f2bgi6l3k.apps.googleusercontent.com&approval_prompt=force" class="social-login--google"
-								><img width="129px" height="37px"
-								alt="google-login-button"
+							<a
+								href="https://accounts.google.com/o/oauth2/auth?scope=email%20profile%20openid&redirect_uri=http://localhost:8080/TTLTW_2023/LoginGoogle&response_type=code&client_id=179083726954-c2jcc0955730he68g9vk8s8f2bgi6l3k.apps.googleusercontent.com&approval_prompt=force"
+								class="social-login--google"><img width="129px"
+								height="37px" alt="google-login-button"
 								src="//bizweb.dktcdn.net/assets/admin/images/login/gp-btn.svg"></a>
 						</div>
 					</div>
@@ -176,10 +182,10 @@ if (session.getAttribute("acc") != null) {
 								</button>
 							</form>
 							<div class="row">
-									<p style="color: red;">${errorForget}</p>
+								<p style="color: red;">${errorForget}</p>
 							</div>
 							<div class="row">
-									<p style="color: green;">${sucForget}</p>
+								<p style="color: green;">${sucForget}</p>
 							</div>
 						</div>
 					</div>

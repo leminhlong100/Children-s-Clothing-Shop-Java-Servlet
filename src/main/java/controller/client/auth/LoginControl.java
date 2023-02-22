@@ -10,34 +10,44 @@ import javax.servlet.http.HttpSession;
 
 import dao.client.AuthDAO;
 import entity.Customer;
+import util.VerifyRecaptchas;
 
 
 @WebServlet("/Login")
 public class LoginControl extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
 		String userName = request.getParameter("email");
 		String passWord = request.getParameter("password");
 		String pid = request.getParameter("pid");
-	
-		Customer a = AuthDAO.login(userName, passWord);
-		if(a==null) {
-			request.setAttribute("error", "Tài khoản hoặc mật khẩu sai");
-			request.getRequestDispatcher("/client/Login.jsp").forward(request, response);
-		}else {
-			HttpSession session = request.getSession();
-			session.setAttribute("acc", a);
-			session.setMaxInactiveInterval(1800);
-			if(pid==null) {
-//				request.getRequestDispatcher("IndexControl").forward(request, response);
-				response.sendRedirect("IndexControl");
-			}else {
-				response.sendRedirect("DetailControl?pid="+pid);
+		String gRecap = request.getParameter("g-recaptcha-response");
+		boolean verify = VerifyRecaptchas.verify(gRecap);
+		HttpSession session = request.getSession();
+		Customer account = AuthDAO.login(userName, passWord);
+		if (account == null) {
+			System.out.println(verify);
+			request.setAttribute("error", "Sai thông tin đăng nhập ");
+			request.getServletContext().getRequestDispatcher("/client/Login.jsp").forward(request, response);
+
+		} else {
+			if (!verify) {
+				request.setAttribute("error", "Sai Capcha ");
+				request.getRequestDispatcher("/client/Login.jsp").forward(request, response);
+			} else {
+				session.setAttribute("acc", account);
+				session.setMaxInactiveInterval(1800);
+				if (pid == null) {
+					request.getRequestDispatcher("IndexControl").forward(request, response);
+				} else {
+					response.sendRedirect("DetailControl?pid=" + pid);
+				}
+
 			}
-		
+
 		}
 	}
 
