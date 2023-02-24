@@ -38,7 +38,7 @@
 									</ol>
 								</div>
 								<div class="col-md-6 col-sm-6 head-hotline-wrap">
-									<div class="head-hotline-inner">
+									<div class="head-hotline-inner" >
 										<span>Hotline:</span><a href="tel:0364677119">0364677119</a>
 									</div>
 								</div>

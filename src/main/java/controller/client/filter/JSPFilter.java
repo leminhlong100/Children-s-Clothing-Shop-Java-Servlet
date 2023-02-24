@@ -26,7 +26,7 @@ public class JSPFilter extends HttpFilter implements Filter {
 
 		String requestURI = httpRequest.getRequestURI();
 
-		if (requestURI.endsWith(".jsp") && !requestURI.endsWith("/login.jsp")
+		if (requestURI.endsWith(".jsp") && !requestURI.endsWith("/Login.jsp")
 				&& !requestURI.endsWith("/Introduce.jsp")
 				&& !requestURI.endsWith("/Register.jsp")
 				&& !requestURI.endsWith("/Contact.jsp")
