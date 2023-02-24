@@ -20,6 +20,9 @@ public class Product implements Serializable {
 	private Category category; // phan loai
 	private List<ImageProduct> imageProducts;
 
+	public Product() {
+	}
+
 	public Product(int idProduct, String nameProduct, double priceProduct, String dateAdd, String description,
 			int quantity, List<View> views, List<Star> stars, List<Comment> comments, String productsale,
 			double discount, Supplier supplier, Producer producer, Category category,
