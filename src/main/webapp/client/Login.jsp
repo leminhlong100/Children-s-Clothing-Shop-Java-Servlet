@@ -111,39 +111,8 @@ if (session.getAttribute("acc") != null) {
 									</div>
 								</div>
 							</form>
-							<script>
-								function loginFacebook() {
-									var a = {
-										client_id : "947410958642584",
-										redirect_uri : "https://store.mysapo.net/account/facebook_account_callback",
-										state : JSON.stringify({
-											redirect_url : window.location.href
-										}),
-										scope : "email",
-										response_type : "code"
-									}, b = "https://www.facebook.com/v3.2/dialog/oauth"
-											+ encodeURIParams(a, !0);
-									window.location.href = b
-								}
-								function encodeURIParams(a, b) {
-									var c = [];
-									for ( var d in a)
-										if (a.hasOwnProperty(d)) {
-											var e = a[d];
-											null != e
-													&& c
-															.push(encodeURIComponent(d)
-																	+ "="
-																	+ encodeURIComponent(e))
-										}
-									return 0 == c.length ? "" : (b ? "?" : "")
-											+ c.join("&")
-								}
-							</script>
-							<a href="javascript:void(0)" class="social-login--facebook"
-								onclick="loginFacebook()"><img width="129px" height="37px"
-								alt="facebook-login-button"
-								src="//bizweb.dktcdn.net/assets/admin/images/login/fb-btn.svg"></a>
+							<fb:login-button scope="public_profile,email"
+								onlogin="checkLoginState();"></fb:login-button>
 							<a
 								href="https://accounts.google.com/o/oauth2/auth?scope=email%20profile%20openid&redirect_uri=http://localhost:8080/TTLTW_2023/LoginGoogle&response_type=code&client_id=179083726954-c2jcc0955730he68g9vk8s8f2bgi6l3k.apps.googleusercontent.com&approval_prompt=force"
 								class="social-login--google"><img width="129px"
@@ -195,6 +164,56 @@ if (session.getAttribute("acc") != null) {
 		<!-- End Main Content -->
 		<jsp:include page="./footer/Footer.jsp"></jsp:include>
 	</div>
+	<script>
+		function statusChangeCallback(response) {
+			console.log('statusChangeCallback');
+			console.log(response);
+			if (response.status === 'connected') {
+				testAPI();
+			} else {
+				document.getElementById('status').innerHTML = 'Please log '
+						+ 'into this app.';
+			}
+		}
+
+		function checkLoginState() {
+			FB.getLoginStatus(function(response) {
+				statusChangeCallback(response);
+			});
+			FB.api('/me', {
+				fields : 'name, email'
+			}, function(response) {
+				console.log(response);
+				window.location.href = 'LoginFacebook?action=Face&name='
+						+ response.name + '&email=' + response.email + '&id='
+						+ response.id;
+			});
+		}
+
+		window.fbAsyncInit = function() {
+			FB.init({
+				appId : '717812036479827',
+				cookie : true,
+				xfbml : true,
+				version : 'v16.0'
+			});
+
+			FB.getLoginStatus(function(response) {
+				statusChangeCallback(response);
+			});
+
+		};
+
+		(function(d, s, id) {
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id))
+				return;
+			js = d.createElement(s);
+			js.id = id;
+			js.src = "//connect.facebook.net/en_US/sdk.js";
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+	</script>
 </body>
 
 </html>
