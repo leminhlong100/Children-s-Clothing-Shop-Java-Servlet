@@ -32,7 +32,7 @@ public class AuthDAO {
 
 	public static Customer checkAccountExist(String user, String email) {
 
-		String query = "select idCustomer,userName,password,Name,Address,Email,NumberPhone,id_role_member from Account where userName = ? and Email = ?";
+		String query = "select idCustomer,userName,password,Name,Address,Email,NumberPhone,id_role_member from customer  where userName = ? and Email = ?";
 		try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(query);) {
 			ps.setString(1, user);
 			ps.setString(2, email);
