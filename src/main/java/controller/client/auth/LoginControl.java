@@ -35,16 +35,16 @@ public class LoginControl extends HttpServlet {
 		Customer account = AuthDAO.login(userName, passWord);
 		String ipAddress = request.getRemoteAddr();
 		Log log = new Log(Log.INFO, ipAddress, -1, this.name, "", 0);
-		if (account == null) {
+		if (account == null && verify) {
 			log.setSrc(this.name + " LOGIN FALSE");
 			log.setContent("LOGIN FALSE: USER - " + userName);
 			log.setLevel(Log.WARNING);
-			request.setAttribute("error", "Sai thông tin đăng nhập ");
+			request.setAttribute("error", "Tài khoản hoặc mật khẩu không hợp lệ ");
 			request.getServletContext().getRequestDispatcher("/client/Login.jsp").forward(request, response);
 
 		} else {
 			if (!verify) {
-				request.setAttribute("error", "Sai Capcha ");
+				request.setAttribute("error", "Chưa nhập Captcha ");
 				request.getRequestDispatcher("/client/Login.jsp").forward(request, response);
 			} else {
 				session.setAttribute("acc", account);
