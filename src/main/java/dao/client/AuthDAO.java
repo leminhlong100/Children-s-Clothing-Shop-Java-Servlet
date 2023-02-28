@@ -171,10 +171,55 @@ public class AuthDAO {
 		}
 		return null;
 	}
+	
+	public static void signinFacebook(String id, String name, String email) {
+		String cusQuery = "insert into customer (userName, password, Name, Email, isDelete, isActive) values (?,?,?,?,0,1)";
+		String fbQuery = "insert into login_facebook (idlogin_facebook, name, email, idCustomer) values (?,?,?,?)";
+		try (Connection conn = DBContext.getConnection();
+				PreparedStatement psCus = conn.prepareStatement(cusQuery, Statement.RETURN_GENERATED_KEYS);) {
+			psCus.setString(1, EnCode.toSHA1(EnCode.toSHA1(name)));
+			psCus.setString(2, EnCode.toSHA1(EnCode.toSHA1(email)));
+			psCus.setString(3, name);
+			psCus.setString(4, email);
+			psCus.executeUpdate();
+			ResultSet rs = psCus.getGeneratedKeys();
+			int cusId = 0;
+			if (rs.next()) {
+				cusId = rs.getInt(1);
+			}
+			PreparedStatement psFB = conn.prepareStatement(fbQuery);
+			psFB.setString(1, id);
+			psFB.setString(2, name);
+			psFB.setString(3, email);
+			psFB.setInt(4, cusId);
+			psFB.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	public static Customer loginFacebook(String id, String email) {
+		String query = "select c.idCustomer, c.userName, c.password, c.Name, c.Address, c.Email, c.NumberPhone, c.id_role_member, c.isDelete, c.isActive from customer c join login_facebook l on c.email = l.email where l.idlogin_facebook = ? and l.email = ?";
+		try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setString(1, id);
+			ps.setString(2, email);
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					return new Customer(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
+							rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8));
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	public static void main(String[] args){
-		signinGoogle("123", "hao", "adjksauiodh", "dujifhweui");
-		System.out.println(LoginGG("123", "adjksauiodh"));
+		signinFacebook("1khj123", "hao", "adjksauiodh");
+		System.out.println(loginFacebook("1khj123", "adjksauiodh"));
 	}
+
 
 }
