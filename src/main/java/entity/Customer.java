@@ -21,6 +21,17 @@ public class Customer {
 		this.phoneNumber = phoneNumber;
 		this.id_role_member = id_role_member;
 	}
+	
+	public Customer(String userName, String passWord, String name, String address, String email, String phoneNumber) {
+		super();
+		this.userName = userName;
+		this.passWord = passWord;
+		this.name = name;
+		this.address = address;
+		this.email = email;
+		this.phoneNumber = phoneNumber;
+	}
+
 	@Override
 	public String toString() {
 		return "Customer [idCustomer=" + idCustomer + ", userName=" + userName + ", passWord=" + passWord + ", name="

@@ -2,6 +2,8 @@ package dao.client;
 
 import java.sql.*;
 
+import org.jdbi.v3.core.Jdbi;
+
 import context.DBContext;
 import entity.Customer;
 import util.EnCode;
@@ -30,24 +32,18 @@ public class AuthDAO {
 
 	}
 
-	public static Customer checkAccountExist(String user, String email) {
-
-		String query = "select idCustomer,userName,password,Name,Address,Email,NumberPhone,id_role_member from customer  where userName = ? and Email = ?";
-		try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(query);) {
-			ps.setString(1, user);
-			ps.setString(2, email);
-			try (ResultSet rs = ps.executeQuery();) {
-				while (rs.next()) {
-					return new Customer(rs.getInt("idCustomer"), rs.getString("userName"), rs.getString("password"),
-							rs.getString("Name"), rs.getString("Address"), rs.getString("Email"),
-							rs.getString("NumberPhone"), rs.getInt("id_role_member"));
-				}
-			}
+	public static boolean checkAccountExist(String userName, String email) { // ton tai la true
+		Jdbi me = DBContext.me();
+		try {
+			return me.withHandle(handle -> handle
+					.createQuery("SELECT EXISTS(SELECT idCustomer FROM customer WHERE userName = ? OR Email = ?)")
+					.bind(0, userName).bind(1, email).mapTo(Boolean.class).one());
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		return null;
+			return true;
+		} 
 	}
+
 
 	public static void signup(String userName, String password, String name, String email, String address,
 			String NumberPhone) {
@@ -217,8 +213,7 @@ public class AuthDAO {
 	}
 
 	public static void main(String[] args){
-		signinFacebook("1khj123", "hao", "adjksauiodh");
-		System.out.println(loginFacebook("1khj123", "adjksauiodh"));
+		System.out.println(checkAccountExist("leminhl1ong@gmail.com", "leminhlongi1t@gmail.com"));
 	}
 
 
