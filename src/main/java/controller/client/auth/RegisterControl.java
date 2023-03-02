@@ -33,7 +33,6 @@ public class RegisterControl extends HttpServlet {
 		request.setAttribute("email", email);
 		request.setAttribute("address", address);
 		request.setAttribute("phone", phone);
-	
 
 		if (!verify) {
 			request.setAttribute("error", "Chưa nhập Capcha ");
@@ -44,12 +43,13 @@ public class RegisterControl extends HttpServlet {
 		} else if (!passWord.equals(repassWord)) {
 			request.setAttribute("error", "Mật khẩu không trùng khớp");
 			request.getRequestDispatcher("/client/Register.jsp").forward(request, response);
-		} else if (AuthDAO.checkAccountExist(user, email) != null ) {
+		} else if (AuthDAO.checkAccountExist(user, email) ==true ) {
 			request.setAttribute("userexit", "Người dùng đã tồn tại! ");
 			request.getRequestDispatcher("/client/Register.jsp").forward(request, response);
 		} else {
-		    AuthDAO.signup(user, repassWord, name, email, address, phone);
-		    request.getRequestDispatcher("/client/Login.jsp").forward(request, response);
+			Customer a = new Customer(user, passWord, name, address, email, phone);
+			request.setAttribute("cus", a);
+			request.getRequestDispatcher("/VerifyEmailControl").forward(request, response);
 		
 		}}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
