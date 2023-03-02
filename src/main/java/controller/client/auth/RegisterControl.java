@@ -28,26 +28,30 @@ public class RegisterControl extends HttpServlet {
 		String phone = request.getParameter("phoneNumber");
 		String gRecap = request.getParameter("g-recaptcha-response");
 		boolean verify = VerifyRecaptchas.verify(gRecap);
-		if (verify) {
-			if (!passWord.equals(repassWord)) {
-				response.sendRedirect("Register.jsp");
-			} else {
-				Customer a = AuthDAO.checkAccountExist(user,email);
-				if (a == null) {
-					AuthDAO.signup(user, repassWord,name, email, address, phone);
-					request.getRequestDispatcher("/client/Login.jsp").forward(request, response);
-				} else {
-					request.setAttribute("error", "Người dùng đã tồn tại");
-					request.getRequestDispatcher("/client/Register.jsp").forward(request, response);
-				}}
+		request.setAttribute("name", name);
+		request.setAttribute("user", user);
+		request.setAttribute("email", email);
+		request.setAttribute("address", address);
+		request.setAttribute("phone", phone);
+	
 
-		}else {
+		if (!verify) {
 			request.setAttribute("error", "Chưa nhập Capcha ");
 			request.getRequestDispatcher("/client/Register.jsp").forward(request, response);
-	}
-
-	}
-
+		}else if(!passWord.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$")) {
+			request.setAttribute("errorpass", "Mật khẩu ko đúng yêu cầu");
+			request.getRequestDispatcher("/client/Register.jsp").forward(request, response);
+		} else if (!passWord.equals(repassWord)) {
+			request.setAttribute("error", "Mật khẩu không trùng khớp");
+			request.getRequestDispatcher("/client/Register.jsp").forward(request, response);
+		} else if (AuthDAO.checkAccountExist(user, email) != null ) {
+			request.setAttribute("userexit", "Người dùng đã tồn tại! ");
+			request.getRequestDispatcher("/client/Register.jsp").forward(request, response);
+		} else {
+		    AuthDAO.signup(user, repassWord, name, email, address, phone);
+		    request.getRequestDispatcher("/client/Login.jsp").forward(request, response);
+		
+		}}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
