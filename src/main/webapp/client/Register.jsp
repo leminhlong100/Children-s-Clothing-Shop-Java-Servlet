@@ -75,115 +75,156 @@
 										</p>
 									</div>
 									<div class="col-md-11">
-										<input id="name" type="text" value="" name="user" />
+										<input id="user" type="text" value="${user}" name="user" />
 									</div>
+
+
+
+									<p style="color: red;" class="col-md-11" id="exituser">${userexit}</p>
 									<div class="row">
 										<p style="color: red; display: none;" class="col-md-11"
 											id="errorUser"></p>
 									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-1">
+										<p class="text-right">
+											<fmt:message key="name.register" bundle="${lang}"></fmt:message>
+										</p>
 									</div>
-									<div class="row">
-										<div class="col-md-1">
-											<p class="text-right">
-												<fmt:message key="name.register" bundle="${lang}"></fmt:message>
-											</p>
-										</div>
-										<div class="col-md-11">
-											<input id="name" type="text" value="" name="name" />
-										</div>
-										<div class="row">
-											<p style="color: red; display: none;" class="col-md-11"
-												id="errorName"></p>
-										</div>
-									</div>
-
-									<div class="row">
-										<div class="col-md-1">
-											<p class="text-right">Email*</p>
-										</div>
-										<div class="col-md-11">
-											<input id="email" type="text" value="" name="email" />
-										</div>
-										<div class="row">
-											<p style="color: red; display: none;" class="col-md-11"
-												id="errorEmail"></p>
-										</div>
-									</div>
-
-									<div class="row">
-										<div class="col-md-1">
-											<p class="text-right">
-												<fmt:message key="address.register" bundle="${lang}"></fmt:message>
-											</p>
-										</div>
-										<div class="col-md-11">
-											<input id="address" type="text" value="" name="address" />
-										</div>
-										<div class="row">
-											<p style="color: red; display: none;" class="col-md-11"
-												id="errorAddress"></p>
-										</div>
-									</div>
-
-									<div class="row">
-										<div class="col-md-1">
-											<p class="text-right">
-												<fmt:message key="phone.register" bundle="${lang}"></fmt:message>
-											</p>
-										</div>
-										<div class="col-md-11">
-											<input id="mobile" type="text" value="" name="phoneNumber"
-												required />
-										</div>
+									<div class="col-md-11">
+										<input id="name" type="text" value="${name}" name="name" />
 									</div>
 									<div class="row">
 										<p style="color: red; display: none;" class="col-md-11"
-											id="errorNumberPhone"></p>
+											id="errorName"></p>
 									</div>
+								</div>
 
-									<div class="row">
-										<div class="col-md-1">
-											<p class="text-right">
-												<fmt:message key="pass" bundle="${lang}"></fmt:message>
-											</p>
-										</div>
-										<div class="col-md-11">
-											<input id="pass" type="password" value="" name="password"
-												required />
-										</div>
-										<div class="row">
-											<p style="color: red; display: none;" class="col-md-11"
-												id="errorPass"></p>
-										</div>
+								<div class="row">
+									<div class="col-md-1">
+										<p class="text-right">Email*</p>
 									</div>
+									<div class="col-md-11">
+										<input id="email" type="text" value="${email}" name="email" />
+									</div>
+									<div class="row">
+										<p style="color: red; display: none;" class="col-md-11"
+											id="errorEmail"></p>
+									</div>
+								</div>
 
-									<div class="row">
-										<div class="col-md-1">
-											<p class="text-right">
-												<fmt:message key="repass" bundle="${lang}"></fmt:message>
-											</p>
-										</div>
-										<div class="col-md-11">
-											<input id="repass" type="password" value="" name="repassword"
-												required />
-										</div>
-										<div class="row">
-											<p style="color: red; display: none;" class="col-md-11"
-												id="errorRepass"></p>
-										</div>
+								<div class="row">
+									<div class="col-md-1">
+										<p class="text-right">
+											<fmt:message key="address.register" bundle="${lang}"></fmt:message>
+										</p>
 									</div>
-									<div class="g-recaptcha"
-										data-sitekey="6LcEOp4kAAAAAKd6WPwrePNY_OkIHz9GO7hDSmcb"></div>
+									<div class="col-md-11">
+										<input id="address" type="text" value="${address}"
+											name="address" />
+									</div>
+									<div class="row">
+										<p style="color: red; display: none;" class="col-md-11"
+											id="errorAddress"></p>
+									</div>
+								</div>
 
-									<p style="color: red;">${error}</p>
-									<div class="row">
-										<div class="col-md-1"></div>
-										<div class="col-md-11">
-											<button class="btn-cart" type="submit">
-												<fmt:message key="register" bundle="${lang}"></fmt:message>
-											</button>
-										</div>
+								<div class="row">
+									<div class="col-md-1">
+										<p class="text-right">
+											<fmt:message key="phone.register" bundle="${lang}"></fmt:message>
+										</p>
 									</div>
+									<div class="col-md-11">
+										<input id="mobile" type="text" value="${phone}"
+											name="phoneNumber" required />
+									</div>
+								</div>
+								<div class="row">
+									<p style="color: red; display: none;" class="col-md-11"
+										id="errorNumberPhone"></p>
+								</div>
+
+								<div class="row">
+									<div class="col-md-1">
+										<p class="text-right">
+											<fmt:message key="pass" bundle="${lang}"></fmt:message>
+										</p>
+									</div>
+									<div class="col-md-11">
+										<input id="pass" type="password" value="" name="password"
+											required />
+										<div style="width: 5%; height: 5%; float: left;">
+											<input type="checkbox" onclick="myFunction1()">
+										</div>
+										<fmt:message key="Show.password" bundle="${lang}"></fmt:message>
+									</div>
+									<div class="row">
+										<p style="color: red;" class="col-md-11" id="errorpass2">${errorpass}</p>
+									</div>
+									<div class="row">
+										<p style="color: red; display: none;" class="col-md-11"
+											id="errorPass"></p>
+									</div>
+									<script type="text/javascript">
+										function myFunction1() {
+											var x = document
+													.getElementById("pass");
+											if (x.type === "password") {
+												x.type = "text";
+											} else {
+												x.type = "password";
+											}
+										}
+									</script>
+								</div>
+
+								<div class="row">
+									<div class="col-md-1">
+										<p class="text-right">
+											<fmt:message key="repass" bundle="${lang}"></fmt:message>
+										</p>
+									</div>
+									<div class="col-md-11">
+										<input id="repass" type="password" value="" name="repassword"
+											required />
+										<div style="width: 5%; height: 5%; float: left;">
+											<input type="checkbox" onclick="myFunction2()">
+										</div>
+
+										<fmt:message key="Show.password" bundle="${lang}"></fmt:message>
+
+									</div>
+									<div class="row">
+										<p style="color: red; display: none;" class="col-md-11"
+											id="errorRepass"></p>
+
+									</div>
+									<script type="text/javascript">
+										function myFunction2() {
+											var x = document
+													.getElementById("repass");
+											if (x.type === "password") {
+												x.type = "text";
+											} else {
+												x.type = "password";
+											}
+										}
+									</script>
+								</div>
+								<div class="g-recaptcha"
+									data-sitekey="6LcEOp4kAAAAAKd6WPwrePNY_OkIHz9GO7hDSmcb"></div>
+
+								<p style="color: red;">${error}</p>
+								<div class="row">
+									<div class="col-md-1"></div>
+									<div class="col-md-11">
+										<button class="btn-cart" type="submit">
+											<fmt:message key="register" bundle="${lang}"></fmt:message>
+										</button>
+									</div>
+								</div>
 							</form>
 							<div class="row">
 								<p style="color: red;">${errorRe}</p>
@@ -227,35 +268,33 @@
 															"display", "block");
 												}
 											});
-							function() {
-								$('#user')
-										.blur(
-												function() {
-													var name = $('#user').val();
-													if (name != '') {
-														if (name.length < 5) {
-															$('#errorUser')
-																	.text(
-																			"<fmt:message key="Please.enter.your.user" bundle="${lang}"></fmt:message>");
-															$('#errorUser').css(
-																	"display",
-																	"block");
-														} else {
-															$('#errorUser')
-																	.text("");
-															$('#errorUser').css(
-																	"display",
-																	"none");
-														}
-													} else {
+							$('#user')
+									.blur(
+											function() {
+												var name = $('#user').val();
+												if (name != '') {
+													if (name.length < 5) {
 														$('#errorUser')
 																.text(
-																		"<fmt:message key="Please.enter.full.information" bundle="${lang}"></fmt:message>");
-														$('#errorUser').css(
-																"display", "block");
+																		"<fmt:message key="Please.enter.your.user" bundle="${lang}"></fmt:message>");
+														$('#errorUser').show();
+													} else {
+														$('#errorUser')
+																.text("");
+														$('#errorUser').hide();
 													}
-												});
-							
+												} else {
+
+													$('#errorUser')
+															.text(
+																	"<fmt:message key="Please.enter.full.information" bundle="${lang}"></fmt:message>");
+													$('#errorUser').show();
+
+													$('#exituser').text("");
+													$('#exituser').hide();
+												}
+											});
+
 							$('#email')
 									.blur(
 											function() {
@@ -345,7 +384,7 @@
 									.blur(
 											function() {
 												var pass = $('#pass').val();
-												var vnf_regex = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]{8})$/;
+												var vnf_regex = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$/;
 												if (pass != '') {
 													if (vnf_regex.test(pass) == false
 															&& pass.length < 5) {
@@ -355,12 +394,16 @@
 														$('#errorPass').css(
 																"display",
 																"block");
+
 													} else {
 														$('#errorPass')
 																.text("");
 														$('#errorPass').css(
 																"display",
 																"none");
+														$('#errorpass2').text(
+																"");
+														$('#errorpass2').hide();
 													}
 												} else {
 													$('#errorPass')
@@ -368,6 +411,7 @@
 																	"<fmt:message key="Please.enter.full.information" bundle="${lang}"></fmt:message>");
 													$('#errorPass').css(
 															"display", "block");
+
 												}
 											});
 							$('#repass')
