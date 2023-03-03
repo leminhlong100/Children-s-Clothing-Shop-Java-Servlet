@@ -175,20 +175,23 @@ if (session.getAttribute("acc") != null) {
 						+ 'into this app.';
 			}
 		}
-
+		
 		function checkLoginState() {
-			FB.getLoginStatus(function(response) {
-				statusChangeCallback(response);
+			FB.login(function(response) {
+			    if (response.status === 'connected') {
+			        // Lấy thông tin người dùng
+			        FB.api('/me?fields=id,name,email,picture.width(150).height(150)', function(response) {
+			            console.log(response);
+			            var userId = response.id;
+						var pictureUrl = 'https://graph.facebook.com/' + userId + '/picture?type=large';
+						window.location.href = 'LoginFacebook?action=Face&name='
+							+ response.name + '&email=' + response.email + '&id='
+							+ userId + '&picture=' +  pictureUrl;
+			            document.getElementById('user-avatar').setAttribute('src', pictureUrl);
+			        });
+			    }
 			});
-			FB.api('/me', {
-				fields : 'name, email'
-			}, function(response) {
-				console.log(response);
-				window.location.href = 'LoginFacebook?action=Face&name='
-						+ response.name + '&email=' + response.email + '&id='
-						+ response.id;
-			});
-		}
+		} 
 
 		window.fbAsyncInit = function() {
 			FB.init({
