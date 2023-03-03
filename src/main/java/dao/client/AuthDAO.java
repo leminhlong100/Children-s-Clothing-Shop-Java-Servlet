@@ -2,6 +2,8 @@ package dao.client;
 
 import java.sql.*;
 
+import org.jdbi.v3.core.Jdbi;
+
 import context.DBContext;
 import entity.Customer;
 import util.EnCode;
@@ -128,31 +130,27 @@ public class AuthDAO {
 		}
 	}
 
-	public static void signinGoogle(String id, String name, String email, String picture) {
-		String cusQuery = "insert into customer (userName, password, Name, Email, isDelete, isActive) values (?,?,?,?,0,1)";
-		String googleQuery = "insert into google_login (idgoogle_login, name, email, idCustomer, image) values (?,?,?,?,?)";
-		try (Connection conn = DBContext.getConnection();
-				PreparedStatement psCus = conn.prepareStatement(cusQuery, Statement.RETURN_GENERATED_KEYS);) {
-			psCus.setString(1, EnCode.toSHA1(EnCode.toSHA1(name)));
-			psCus.setString(2, EnCode.toSHA1(EnCode.toSHA1(email)));
-			psCus.setString(3, name);
-			psCus.setString(4, email);
-			psCus.executeUpdate();
-			ResultSet rs = psCus.getGeneratedKeys();
-			int cusId = 0;
-			if (rs.next()) {
-				cusId = rs.getInt(1);
+	public static void signinGoogle(String id, String name, String email, String picture){
+		String cusQuery = "insert into customer (userName, password, Name, Email, isDelete, isActive) values (:userName, :password, :Name, :Email, :isDelete, :isActive)";
+		String googleQuery = "insert into google_login (idgoogle_login, name, email, idCustomer, image) values (:idgoogle_login, :name, :email, :idCustomer, :image)";
+		Jdbi me = DBContext.me();
+		me.useHandle(handle -> {
+			try {
+				handle.begin();
+				int generatedId = handle.createUpdate(cusQuery).bind("userName", EnCode.toSHA1(EnCode.toSHA1(name)))
+						.bind("password", EnCode.toSHA1(EnCode.toSHA1(email))).bind("Name", name).bind("Email", email)
+						.bind("isDelete", 0).bind("isActive", 1).executeAndReturnGeneratedKeys("idCustomer")
+						.mapTo(int.class).one();
+
+				handle.createUpdate(googleQuery).bind("idgoogle_login", id).bind("name", name).bind("email", email)
+						.bind("idCustomer", generatedId).bind("image", picture).execute();
+				handle.commit();
+			} catch (Exception e) {
+				handle.rollback();
+				e.printStackTrace();
 			}
-			PreparedStatement psGG = conn.prepareStatement(googleQuery);
-			psGG.setString(1, id);
-			psGG.setString(2, name);
-			psGG.setString(3, email);
-			psGG.setInt(4, cusId);
-			psGG.setString(5, picture);
-			psGG.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		});
+
 	}
 
 	public static Customer LoginGG(String id, String email) {
@@ -171,32 +169,28 @@ public class AuthDAO {
 		}
 		return null;
 	}
-	
-	public static void signinFacebook(String id, String name, String email) {
-		String cusQuery = "insert into customer (userName, password, Name, Email, isDelete, isActive) values (?,?,?,?,0,1)";
-		String fbQuery = "insert into login_facebook (idlogin_facebook, name, email, idCustomer) values (?,?,?,?)";
-		try (Connection conn = DBContext.getConnection();
-				PreparedStatement psCus = conn.prepareStatement(cusQuery, Statement.RETURN_GENERATED_KEYS);) {
-			psCus.setString(1, EnCode.toSHA1(EnCode.toSHA1(name)));
-			psCus.setString(2, EnCode.toSHA1(EnCode.toSHA1(email)));
-			psCus.setString(3, name);
-			psCus.setString(4, email);
-			psCus.executeUpdate();
-			ResultSet rs = psCus.getGeneratedKeys();
-			int cusId = 0;
-			if (rs.next()) {
-				cusId = rs.getInt(1);
+
+	public static void signinFacebook(String id, String name, String email, String pic) {
+		String cusQuery = "insert into customer (userName, password, Name, Email, isDelete, isActive) values (:userName, :password, :Name, :Email, :isDelete, :isActive)";
+		String fbQuery = "insert into login_facebook (idlogin_facebook, name, email, idCustomer, image) values (:idlogin_facebook, :name, :email, :idCustomer, :image)";
+		Jdbi me = DBContext.me();
+		me.useHandle(handle -> {
+			try {
+				handle.begin();
+				int generatedId = handle.createUpdate(cusQuery).bind("userName", EnCode.toSHA1(EnCode.toSHA1(name)))
+						.bind("password", EnCode.toSHA1(EnCode.toSHA1(email))).bind("Name", name).bind("Email", email)
+						.bind("isDelete", 0).bind("isActive", 1).executeAndReturnGeneratedKeys("idCustomer")
+						.mapTo(int.class).one();
+
+				handle.createUpdate(fbQuery).bind("idlogin_facebook", id).bind("name", name).bind("email", email)
+						.bind("idCustomer", generatedId).bind("image", pic).execute();
+				handle.commit();
+			} catch (Exception e) {
+				handle.rollback();
+				e.getStackTrace();
 			}
-			PreparedStatement psFB = conn.prepareStatement(fbQuery);
-			psFB.setString(1, id);
-			psFB.setString(2, name);
-			psFB.setString(3, email);
-			psFB.setInt(4, cusId);
-			psFB.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
+		});
+
 	}
 
 	public static Customer loginFacebook(String id, String email) {
@@ -216,10 +210,9 @@ public class AuthDAO {
 		return null;
 	}
 
-	public static void main(String[] args){
-		signinFacebook("1khj123", "hao", "adjksauiodh");
-		System.out.println(loginFacebook("1khj123", "adjksauiodh"));
+	public static void main(String[] args) throws SQLException {
+//		signinGoogle("1k134152", "hao1", "adjksauiodh", "123cdsjf");
+		System.out.println(LoginGG("1k134152", "adjksauiodh"));
 	}
-
 
 }

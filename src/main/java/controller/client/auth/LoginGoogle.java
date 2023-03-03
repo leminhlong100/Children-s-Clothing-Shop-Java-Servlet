@@ -1,7 +1,6 @@
 package controller.client.auth;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -45,7 +44,6 @@ public class LoginGoogle extends HttpServlet {
 		CustomerGoogle user = getUserInfo(accessToken);
 		String pid = request.getParameter("pid");
 		HttpSession session = request.getSession();
-		
 		Customer cus = AuthDAO.LoginGG(user.getId(), user.getEmail());
 		if (cus == null) {
 			AuthDAO.signinGoogle(user.getId(), user.getName(), user.getEmail(), user.getPicture());

@@ -1,3 +1,6 @@
+/bean/
+/context/
 /controller/
 /dao/
-/context/
+/entity/
+/util/

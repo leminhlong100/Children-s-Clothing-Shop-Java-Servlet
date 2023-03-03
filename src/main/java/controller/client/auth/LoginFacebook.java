@@ -29,31 +29,34 @@ public class LoginFacebook extends HttpServlet {
 		String name = request.getParameter("name");
 		String email = request.getParameter("email");
 		String id = request.getParameter("id");
+		String pic = request.getParameter("picture");
+		System.out.println(pic);
 		String pid = request.getParameter("pid");
 		HttpSession session = request.getSession();
-
-		Customer cus = AuthDAO.loginFacebook(id, email);
-		if (action.equals("Face")) {
-			AuthDAO.signinFacebook(id, name, email);
+		if (!name.equalsIgnoreCase("undefined") && !name.isEmpty()) {
+			Customer cus = null;
 			cus = AuthDAO.loginFacebook(id, email);
-			System.out.println(name);
-			System.out.println(email);
-			System.out.println(id);
-			session.setAttribute("acc", cus);
-			session.setMaxInactiveInterval(1800);
-			if (pid == null) {
-				response.sendRedirect(request.getContextPath() + "/IndexControl");
+			if (action.equals("Face")) {
+				AuthDAO.signinFacebook(id, name, email, pic);
+				cus = AuthDAO.loginFacebook(id, email);
+				session.setAttribute("acc", cus);
+				session.setMaxInactiveInterval(1800);
+				if (pid == null) {
+					response.sendRedirect(request.getContextPath() + "/IndexControl");
+				} else {
+					response.sendRedirect("DetailControl?pid=" + pid);
+				}
 			} else {
-				response.sendRedirect("DetailControl?pid=" + pid);
+				session.setAttribute("acc", cus);
+				session.setMaxInactiveInterval(1800);
+				if (pid == null) {
+					response.sendRedirect(request.getContextPath() + "/client/Login.jsp");
+				} else {
+					response.sendRedirect("DetailControl?pid=" + pid);
+				}
 			}
 		} else {
-			session.setAttribute("acc", cus);
-			session.setMaxInactiveInterval(1800);
-			if (pid == null) {
-				response.sendRedirect(request.getContextPath() + "/IndexControl");
-			} else {
-				response.sendRedirect("DetailControl?pid=" + pid);
-			}
+			response.sendRedirect(request.getContextPath() + "/client/Login.jsp");
 		}
 	}
 
