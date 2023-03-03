@@ -45,6 +45,8 @@ public class RegisterControl extends HttpServlet {
 			request.getRequestDispatcher("/client/Register.jsp").forward(request, response);
 		} else if (AuthDAO.checkAccountExist(user, email) ==true ) {
 			request.setAttribute("userexit", "Người dùng đã tồn tại! ");
+			request.setAttribute("emailexit", "Email đã tồn tại!");
+
 			request.getRequestDispatcher("/client/Register.jsp").forward(request, response);
 		} else {
 			Customer a = new Customer(user, passWord, name, address, email, phone);
