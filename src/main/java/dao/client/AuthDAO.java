@@ -32,24 +32,18 @@ public class AuthDAO {
 
 	}
 
-	public static Customer checkAccountExist(String user, String email) {
-
-		String query = "select idCustomer,userName,password,Name,Address,Email,NumberPhone,id_role_member from customer  where userName = ? and Email = ?";
-		try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(query);) {
-			ps.setString(1, user);
-			ps.setString(2, email);
-			try (ResultSet rs = ps.executeQuery();) {
-				while (rs.next()) {
-					return new Customer(rs.getInt("idCustomer"), rs.getString("userName"), rs.getString("password"),
-							rs.getString("Name"), rs.getString("Address"), rs.getString("Email"),
-							rs.getString("NumberPhone"), rs.getInt("id_role_member"));
-				}
-			}
+	public static boolean checkAccountExist(String userName, String email) { // ton tai la true
+		Jdbi me = DBContext.me();
+		try {
+			return me.withHandle(handle -> handle
+					.createQuery("SELECT EXISTS(SELECT idCustomer FROM customer WHERE userName = ? OR Email = ?)")
+					.bind(0, userName).bind(1, email).mapTo(Boolean.class).one());
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		return null;
+			return true;
+		} 
 	}
+
 
 	public static void signup(String userName, String password, String name, String email, String address,
 			String NumberPhone) {
@@ -130,27 +124,31 @@ public class AuthDAO {
 		}
 	}
 
-	public static void signinGoogle(String id, String name, String email, String picture){
-		String cusQuery = "insert into customer (userName, password, Name, Email, isDelete, isActive) values (:userName, :password, :Name, :Email, :isDelete, :isActive)";
-		String googleQuery = "insert into google_login (idgoogle_login, name, email, idCustomer, image) values (:idgoogle_login, :name, :email, :idCustomer, :image)";
-		Jdbi me = DBContext.me();
-		me.useHandle(handle -> {
-			try {
-				handle.begin();
-				int generatedId = handle.createUpdate(cusQuery).bind("userName", EnCode.toSHA1(EnCode.toSHA1(name)))
-						.bind("password", EnCode.toSHA1(EnCode.toSHA1(email))).bind("Name", name).bind("Email", email)
-						.bind("isDelete", 0).bind("isActive", 1).executeAndReturnGeneratedKeys("idCustomer")
-						.mapTo(int.class).one();
-
-				handle.createUpdate(googleQuery).bind("idgoogle_login", id).bind("name", name).bind("email", email)
-						.bind("idCustomer", generatedId).bind("image", picture).execute();
-				handle.commit();
-			} catch (Exception e) {
-				handle.rollback();
-				e.printStackTrace();
+	public static void signinGoogle(String id, String name, String email, String picture) {
+		String cusQuery = "insert into customer (userName, password, Name, Email, isDelete, isActive) values (?,?,?,?,0,1)";
+		String googleQuery = "insert into google_login (idgoogle_login, name, email, idCustomer, image) values (?,?,?,?,?)";
+		try (Connection conn = DBContext.getConnection();
+				PreparedStatement psCus = conn.prepareStatement(cusQuery, Statement.RETURN_GENERATED_KEYS);) {
+			psCus.setString(1, EnCode.toSHA1(EnCode.toSHA1(name)));
+			psCus.setString(2, EnCode.toSHA1(EnCode.toSHA1(email)));
+			psCus.setString(3, name);
+			psCus.setString(4, email);
+			psCus.executeUpdate();
+			ResultSet rs = psCus.getGeneratedKeys();
+			int cusId = 0;
+			if (rs.next()) {
+				cusId = rs.getInt(1);
 			}
-		});
-
+			PreparedStatement psGG = conn.prepareStatement(googleQuery);
+			psGG.setString(1, id);
+			psGG.setString(2, name);
+			psGG.setString(3, email);
+			psGG.setInt(4, cusId);
+			psGG.setString(5, picture);
+			psGG.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static Customer LoginGG(String id, String email) {
@@ -169,28 +167,32 @@ public class AuthDAO {
 		}
 		return null;
 	}
-
-	public static void signinFacebook(String id, String name, String email, String pic) {
-		String cusQuery = "insert into customer (userName, password, Name, Email, isDelete, isActive) values (:userName, :password, :Name, :Email, :isDelete, :isActive)";
-		String fbQuery = "insert into login_facebook (idlogin_facebook, name, email, idCustomer, image) values (:idlogin_facebook, :name, :email, :idCustomer, :image)";
-		Jdbi me = DBContext.me();
-		me.useHandle(handle -> {
-			try {
-				handle.begin();
-				int generatedId = handle.createUpdate(cusQuery).bind("userName", EnCode.toSHA1(EnCode.toSHA1(name)))
-						.bind("password", EnCode.toSHA1(EnCode.toSHA1(email))).bind("Name", name).bind("Email", email)
-						.bind("isDelete", 0).bind("isActive", 1).executeAndReturnGeneratedKeys("idCustomer")
-						.mapTo(int.class).one();
-
-				handle.createUpdate(fbQuery).bind("idlogin_facebook", id).bind("name", name).bind("email", email)
-						.bind("idCustomer", generatedId).bind("image", pic).execute();
-				handle.commit();
-			} catch (Exception e) {
-				handle.rollback();
-				e.getStackTrace();
+	
+	public static void signinFacebook(String id, String name, String email) {
+		String cusQuery = "insert into customer (userName, password, Name, Email, isDelete, isActive) values (?,?,?,?,0,1)";
+		String fbQuery = "insert into login_facebook (idlogin_facebook, name, email, idCustomer) values (?,?,?,?)";
+		try (Connection conn = DBContext.getConnection();
+				PreparedStatement psCus = conn.prepareStatement(cusQuery, Statement.RETURN_GENERATED_KEYS);) {
+			psCus.setString(1, EnCode.toSHA1(EnCode.toSHA1(name)));
+			psCus.setString(2, EnCode.toSHA1(EnCode.toSHA1(email)));
+			psCus.setString(3, name);
+			psCus.setString(4, email);
+			psCus.executeUpdate();
+			ResultSet rs = psCus.getGeneratedKeys();
+			int cusId = 0;
+			if (rs.next()) {
+				cusId = rs.getInt(1);
 			}
-		});
-
+			PreparedStatement psFB = conn.prepareStatement(fbQuery);
+			psFB.setString(1, id);
+			psFB.setString(2, name);
+			psFB.setString(3, email);
+			psFB.setInt(4, cusId);
+			psFB.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	public static Customer loginFacebook(String id, String email) {
@@ -210,9 +212,9 @@ public class AuthDAO {
 		return null;
 	}
 
-	public static void main(String[] args) throws SQLException {
-//		signinGoogle("1k134152", "hao1", "adjksauiodh", "123cdsjf");
-		System.out.println(LoginGG("1k134152", "adjksauiodh"));
+	public static void main(String[] args){
+		System.out.println(checkAccountExist("leminhl1ong@gmail.com", "leminhlongi1t@gmail.com"));
 	}
+
 
 }
