@@ -13,25 +13,37 @@ public class AuthDAO {
 		super();
 	}
 
-	public static Customer login(String email, String pass) {
-		pass = EnCode.toSHA1(pass);
-		String query = "select idCustomer,userName,password,Name,Address,Email,NumberPhone,id_role_member from customer where userName = ? and password  = ?";
-		try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(query);) {
-			ps.setString(1, email);
-			ps.setString(2, pass);
-			try (ResultSet rs = ps.executeQuery();) {
-				while (rs.next()) {
-					return new Customer(rs.getInt("idCustomer"), rs.getString("userName"), rs.getString("password"),
-							rs.getString("Name"), rs.getString("Address"), rs.getString("Email"),
-							rs.getString("NumberPhone"), rs.getInt("id_role_member"));
-				}
-			}
-		} catch (Exception e) {
-		}
-		return null;
-
+//	public static Customer login(String email, String pass) {
+//		pass = EnCode.toSHA1(pass);
+//		String query = "select idCustomer,userName,password,Name,Address,Email,NumberPhone,id_role_member from customer where userName = ? and password  = ?";
+//		try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(query);) {
+//			ps.setString(1, email);
+//			ps.setString(2, pass);
+//			try (ResultSet rs = ps.executeQuery();) {
+//				while (rs.next()) {
+//					return new Customer(rs.getInt("idCustomer"), rs.getString("userName"), rs.getString("password"),
+//							rs.getString("Name"), rs.getString("Address"), rs.getString("Email"),
+//							rs.getString("NumberPhone"), rs.getInt("id_role_member"));
+//				}
+//			}
+//		} catch (Exception e) {
+//		}
+//		return null;
+//
+//	}
+//}
+public static Customer login (String email,String pass) {
+	Jdbi me = DBContext.me();
+	try {
+		 me.withHandle(handle -> handle.createQuery
+				("select idCustomer,userName,password,Name,Address,Email,NumberPhone,id_role_member from customer where userName = ? and password  = ? ")
+				.bind(0, email).bind(1, pass).mapToBean(Customer.class));
+	} catch (Exception e) {
+		// TODO: handle exception
+		e.printStackTrace();
 	}
-
+	return null;
+}
 	public static boolean checkAccountExist(String userName, String email) { // ton tai la true
 		Jdbi me = DBContext.me();
 		try {
@@ -48,18 +60,9 @@ public class AuthDAO {
 	public static void signup(String userName, String password, String name, String email, String address,
 			String NumberPhone) {
 		String query = "INSERT INTO customer (userName, password, Name, email, address,NumberPhone) VALUES (?, ?, ?, ?, ?, ?);";
-		password = EnCode.toSHA1(password);
-		try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(query);) {
-			ps.setString(1, userName);
-			ps.setString(2, password);
-			ps.setString(3, name);
-			ps.setString(4, email);
-			ps.setString(5, address);
-			ps.setString(6, NumberPhone);
-			ps.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		String passworken = EnCode.toSHA1(password);
+		Jdbi me = DBContext.me();
+		me.withHandle(handle -> handle.createUpdate(query).bind(0, userName).bind(1, passworken).bind(2, name).bind(3, email).bind(4, address).bind(5, NumberPhone).execute());
 	}
 
 	public static Customer checkAccountExistByid(String uid) {
