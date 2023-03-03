@@ -35,7 +35,7 @@ public class LoginGoogle extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		processRequest(request, response);
+			processRequest(request, response);
 	}
 
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -45,7 +45,6 @@ public class LoginGoogle extends HttpServlet {
 		CustomerGoogle user = getUserInfo(accessToken);
 		String pid = request.getParameter("pid");
 		HttpSession session = request.getSession();
-		
 		Customer cus = AuthDAO.LoginGG(user.getId(), user.getEmail());
 		if (cus == null) {
 			AuthDAO.signinGoogle(user.getId(), user.getName(), user.getEmail(), user.getPicture());
@@ -89,7 +88,7 @@ public class LoginGoogle extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		processRequest(request, response);
+			processRequest(request, response);
 	}
 
 }

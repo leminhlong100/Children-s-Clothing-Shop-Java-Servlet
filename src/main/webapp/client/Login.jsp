@@ -17,7 +17,8 @@ if (session.getAttribute("acc") != null) {
 <!DOCTYPE html>
 <html lang="vi">
 <script src='https://www.google.com/recaptcha/api.js'></script>
-
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 <head>
 <title><fmt:message key="log.in.to.your.account"
 		bundle="${lang}"></fmt:message></title>
@@ -82,16 +83,41 @@ if (session.getAttribute("acc") != null) {
 										<input type="text" value="" name="email" />
 									</div>
 								</div>
-								<div class="row">
+							<div class="row">
 									<div class="col-md-2">
 										<p>
 											<fmt:message key="password" bundle="${lang}"></fmt:message>
 										</p>
 									</div>
 									<div class="col-md-10">
-										<input type="password" value="" name="password" />
+										<input id="password" type="password" value="" name="password" />
+										<i class="fas fa-eye" id="toggle-password"
+											style="position: absolute; width: 20%; height: 33%; float: right; left: 80%; top: 21%;"></i>
+
+
 									</div>
 								</div>
+								<script type="text/javascript">
+									const passwordField = document
+											.querySelector("#password");
+									const togglePassword = document
+											.querySelector("#toggle-password");
+
+									togglePassword
+											.addEventListener(
+													"click",
+													function() {
+														const type = passwordField
+																.getAttribute("type") === "password" ? "text"
+																: "password";
+														passwordField
+																.setAttribute(
+																		"type",
+																		type);
+														this.classList
+																.toggle("hide-password");
+													});
+								</script>
 								<div class="g-recaptcha"
 									data-sitekey="6LcEOp4kAAAAAKd6WPwrePNY_OkIHz9GO7hDSmcb" data></div>
 
@@ -175,20 +201,23 @@ if (session.getAttribute("acc") != null) {
 						+ 'into this app.';
 			}
 		}
-
+		
 		function checkLoginState() {
-			FB.getLoginStatus(function(response) {
-				statusChangeCallback(response);
+			FB.login(function(response) {
+			    if (response.status === 'connected') {
+			        // Lấy thông tin người dùng
+			        FB.api('/me?fields=id,name,email,picture.width(150).height(150)', function(response) {
+			            console.log(response);
+			            var userId = response.id;
+						var pictureUrl = 'https://graph.facebook.com/' + userId + '/picture?type=large';
+						window.location.href = 'LoginFacebook?action=Face&name='
+							+ response.name + '&email=' + response.email + '&id='
+							+ userId + '&picture=' +  pictureUrl;
+			            document.getElementById('user-avatar').setAttribute('src', pictureUrl);
+			        });
+			    }
 			});
-			FB.api('/me', {
-				fields : 'name, email'
-			}, function(response) {
-				console.log(response);
-				window.location.href = 'LoginFacebook?action=Face&name='
-						+ response.name + '&email=' + response.email + '&id='
-						+ response.id;
-			});
-		}
+		} 
 
 		window.fbAsyncInit = function() {
 			FB.init({

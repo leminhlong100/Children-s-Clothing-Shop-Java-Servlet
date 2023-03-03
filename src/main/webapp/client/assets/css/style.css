@@ -995,3 +995,37 @@ input.checkbox-add {
 
 
 
+#toggle-password {
+	z-index: 99;
+	position: relative;
+	left: -25px;
+	cursor: pointer;
+}
+
+#toggle-password.show-password::before {
+	z-index: 99;
+	content: "\f06e";
+}
+
+#toggle-password.hide-password::before {
+	z-index: 99;
+	content: "\f070"; /* Icon ẩn mật khẩu */
+}
+
+
+#toggle-repassword {
+	z-index: 99;
+	position: relative;
+	left: -25px;
+	cursor: pointer;
+}
+
+#toggle-repassword.show-password::before {
+	z-index: 99;
+	content: "\f06e";
+}
+
+#toggle-repassword.hide-password::before {
+	z-index: 99;
+	content: "\f070"; /* Icon ẩn mật khẩu */
+}

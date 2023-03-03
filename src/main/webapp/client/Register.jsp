@@ -13,7 +13,8 @@
 		bundle="${lang}"></fmt:message></title>
 <link rel="icon" type="image" href="../image/HaLoicon.png" />
 <script src='https://www.google.com/recaptcha/api.js'></script>
-
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 <jsp:include page="./link/Link.jsp"></jsp:include>
 </head>
 
@@ -78,9 +79,10 @@
 										<input id="user" type="text" value="${user}" name="user" />
 									</div>
 
-
-
-									<p style="color: red;" class="col-md-11" id="exituser">${userexit}</p>
+									<div class="row">
+										<p style="color: red;" class="col-md-11" id="exituser">${userexit}</p>
+									</div>
+									
 									<div class="row">
 										<p style="color: red; display: none;" class="col-md-11"
 											id="errorUser"></p>
@@ -108,12 +110,16 @@
 									<div class="col-md-11">
 										<input id="email" type="text" value="${email}" name="email" />
 									</div>
+
+									<div class="col-md-11">
+										<p style="color: red;" class="col-md-11" id="erroremail">${emailexit}</p>
+									</div>
+
 									<div class="row">
 										<p style="color: red; display: none;" class="col-md-11"
 											id="errorEmail"></p>
 									</div>
 								</div>
-
 								<div class="row">
 									<div class="col-md-1">
 										<p class="text-right">
@@ -154,11 +160,10 @@
 									</div>
 									<div class="col-md-11">
 										<input id="pass" type="password" value="" name="password"
-											required />
-										<div style="width: 5%; height: 5%; float: left;">
-											<input type="checkbox" onclick="myFunction1()">
-										</div>
-										<fmt:message key="Show.password" bundle="${lang}"></fmt:message>
+											required style="position: relative;"><i
+											class="fas fa-eye" id="toggle-password"
+											style="position: absolute; width: 20%; height: 33%; float: right; left: 80%; top: 21%;"></i>
+
 									</div>
 									<div class="row">
 										<p style="color: red;" class="col-md-11" id="errorpass2">${errorpass}</p>
@@ -168,15 +173,25 @@
 											id="errorPass"></p>
 									</div>
 									<script type="text/javascript">
-										function myFunction1() {
-											var x = document
-													.getElementById("pass");
-											if (x.type === "password") {
-												x.type = "text";
-											} else {
-												x.type = "password";
-											}
-										}
+										const passwordField = document
+												.querySelector("#pass");
+										const togglePassword = document
+												.querySelector("#toggle-password");
+
+										togglePassword
+												.addEventListener(
+														"click",
+														function() {
+															const type = passwordField
+																	.getAttribute("type") === "password" ? "text"
+																	: "password";
+															passwordField
+																	.setAttribute(
+																			"type",
+																			type);
+															this.classList
+																	.toggle("hide-password");
+														});
 									</script>
 								</div>
 
@@ -188,12 +203,9 @@
 									</div>
 									<div class="col-md-11">
 										<input id="repass" type="password" value="" name="repassword"
-											required />
-										<div style="width: 5%; height: 5%; float: left;">
-											<input type="checkbox" onclick="myFunction2()">
-										</div>
-
-										<fmt:message key="Show.password" bundle="${lang}"></fmt:message>
+											required style="position: relative;"><i
+											class="fas fa-eye" id="toggle-repassword"
+											style="position: absolute; width: 20%; height: 33%; float: right; left: 80%; top: 21%;"></i>
 
 									</div>
 									<div class="row">
@@ -201,18 +213,29 @@
 											id="errorRepass"></p>
 
 									</div>
-									<script type="text/javascript">
-										function myFunction2() {
-											var x = document
-													.getElementById("repass");
-											if (x.type === "password") {
-												x.type = "text";
-											} else {
-												x.type = "password";
-											}
-										}
-									</script>
 								</div>
+								<script type="text/javascript">
+									const repasswordField = document
+											.querySelector("#repass");
+									const retogglePassword = document
+											.querySelector("#toggle-repassword");
+
+									retogglePassword
+											.addEventListener(
+													"click",
+													function() {
+														const type = repasswordField
+																.getAttribute("type") === "password" ? "text"
+																: "password";
+														repasswordField
+																.setAttribute(
+																		"type",
+																		type);
+														this.classList
+																.toggle("hide-password");
+													});
+								</script>
+
 								<div class="g-recaptcha"
 									data-sitekey="6LcEOp4kAAAAAKd6WPwrePNY_OkIHz9GO7hDSmcb"></div>
 
@@ -282,6 +305,9 @@
 														$('#errorUser')
 																.text("");
 														$('#errorUser').hide();
+														$('#exituser').text("");
+														$('#exituser').hide();
+
 													}
 												} else {
 
@@ -308,12 +334,16 @@
 														$('#errorEmail').css(
 																"display",
 																"block");
+														$('#erroremail').text("");
+														$('#erroremail').hide();
 													} else {
 														$('#errorEmail').text(
 																"");
 														$('#errorEmail').css(
 																"display",
 																"none");
+														$('#erroremail').text("");
+														$('#erroremail').hide();
 													}
 												} else {
 													$('#errorEmail')
@@ -321,6 +351,10 @@
 																	"<fmt:message key="Please.enter.full.information" bundle="${lang}"></fmt:message>");
 													$('#errorEmail').css(
 															"display", "block");
+
+													$('#erroremail').text("");
+													$('#erroremail').hide();
+
 												}
 											});
 							$('#address')
@@ -382,36 +416,32 @@
 											});
 							$('#pass')
 									.blur(
+
 											function() {
 												var pass = $('#pass').val();
-												var vnf_regex = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$/;
+												var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{};':"\\|,.<>\/?])[A-Za-z\d!@#$%^&*()_+[\]{};':"\\|,.<>\/?]{8,}$/;
 												if (pass != '') {
-													if (vnf_regex.test(pass) == false
-															&& pass.length < 5) {
+													if (regex.test(pass) == false
+															|| pass.length < 8) {
 														$('#errorPass')
 																.text(
 																		"<fmt:message key="Please.enter.a.password.with.at.least.1.uppercase.and.1.numeric.character" bundle="${lang}"></fmt:message>");
-														$('#errorPass').css(
-																"display",
-																"block");
+														$('#errorPass').show();
 
 													} else {
 														$('#errorPass')
 																.text("");
-														$('#errorPass').css(
-																"display",
-																"none");
-														$('#errorpass2').text(
-																"");
-														$('#errorpass2').hide();
+														$('#errorPass').hide();
+
 													}
 												} else {
 													$('#errorPass')
 															.text(
 																	"<fmt:message key="Please.enter.full.information" bundle="${lang}"></fmt:message>");
-													$('#errorPass').css(
-															"display", "block");
+													$('#errorPass').show();
 
+													$('#errorpass2').text("");
+													$('#errorpass2').hide();
 												}
 											});
 							$('#repass')
