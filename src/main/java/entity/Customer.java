@@ -21,18 +21,6 @@ public class Customer {
 	}
 
 	public Customer(int idCustomer, String userName, String passWord, String name, String address, String email,
-			String phoneNumber, int id_role_member) {
-		super();
-		this.idCustomer = idCustomer;
-		this.userName = userName;
-		this.passWord = passWord;
-		this.name = name;
-		this.address = address;
-		this.email = email;
-		this.phoneNumber = phoneNumber;
-		this.id_role_member = id_role_member;
-	}
-	public Customer(int idCustomer, String userName, String passWord, String name, String address, String email,
 			String phoneNumber, int id_role_member, boolean isDelete, boolean isActive, Date create_Date,
 			String image) {
 		super();
@@ -50,7 +38,18 @@ public class Customer {
 		this.image = image;
 	}
 
-	
+	public Customer(int idCustomer, String userName, String passWord, String name, String address, String email,
+			String phoneNumber, int id_role_member) {
+		super();
+		this.idCustomer = idCustomer;
+		this.userName = userName;
+		this.passWord = passWord;
+		this.name = name;
+		this.address = address;
+		this.email = email;
+		this.phoneNumber = phoneNumber;
+		this.id_role_member = id_role_member;
+	}
 
 	public Customer(String userName, String passWord, String name, String address, String email, String phoneNumber) {
 		super();
@@ -66,7 +65,8 @@ public class Customer {
 	public String toString() {
 		return "Customer [idCustomer=" + idCustomer + ", userName=" + userName + ", passWord=" + passWord + ", name="
 				+ name + ", address=" + address + ", email=" + email + ", phoneNumber=" + phoneNumber
-				+ ", id_role_member=" + id_role_member + "]";
+				+ ", id_role_member=" + id_role_member + ", isDelete=" + isDelete + ", isActive=" + isActive
+				+ ", create_Date=" + create_Date + ", image=" + image + "]";
 	}
 
 	public int getIdCustomer() {
