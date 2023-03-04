@@ -32,23 +32,26 @@ public class AuthDAO {
 //
 //	}
 //}
-public static Customer login (String email,String pass) {
+public static Customer login (String username,String pass) {
 	Jdbi me = DBContext.me();
+	String passworken = EnCode.toSHA1(pass);
+
 	try {
-		 me.withHandle(handle -> handle.createQuery
-				("select idCustomer,userName,password,Name,Address,Email,NumberPhone,id_role_member from customer where userName = ? and password  = ? ")
-				.bind(0, email).bind(1, pass).mapToBean(Customer.class));
+		return (Customer) me.withHandle(handle -> handle.createQuery
+				("select idCustomer,userName,password,Name,Address,Email,NumberPhone,id_role_member  from customers where userName = ? and password  = ? ")
+				.bind(0, username).bind(1, passworken).mapToBean(Customer.class).one());
 	} catch (Exception e) {
 		// TODO: handle exception
 		e.printStackTrace();
 	}
 	return null;
 }
+	
 	public static boolean checkAccountExist(String userName, String email) { // ton tai la true
 		Jdbi me = DBContext.me();
 		try {
 			return me.withHandle(handle -> handle
-					.createQuery("SELECT EXISTS(SELECT idCustomer FROM customer WHERE userName = ? OR Email = ?)")
+					.createQuery("SELECT EXISTS(SELECT idCustomer FROM customers WHERE userName = ? OR Email = ?)")
 					.bind(0, userName).bind(1, email).mapTo(Boolean.class).one());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -59,7 +62,7 @@ public static Customer login (String email,String pass) {
 
 	public static void signup(String userName, String password, String name, String email, String address,
 			String NumberPhone) {
-		String query = "INSERT INTO customer (userName, password, Name, email, address,NumberPhone) VALUES (?, ?, ?, ?, ?, ?);";
+		String query = "INSERT INTO customers (userName, password, Name, email, address,NumberPhone) VALUES (?, ?, ?, ?, ?, ?);";
 		String passworken = EnCode.toSHA1(password);
 		Jdbi me = DBContext.me();
 		me.withHandle(handle -> handle.createUpdate(query).bind(0, userName).bind(1, passworken).bind(2, name).bind(3, email).bind(4, address).bind(5, NumberPhone).execute());
@@ -216,7 +219,8 @@ public static Customer login (String email,String pass) {
 	}
 
 	public static void main(String[] args){
-		System.out.println(checkAccountExist("leminhl1ong@gmail.com", "leminhlongi1t@gmail.com"));
+//		System.out.println(checkAccountExist("leminhlongit", "leminhlongit@gmail.com"));
+		System.out.println(login("anosvoldigoad", "Loc@123456"));
 	}
 
 
