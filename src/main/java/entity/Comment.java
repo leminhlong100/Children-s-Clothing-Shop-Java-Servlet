@@ -4,42 +4,56 @@ public class Comment {
 	private int idComment;
 	private String content;
 	private Customer customer;
-	private Product product;
-	public Comment(int idComment, String content, Customer customer, Product product) {
+	private int idProduct;
+
+	public Comment(int idComment, String content, Customer customer, int idProduct) {
 		super();
 		this.idComment = idComment;
 		this.content = content;
 		this.customer = customer;
-		this.product = product;
+		this.idProduct = idProduct;
 	}
-	@Override
-	public String toString() {
-		return "Comment [idComment=" + idComment + ", content=" + content + ", customer=" + customer + ", product="
-				+ product + "]";
+
+	public Comment() {
+		super();
 	}
+
 	public int getIdComment() {
 		return idComment;
 	}
+
 	public void setIdComment(int idComment) {
 		this.idComment = idComment;
 	}
+
 	public String getContent() {
 		return content;
 	}
+
 	public void setContent(String content) {
 		this.content = content;
 	}
+
 	public Customer getCustomer() {
 		return customer;
 	}
+
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
-	public Product getProduct() {
-		return product;
+
+	public int getIdProduct() {
+		return idProduct;
 	}
-	public void setProduct(Product product) {
-		this.product = product;
+
+	public void setIdProduct(int idProduct) {
+		this.idProduct = idProduct;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Comment [idComment=" + idComment + ", content=" + content + ", customer=" + customer + ", idProduct="
+				+ idProduct + "]";
+	}
+
 }

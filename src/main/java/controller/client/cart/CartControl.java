@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import entity.Customer;
-import entity.Bill;
-import entity.BillDetail;
+import entity.Order;
+import entity.OrderDetail;
 
 @WebServlet("/CartControl")
 public class CartControl extends HttpServlet {

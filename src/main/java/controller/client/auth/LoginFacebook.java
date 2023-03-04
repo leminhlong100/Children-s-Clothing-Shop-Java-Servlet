@@ -38,7 +38,7 @@ public class LoginFacebook extends HttpServlet {
 			Customer cus = null;
 			cus = AuthDAO.loginFacebook(id, email);
 			if (action.equals("Face")) {
-				AuthDAO.signinFacebook(id, name, email, pic);
+				AuthDAO.signinFacebook(id, name, email);
 				cus = AuthDAO.loginFacebook(id, email);
 				session.setAttribute("acc", cus);
 				session.setMaxInactiveInterval(1800);

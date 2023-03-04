@@ -5,17 +5,17 @@ public class FacebookLogin {
 	private String name;
 	private String email;
 	private String numberPhone;
-	private String picture;
 	private Customer customer;
+	private String image;
 
-	public FacebookLogin(String idFacebookLogin, String name, String email, String numberPhone, String picture,
+	public FacebookLogin(String idFacebookLogin, String name, String email, String numberPhone, String image,
 			Customer customer) {
 		super();
 		this.idFacebookLogin = idFacebookLogin;
 		this.name = name;
 		this.email = email;
 		this.numberPhone = numberPhone;
-		this.picture = picture;
+		this.image = image;
 		this.customer = customer;
 	}
 
@@ -56,11 +56,11 @@ public class FacebookLogin {
 	}
 
 	public String getPicture() {
-		return picture;
+		return image;
 	}
 
 	public void setPicture(String picture) {
-		this.picture = picture;
+		this.image = picture;
 	}
 
 	public Customer getCustomer() {
@@ -74,7 +74,7 @@ public class FacebookLogin {
 	@Override
 	public String toString() {
 		return "FacebookLogin [idFacebookLogin=" + idFacebookLogin + ", name=" + name + ", email=" + email
-				+ ", numberPhone=" + numberPhone + ", picture=" + picture + ", customer=" + customer + "]";
+				+ ", numberPhone=" + numberPhone + ", picture=" + image + ", customer=" + customer + "]";
 	}
 
 }

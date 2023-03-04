@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import entity.Bill;
-import entity.BillDetail;
+import entity.Order;
+import entity.OrderDetail;
 
 @WebServlet("/BillProductListController")
 public class BillProductListController extends HttpServlet {

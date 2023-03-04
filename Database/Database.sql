@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `authorities`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `authorities` (
   `id_authorities` int NOT NULL AUTO_INCREMENT,
-  `name_authorities` varchar(45) DEFAULT NULL,
+  `name_authorities` varchar(45) NOT NULL,
   PRIMARY KEY (`id_authorities`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -39,66 +39,28 @@ LOCK TABLES `authorities` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `bill`
+-- Table structure for table `carts`
 --
 
-DROP TABLE IF EXISTS `bill`;
+DROP TABLE IF EXISTS `carts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `bill` (
-  `idBill` int NOT NULL AUTO_INCREMENT,
-  `dateAdd` datetime DEFAULT NULL,
-  `deliveryDate` datetime DEFAULT NULL,
-  `StatusPay` varchar(255) DEFAULT NULL,
-  `idCustomer` int NOT NULL,
-  `endow` varchar(255) DEFAULT NULL,
-  `status` varchar(255) DEFAULT NULL,
-  `address` varchar(999) DEFAULT NULL,
-  PRIMARY KEY (`idBill`),
-  KEY `F_Customer_Bill_idx` (`idCustomer`),
-  CONSTRAINT `F_Customer_Bill` FOREIGN KEY (`idCustomer`) REFERENCES `customer` (`idCustomer`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `bill`
---
-
-LOCK TABLES `bill` WRITE;
-/*!40000 ALTER TABLE `bill` DISABLE KEYS */;
-/*!40000 ALTER TABLE `bill` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `bill_detail`
---
-
-DROP TABLE IF EXISTS `bill_detail`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `bill_detail` (
-  `idBill_detail` int NOT NULL AUTO_INCREMENT,
-  `idBill` int NOT NULL,
+CREATE TABLE `carts` (
+  `idCarts` int NOT NULL AUTO_INCREMENT,
   `idProduct` int NOT NULL,
-  `nameProduct` varchar(999) DEFAULT NULL,
   `quantity` int DEFAULT NULL,
-  `price` double DEFAULT NULL,
-  `node` varchar(999) DEFAULT NULL,
-  PRIMARY KEY (`idBill_detail`),
-  KEY `F_DetailBill_Bill_idx` (`idBill`),
-  KEY `F_Product_DetailBill_idx` (`idProduct`),
-  CONSTRAINT `F_DetailBill_Bill` FOREIGN KEY (`idBill`) REFERENCES `bill` (`idBill`),
-  CONSTRAINT `F_Product_DetailBill` FOREIGN KEY (`idProduct`) REFERENCES `product` (`idProduct`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  `price_total` double DEFAULT NULL,
+  PRIMARY KEY (`idCarts`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `bill_detail`
+-- Dumping data for table `carts`
 --
 
-LOCK TABLES `bill_detail` WRITE;
-/*!40000 ALTER TABLE `bill_detail` DISABLE KEYS */;
-/*!40000 ALTER TABLE `bill_detail` ENABLE KEYS */;
+LOCK TABLES `carts` WRITE;
+/*!40000 ALTER TABLE `carts` DISABLE KEYS */;
+/*!40000 ALTER TABLE `carts` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -110,7 +72,7 @@ DROP TABLE IF EXISTS `categories`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `categories` (
   `idCategorie` int NOT NULL AUTO_INCREMENT,
-  `nameCategorie` varchar(999) DEFAULT NULL,
+  `nameCategorie` varchar(999) NOT NULL,
   PRIMARY KEY (`idCategorie`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -126,13 +88,39 @@ INSERT INTO `categories` VALUES (1,'Giày thể thao bé trai'),(2,'Set đồ b�
 UNLOCK TABLES;
 
 --
--- Table structure for table `comment`
+-- Table structure for table `colors_products`
 --
 
-DROP TABLE IF EXISTS `comment`;
+DROP TABLE IF EXISTS `colors_products`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `comment` (
+CREATE TABLE `colors_products` (
+  `idcolors_products` int NOT NULL AUTO_INCREMENT,
+  `idProduct` int NOT NULL,
+  `color` varchar(200) NOT NULL,
+  PRIMARY KEY (`idcolors_products`),
+  KEY `corlor_Product_f_idx` (`idProduct`),
+  CONSTRAINT `corlor_Product_f` FOREIGN KEY (`idProduct`) REFERENCES `products` (`idProduct`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `colors_products`
+--
+
+LOCK TABLES `colors_products` WRITE;
+/*!40000 ALTER TABLE `colors_products` DISABLE KEYS */;
+/*!40000 ALTER TABLE `colors_products` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `comments`
+--
+
+DROP TABLE IF EXISTS `comments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `comments` (
   `idcomment` int NOT NULL AUTO_INCREMENT,
   `Content` varchar(999) DEFAULT NULL,
   `idCustomer` int NOT NULL,
@@ -140,62 +128,64 @@ CREATE TABLE `comment` (
   PRIMARY KEY (`idcomment`),
   KEY `F_Customer_Comment_idx` (`idCustomer`),
   KEY `F_Product_Comment_idx` (`idProduct`),
-  CONSTRAINT `F_Customer_Comment` FOREIGN KEY (`idCustomer`) REFERENCES `customer` (`idCustomer`),
-  CONSTRAINT `F_Product_Comment` FOREIGN KEY (`idProduct`) REFERENCES `product` (`idProduct`)
+  CONSTRAINT `F_Customer_Comment` FOREIGN KEY (`idCustomer`) REFERENCES `customers` (`idCustomer`),
+  CONSTRAINT `F_Product_Comment` FOREIGN KEY (`idProduct`) REFERENCES `products` (`idProduct`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `comment`
+-- Dumping data for table `comments`
 --
 
-LOCK TABLES `comment` WRITE;
-/*!40000 ALTER TABLE `comment` DISABLE KEYS */;
-/*!40000 ALTER TABLE `comment` ENABLE KEYS */;
+LOCK TABLES `comments` WRITE;
+/*!40000 ALTER TABLE `comments` DISABLE KEYS */;
+/*!40000 ALTER TABLE `comments` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `customer`
+-- Table structure for table `customers`
 --
 
-DROP TABLE IF EXISTS `customer`;
+DROP TABLE IF EXISTS `customers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `customer` (
+CREATE TABLE `customers` (
   `idCustomer` int NOT NULL AUTO_INCREMENT,
-  `userName` varchar(255) DEFAULT NULL,
-  `password` varchar(999) DEFAULT NULL,
+  `userName` varchar(255) NOT NULL,
+  `password` varchar(999) NOT NULL,
   `Name` varchar(999) DEFAULT NULL,
   `Address` varchar(999) DEFAULT NULL,
-  `Email` varchar(255) DEFAULT NULL,
+  `Email` varchar(255) NOT NULL,
   `NumberPhone` varchar(10) NOT NULL,
   `id_role_member` int DEFAULT NULL,
   `isDelete` varchar(1) DEFAULT NULL,
-  `isActice` varchar(1) DEFAULT NULL,
+  `isActive` varchar(1) DEFAULT NULL,
+  `creare_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `image` varchar(999) DEFAULT NULL,
   PRIMARY KEY (`idCustomer`),
   KEY `F_rold_member_idx` (`id_role_member`),
-  CONSTRAINT `F_role_member` FOREIGN KEY (`id_role_member`) REFERENCES `role_nember` (`id_role_nember`)
+  CONSTRAINT `F_role_member` FOREIGN KEY (`id_role_member`) REFERENCES `role_nembers` (`id_role_nember`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `customer`
+-- Dumping data for table `customers`
 --
 
-LOCK TABLES `customer` WRITE;
-/*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-INSERT INTO `customer` VALUES (1,'leminhlongit','bdMaYE4qGgQwgql4mNjEmaihy6U=','Lê Minh Long','ấp Phú Thuận, xã Châu Hòa, huyện Giồng Trôm, tỉnh Bến Tre','leminhlongit@gmail.com','0374781483',NULL,'0','1');
-/*!40000 ALTER TABLE `customer` ENABLE KEYS */;
+LOCK TABLES `customers` WRITE;
+/*!40000 ALTER TABLE `customers` DISABLE KEYS */;
+INSERT INTO `customers` VALUES (1,'leminhlongit','bdMaYE4qGgQwgql4mNjEmaihy6U=','Lê Minh Long','ấp Phú Thuận, xã Châu Hòa, huyện Giồng Trôm, tỉnh Bến Tre','leminhlongit@gmail.com','0374781483',NULL,'0','1','2023-03-03 12:03:54',NULL);
+/*!40000 ALTER TABLE `customers` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `detail_import_coupon`
+-- Table structure for table `detail_import_coupons`
 --
 
-DROP TABLE IF EXISTS `detail_import_coupon`;
+DROP TABLE IF EXISTS `detail_import_coupons`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `detail_import_coupon` (
+CREATE TABLE `detail_import_coupons` (
   `idDetail_import_coupon` int NOT NULL AUTO_INCREMENT,
   `idImportCoupon` int NOT NULL,
   `idProduct` int DEFAULT NULL,
@@ -204,82 +194,116 @@ CREATE TABLE `detail_import_coupon` (
   PRIMARY KEY (`idDetail_import_coupon`),
   KEY `F_import_coupon_idx` (`idImportCoupon`),
   KEY `F_idProduct_idx` (`idProduct`),
-  CONSTRAINT `F_idProduct` FOREIGN KEY (`idProduct`) REFERENCES `product` (`idProduct`),
-  CONSTRAINT `F_import_coupon` FOREIGN KEY (`idImportCoupon`) REFERENCES `importcoupon` (`idImportCoupon`)
+  CONSTRAINT `F_idProduct` FOREIGN KEY (`idProduct`) REFERENCES `products` (`idProduct`),
+  CONSTRAINT `F_import_coupon` FOREIGN KEY (`idImportCoupon`) REFERENCES `import_coupons` (`idImportCoupon`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `detail_import_coupon`
+-- Dumping data for table `detail_import_coupons`
 --
 
-LOCK TABLES `detail_import_coupon` WRITE;
-/*!40000 ALTER TABLE `detail_import_coupon` DISABLE KEYS */;
-/*!40000 ALTER TABLE `detail_import_coupon` ENABLE KEYS */;
+LOCK TABLES `detail_import_coupons` WRITE;
+/*!40000 ALTER TABLE `detail_import_coupons` DISABLE KEYS */;
+/*!40000 ALTER TABLE `detail_import_coupons` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `google_login`
+-- Table structure for table `discounts`
 --
 
-DROP TABLE IF EXISTS `google_login`;
+DROP TABLE IF EXISTS `discounts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `google_login` (
+CREATE TABLE `discounts` (
+  `idDiscount` int NOT NULL AUTO_INCREMENT,
+  `name_discount` varchar(999) DEFAULT NULL,
+  `description` text,
+  `code_Discount` varchar(999) DEFAULT NULL,
+  `percentage` double DEFAULT NULL,
+  `Minimum_product_quantity` int DEFAULT NULL,
+  `start_time` datetime DEFAULT NULL,
+  `end_time` datetime DEFAULT NULL,
+  `Status` int DEFAULT NULL,
+  `idProduct` int DEFAULT NULL,
+  PRIMARY KEY (`idDiscount`),
+  KEY `f_dis_count_idx` (`idProduct`),
+  CONSTRAINT `f_dis_count` FOREIGN KEY (`idProduct`) REFERENCES `products` (`idProduct`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `discounts`
+--
+
+LOCK TABLES `discounts` WRITE;
+/*!40000 ALTER TABLE `discounts` DISABLE KEYS */;
+/*!40000 ALTER TABLE `discounts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `google_logins`
+--
+
+DROP TABLE IF EXISTS `google_logins`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `google_logins` (
   `idgoogle_login` int NOT NULL,
   `name` varchar(999) DEFAULT NULL,
   `email` varchar(999) DEFAULT NULL,
   `idCustomer` int NOT NULL,
+  `image` varchar(999) DEFAULT NULL,
   PRIMARY KEY (`idgoogle_login`),
   KEY `F_login_google_idx` (`idCustomer`),
-  CONSTRAINT `F_login_google` FOREIGN KEY (`idCustomer`) REFERENCES `customer` (`idCustomer`)
+  CONSTRAINT `F_login_google` FOREIGN KEY (`idCustomer`) REFERENCES `customers` (`idCustomer`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `google_login`
+-- Dumping data for table `google_logins`
 --
 
-LOCK TABLES `google_login` WRITE;
-/*!40000 ALTER TABLE `google_login` DISABLE KEYS */;
-/*!40000 ALTER TABLE `google_login` ENABLE KEYS */;
+LOCK TABLES `google_logins` WRITE;
+/*!40000 ALTER TABLE `google_logins` DISABLE KEYS */;
+/*!40000 ALTER TABLE `google_logins` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `imageproduct`
+-- Table structure for table `images_products`
 --
 
-DROP TABLE IF EXISTS `imageproduct`;
+DROP TABLE IF EXISTS `images_products`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `imageproduct` (
+CREATE TABLE `images_products` (
   `idImageProduct` int NOT NULL AUTO_INCREMENT,
   `idProduct` int NOT NULL,
   `Image` varchar(999) DEFAULT NULL,
   PRIMARY KEY (`idImageProduct`),
   KEY `F_idProduct_idx` (`idProduct`),
-  CONSTRAINT `F_imageProduct` FOREIGN KEY (`idProduct`) REFERENCES `product` (`idProduct`)
-) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8mb3;
+  CONSTRAINT `F_imageProduct` FOREIGN KEY (`idProduct`) REFERENCES `products` (`idProduct`)
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `imageproduct`
+-- Dumping data for table `images_products`
 --
 
-LOCK TABLES `imageproduct` WRITE;
-/*!40000 ALTER TABLE `imageproduct` DISABLE KEYS */;
-INSERT INTO `imageproduct` VALUES (1,1,'vaylienthankids1.webp'),(2,1,'vaylienthankids2.webp'),(3,1,'vaylienthankids3.webp'),(4,1,'vaylienthankids4.webp'),(5,1,'vaylienthankids5.webp'),(6,1,'vaylienthankids6.webp'),(7,2,'giaythethaobuocday_F56_1.webp'),(8,2,'giaythethaobuocday_F56_2.webp'),(9,2,'giaythethaobuocday_F56_3.webp'),(10,2,'giaythethaobuocday_F56_4.webp'),(11,2,'giaythethaobuocday_F56_5.webp'),(12,2,'giaythethaobuocday_F56_6.webp'),(13,3,'kinhthoitranggap_1.webp'),(14,3,'kinhthoitranggap_2.webp'),(15,3,'kinhthoitranggap_3.webp'),(16,3,'kinhthoitranggap_4.webp'),(17,3,'kinhthoitranggap_5.webp'),(18,4,'damdutiecchobe_XK2_1.webp'),(19,4,'damdutiecchobe_XK2_2.webp'),(20,4,'damdutiecchobe_XK2_3.webp'),(21,4,'damdutiecchobe_XK2_4.webp'),(22,4,'damdutiecchobe_XK2_5.webp'),(23,5,'vailienthankids_1.webp'),(24,5,'vailienthankids_2.webp'),(25,5,'vailienthankids_3.webp'),(26,5,'vailienthankids_4.webp'),(27,5,'vailienthankids_5.webp'),(28,6,'tattreem_1.webp'),(29,6,'tattreem_2.webp'),(30,6,'tattreem_3.webp'),(31,6,'tattreem_4.webp'),(32,6,'tattreem_5.webp'),(33,7,'vaylienthankids_02_1.webp'),(34,7,'vaylienthankids_02_2.webp'),(35,7,'vaylienthankids_02_3.webp'),(36,7,'vaylienthankids_02_4.webp'),(37,7,'vaylienthankids_02_5.webp'),(38,8,'somikesocthoitrangchobe_03_1.webp'),(39,8,'somikesocthoitrangchobe_03_2.webp'),(40,8,'somikesocthoitrangchobe_03_3.webp'),(41,8,'somikesocthoitrangchobe_03_4.webp'),(42,8,'somikesocthoitrangchobe_03_5.webp'),(43,9,'somikesocthoitrangchobe_03_2.webp'),(44,9,'somikesocthoitrangchobe_03_1.webp'),(45,9,'somikesocthoitrangchobe_03_4.webp'),(46,9,'somikesocthoitrangchobe_03_3.webp'),(47,9,'somikesocthoitrangchobe_03_5.webp'),(48,10,'somikesocthoitrangchobe_03_3.webp'),(49,10,'somikesocthoitrangchobe_03_4.webp'),(50,10,'somikesocthoitrangchobe_03_2.webp'),(51,10,'somikesocthoitrangchobe_03_5.webp'),(52,10,'somikesocthoitrangchobe_03_1.webp'),(53,11,'giaythethaobuocday_05_1.webp'),(54,11,'giaythethaobuocday_05_2.webp'),(55,11,'giaythethaobuocday_05_3.webp'),(56,11,'giaythethaobuocday_05_4.webp'),(57,11,'giaythethaobuocday_05_5.webp'),(58,11,'giaythethaobuocday_05_6.webp'),(59,12,'giaythethaobuocday_05_2.webp'),(60,12,'giaythethaobuocday_05_4.webp'),(61,12,'giaythethaobuocday_05_5.webp'),(62,12,'giaythethaobuocday_05_1.webp'),(63,12,'giaythethaobuocday_05_6.webp'),(64,13,'kinhthoitranggap_2.webp'),(65,13,'kinhthoitranggap_4.webp'),(66,13,'kinhthoitranggap_1.webp'),(67,13,'kinhthoitranggap_3.webp'),(68,13,'kinhthoitranggap_5.webp');
-/*!40000 ALTER TABLE `imageproduct` ENABLE KEYS */;
+LOCK TABLES `images_products` WRITE;
+/*!40000 ALTER TABLE `images_products` DISABLE KEYS */;
+INSERT INTO `images_products` VALUES (1,1,'vaylienthankids1.webp'),(2,1,'vaylienthankids2.webp'),(3,1,'vaylienthankids3.webp'),(4,1,'vaylienthankids4.webp'),(5,1,'vaylienthankids5.webp'),(6,1,'vaylienthankids6.webp'),(7,2,'giaythethaobuocday_F56_1.webp'),(8,2,'giaythethaobuocday_F56_2.webp'),(9,2,'giaythethaobuocday_F56_3.webp'),(10,2,'giaythethaobuocday_F56_4.webp'),(11,2,'giaythethaobuocday_F56_5.webp'),(12,2,'giaythethaobuocday_F56_6.webp'),(13,3,'kinhthoitranggap_1.webp'),(14,3,'kinhthoitranggap_2.webp'),(15,3,'kinhthoitranggap_3.webp'),(16,3,'kinhthoitranggap_4.webp'),(17,3,'kinhthoitranggap_5.webp'),(18,4,'damdutiecchobe_XK2_1.webp'),(19,4,'damdutiecchobe_XK2_2.webp'),(20,4,'damdutiecchobe_XK2_3.webp'),(21,4,'damdutiecchobe_XK2_4.webp'),(22,4,'damdutiecchobe_XK2_5.webp'),(23,5,'vailienthankids_1.webp'),(24,5,'vailienthankids_2.webp'),(25,5,'vailienthankids_3.webp'),(26,5,'vailienthankids_4.webp'),(27,5,'vailienthankids_5.webp'),(28,6,'tattreem_1.webp'),(29,6,'tattreem_2.webp'),(30,6,'tattreem_3.webp'),(31,6,'tattreem_4.webp'),(32,6,'tattreem_5.webp'),(33,7,'vaylienthankids_02_1.webp'),(34,7,'vaylienthankids_02_2.webp'),(35,7,'vaylienthankids_02_3.webp'),(36,7,'vaylienthankids_02_4.webp'),(37,7,'vaylienthankids_02_5.webp');
+/*!40000 ALTER TABLE `images_products` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `importcoupon`
+-- Table structure for table `import_coupons`
 --
 
-DROP TABLE IF EXISTS `importcoupon`;
+DROP TABLE IF EXISTS `import_coupons`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `importcoupon` (
+CREATE TABLE `import_coupons` (
   `idImportCoupon` int NOT NULL AUTO_INCREMENT,
   `idSupplier` int NOT NULL,
   `date` datetime DEFAULT NULL,
@@ -291,40 +315,162 @@ CREATE TABLE `importcoupon` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `importcoupon`
+-- Dumping data for table `import_coupons`
 --
 
-LOCK TABLES `importcoupon` WRITE;
-/*!40000 ALTER TABLE `importcoupon` DISABLE KEYS */;
-/*!40000 ALTER TABLE `importcoupon` ENABLE KEYS */;
+LOCK TABLES `import_coupons` WRITE;
+/*!40000 ALTER TABLE `import_coupons` DISABLE KEYS */;
+/*!40000 ALTER TABLE `import_coupons` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `login_facebook`
+-- Table structure for table `inventory`
 --
 
-DROP TABLE IF EXISTS `login_facebook`;
+DROP TABLE IF EXISTS `inventory`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `login_facebook` (
+CREATE TABLE `inventory` (
+  `idProduct` int NOT NULL,
+  `quantity` int NOT NULL,
+  `date_add` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_updated_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idProduct`),
+  CONSTRAINT `Finven_Product` FOREIGN KEY (`idProduct`) REFERENCES `products` (`idProduct`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `inventory`
+--
+
+LOCK TABLES `inventory` WRITE;
+/*!40000 ALTER TABLE `inventory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `inventory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `login_facebooks`
+--
+
+DROP TABLE IF EXISTS `login_facebooks`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `login_facebooks` (
   `idlogin_facebook` int NOT NULL,
   `name` varchar(999) DEFAULT NULL,
   `email` varchar(999) DEFAULT NULL,
   `numberphone` varchar(10) DEFAULT NULL,
-  `idCustomer` int DEFAULT NULL,
+  `idCustomer` int NOT NULL,
+  `image` varchar(999) DEFAULT NULL,
   PRIMARY KEY (`idlogin_facebook`),
   KEY `F_Custommer_idx` (`idCustomer`),
-  CONSTRAINT `F_Custommer` FOREIGN KEY (`idCustomer`) REFERENCES `customer` (`idCustomer`)
+  CONSTRAINT `F_Custommer` FOREIGN KEY (`idCustomer`) REFERENCES `customers` (`idCustomer`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `login_facebook`
+-- Dumping data for table `login_facebooks`
 --
 
-LOCK TABLES `login_facebook` WRITE;
-/*!40000 ALTER TABLE `login_facebook` DISABLE KEYS */;
-/*!40000 ALTER TABLE `login_facebook` ENABLE KEYS */;
+LOCK TABLES `login_facebooks` WRITE;
+/*!40000 ALTER TABLE `login_facebooks` DISABLE KEYS */;
+/*!40000 ALTER TABLE `login_facebooks` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `logs`
+--
+
+DROP TABLE IF EXISTS `logs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `logs` (
+  `idLog` int NOT NULL AUTO_INCREMENT,
+  `level` int DEFAULT NULL,
+  `ip` varchar(999) DEFAULT NULL,
+  `idCustomer` int DEFAULT NULL,
+  `src` varchar(999) DEFAULT NULL,
+  `content` varchar(999) DEFAULT NULL,
+  `create_add` datetime DEFAULT CURRENT_TIMESTAMP,
+  `status` int DEFAULT NULL,
+  PRIMARY KEY (`idLog`),
+  KEY `flog_idx` (`idCustomer`),
+  CONSTRAINT `flog_cus` FOREIGN KEY (`idCustomer`) REFERENCES `customers` (`idCustomer`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `logs`
+--
+
+LOCK TABLES `logs` WRITE;
+/*!40000 ALTER TABLE `logs` DISABLE KEYS */;
+INSERT INTO `logs` VALUES (1,0,'0:0:0:0:0:0:0:1',NULL,'Login','','2023-03-04 12:33:20',0),(2,2,'0:0:0:0:0:0:0:1',NULL,'Login LOGIN FALSE','LOGIN FALSE: USER - leminhlong@gmail.com','2023-03-04 12:33:24',0),(3,2,'0:0:0:0:0:0:0:1',NULL,'Login LOGIN FALSE','LOGIN FALSE: USER - leminhlong@gmail.com','2023-03-04 12:34:04',0);
+/*!40000 ALTER TABLE `logs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `orders`
+--
+
+DROP TABLE IF EXISTS `orders`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `orders` (
+  `id_orders` int NOT NULL AUTO_INCREMENT,
+  `dateAdd` datetime DEFAULT NULL,
+  `deliveryDate` datetime DEFAULT NULL,
+  `StatusPay` varchar(255) DEFAULT NULL,
+  `idCustomer` int NOT NULL,
+  `endow` varchar(255) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  `address` varchar(999) DEFAULT NULL,
+  PRIMARY KEY (`id_orders`),
+  KEY `F_Customer_Bill_idx` (`idCustomer`),
+  CONSTRAINT `F_Customer_Bill` FOREIGN KEY (`idCustomer`) REFERENCES `customers` (`idCustomer`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `orders`
+--
+
+LOCK TABLES `orders` WRITE;
+/*!40000 ALTER TABLE `orders` DISABLE KEYS */;
+/*!40000 ALTER TABLE `orders` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `orders_details`
+--
+
+DROP TABLE IF EXISTS `orders_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `orders_details` (
+  `idBill_detail` int NOT NULL AUTO_INCREMENT,
+  `idBill` int NOT NULL,
+  `idProduct` int NOT NULL,
+  `nameProduct` varchar(999) DEFAULT NULL,
+  `quantity` int DEFAULT NULL,
+  `price` double DEFAULT NULL,
+  `node` varchar(999) DEFAULT NULL,
+  PRIMARY KEY (`idBill_detail`),
+  KEY `F_DetailBill_Bill_idx` (`idBill`),
+  KEY `F_Product_DetailBill_idx` (`idProduct`),
+  CONSTRAINT `F_DetailBill_Bill` FOREIGN KEY (`idBill`) REFERENCES `orders` (`id_orders`),
+  CONSTRAINT `F_Product_DetailBill` FOREIGN KEY (`idProduct`) REFERENCES `products` (`idProduct`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `orders_details`
+--
+
+LOCK TABLES `orders_details` WRITE;
+/*!40000 ALTER TABLE `orders_details` DISABLE KEYS */;
+/*!40000 ALTER TABLE `orders_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -339,9 +485,9 @@ CREATE TABLE `producers` (
   `nameProducer` varchar(100) DEFAULT NULL,
   `Information` varchar(999) DEFAULT NULL,
   `Logo` varchar(999) DEFAULT NULL,
-  `isActice` varchar(1) DEFAULT NULL,
+  `isActive` varchar(1) DEFAULT NULL,
   PRIMARY KEY (`idProducer`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -350,51 +496,46 @@ CREATE TABLE `producers` (
 
 LOCK TABLES `producers` WRITE;
 /*!40000 ALTER TABLE `producers` DISABLE KEYS */;
-INSERT INTO `producers` VALUES (1,'Gap','https://www.gap.com/',NULL,'1'),(2,'Caters','https://www.carters.com/',NULL,'1'),(3,'UNIQLO','https://www.uniqlo.com',NULL,'1'),(4,'KID-GAP','https://www.gap.com/',NULL,'1');
+INSERT INTO `producers` VALUES (1,'Gap','https://www.gap.com/',NULL,'1'),(2,'Caters','https://www.carters.com/',NULL,'1'),(3,'UNIQLO','https://www.uniqlo.com',NULL,'1');
 /*!40000 ALTER TABLE `producers` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `product`
+-- Table structure for table `products`
 --
 
-DROP TABLE IF EXISTS `product`;
+DROP TABLE IF EXISTS `products`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `product` (
+CREATE TABLE `products` (
   `idProduct` int NOT NULL AUTO_INCREMENT,
   `nameProduct` varchar(999) DEFAULT NULL,
   `priceProduct` double DEFAULT NULL,
-  `dateAdd` datetime DEFAULT NULL,
   `description` varchar(999) DEFAULT NULL,
-  `quantity_available` int DEFAULT NULL,
-  `view` int DEFAULT NULL,
-  `Star` double DEFAULT NULL,
+  `id_view` int DEFAULT NULL,
+  `id_star` double DEFAULT NULL,
   `Comment` varchar(999) DEFAULT NULL,
-  `products_sold` int DEFAULT NULL,
-  `discount` double DEFAULT NULL,
-  `idSupplier` int NOT NULL,
+  `idSupplier` double NOT NULL,
   `idProducer` int NOT NULL,
   `idCategorie` int NOT NULL,
-  `isActice` varchar(1) DEFAULT NULL,
+  `isActive` varchar(1) DEFAULT NULL,
   PRIMARY KEY (`idProduct`),
   KEY `F_idSupplier_idx` (`idSupplier`),
   KEY `F_idProducer_idx` (`idProducer`),
   KEY `F_idCategorie_idx` (`idCategorie`),
   CONSTRAINT `F_idCategorie` FOREIGN KEY (`idCategorie`) REFERENCES `categories` (`idCategorie`),
-  CONSTRAINT `F_idProducer` FOREIGN KEY (`idProducer`) REFERENCES `producers` (`idProducer`),
-  CONSTRAINT `F_idSupplier` FOREIGN KEY (`idSupplier`) REFERENCES `suppliers` (`idSupplier`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb3;
+  CONSTRAINT `F_idProducer` FOREIGN KEY (`idProducer`) REFERENCES `producers` (`idProducer`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `product`
+-- Dumping data for table `products`
 --
 
-LOCK TABLES `product` WRITE;
-/*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (1,'Váy liên thân KIDS - KF5',250000,'2023-02-17 00:00:00','Sản phẩm có 4 size, phù hợp cho bé gái từ 8 tháng đến 2 tuổi. Thích hợp cho các bé mặc đi học, đi chơi hay dạo phố cùng gia đình... Là món quà đầy ý nghĩa mà mẹ dành cho bé',30,NULL,NULL,NULL,16,270000,1,1,11,'1'),(2,'Giày Thể Thao Buộc Dây - F56',450000,'2023-02-18 00:00:00','Giày thể thao buộc dây cho bé trai và bé gái G19 được thiết kế rất khỏe khoắn, đẹp mắt phù hợp với sự phát triển hệ vận động của trẻ.  Size: 21 - 25 Màu sắc: Xanh Chất liệu: Da PU mềm, đế dẻo chống trơn trượt tuyệt đối Xuất xứ: Việt Nam Mũi...',40,NULL,NULL,NULL,21,490000,1,1,5,'1'),(3,'Kính thời trang Gap',325000,'2023-02-18 00:00:00','Với thiết kế thời trang, sành điệu và cá tính kính mắt  của thương hiệu Caters sẽ giúp cho đôi mắt của bạn thêm cuốn hút và đẹp hơn mỗi ngày.Kính mắt Caters 8021 có gọng được làm từ nhựa cao cấp, chắc chắn, có độ cong vừa phải, ôm sát khuôn...',45,NULL,NULL,NULL,25,700000,2,2,13,'1'),(4,'Đầm dự tiệc cho bé - XK2',250000,'2023-02-18 00:00:00','Sản phẩm có 4 size, phù hợp cho bé gái từ 8 tháng đến 2 tuổi. Thích hợp cho các bé mặc đi học, đi chơi hay dạo phố cùng gia đình... Là món quà đầy ý nghĩa mà mẹ dành cho bé',70,NULL,NULL,NULL,37,275000,3,1,11,'1'),(5,'Váy liên thân KIDS',220000,'2023-02-18 00:00:00','Sản phẩm có 4 size, phù hợp cho bé gái từ 8 tháng đến 2 tuổi. Thích hợp cho các bé mặc đi học, đi chơi hay dạo phố cùng gia đình... Là món quà đầy ý nghĩa mà mẹ dành cho bé',45,NULL,NULL,NULL,28,275000,3,1,11,'1'),(6,'Tất trẻ em UNIQLO',25000,'2023-02-18 00:00:00','Thời trang tất hàn quốc xuất khẩu Beauty Chipi chuyên bán lẻ, bán sỉ, bán nguyên lô Thời trang xuất khẩu Việt Nam Xuất Khấu. mẫu mã hết sức đẹp và phù hợp với lứa tuổi cho bé từ 1-12 tuổi. Các sản phẩm của chúng tôi được lựa chọn...',45,NULL,NULL,NULL,43,30000,4,3,13,'1'),(7,'Váy liên thân KIDS-02',250000,'2023-02-18 00:00:00','Sản phẩm có 4 size, phù hợp cho bé gái từ 8 tháng đến 2 tuổi. Thích hợp cho các bé mặc đi học, đi chơi hay dạo phố cùng gia đình... Là món quà đầy ý nghĩa mà mẹ dành cho bé',100,NULL,NULL,NULL,2,275000,4,1,11,'1'),(8,'Sơ mi kẻ sọc thời trang cho bé-03',245000,'2023-02-19 00:00:00','Áo sơ mi cực đẹp cho bé trai diện kèm với quần jeans, quần kaki hay mix cùng áo pull là 3 gợi ý đơn giản mang lại phong cách thời trang sành điệu cho bé yêu đấy ạ! Chất vải Kate Oxford xuất dư cực đẹp, thoáng mát lên form...',50,NULL,NULL,NULL,26,280000,2,1,7,'1'),(9,'Sơ mi kẻ sọc thời trang cho bé - SK',245000,'2023-02-19 00:00:00','Áo sơ mi cực đẹp cho bé trai diện kèm với quần jeans, quần kaki hay mix cùng áo pull là 3 gợi ý đơn giản mang lại phong cách thời trang sành điệu cho bé yêu đấy ạ! Áo sơ mi kẻ sọc cho bé trai cá tính và khỏe...',70,NULL,NULL,NULL,38,280000,2,1,7,'1'),(10,'Sơ mi kẻ sọc thời trang cho bé',245000,'2023-02-19 00:00:00','- Kiểu áo sơ mi tay ngắn cực đẹp cho bé trai diện mùa thu đông vừa cá tính thời trang mà không lo bó sát, gây khó chịu cho bé. -Thiết kế tay ngắn, kể sọc mang đến cho bé trai vẻ ngoài cá tính và khỏe khoắn. - Áo với...',50,NULL,NULL,NULL,45,300000,3,1,7,'1'),(11,'Giày Thể Thao Buộc Dây -05',450000,'2023-02-19 00:00:00','Giày thể thao buộc dây cho bé trai và bé gái G19 được thiết kế rất khỏe khoắn, đẹp mắt phù hợp với sự phát triển hệ vận động của trẻ.  Size: 21 - 25 Màu sắc: Xanh Chất liệu: Da PU mềm, đế dẻo chống trơn trượt tuyệt đối Xuất xứ: Việt Nam Mũi...',200,NULL,NULL,NULL,120,500000,4,4,6,'1'),(12,'Giày Thể Thao Buộc Dây24',450000,'2023-02-18 00:00:00','Giày thể thao buộc dây cho bé trai và bé gái G19 được thiết kế rất khỏe khoắn, đẹp mắt phù hợp với sự phát triển hệ vận động của trẻ.  Size: 21 - 25 Màu sắc: Xanh Chất liệu: Da PU mềm, đế dẻo chống trơn trượt tuyệt đối Xuất xứ: Việt Nam Mũi...',70,NULL,NULL,NULL,40,500000,4,3,13,'1'),(13,'Kính thời trang Caters',325000,'2023-02-19 00:00:00','Với thiết kế thời trang, sành điệu và cá tính kính mắt  của thương hiệu Caters sẽ giúp cho đôi mắt của bạn thêm cuốn hút và đẹp hơn mỗi ngày',10,NULL,NULL,NULL,4,700000,2,2,13,'1');
-/*!40000 ALTER TABLE `product` ENABLE KEYS */;
+LOCK TABLES `products` WRITE;
+/*!40000 ALTER TABLE `products` DISABLE KEYS */;
+INSERT INTO `products` VALUES (1,'Váy liên thân KIDS - KF5',250000,'Sản phẩm có 4 size, phù hợp cho bé gái từ 8 tháng đến 2 tuổi. Thích hợp cho các bé mặc đi học, đi chơi hay dạo phố cùng gia đình... Là món quà đầy ý nghĩa mà mẹ dành cho bé',NULL,NULL,NULL,1,1,11,'1'),(2,'Giày Thể Thao Buộc Dây - F56',450000,'Giày thể thao buộc dây cho bé trai và bé gái G19 được thiết kế rất khỏe khoắn, đẹp mắt phù hợp với sự phát triển hệ vận động của trẻ.  Size: 21 - 25 Màu sắc: Xanh Chất liệu: Da PU mềm, đế dẻo chống trơn trượt tuyệt đối Xuất xứ: Việt Nam Mũi...',NULL,NULL,NULL,1,1,5,'1'),(3,'Kính thời trang Gap',325000,'Với thiết kế thời trang, sành điệu và cá tính kính mắt  của thương hiệu Caters sẽ giúp cho đôi mắt của bạn thêm cuốn hút và đẹp hơn mỗi ngày.Kính mắt Caters 8021 có gọng được làm từ nhựa cao cấp, chắc chắn, có độ cong vừa phải, ôm sát khuôn...',NULL,NULL,NULL,2,2,13,'1'),(4,'Đầm dự tiệc cho bé - XK2',250000,'Sản phẩm có 4 size, phù hợp cho bé gái từ 8 tháng đến 2 tuổi. Thích hợp cho các bé mặc đi học, đi chơi hay dạo phố cùng gia đình... Là món quà đầy ý nghĩa mà mẹ dành cho bé',NULL,NULL,NULL,3,1,11,'1'),(5,'Váy liên thân KIDS',220000,'Sản phẩm có 4 size, phù hợp cho bé gái từ 8 tháng đến 2 tuổi. Thích hợp cho các bé mặc đi học, đi chơi hay dạo phố cùng gia đình... Là món quà đầy ý nghĩa mà mẹ dành cho bé',NULL,NULL,NULL,3,1,11,'1'),(6,'Tất trẻ em UNIQLO',25000,'Thời trang tất hàn quốc xuất khẩu Beauty Chipi chuyên bán lẻ, bán sỉ, bán nguyên lô Thời trang xuất khẩu Việt Nam Xuất Khấu. mẫu mã hết sức đẹp và phù hợp với lứa tuổi cho bé từ 1-12 tuổi. Các sản phẩm của chúng tôi được lựa chọn...',NULL,NULL,NULL,4,3,13,'1'),(7,'Váy liên thân KIDS-02',250000,'Sản phẩm có 4 size, phù hợp cho bé gái từ 8 tháng đến 2 tuổi. Thích hợp cho các bé mặc đi học, đi chơi hay dạo phố cùng gia đình... Là món quà đầy ý nghĩa mà mẹ dành cho bé',NULL,NULL,NULL,4,1,11,'1');
+/*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -407,11 +548,11 @@ DROP TABLE IF EXISTS `role_member_authorities`;
 CREATE TABLE `role_member_authorities` (
   `idrole_member_authorities` int NOT NULL AUTO_INCREMENT,
   `id_authorities` int DEFAULT NULL,
-  `node` varchar(999) DEFAULT NULL,
+  `note` varchar(999) DEFAULT NULL,
   PRIMARY KEY (`idrole_member_authorities`),
   KEY `F_authorities_idx` (`id_authorities`),
   CONSTRAINT `F_authorities` FOREIGN KEY (`id_authorities`) REFERENCES `authorities` (`id_authorities`),
-  CONSTRAINT `F_rold_member_1` FOREIGN KEY (`idrole_member_authorities`) REFERENCES `role_nember` (`id_role_nember`)
+  CONSTRAINT `F_rold_member_1` FOREIGN KEY (`idrole_member_authorities`) REFERENCES `role_nembers` (`id_role_nember`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -425,13 +566,13 @@ LOCK TABLES `role_member_authorities` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `role_nember`
+-- Table structure for table `role_nembers`
 --
 
-DROP TABLE IF EXISTS `role_nember`;
+DROP TABLE IF EXISTS `role_nembers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `role_nember` (
+CREATE TABLE `role_nembers` (
   `id_role_nember` int NOT NULL AUTO_INCREMENT,
   `Name_role` varchar(255) DEFAULT NULL,
   `Endow` varchar(255) DEFAULT NULL,
@@ -440,41 +581,67 @@ CREATE TABLE `role_nember` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `role_nember`
+-- Dumping data for table `role_nembers`
 --
 
-LOCK TABLES `role_nember` WRITE;
-/*!40000 ALTER TABLE `role_nember` DISABLE KEYS */;
-/*!40000 ALTER TABLE `role_nember` ENABLE KEYS */;
+LOCK TABLES `role_nembers` WRITE;
+/*!40000 ALTER TABLE `role_nembers` DISABLE KEYS */;
+/*!40000 ALTER TABLE `role_nembers` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `star`
+-- Table structure for table `sizes_products`
 --
 
-DROP TABLE IF EXISTS `star`;
+DROP TABLE IF EXISTS `sizes_products`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `star` (
-  `idassess` int NOT NULL AUTO_INCREMENT,
-  `idCustomer` int NOT NULL,
+CREATE TABLE `sizes_products` (
+  `idsizes_products` int NOT NULL AUTO_INCREMENT,
   `idProduct` int NOT NULL,
-  `NumberStar` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`idassess`),
-  KEY `F_Customer_Star_idx` (`idCustomer`),
-  KEY `F_Product_Star_idx` (`idProduct`),
-  CONSTRAINT `F_Customer_Star` FOREIGN KEY (`idCustomer`) REFERENCES `customer` (`idCustomer`),
-  CONSTRAINT `F_Product_Star` FOREIGN KEY (`idProduct`) REFERENCES `product` (`idProduct`)
+  `size` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`idsizes_products`),
+  KEY `f_size_product_idx` (`idProduct`),
+  CONSTRAINT `f_size_product` FOREIGN KEY (`idProduct`) REFERENCES `products` (`idProduct`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `star`
+-- Dumping data for table `sizes_products`
 --
 
-LOCK TABLES `star` WRITE;
-/*!40000 ALTER TABLE `star` DISABLE KEYS */;
-/*!40000 ALTER TABLE `star` ENABLE KEYS */;
+LOCK TABLES `sizes_products` WRITE;
+/*!40000 ALTER TABLE `sizes_products` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sizes_products` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `stars`
+--
+
+DROP TABLE IF EXISTS `stars`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `stars` (
+  `idstar` int NOT NULL AUTO_INCREMENT,
+  `idCustomer` int NOT NULL,
+  `idProduct` int NOT NULL,
+  `NumberStar` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`idstar`),
+  KEY `F_Customer_Star_idx` (`idCustomer`),
+  KEY `F_Product_Star_idx` (`idProduct`),
+  CONSTRAINT `F_Customer_Star` FOREIGN KEY (`idCustomer`) REFERENCES `customers` (`idCustomer`),
+  CONSTRAINT `F_Product_Star` FOREIGN KEY (`idProduct`) REFERENCES `products` (`idProduct`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `stars`
+--
+
+LOCK TABLES `stars` WRITE;
+/*!40000 ALTER TABLE `stars` DISABLE KEYS */;
+/*!40000 ALTER TABLE `stars` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -505,13 +672,13 @@ INSERT INTO `suppliers` VALUES (1,'Yame','yameshop@gmail.com','0374781482','1'),
 UNLOCK TABLES;
 
 --
--- Table structure for table `view`
+-- Table structure for table `views`
 --
 
-DROP TABLE IF EXISTS `view`;
+DROP TABLE IF EXISTS `views`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `view` (
+CREATE TABLE `views` (
   `idView` int NOT NULL AUTO_INCREMENT,
   `idProduct` int NOT NULL,
   `Status` varchar(999) DEFAULT NULL,
@@ -519,18 +686,18 @@ CREATE TABLE `view` (
   PRIMARY KEY (`idView`),
   KEY `F_Custommer_View_idx` (`idCustomer`),
   KEY `F_Product_View_idx` (`idProduct`),
-  CONSTRAINT `F_Custommer_View` FOREIGN KEY (`idCustomer`) REFERENCES `customer` (`idCustomer`),
-  CONSTRAINT `F_Product_View` FOREIGN KEY (`idProduct`) REFERENCES `product` (`idProduct`)
+  CONSTRAINT `F_Custommer_View` FOREIGN KEY (`idCustomer`) REFERENCES `customers` (`idCustomer`),
+  CONSTRAINT `F_Product_View` FOREIGN KEY (`idProduct`) REFERENCES `products` (`idProduct`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `view`
+-- Dumping data for table `views`
 --
 
-LOCK TABLES `view` WRITE;
-/*!40000 ALTER TABLE `view` DISABLE KEYS */;
-/*!40000 ALTER TABLE `view` ENABLE KEYS */;
+LOCK TABLES `views` WRITE;
+/*!40000 ALTER TABLE `views` DISABLE KEYS */;
+/*!40000 ALTER TABLE `views` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -542,4 +709,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-02-19 17:14:46
+-- Dump completed on 2023-03-04 12:38:27

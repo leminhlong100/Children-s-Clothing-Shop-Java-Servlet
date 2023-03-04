@@ -74,20 +74,23 @@ if (session.getAttribute("acc") != null) {
 										</p>
 									</div>
 									<div class="col-md-10">
-										<input type="text" value="${custemp.email}" name=""
-											readonly="readonly" />
+										<input type="text" value="${custemp.email}" name="email"
+											id="gmailVa" readonly="readonly" />
 									</div>
 								</div>
 								<div class="row">
 									<div class="col-md-2">
 										<p>Mã xác thực</p>
 									</div>
+
 									<div class="col-md-10">
 										<input maxlength="8" type="text" value="" name="codeverify" />
 									</div>
-										<p style="color: red;">
-										${timeUp}
-									</p>
+									<div>
+										<button id="send-mail-btn" onclick="sendMail()">Gửi lại mã xác thực</button>
+									</div>
+									<div id="logInfoEmail"></div>
+									<p style="color: red;">${timeUp}</p>
 								</div>
 
 								<div class="g-recaptcha"
@@ -103,11 +106,10 @@ if (session.getAttribute("acc") != null) {
 									<div class="col-md-10">
 										<a class="btn-cart"
 											href="${pageContext.request.contextPath}/client/Register.jsp">Quay
-											lại</a>
+											lại trang đăng ký</a>
 									</div>
 								</div>
 							</form>
-
 						</div>
 					</div>
 				</div>
@@ -117,6 +119,55 @@ if (session.getAttribute("acc") != null) {
 		<!-- End Main Content -->
 		<jsp:include page="./footer/Footer.jsp"></jsp:include>
 	</div>
+	<script type="text/javascript">
+		function sendMail() {
+			var emailvalue = document.getElementById("gmailVa").value;
+			$.ajax({
+				url : "${pageContext.request.contextPath}/VerifyEmailControl",
+				type : "get",
+				data : {
+					email : emailvalue,
+				},
+				success : function(data) {
+					$("#logInfoEmail").html(data);
+
+				},
+				error : function(data) {
+				}
+			});
+		}
+		var sendMailBtn = document.getElementById("send-mail-btn");
+		var totalSeconds;
+
+		window.onload = function() {
+			// Bắt đầu đếm ngay khi trang được load
+			totalSeconds = 300; // Thời gian tổng cộng là 5 phút 00 giây
+			countdown(totalSeconds);
+		}
+
+		sendMailBtn.addEventListener("click", function() {
+			sendMailBtn.disabled = true;
+			totalSeconds = 300; // Thời gian tổng cộng là 5 phút 00 giây
+			countdown(totalSeconds);
+		});
+
+		function countdown(time) {
+			var minutes = Math.floor(time / 60);
+			var seconds = time % 60;
+
+			sendMailBtn.innerHTML = "Gửi lại mã xác thực " + minutes + " phút " + seconds
+					+ " giây";
+
+			if (time > 0) {
+				setTimeout(function() {
+					countdown(time - 1);
+				}, 1000);
+			} else {
+				sendMailBtn.innerHTML = "Send Mail";
+				sendMailBtn.disabled = false;
+			}
+		}
+	</script>
 </body>
 
 </html>

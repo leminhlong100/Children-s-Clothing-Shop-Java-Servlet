@@ -5,17 +5,24 @@ public class Producer { // nha san suat
 	private String nameProducer;
 	private String information;
 	private String logo;
-	public Producer(int idProducer, String nameProducer, String information, String logo) {
+	private String isActive;
+	public Producer(int idProducer, String nameProducer, String information, String logo, String isActive) {
 		super();
 		this.idProducer = idProducer;
 		this.nameProducer = nameProducer;
 		this.information = information;
 		this.logo = logo;
+		this.isActive = isActive;
 	}
+	
+	public Producer() {
+		super();
+	}
+
 	@Override
 	public String toString() {
 		return "Producer [idProducer=" + idProducer + ", nameProducer=" + nameProducer + ", information=" + information
-				+ ", logo=" + logo + "]";
+				+ ", logo=" + logo + ", isActive=" + isActive + "]";
 	}
 	public int getIdProducer() {
 		return idProducer;
@@ -40,6 +47,12 @@ public class Producer { // nha san suat
 	}
 	public void setLogo(String logo) {
 		this.logo = logo;
+	}
+	public String getIsActive() {
+		return isActive;
+	}
+	public void setIsActive(String isActive) {
+		this.isActive = isActive;
 	}
 	
 }

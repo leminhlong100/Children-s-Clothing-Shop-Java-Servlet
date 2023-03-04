@@ -2,19 +2,22 @@ package entity;
 
 public class View {
 	private int idView;
-	private Product product;
+	private int idProduct;
 	private String status;
 	private Customer customer;
-	public View(int idView, Product product, String status, Customer customer) {
+	public View(int idView, int idProduct, String status, Customer customer) {
 		super();
 		this.idView = idView;
-		this.product = product;
+		this.idProduct = idProduct;
 		this.status = status;
 		this.customer = customer;
 	}
+	public View() {
+		super();
+	}
 	@Override
 	public String toString() {
-		return "View [idView=" + idView + ", product=" + product + ", status=" + status + ", customer=" + customer
+		return "View [idView=" + idView + ", idProduct=" + idProduct + ", status=" + status + ", customer=" + customer
 				+ "]";
 	}
 	public int getIdView() {
@@ -23,11 +26,11 @@ public class View {
 	public void setIdView(int idView) {
 		this.idView = idView;
 	}
-	public Product getProduct() {
-		return product;
+	public int getIdProduct() {
+		return idProduct;
 	}
-	public void setProduct(Product product) {
-		this.product = product;
+	public void setIdProduct(int idProduct) {
+		this.idProduct = idProduct;
 	}
 	public String getStatus() {
 		return status;
@@ -41,4 +44,5 @@ public class View {
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
+	
 }

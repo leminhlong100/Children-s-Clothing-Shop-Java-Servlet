@@ -64,7 +64,7 @@ public class SendEmail {
 		MimeMessage msg = new MimeMessage(session);
 		try {
 			msg.addHeader("Content-type", "text/HTML; charset=UTF-8");
-			msg.setFrom(from);
+			msg.setFrom(new InternetAddress(from, "Kid Store"));
 			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(addressTo, false));
 			msg.setSubject("HaLo's Shop");
 			msg.setSentDate(new Date());

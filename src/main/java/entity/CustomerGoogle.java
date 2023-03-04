@@ -5,19 +5,21 @@ public class CustomerGoogle {
 	private String name;
 	private String email;
 	private boolean varified_email;
-	private String picture;
+	private String image;
 
-	public CustomerGoogle(String id, String name, String email, boolean varified_email, String picture) {
+	public CustomerGoogle(String id, String name, String email, boolean varified_email, String image) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.varified_email = varified_email;
-		this.picture = picture;
+		this.image = image;
 	}
 
-	public CustomerGoogle() {
-		super();
+	@Override
+	public String toString() {
+		return "CustomerGoogle [id=" + id + ", name=" + name + ", email=" + email + ", varified_email=" + varified_email
+				+ ", image=" + image + "]";
 	}
 
 	public String getId() {
@@ -52,18 +54,12 @@ public class CustomerGoogle {
 		this.varified_email = varified_email;
 	}
 
-	public String getPicture() {
-		return picture;
+	public String getImage() {
+		return image;
 	}
 
-	public void setPicture(String picture) {
-		this.picture = picture;
-	}
-
-	@Override
-	public String toString() {
-		return "CustomerGoogle [id=" + id + ", name=" + name + ", email=" + email + ", varified_email=" + varified_email
-				+ ", picture=" + picture + "]";
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 }
