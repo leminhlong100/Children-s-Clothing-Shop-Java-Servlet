@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import dao.client.ProductDAO;
 import entity.Customer;
-import entity.BillDetail;
+import entity.OrderDetail;
 import entity.Product;
 
 @WebServlet("/AddToCartControl")

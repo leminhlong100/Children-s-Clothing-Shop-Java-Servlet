@@ -8,6 +8,9 @@ public class Authorities { // quyen
 		this.idAuthorities = idAuthorities;
 		this.nameAuthorities = nameAuthorities;
 	}
+	public Authorities() {
+		super();
+	}
 	@Override
 	public String toString() {
 		return "Authorities [idAuthorities=" + idAuthorities + ", nameAuthorities=" + nameAuthorities + "]";

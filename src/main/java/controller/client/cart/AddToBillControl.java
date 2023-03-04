@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import entity.Customer;
-import entity.Bill;
-import entity.BillDetail;
+import entity.Order;
+import entity.OrderDetail;
 
 @WebServlet("/AddBillControl")
 public class AddToBillControl extends HttpServlet {
@@ -28,7 +28,7 @@ public class AddToBillControl extends HttpServlet {
 		HttpSession session = request.getSession();
 		Object obj = session.getAttribute("cart");// luu tam vao session
 		if (obj != null) {// KIEM TRA XEM CO SP TRONG GIO HANG KO?
-			Map<String, BillDetail> map = (Map<String, BillDetail>) obj;
+			Map<String, OrderDetail> map = (Map<String, OrderDetail>) obj;
 			// TAO HOA DON TRUOC, DE LAY DUOC ID BILL
 //			Bill bill = new Bill();
 //			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

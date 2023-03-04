@@ -2,9 +2,10 @@ package entity;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.List;
 
-public class Bill implements Serializable {
-	private int idBill;
+public class Order implements Serializable {
+	private int idOrder;
 	private String dateAdd; // ngay dat
 	private String deliveryDate; // ngay mua
 	private String StatusPay; // Trinh trang thanh toan
@@ -12,11 +13,16 @@ public class Bill implements Serializable {
 	private double endow; // giam gia
 	private String status;
 	private String address;
+	private List<OrderDetail> orderDetails;
 
-	public Bill(int idBill, String dateAdd, String deliveryDate, String statusPay, Customer customer, double endow,
-			String status, String address) {
+	public Order() {
 		super();
-		this.idBill = idBill;
+	}
+
+	public Order(int idOrder, String dateAdd, String deliveryDate, String statusPay, Customer customer, double endow,
+			String status, String address, List<OrderDetail> orderDetails) {
+		super();
+		this.idOrder = idOrder;
 		this.dateAdd = dateAdd;
 		this.deliveryDate = deliveryDate;
 		StatusPay = statusPay;
@@ -24,21 +30,38 @@ public class Bill implements Serializable {
 		this.endow = endow;
 		this.status = status;
 		this.address = address;
+		this.orderDetails = orderDetails;
 	}
 
 	@Override
 	public String toString() {
-		return "Bill [idBill=" + idBill + ", dateAdd=" + dateAdd + ", deliveryDate=" + deliveryDate + ", StatusPay="
+		return "Order [idOrder=" + idOrder + ", dateAdd=" + dateAdd + ", deliveryDate=" + deliveryDate + ", StatusPay="
 				+ StatusPay + ", customer=" + customer + ", endow=" + endow + ", status=" + status + ", address="
-				+ address + "]";
+				+ address + ", orderDetails=" + orderDetails + "]";
 	}
 
 	public int getIdBill() {
-		return idBill;
+		return idOrder;
+	}
+
+	public int getIdOrder() {
+		return idOrder;
+	}
+
+	public void setIdOrder(int idOrder) {
+		this.idOrder = idOrder;
+	}
+
+	public List<OrderDetail> getOrderDetails() {
+		return orderDetails;
+	}
+
+	public void setOrderDetails(List<OrderDetail> orderDetails) {
+		this.orderDetails = orderDetails;
 	}
 
 	public void setIdBill(int idBill) {
-		this.idBill = idBill;
+		this.idOrder = idBill;
 	}
 
 	public String getDateAdd() {

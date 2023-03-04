@@ -8,8 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import entity.Bill;
-import entity.BillDetail;
+import entity.Order;
+import entity.OrderDetail;
 
 @WebServlet("/DetailBill")
 public class DetailBillCotrol extends HttpServlet {

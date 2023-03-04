@@ -8,6 +8,11 @@ public class Category {
 		this.idCategory = id;
 		this.nameCategory = name;
 	}
+	
+	public Category() {
+		super();
+	}
+
 	@Override
 	public String toString() {
 		return "Category [id=" + idCategory + ", name=" + nameCategory + "]";

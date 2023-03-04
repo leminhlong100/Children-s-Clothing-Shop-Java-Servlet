@@ -1,19 +1,19 @@
 package entity;
 
-public class BillDetail {
+public class OrderDetail {
 	private int idBill_detail;
-	private Bill bill;
+	private int idOrdetail;
 	private Product product;
 	private String nameProduct;
 	private int quantity; // tong so luong
 	private double price;
 	private String node; // ghi chu
 
-	public BillDetail(int idBill_detail, Bill bill, Product product, String nameProduct, int quantity, double price,
-			String node) {
+	public OrderDetail(int idBill_detail, int idOrdetail, Product product, String nameProduct, int quantity,
+			double price, String node) {
 		super();
 		this.idBill_detail = idBill_detail;
-		this.bill = bill;
+		this.idOrdetail = idOrdetail;
 		this.product = product;
 		this.nameProduct = nameProduct;
 		this.quantity = quantity;
@@ -21,9 +21,13 @@ public class BillDetail {
 		this.node = node;
 	}
 
+	public OrderDetail() {
+		super();
+	}
+
 	@Override
 	public String toString() {
-		return "BillDetail [idBill_detail=" + idBill_detail + ", bill=" + bill + ", product=" + product
+		return "OrderDetail [idBill_detail=" + idBill_detail + ", idOrdetail=" + idOrdetail + ", product=" + product
 				+ ", nameProduct=" + nameProduct + ", quantity=" + quantity + ", price=" + price + ", node=" + node
 				+ "]";
 	}
@@ -36,12 +40,12 @@ public class BillDetail {
 		this.idBill_detail = idBill_detail;
 	}
 
-	public Bill getBill() {
-		return bill;
+	public int getIdOrdetail() {
+		return idOrdetail;
 	}
 
-	public void setBill(Bill bill) {
-		this.bill = bill;
+	public void setIdOrdetail(int idOrdetail) {
+		this.idOrdetail = idOrdetail;
 	}
 
 	public Product getProduct() {

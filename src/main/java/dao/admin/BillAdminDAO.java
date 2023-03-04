@@ -8,7 +8,7 @@ import java.util.List;
 
 import context.DBContext;
 import entity.Customer;
-import entity.Bill;
+import entity.Order;
 
 public class BillAdminDAO {
 	

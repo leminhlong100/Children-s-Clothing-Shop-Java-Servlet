@@ -50,7 +50,7 @@ public class VerifyRecaptchas  {
 
 			// Response code return from Server.
 			int responseCode = conn.getResponseCode();
-			System.out.println("responseCode=" + responseCode);
+//			System.out.println("responseCode=" + responseCode);
 
 			// Get the Input Stream of Connection to read data sent from the Server.
 			InputStream is = conn.getInputStream();
@@ -60,7 +60,7 @@ public class VerifyRecaptchas  {
 			jsonReader.close();
 
 			// ==> {"success": true}
-			System.out.println("Response: " + jsonObject);
+//			System.out.println("Response: " + jsonObject);
 
 			boolean success = jsonObject.getBoolean("success");
 			return success;
