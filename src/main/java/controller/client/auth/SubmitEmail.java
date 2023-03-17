@@ -29,7 +29,9 @@ public class SubmitEmail extends HttpServlet {
 		HttpSession session = request.getSession();
 		Account customer = (Account) session.getAttribute("custemp");
 		String codeverify = request.getParameter("codeverify");
-		boolean checkCustommerExits = AuthDAO.checkAccountExist(customer.getAccountName(), customer.getEmail());
+		boolean checkCustommerExits = AuthDAO.checkAccountExist(customer.getAccountName());
+		boolean checkCustommerExitss = AuthDAO.checkAccountExist(customer.getEmail());
+
 		LocalDateTime lastTime = (LocalDateTime) session.getAttribute("timeNow");
 		LocalDateTime currentTime = LocalDateTime.now();
 		String gRecap = request.getParameter("g-recaptcha-response");
@@ -44,7 +46,7 @@ public class SubmitEmail extends HttpServlet {
 		} else if(!codeverify.equals(session.getAttribute("newVerify"))) {
 		    request.setAttribute("error", "Mã xác thực không chính xác!");
 		    request.getRequestDispatcher("/client/VerifyEmail.jsp").forward(request, response);
-		} else if (checkCustommerExits == false) {
+		} else if (checkCustommerExits == false &&checkCustommerExitss==false) {
 		    AuthDAO.signup(customer.getAccountName(), customer.getPassword(), customer.getFullName(), customer.getEmail(),
 		        customer.getEmail(), customer.getPhone());
 		    request.getRequestDispatcher("/client/Login.jsp").forward(request, response);

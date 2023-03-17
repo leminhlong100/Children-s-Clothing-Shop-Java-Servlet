@@ -24,7 +24,7 @@ public class IndexControl extends HttpServlet {
 		if (isDispatched == null || !isDispatched) {
 //			List<Product> list = IndexDAO.getSellProduct();
 //			List<Product> listSellProductTwo = IndexDAO.getSellProductTwo();
-			List<Product> listOutstandingProduct = IndexDAO.getOutstandingProduct();
+//			List<Product> listOutstandingProduct = IndexDAO.getOutstandingProduct();
 //		List<Product> listOutstandingProductShoes = IndexDAO.getOutstandingProductShoes();
 //		List<Product> listNewProduct = IndexDAO.getNewProductBoy();
 //		List<Product> listNewProductGirl = IndexDAO.getNewProductGirl();
@@ -32,7 +32,7 @@ public class IndexControl extends HttpServlet {
 //		List<Product> listgetSuperSellProduct = IndexDAO.getSuperSellProduct();
 //			request.setAttribute("listSellProduct", list);
 //			request.setAttribute("listSellProductTwo", listSellProductTwo);
-			request.setAttribute("listOutstandingProduct", listOutstandingProduct);
+//			request.setAttribute("listOutstandingProduct", listOutstandingProduct);
 //		request.setAttribute("listOutstandingProductShoes", listOutstandingProductShoes);
 //		request.setAttribute("getNewProductBoy", listNewProduct);
 //		request.setAttribute("listNewProductGirl", listNewProductGirl);
