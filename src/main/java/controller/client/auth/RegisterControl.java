@@ -53,7 +53,7 @@ public class RegisterControl extends HttpServlet {
 			Account a = new Account(user, passWord, name, address, email, phone);
 			request.setAttribute("cus", a);
 			request.getRequestDispatcher("/VerifyEmailControl").forward(request, response);
-		
+
 		}}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

@@ -192,7 +192,7 @@
 														<span class="price">- ${o.discount}% </span>
 													</div>
 													<div class="discounts-product-image">
-														<a href="${detail}?pid=${o.idProduct}"> <img
+														<a href="${detail}?pid=${o.id}"> <img
 															src="./images/${o.imageProducts.get(0).getImage()}"
 															alt="./images/${o.imageProducts.get(0).getImage()}"
 															class="img-responsive">
@@ -206,13 +206,13 @@
 														</div>
 
 														<h3 class="item-title">
-															<a href="${detail}?pid=${o.idProduct}" title="Váy">${o.nameProduct}</a>
+															<a href="${detail}?pid=${o.id}" title="Váy">${o.nameProduct}</a>
 														</h3>
 														<div class="text-center">
 															<form action="/cart/add" method="post" class="variants"
 																id="product-action"
 																enctype="multipart/form-data">
-																<a href="${detail}?pid=${o.idProduct}">
+																<a href="DetailControl?pid=${o.id}">
 																	<button class="button btn-cart btn-more product-atc"
 																		title="Mua hàng" type="button">
 																		<span><img src="./images/Muangay.png" alt="" /></span>
