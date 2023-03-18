@@ -27,12 +27,23 @@ public class AuthDAO {
 		return null;
 	}
 
-	public static boolean checkAccountExist(String userName, String email) { // ton tai la true
+	public static boolean checkAccountExist(String userName) { // ton tai la true
 		Jdbi me = DBContext.me();
 		try {
 			return me.withHandle(handle -> handle
-					.createQuery("SELECT EXISTS(SELECT idCustomer FROM customers WHERE userName = ? OR Email = ?)")
-					.bind(0, userName).bind(1, email).mapTo(Boolean.class).one());
+					.createQuery("SELECT EXISTS(SELECT id FROM accounts WHERE accountName = ? )")
+					.bind(0, userName).mapTo(Boolean.class).one());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return true;
+		}
+	}
+	public static boolean checkEmailExist( String email) { // ton tai la true
+		Jdbi me = DBContext.me();
+		try {
+			return me.withHandle(handle -> handle
+					.createQuery("SELECT EXISTS(SELECT id FROM accounts WHERE  Email = ?)")
+					.bind(0, email).mapTo(Boolean.class).one());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return true;
@@ -41,7 +52,7 @@ public class AuthDAO {
 
 	public static void signup(String userName, String password, String name, String email, String address,
 			String NumberPhone) {
-		String query = "INSERT INTO customers (userName, password, Name, email, address,NumberPhone) VALUES (?, ?, ?, ?, ?, ?);";
+		String query = "INSERT INTO accounts (accountName, password, fullName, email, address,phone,isDelete,isActive) VALUES (?, ?, ?, ?, ?, ?,0,1);";
 		String passworken = EnCode.toSHA1(password);
 		Jdbi me = DBContext.me();
 		me.withHandle(handle -> handle.createUpdate(query).bind(0, userName).bind(1, passworken).bind(2, name)
@@ -194,7 +205,8 @@ public class AuthDAO {
 	public static void main(String[] args) {
 //		System.out.println(checkAccountExist("leminhl1ong@gmail.com", "leminhlongi1t@gmail.com"));
 //		signinGoogle("12312", "Hao", "123@gmail.com", "341341");
-		System.out.println(login("locancuc", "L0374781483Lll@"));
+//		System.out.println(login("locancuc", "L0374781483Lll@"));
+		signup("Loc456","123456","linhocho","linh@gmail.com","35","0792747501");
 	}
 
 }

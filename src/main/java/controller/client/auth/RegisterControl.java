@@ -43,10 +43,11 @@ public class RegisterControl extends HttpServlet {
 		} else if (!passWord.equals(repassWord)) {
 			request.setAttribute("error", "Mật khẩu không trùng khớp");
 			request.getRequestDispatcher("/client/Register.jsp").forward(request, response);
-		} else if (AuthDAO.checkAccountExist(user, email) ==true ) {
+		} else if (AuthDAO.checkAccountExist(user) ==true ) {
 			request.setAttribute("userexit", "Người dùng đã tồn tại! ");
+			request.getRequestDispatcher("/client/Register.jsp").forward(request, response);
+		} else if (AuthDAO.checkEmailExist(email) ==true ) {
 			request.setAttribute("emailexit", "Email đã tồn tại!");
-
 			request.getRequestDispatcher("/client/Register.jsp").forward(request, response);
 		} else {
 			Account a = new Account(user, passWord, name, address, email, phone);

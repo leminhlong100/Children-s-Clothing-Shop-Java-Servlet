@@ -28,6 +28,7 @@ public class VerifyEmailControl extends HttpServlet {
 		System.out.println(email);
 		request.setAttribute("email", customer.getEmail());
 		String newVerify = SendEmail.getRandomPass(6);
+		System.out.println(newVerify);
 		SendEmail.sendMailFogetPassWord(email, newVerify);
 		HttpSession session = request.getSession();
 		session.setAttribute("newVerify", newVerify);
