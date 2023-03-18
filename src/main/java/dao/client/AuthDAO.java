@@ -49,10 +49,9 @@ public class AuthDAO {
 			return true;
 		}
 	}
-
 	public static void signup(String userName, String password, String name, String email, String address,
 			String NumberPhone) {
-		String query = "INSERT INTO accounts (accountName, password, fullName, email, address,phone,isDelete,isActive) VALUES (?, ?, ?, ?, ?, ?,0,1);";
+		String query = "INSERT INTO customers (userName, password, Name, email, address,NumberPhone) VALUES (?, ?, ?, ?, ?, ?);";
 		String passworken = EnCode.toSHA1(password);
 		Jdbi me = DBContext.me();
 		me.withHandle(handle -> handle.createUpdate(query).bind(0, userName).bind(1, passworken).bind(2, name)
@@ -205,8 +204,7 @@ public class AuthDAO {
 	public static void main(String[] args) {
 //		System.out.println(checkAccountExist("leminhl1ong@gmail.com", "leminhlongi1t@gmail.com"));
 //		signinGoogle("12312", "Hao", "123@gmail.com", "341341");
-//		System.out.println(login("locancuc", "L0374781483Lll@"));
-		signup("Loc456","123456","linhocho","linh@gmail.com","35","0792747501");
+		System.out.println(login("locancuc", "L0374781483Lll@"));
 	}
 
 }

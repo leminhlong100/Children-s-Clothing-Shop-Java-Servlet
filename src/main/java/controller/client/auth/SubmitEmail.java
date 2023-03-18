@@ -38,18 +38,18 @@ public class SubmitEmail extends HttpServlet {
 		boolean verify = VerifyRecaptchas.verify(gRecap);
 		Duration duration = Duration.between(lastTime, currentTime); // thoi gian gia 2 thoi diem
 		if (!verify) {
-		    request.setAttribute("error", "Chưa nhập Captcha ");
-		    request.getRequestDispatcher("/client/VerifyEmail.jsp").forward(request, response);
+			request.setAttribute("error", "Chưa nhập Captcha ");
+			request.getRequestDispatcher("/client/VerifyEmail.jsp").forward(request, response);
 		} else if(duration.getSeconds() > 300) {
-		    request.setAttribute("timeUp", "Hết thời gian xác thực email!");
-		    request.getRequestDispatcher("/client/VerifyEmail.jsp").forward(request, response);
+			request.setAttribute("timeUp", "Hết thời gian xác thực email!");
+			request.getRequestDispatcher("/client/VerifyEmail.jsp").forward(request, response);
 		} else if(!codeverify.equals(session.getAttribute("newVerify"))) {
-		    request.setAttribute("error", "Mã xác thực không chính xác!");
-		    request.getRequestDispatcher("/client/VerifyEmail.jsp").forward(request, response);
+			request.setAttribute("error", "Mã xác thực không chính xác!");
+			request.getRequestDispatcher("/client/VerifyEmail.jsp").forward(request, response);
 		} else if (checkCustommerExits == false &&checkCustommerExitss==false) {
-		    AuthDAO.signup(customer.getAccountName(), customer.getPassword(), customer.getFullName(), customer.getEmail(),
-		        customer.getEmail(), customer.getPhone());
-		    request.getRequestDispatcher("/client/Login.jsp").forward(request, response);
+			AuthDAO.signup(customer.getAccountName(), customer.getPassword(), customer.getFullName(), customer.getEmail(),
+					customer.getEmail(), customer.getPhone());
+			request.getRequestDispatcher("/client/Login.jsp").forward(request, response);
 		}
 
 	}
