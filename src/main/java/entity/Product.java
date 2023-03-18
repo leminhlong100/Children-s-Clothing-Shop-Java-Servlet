@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Product implements Serializable {
-    private int idProduct;
+    private int id;
     private String nameProduct;
     private double listPrice;
     private String description; // mo ta
@@ -28,8 +28,8 @@ public class Product implements Serializable {
     public Product() {
     }
 
-    public Product(int idProduct, String nameProduct, double listPrice, String description, List<View> views, List<Star> stars, List<Comment> comments, int idSupplier, int idProducer, int idCategory, Supplier supplier, Producer producer, Category category, List<ImageProduct> imageProducts, String isActive, String isDelete, List<SizeProduct> productSizes, List<ColorProduct> productColors, int discount, double discountPrice) {
-        this.idProduct = idProduct;
+    public Product(int id, String nameProduct, double listPrice, String description, List<View> views, List<Star> stars, List<Comment> comments, int idSupplier, int idProducer, int idCategory, Supplier supplier, Producer producer, Category category, List<ImageProduct> imageProducts, String isActive, String isDelete, List<SizeProduct> productSizes, List<ColorProduct> productColors, int discount, double discountPrice) {
+        this.id = id;
         this.nameProduct = nameProduct;
         this.listPrice = listPrice;
         this.description = description;
@@ -51,8 +51,26 @@ public class Product implements Serializable {
         this.discountPrice = discountPrice;
     }
 
-    public Product(int idProduct, String nameProduct, double listPrice, List<ImageProduct> imageProducts, int discount, double discountPrice) {
-        this.idProduct = idProduct;
+    public Product(int idP, String nameProduct, double listPrice, String description, List<View> views, List<Star> stars, List<Comment> comments, Supplier supplier, Producer producer, Category category, List<ImageProduct> imageProducts, List<SizeProduct> productSizes, List<ColorProduct> productColors, int discount, double discountPrice) {
+        this.id = id;
+        this.nameProduct = nameProduct;
+        this.listPrice = listPrice;
+        this.description = description;
+        this.views = views;
+        this.stars = stars;
+        this.comments = comments;
+        this.supplier = supplier;
+        this.producer = producer;
+        this.category = category;
+        this.imageProducts = imageProducts;
+        this.productSizes = productSizes;
+        this.productColors = productColors;
+        this.discount = discount;
+        this.discountPrice = discountPrice;
+    }
+
+    public Product(int id, String nameProduct, double listPrice, List<ImageProduct> imageProducts, int discount, double discountPrice) {
+        this.id = id;
         this.nameProduct = nameProduct;
         this.listPrice = listPrice;
         this.imageProducts = imageProducts;
@@ -60,8 +78,8 @@ public class Product implements Serializable {
         this.discountPrice = discountPrice;
     }
 
-    public int getIdProduct() {
-        return idProduct;
+    public int getId() {
+        return id;
     }
 
     public String getNameProduct() {
@@ -140,8 +158,8 @@ public class Product implements Serializable {
         return discountPrice;
     }
 
-    public void setIdProduct(int idProduct) {
-        this.idProduct = idProduct;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setNameProduct(String nameProduct) {
@@ -223,7 +241,7 @@ public class Product implements Serializable {
     @Override
     public String toString() {
         return "Product{" +
-                "idProduct=" + idProduct +
+                "id=" + id +
                 ", nameProduct='" + nameProduct + '\'' +
                 ", listPrice=" + listPrice +
                 ", description='" + description + '\'' +

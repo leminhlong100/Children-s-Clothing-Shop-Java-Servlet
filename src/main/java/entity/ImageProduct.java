@@ -1,36 +1,49 @@
 package entity;
 
 public class ImageProduct {
-	private int idImageProduct;
-	private int idproduct;
+	private int id;
+	private int idProduct;
 	private String image;
-	public ImageProduct(int idImageProduct, int idproduct, String image) {
-		super();
-		this.idImageProduct = idImageProduct;
-		this.idproduct = idproduct;
-		this.image = image;
-	}
+
 	@Override
 	public String toString() {
-		return "ImageProduct [idImageProduct=" + idImageProduct + ", idproduct=" + idproduct + ", image=" + image + "]";
+		return "ImageProduct{" +
+				"id=" + id +
+				", idProduct=" + idProduct +
+				", image='" + image + '\'' +
+				'}';
 	}
-	public int getIdImageProduct() {
-		return idImageProduct;
+
+	public ImageProduct() {
 	}
-	public void setIdImageProduct(int idImageProduct) {
-		this.idImageProduct = idImageProduct;
+
+	public ImageProduct(int id, int idProduct, String image) {
+		this.id = id;
+		this.idProduct = idProduct;
+		this.image = image;
 	}
-	public int getIdproduct() {
-		return idproduct;
+
+	public int getId() {
+		return id;
 	}
-	public void setIdproduct(int idproduct) {
-		this.idproduct = idproduct;
+
+	public int getIdProduct() {
+		return idProduct;
 	}
+
 	public String getImage() {
 		return image;
 	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setIdProduct(int idProduct) {
+		this.idProduct = idProduct;
+	}
+
 	public void setImage(String image) {
 		this.image = image;
 	}
-	
 }

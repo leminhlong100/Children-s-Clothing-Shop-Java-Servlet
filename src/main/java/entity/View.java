@@ -4,6 +4,7 @@ public class View {
 	private int idView;
 	private int idProduct;
 	private String status;
+	private int idCustomer;
 	private Account customer;
 	public View(int idView, int idProduct, String status, Account customer) {
 		super();
@@ -12,6 +13,14 @@ public class View {
 		this.status = status;
 		this.customer = customer;
 	}
+
+	public View(int idView, int idProduct, String status, int idCustomer) {
+		this.idView = idView;
+		this.idProduct = idProduct;
+		this.status = status;
+		this.idCustomer = idCustomer;
+	}
+
 	public View() {
 		super();
 	}
@@ -44,5 +53,12 @@ public class View {
 	public void setCustomer(Account customer) {
 		this.customer = customer;
 	}
-	
+
+	public int getIdCustomer() {
+		return idCustomer;
+	}
+
+	public void setIdCustomer(int idCustomer) {
+		this.idCustomer = idCustomer;
+	}
 }
