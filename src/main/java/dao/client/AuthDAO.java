@@ -37,6 +37,43 @@ public class AuthDAO {
 			return true;
 		}
 	}
+		public static int loginfail(String username) {
+		Jdbi me = DBContext.me();
+		try {
+			int num = me.withHandle(handle -> handle.createQuery(
+							"SELECT numberloginfail FROM accounts WHERE accountName = ?")
+					.bind(0, username).mapTo(int.class).one());
+			if (num >= 5) { 
+				return 5; 
+			}
+			me.withHandle(handle -> handle.createUpdate(
+							"UPDATE accounts SET numberloginfail = ? WHERE accountName = ?")
+					.bind(0, num + 1).bind(1, username).execute());
+			return num + 1;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public static int resetlogin(String username) {
+		Jdbi me = DBContext.me();
+		try {
+			int numreset = me.withHandle(handle -> handle.createQuery(
+							"SELECT numberloginfail FROM accounts WHERE accountName = ?")
+					.bind(0, username).mapTo(int.class).one());
+			me.withHandle(handle -> handle.createUpdate(
+							"UPDATE accounts SET numberloginfail = ? WHERE accountName = ?")
+					.bind(0, 0 ).bind(1, username).execute());
+			return 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+
 	public static boolean checkEmailExist( String email) { // ton tai la true
 		Jdbi me = DBContext.me();
 		try {
@@ -48,13 +85,18 @@ public class AuthDAO {
 			return true;
 		}
 	}
-	public static void signup(String userName, String password, String name, String email, String address,
+public static Account signup(String userName, String password, String name, String email, String address,
 			String NumberPhone) {
-		String query = "INSERT INTO customers (userName, password, Name, email, address,NumberPhone) VALUES (?, ?, ?, ?, ?, ?);";
+		String query = "INSERT INTO accounts (accountName, password, fullName, email, address,phone) VALUES (?, ?, ?, ?, ?, ?);";
 		String passworken = EnCode.toSHA1(password);
+		try{
 		Jdbi me = DBContext.me();
 		me.withHandle(handle -> handle.createUpdate(query).bind(0, userName).bind(1, passworken).bind(2, name)
-				.bind(3, email).bind(4, address).bind(5, NumberPhone).execute());
+			.bind(3, email).bind(4, address).bind(5, NumberPhone).execute());
+		}catch (Exception e ){
+		e.printStackTrace();
+}
+		return null;
 	}
 	public static void editAccountInfo(String user, String address, String phone, String uid) {
 		String query = "update customer set userName = ? ,Address = ?,NumberPhone = ?  where idCustomer = ?;";
