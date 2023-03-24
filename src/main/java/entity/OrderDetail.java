@@ -1,51 +1,58 @@
 package entity;
 
 public class OrderDetail {
-	private int idBill_detail;
-	private int idOrdetail;
+	private int id;
+	private int idOrder;
+	private int idProduct;
 	private Product product;
-	private String nameProduct;
 	private int quantity; // tong so luong
 	private double price;
 	private String node; // ghi chu
 
-	public OrderDetail(int idBill_detail, int idOrdetail, Product product, String nameProduct, int quantity,
-			double price, String node) {
-		super();
-		this.idBill_detail = idBill_detail;
-		this.idOrdetail = idOrdetail;
+	public OrderDetail() {
+	}
+
+	public OrderDetail(int id, int idOrder, int idProduct, Product product, int quantity, double price, String node) {
+		this.id = id;
+		this.idOrder = idOrder;
+		this.idProduct = idProduct;
 		this.product = product;
-		this.nameProduct = nameProduct;
 		this.quantity = quantity;
 		this.price = price;
 		this.node = node;
 	}
 
-	public OrderDetail() {
-		super();
+	public OrderDetail(int id, int idOrder, int idProduct, int quantity, double price, String node) {
+		this.id = id;
+		this.idOrder = idOrder;
+		this.idProduct = idProduct;
+		this.quantity = quantity;
+		this.price = price;
+		this.node = node;
 	}
 
-	@Override
-	public String toString() {
-		return "OrderDetail [idBill_detail=" + idBill_detail + ", idOrdetail=" + idOrdetail + ", product=" + product
-				+ ", nameProduct=" + nameProduct + ", quantity=" + quantity + ", price=" + price + ", node=" + node
-				+ "]";
+	public int getId() {
+		return id;
 	}
 
-	public int getIdBill_detail() {
-		return idBill_detail;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public void setIdBill_detail(int idBill_detail) {
-		this.idBill_detail = idBill_detail;
+	public int getIdOrder() {
+		return idOrder;
 	}
 
-	public int getIdOrdetail() {
-		return idOrdetail;
+	public void setIdOrder(int idOrder) {
+		this.idOrder = idOrder;
 	}
 
-	public void setIdOrdetail(int idOrdetail) {
-		this.idOrdetail = idOrdetail;
+	public int getIdProduct() {
+		return idProduct;
+	}
+
+	public void setIdProduct(int idProduct) {
+		this.idProduct = idProduct;
 	}
 
 	public Product getProduct() {
@@ -54,14 +61,6 @@ public class OrderDetail {
 
 	public void setProduct(Product product) {
 		this.product = product;
-	}
-
-	public String getNameProduct() {
-		return nameProduct;
-	}
-
-	public void setNameProduct(String nameProduct) {
-		this.nameProduct = nameProduct;
 	}
 
 	public int getQuantity() {
@@ -88,4 +87,16 @@ public class OrderDetail {
 		this.node = node;
 	}
 
+	@Override
+	public String toString() {
+		return "OrderDetail{" +
+				"id=" + id +
+				", idOrder=" + idOrder +
+				", idProduct=" + idProduct +
+				", product=" + product +
+				", quantity=" + quantity +
+				", price=" + price +
+				", node='" + node + '\'' +
+				'}';
+	}
 }

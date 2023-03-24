@@ -44,6 +44,11 @@ public class Account {
 		this.currentPassword = currentPassword;
 	}
 
+	public Account(int id, String accountName) {
+		this.id = id;
+		this.accountName = accountName;
+	}
+
 	public Account(int id, String accountName, String password, String fullName, String address, String email, String phone, int idRoleMember) {
 		this.id = id;
 		this.accountName = accountName;

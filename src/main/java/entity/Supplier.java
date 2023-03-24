@@ -12,6 +12,11 @@ public class Supplier { // nha cung cap
 		this.emailSupplier = emailSupplier;
 		this.numberPhone = numberPhone;
 	}
+
+	public Supplier(String nameSupplier) {
+		this.nameSupplier = nameSupplier;
+	}
+
 	@Override
 	public String toString() {
 		return "Supplier [idSupplier=" + idSupplier + ", nameSupplier=" + nameSupplier + ", emailSupplier="

@@ -11,8 +11,8 @@
 <meta charset="UTF-8" />
 <title>${detail.nameProduct}</title>
 <link rel="icon" type="image" href="../images/HaLoicon.png" />
-
 <jsp:include page="./link/Link.jsp"></jsp:include>
+	<link href="//bizweb.dktcdn.net/100/117/632/themes/157694/assets/single-product.css?1564585558451" rel="stylesheet" type="text/css" media="all" />
 </head>
 
 <body>
@@ -58,9 +58,14 @@
 								</div>
 								<div class="sk-price-box clearfix">
 									<div class="pull-left">
-
+										<div class="sale">
+											<span>Giá gốc:</span>
+											<del class="old-price">
+												${detail.listPrice}
+											</del>
+										</div>
 										<span><fmt:message key="price" bundle="${lang}"></fmt:message>:</span>
-										<span class="price">${detail.priceProduct} VNĐ</span>
+										<span class="price">${detail.discountPrice} VNĐ</span>
 									</div>
 									<div class="stock pull-left">
 
@@ -70,7 +75,20 @@
 
 									</div>
 								</div>
+								<ul class="sk-product-info-wrap">
 
+									<li>
+										<span>Mã sản phẩm:</span>
+										<span>${detail.supplier.nameSupplier}</span>
+									</li>
+
+
+									<li>
+										<span>Thương hiệu:</span>
+										<span>${detail.producer.nameProducer}</span>
+									</li>
+
+								</ul>
 								<p class="pd-description-mini">${detail.description}</p>
 								<div class="pd-form">
 									<div class="pd-form-top clearfix">
@@ -78,20 +96,20 @@
 											<select id="product-select" name="variantId"
 												class="single-option-selector">
 
-												<option value="6383545">Size 214 / ${detail.priceProduct}₫</option>
+												<option value="6383545">Size 214 / ${detail.discountPrice}₫</option>
 
-												<option value="6383546">Size 224 / ${detail.priceProduct}₫</option>
+												<option value="6383546">Size 224 / ${detail.discountPrice}₫</option>
 
-												<option value="6383547">Size 234 / ${detail.priceProduct}₫</option>
+												<option value="6383547">Size 234 / ${detail.discountPrice}₫</option>
 
-												<option value="6383548">Size 244 / ${detail.priceProduct}₫</option>
+												<option value="6383548">Size 244 / ${detail.discountPrice}₫</option>
 
 											</select>
 										</div>
 									</div>
 									<div class="pd-form-bottom clearfix">
 										<c:url var="addToCart" value="AddToCartControl"></c:url>
-										<form action="${addToCart}?pid=${ detail.idProduct}" method="post">
+										<form action="${addToCart}?pid=${ detail.id}" method="post">
 											<input type="number" class="single-input-selector" value="1"
 												min="1" name="quantity">
 

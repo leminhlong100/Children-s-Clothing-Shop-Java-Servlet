@@ -9,11 +9,11 @@
 
 <head>
 <meta charset="UTF-8" />
-<title><fmt:message key="Cart" bundle="${lang}"></fmt:message></title>
+<title>Đặt hàng</title>
 
-<link rel="icon" type="image" href="../image/HaLoicon.png" />
+<link rel="icon" type="image" href="../images/HaLoicon.png" />
 
-<jsp:include page="./link/Link.jsp"></jsp:include>
+	<jsp:include page="./link/Link.jsp"></jsp:include>
 
 </head>
 
@@ -75,7 +75,7 @@
 																		<div class="aa-checkout-single-bill">
 																			<input style="color: black;" type="text"
 																				placeholder="<fmt:message key="Full.name" bundle="${lang}"></fmt:message>*"
-																				value="${sessionScope.acc.user }"
+																				value="${sessionScope.acc.fullName }"
 																				required="required" name="transaction_name">
 																		</div>
 																	</div>
@@ -95,7 +95,7 @@
 																		<div class="aa-checkout-single-bill">
 																			<input style="color: black;" type="tel"
 																				placeholder="<fmt:message key="Phone.number" bundle="${lang}"></fmt:message>*"
-																				value="${sessionScope.acc.phoneNumber }"
+																				value="${sessionScope.acc.phone }"
 																				required="required" name="transaction_phone">
 																		</div>
 																	</div>
@@ -153,9 +153,9 @@
 													<tbody>
 														<c:forEach items="${sessionScope.cart}" var="o">
 															<tr>
-																<td>${o.value.product.name}<strong> x
+																<td>${o.value.product.nameProduct}<strong> x
 																		${o.value.quantity}</strong></td>
-																<td>${o.value.product.price}.0<fmt:message key="$"
+																<td>${o.value.product.discountPrice}<fmt:message key="$"
 																		bundle="${lang}"></fmt:message></td>
 															</tr>
 														</c:forEach>
@@ -163,7 +163,7 @@
 													<tfoot>
 														<tr>
 															<th><fmt:message key="Provisional" bundle="${lang}"></fmt:message></th>
-															<td>${total}.0<fmt:message key="$" bundle="${lang}"></fmt:message></td>
+															<td>${total}<fmt:message key="$" bundle="${lang}"></fmt:message></td>
 														</tr>
 														<tr>
 															<th><fmt:message key="Tax" bundle="${lang}"></fmt:message></th>
@@ -171,7 +171,7 @@
 														</tr>
 														<tr>
 															<th><fmt:message key="Total" bundle="${lang}"></fmt:message></th>
-															<td><strong>${total}.0<fmt:message key="$"
+															<td><strong>${total}<fmt:message key="$"
 																		bundle="${lang}"></fmt:message></strong></td>
 														</tr>
 													</tfoot>
@@ -189,7 +189,7 @@
 													name="transaction_payment" value="1"> <fmt:message
 														key="Payment.by.Bank.(ATM)" bundle="${lang}"></fmt:message></label>
 												<img
-													src="${pageContext.request.contextPath}/image/paypal.jpg"
+													src="${pageContext.request.contextPath}/images/paypal.jpg"
 													border="0" alt="PayPal Acceptance Mark"> <input
 													type="submit"
 													value="<fmt:message key="ORDER" bundle="${lang}"></fmt:message>"

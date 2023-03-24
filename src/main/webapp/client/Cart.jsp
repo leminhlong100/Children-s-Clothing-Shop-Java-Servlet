@@ -62,18 +62,18 @@ if (session.getAttribute("acc") == null) {
 												<td class="text-center"><a
 													href="DetailControl?pid=${o.value.product.id}"> <img
 														style="width: 73px; height: auto;"
-														src="${o.value.product.image}">
+														src="./images/${o.value.product.imageProducts.get(0).getImage()}">
 												</a></td>
 												<td class="text-center" valign="middle">
 													<p class="">
 														<a href="DetailControl?pid=${o.value.product.id}">
-															${o.value.product.name}</a>
+															${o.value.product.nameProduct}</a>
 
 													</p>
 												</td>
 												<td class="text-center">
 
-													<p class="">${o.value.unitPrice }
+													<p class="">${o.value.price }
 														<fmt:message key="$" bundle="${lang}"></fmt:message>
 													</p>
 												</td>
@@ -88,8 +88,8 @@ if (session.getAttribute("acc") == null) {
 															value="add" type="button">+</button></a></td>
 												<td class="text-center"><p class="l">
 														<c:set var="sumALl"
-															value="	${o.value.quantity * o.value.unitPrice}"></c:set>
-														${o.value.quantity * o.value.unitPrice}
+															value="	${o.value.quantity * o.value.price}"></c:set>
+														${o.value.quantity * o.value.price}
 													</p></td>
 												<c:url var="delete" value="DeleteBillControl"></c:url>
 												<td class="text-center"><a
@@ -119,7 +119,7 @@ if (session.getAttribute("acc") == null) {
 											bundle="${lang}"></fmt:message></td>
 								</tr>
 							</table>
-							<c:url var="payment" value="client/Payment.jsp"></c:url>
+							<c:url var="payment" value="Payment.jsp"></c:url>
 							<a href="${pageContext.request.contextPath}/${payment}"
 								class="btn-cart pull-right"><fmt:message
 									key="payment.methods" bundle="${lang}"></fmt:message></a>
@@ -156,7 +156,7 @@ if (session.getAttribute("acc") == null) {
 												bundle="${lang}"></fmt:message></th>
 									</tr>
 								</thead>
-								<c:forEach items="${listBills}" var="o" varStatus="stt">
+								<c:forEach items="${listOrders}" var="o" varStatus="stt">
 									<tbody>
 										<tr>
 											<td class="text-center" valign="middle">
@@ -166,16 +166,16 @@ if (session.getAttribute("acc") == null) {
 												<c:if test="${stt.index == h.key}">
 													<td class="text-center" scope="row"><c:forEach var="p"
 															items="${h.value}">
-															<p style="font-weight: 500; color: black;">${p.product.name}</p>
+															<p style="font-weight: 500; color: black;">${p.product.nameProduct}</p>
 														</c:forEach></td>
 												</c:if>
 											</c:forEach>
 
-											<td class="text-center"><p class="">${o.priceTotal}.0<fmt:message
+											<td class="text-center"><p class="">${o.totalPrice}<fmt:message
 														key="$" bundle="${lang}"></fmt:message>
 												</p></td>
 											<td class="text-center" valign="middle">
-												<p class="">${o.buyDate}</p>
+												<p class="">${o.createAt}</p>
 											</td>
 											<td class="text-center" valign="middle">
 												<p class="">${o.status}</p>
@@ -192,7 +192,6 @@ if (session.getAttribute("acc") == null) {
 
 						</div>
 					</div>
-
 				</div>
 			</div>
 		</div>

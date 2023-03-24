@@ -14,7 +14,11 @@ public class Producer { // nha san suat
 		this.logo = logo;
 		this.isActive = isActive;
 	}
-	
+
+	public Producer(String nameProducer) {
+		this.nameProducer = nameProducer;
+	}
+
 	public Producer() {
 		super();
 	}
