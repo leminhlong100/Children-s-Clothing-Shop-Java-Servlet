@@ -34,7 +34,7 @@
 			</div>
 		</section>
 
-		<!-- Cart view section -->
+		<!-- Cart view section --><c:url var="login" value="Login.jsp"></c:url>
 		<section id="checkout">
 			<div class="container">
 				<div class="row">
@@ -49,7 +49,7 @@
 											<div class="panel-group">
 												<c:if test="${sessionScope.acc == null}">
 													<p>
-														<c:url var="login" value="client/Login.jsp"></c:url>
+
 														<fmt:message
 															key="You.need.to.login.to.view.your.order.details.Sign"
 															bundle="${lang}"></fmt:message>
@@ -74,7 +74,7 @@
 																			<input readonly="readonly" style="color: black;"
 																				type="text"
 																				placeholder="<fmt:message key="Full.name" bundle="${lang}"></fmt:message>*"
-																				value="${bill.buyer.user }" required="required"
+																				value="${bill.account.fullName }" required="required"
 																				name="transaction_name">
 																		</div>
 																	</div>
@@ -86,7 +86,7 @@
 																		<div class="aa-checkout-single-bill">
 																			<input readonly="readonly" style="color: black;"
 																				type="email" placeholder="Email*"
-																				value="${bill.buyer.email }" required="required"
+																				value="${bill.account.email }" required="required"
 																				name="transaction_email">
 																		</div>
 																	</div>
@@ -95,7 +95,7 @@
 																			<input style="color: black;" type="tel"
 																				readonly="readonly"
 																				placeholder="<fmt:message key="Phone.number" bundle="${lang}"></fmt:message>*"
-																				value="${bill.buyer.phoneNumber }"
+																				value="${bill.account.phone }"
 																				required="required" name="transaction_phone">
 																		</div>
 																	</div>
@@ -106,7 +106,7 @@
 																			<textarea style="color: black;" cols="8" rows="3"
 																				readonly="readonly"
 																				placeholder="<fmt:message key="Address" bundle="${lang}"></fmt:message>*"
-																				name="transaction_address" required="required">${bill.buyer.address }</textarea>
+																				name="transaction_address" required="required">${bill.account.address }</textarea>
 																		</div>
 																	</div>
 																</div>
@@ -115,7 +115,7 @@
 																		<div class="aa-checkout-single-bill">
 																			<textarea cols="8" rows="3"
 																				placeholder="<fmt:message key="Note" bundle="${lang}"></fmt:message>"
-																				readonly="readonly" name="transaction_mess">${bill.node}</textarea>
+																				readonly="readonly" name="transaction_mess">${bill.note}</textarea>
 																		</div>
 																	</div>
 																</div>
@@ -153,9 +153,9 @@
 													<tbody>
 														<c:forEach items="${billProducts}" var="o">
 															<tr>
-																<td>${o.product.name}<strong> x
+																<td>${o.product.nameProduct}<strong> x
 																		${o.quantity}</strong></td>
-																<td>${o.product.price}<fmt:message key="$"
+																<td>${o.price}<fmt:message key="$"
 																		bundle="${lang}"></fmt:message></td>
 															</tr>
 														</c:forEach>
@@ -163,7 +163,7 @@
 													<tfoot>
 														<tr>
 															<th><fmt:message key="Provisional" bundle="${lang}"></fmt:message></th>
-															<td>${bill.priceTotal}.0<fmt:message key="$"
+															<td>${bill.totalPrice}.0<fmt:message key="$"
 																	bundle="${lang}"></fmt:message></td>
 														</tr>
 														<tr>
@@ -172,7 +172,7 @@
 														</tr>
 														<tr>
 															<th><fmt:message key="Total" bundle="${lang}"></fmt:message></th>
-															<td><strong>${bill.priceTotal}.0<fmt:message
+															<td><strong>${bill.totalPrice}.0<fmt:message
 																		key="$" bundle="${lang}"></fmt:message></strong></td>
 														</tr>
 													</tfoot>
@@ -190,7 +190,7 @@
 													name="transaction_payment" value="1"> <fmt:message
 														key="Payment.by.Bank.(ATM)" bundle="${lang}"></fmt:message></label>
 												<img
-													src="${pageContext.request.contextPath}/image/paypal.jpg"
+													src="${pageContext.request.contextPath}/images/paypal.jpg"
 													border="0" alt="PayPal Acceptance Mark">
 											</div>
 										</div>

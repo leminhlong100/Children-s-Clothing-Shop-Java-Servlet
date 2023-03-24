@@ -28,6 +28,12 @@ public class Product implements Serializable {
     public Product() {
     }
 
+    public Product(int id, String nameProduct, List<ImageProduct> imageProducts) {
+        this.id = id;
+        this.nameProduct = nameProduct;
+        this.imageProducts = imageProducts;
+    }
+
     public Product(int id, String nameProduct, double listPrice, String description, List<View> views, List<Star> stars, List<Comment> comments, int idSupplier, int idProducer, int idCategory, Supplier supplier, Producer producer, Category category, List<ImageProduct> imageProducts, String isActive, String isDelete, List<SizeProduct> productSizes, List<ColorProduct> productColors, int discount, double discountPrice) {
         this.id = id;
         this.nameProduct = nameProduct;
@@ -50,8 +56,7 @@ public class Product implements Serializable {
         this.discount = discount;
         this.discountPrice = discountPrice;
     }
-
-    public Product(int idP, String nameProduct, double listPrice, String description, List<View> views, List<Star> stars, List<Comment> comments, Supplier supplier, Producer producer, Category category, List<ImageProduct> imageProducts, List<SizeProduct> productSizes, List<ColorProduct> productColors, int discount, double discountPrice) {
+    public Product(int id, String nameProduct, double listPrice, String description, List<View> views, List<Star> stars, List<Comment> comments, Supplier supplier, Producer producer, Category category, List<ImageProduct> imageProducts, List<SizeProduct> productSizes, List<ColorProduct> productColors, int discount, double discountPrice) {
         this.id = id;
         this.nameProduct = nameProduct;
         this.listPrice = listPrice;
@@ -73,6 +78,18 @@ public class Product implements Serializable {
         this.id = id;
         this.nameProduct = nameProduct;
         this.listPrice = listPrice;
+        this.imageProducts = imageProducts;
+        this.discount = discount;
+        this.discountPrice = discountPrice;
+    }
+
+    public Product(int id, String nameProduct, double listPrice, String description, Supplier supplier, Producer producer, List<ImageProduct> imageProducts, int discount, double discountPrice) {
+        this.id = id;
+        this.nameProduct = nameProduct;
+        this.listPrice = listPrice;
+        this.description = description;
+        this.supplier = supplier;
+        this.producer = producer;
         this.imageProducts = imageProducts;
         this.discount = discount;
         this.discountPrice = discountPrice;

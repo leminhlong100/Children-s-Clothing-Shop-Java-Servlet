@@ -13,6 +13,8 @@
 <jsp:include page="./link/Link.jsp"></jsp:include>
 </head>
 <body>
+	<c:url var="detail" value="DetailControl"></c:url>
+
 	<!-- Load page -->
 	<div id="preloder">
 		<div class="loader"></div>
@@ -112,7 +114,6 @@
 										<c:forEach var="o" items="${listSellProduct}">
 											<div class="sellingProducts-item">
 												<div class="col-md-5 col-sm-5 sellingProducts-image-wrap">
-													<c:url var="detail" value="DetailControl"></c:url>
 													<a class="sellingProducts-image"
 														href="${detail}?pid=${o.idProduct}"> <img
 														src="./images/${o.imageProducts.get(0).getImage()}" alt=""
@@ -139,7 +140,6 @@
 										<c:forEach var="o" items="${listSellProductTwo}">
 											<div class="sellingProducts-item">
 												<div class="col-md-5 col-sm-5 sellingProducts-image-wrap">
-													<c:url var="detail" value="DetailControl"></c:url>
 													<a class="sellingProducts-image"
 														href="${detail}?pid=${o.idProduct}"> <img
 														src="./images/${o.imageProducts.get(0).getImage()}" alt=""

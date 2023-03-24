@@ -16,7 +16,6 @@ public class AuthDAO {
 	public static Account login(String username, String pass) {
 		Jdbi me = DBContext.me();
 		String passworken = EnCode.toSHA1(pass);
-
 		try {
 			return (Account) me.withHandle(handle -> handle.createQuery(
 					"select id,accountName,password,fullName,address,email,phone,idRoleMember  from accounts where accountName = ? and password  = ? ")
@@ -57,26 +56,6 @@ public class AuthDAO {
 		me.withHandle(handle -> handle.createUpdate(query).bind(0, userName).bind(1, passworken).bind(2, name)
 				.bind(3, email).bind(4, address).bind(5, NumberPhone).execute());
 	}
-
-	public static Account checkAccountExistByid(String uid) {
-
-		String query = "select idCustomer,userName,password,Name,Address,Email,NumberPhone,id_role_member from customer where idCustomer = ?";
-		try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(query);) {
-			ps.setString(1, uid);
-			try (ResultSet rs = ps.executeQuery()) {
-				while (rs.next()) {
-					return new Account(rs.getInt("idCustomer"), rs.getString("userName"), rs.getString("password"),
-							rs.getString("Name"), rs.getString("Address"), rs.getString("Email"),
-							rs.getString("NumberPhone"), rs.getInt("id_role_member"));
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-
-	}
-
 	public static void editAccountInfo(String user, String address, String phone, String uid) {
 		String query = "update customer set userName = ? ,Address = ?,NumberPhone = ?  where idCustomer = ?;";
 		try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(query);) {

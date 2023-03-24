@@ -8,6 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import dao.client.OrderDAO;
 import entity.Order;
 import entity.OrderDetail;
 
@@ -23,10 +25,12 @@ public class DetailBillCotrol extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String id = request.getParameter("id");
-//		Bill b = BillDAO.getBillByBid(id);
-//		List<BillDetail> billProduct = BillDAO.getBillProductByBid(id);
-//		request.setAttribute("bill", b);
-//		request.setAttribute("billProducts", billProduct);
+		Order order = OrderDAO.getOrderByBid(id);
+		List<OrderDetail> orderDetails = OrderDAO.getOrderDetailByBid(id);
+		System.out.println(order);
+		System.out.println(orderDetails);
+		request.setAttribute("bill", order);
+		request.setAttribute("billProducts", orderDetails);
 		request.getRequestDispatcher("/client/BillDetail.jsp").forward(request, response);
 	}
 
