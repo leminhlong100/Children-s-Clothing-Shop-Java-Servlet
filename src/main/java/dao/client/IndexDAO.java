@@ -29,24 +29,49 @@ public class IndexDAO {
 //		return list;
 //	}
 	public static List<Product> getSellProduct() {
+	Jdbi me = DBContext.me();
+	String query ="SELECT products.id,products.nameProduct,product_prices.listPrice,discount,discountPrice FROM kidstore.products join kidstore.product_prices\n" +
+			"on products.id = product_prices.idProduct\n" +
+			" WHERE id IN (\n" +
+			"    SELECT idProduct\n" +
+			"    FROM kidstore.order_details\n" +
+			"    JOIN kidstore.orders ON order_details.idOrder = orders.id\n" +
+			"    WHERE orders.statusPay = 'paid' and isActive =1\n" +
+			"    AND YEAR(orders.createAt) = YEAR(CURRENT_DATE())\n" +
+			"    AND MONTH(orders.createAt) = MONTH(CURRENT_DATE())\n" +
+			"    GROUP BY idProduct\n" +
+			"    ORDER BY SUM(quantity) DESC\n" +
+			"    \n" +
+			")LIMIT 4;\n";
+return me.withHandle(handle -> handle.createQuery(query)
+			.map((rs, ctx) -> new Product(rs.getInt("id"), rs.getString("nameProduct"),
+					rs.getDouble("listPrice"), UtilDAO.findListImageByIdProduct(rs.getInt("id")),
+					rs.getInt("discount"),rs.getDouble("discountPrice")))
+			.list());
+}
+
+	public static List<Product> getSellProductTwo() {
 		Jdbi me = DBContext.me();
-		String query = "SELECT p.idProduct,nameProduct,priceProduct,d.percentage FROM kidstore.products p join kidstore.suppliers s on p.idSupplier = s.idSupplier join kidstore.discount_products dp on p.idProduct=dp.idProduct join kidstore.discounts d on dp.idDiscount = d.idDiscount where d.percentage > 15 and p.isActive ='1' and d.Status = 1 and s.isActive = '1' order by priceProduct asc limit 4 ;";
+		String query ="SELECT products.id,products.nameProduct,product_prices.listPrice,discount,discountPrice FROM kidstore.products join kidstore.product_prices\n" +
+				"on products.id = product_prices.idProduct\n" +
+				" WHERE id IN (\n" +
+				"    SELECT idProduct\n" +
+				"    FROM kidstore.order_details\n" +
+				"    JOIN kidstore.orders ON order_details.idOrder = orders.id\n" +
+				"    WHERE orders.statusPay = 'paid' and isActive =1\n" +
+				"    AND YEAR(orders.createAt) = YEAR(CURRENT_DATE())\n" +
+				"    AND MONTH(orders.createAt) = MONTH(CURRENT_DATE())\n" +
+				"    GROUP BY idProduct\n" +
+				"    ORDER BY SUM(quantity) DESC\n" +
+				"    \n" +
+				")LIMIT 4,4;\n";
 		return me.withHandle(handle -> handle.createQuery(query)
-				.map((rs, ctx) -> new Product(rs.getInt("idProduct"), rs.getString("nameProduct"),
-						rs.getDouble("priceProduct"), UtilDAO.findListImageByIdProduct(rs.getInt("idProduct")),
+				.map((rs, ctx) -> new Product(rs.getInt("id"), rs.getString("nameProduct"),
+						rs.getDouble("listPrice"), UtilDAO.findListImageByIdProduct(rs.getInt("id")),
 						rs.getInt("discount"),rs.getDouble("discountPrice")))
 				.list());
 	}
 
-	public static List<Product> getSellProductTwo() {
-		Jdbi me = DBContext.me();
-		String query = "SELECT p.idProduct,nameProduct,priceProduct,d.percentage FROM kidstore.products p join kidstore.suppliers s on p.idSupplier = s.idSupplier join kidstore.discount_products dp on p.idProduct=dp.idProduct join kidstore.discounts d on dp.idDiscount = d.idDiscount where d.percentage > 15 and p.isActive ='1' and d.Status = 1 and s.isActive = '1' order by priceProduct asc limit 4 ;";
-		return me.withHandle(handle -> handle.createQuery(query)
-				.map((rs, ctx) -> new Product(rs.getInt("idProduct"), rs.getString("nameProduct"),
-						rs.getDouble("priceProduct"), UtilDAO.findListImageByIdProduct(rs.getInt("idProduct")),
-						rs.getInt("discount"),rs.getDouble("discountPrice")))
-				.list());
-	}
 
 	public static List<Product> getOutstandingProduct() {
 		Jdbi me = DBContext.me();

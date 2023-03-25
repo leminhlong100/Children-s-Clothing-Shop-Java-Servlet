@@ -20,11 +20,13 @@ public class Account {
 	private int type;
 	private String idOther;
 	private String currentPassword;
+	private int numberloginfail;
+
 	public Account() {
 		super();
 	}
 
-	public Account(int id, String accountName, String password, String fullName, String address, String email, String phone, int idRoleMember, boolean isDelete, boolean isActive, Date createAt, String image, Date updateAt, Date deleteAt, int type, String idOther, String currentPassword) {
+	public Account(int id, String accountName, String password, String fullName, String address, String email, String phone, int idRoleMember, boolean isDelete, boolean isActive, Date createAt, String image, Date updateAt, Date deleteAt, int type, String idOther, String currentPassword,int numberloginfail) {
 		this.id = id;
 		this.accountName = accountName;
 		this.password = password;
@@ -42,11 +44,15 @@ public class Account {
 		this.type = type;
 		this.idOther = idOther;
 		this.currentPassword = currentPassword;
+		this.numberloginfail = numberloginfail;
 	}
 
-	public Account(int id, String accountName) {
-		this.id = id;
+
+	public Account(int id,String accountName,int numberloginfail) {
+		this.id =id;
 		this.accountName = accountName;
+		this.numberloginfail = numberloginfail;
+
 	}
 
 	public Account(int id, String accountName, String password, String fullName, String address, String email, String phone, int idRoleMember) {
@@ -206,6 +212,12 @@ public class Account {
 		this.currentPassword = currentPassword;
 	}
 
+	public int getNumberloginfail() {
+		return numberloginfail;
+	}
+
+	public void setNumberloginfail(int numberloginfail) { this.numberloginfail = numberloginfail; }
+
 	@Override
 	public String toString() {
 		return "Account{" +
@@ -226,6 +238,7 @@ public class Account {
 				", type=" + type +
 				", idOther='" + idOther + '\'' +
 				", currentPassword='" + currentPassword + '\'' +
+				", numberloginfail=" + numberloginfail +
 				'}';
 	}
 }
