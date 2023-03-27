@@ -115,7 +115,7 @@
 											<div class="sellingProducts-item">
 												<div class="col-md-5 col-sm-5 sellingProducts-image-wrap">
 													<a class="sellingProducts-image"
-														href="${detail}?pid=${o.idProduct}"> <img
+														href="${detail}?pid=${o.id}"> <img
 														src="./images/${o.imageProducts.get(0).getImage()}" alt=""
 														class="img-responsive">
 													</a>
@@ -123,7 +123,7 @@
 												<div class="col-md-7 col-sm-7">
 													<div class="item-info">
 														<h3 class="item-title">
-															<a href="${detail}?pid=${o.idProduct}">${o.nameProduct}</a>
+															<a href="${detail}?pid=${o.id}">${o.nameProduct}</a>
 														</h3>
 														<div class="price-box">
 															<span class="price">${o.priceProduct-(o.priceProduct*(o.percentage/100))}
@@ -209,10 +209,10 @@
 															<a href="${detail}?pid=${o.id}" title="Váy">${o.nameProduct}</a>
 														</h3>
 														<div class="text-center">
-															<form action="/cart/add" method="post" class="variants"
+															<form action="AddToCartControl?pid=${o.id}" method="post" class="variants"
 																id="product-action"
 																enctype="multipart/form-data">
-																<a href="DetailControl?pid=${o.id}">
+																<a href="AddToCartControl?pid=${o.id}">
 																	<button class="button btn-cart btn-more product-atc"
 																		title="Mua hàng" type="button">
 																		<span><img src="./images/Muangay.png" alt="" /></span>
@@ -250,9 +250,7 @@
 														</h3>
 													</div>
 													<div class="text-center">
-														<form action="/cart/add" method="post" class="variants"
-															id="product-actions-3915714"
-															enctype="multipart/form-data">
+														<form action="AddToCartControl?pid=${o.id}" method="post">
 															<a href="${detail}?pid=${o.idProduct}"><button
 																	class="button btn-cart btn-more product-atc"
 																	title="Mua hàng" type="button">
@@ -321,7 +319,7 @@
 														</h3>
 													</div>
 													<div class="text-center">
-														<form action="/cart/add" method="post" class="variants"
+														<form action="AddToCartControl?pid=${o.id}" method="post" class="variants"
 															id="product-actions-3915812"
 															enctype="multipart/form-data">
 															<a href="${detail}?pid=${o.idProduct}"><button
@@ -360,7 +358,7 @@
 														</h3>
 													</div>
 													<div class="text-center">
-														<form action="/cart/add" method="post" class="variants"
+														<form action="AddToCartControl?pid=${o.id}" method="post" class="variants"
 															id="product-aions-3915812"
 															enctype="multipart/form-data">
 															<a href="${detail}?pid=${o.idProduct}"><button
@@ -399,7 +397,7 @@
 														</h3>
 													</div>
 													<div class="text-center">
-														<form action="/cart/add" method="post" class="variants"
+														<form action="AddToCartControl?pid=${o.id}" method="post" class="variants"
 															id="product-action15812"
 															enctype="multipart/form-data">
 															<a href="${detail}?pid=${o.idProduct}"><button
@@ -522,7 +520,7 @@
 										</h3>
 									</div>
 									<div class="text-center">
-										<form action="/cart/add" method="post" class="variants"
+										<form action="AddToCartControl?pid=${o.id}" method="post" class="variants"
 											id="product-actions-3915726" enctype="multipart/form-data">
 											<a href="${detail}?pid=${o.idProduct}"><button
 													class="button btn-cart btn-more product-atc"

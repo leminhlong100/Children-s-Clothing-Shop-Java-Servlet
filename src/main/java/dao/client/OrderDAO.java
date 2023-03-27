@@ -27,22 +27,6 @@ public class OrderDAO {
         String query = "insert into orders (idAccount) values(?);";
        return me.withHandle(handle -> handle.createUpdate(query).bind(0,idAccount).executeAndReturnGeneratedKeys("id").mapTo(int.class).one());
     }
-//
-//	public static void setCurrentIdBill(Bill bill) {
-//		String query = "SELECT IDENT_CURRENT('Bill') as LastID";
-//		try {
-//			Connection conn = DBContext.getConnection();
-//			PreparedStatement ps = conn.prepareStatement(query);
-//			ResultSet rs = ps.executeQuery();
-//			while (rs.next()) {
-//				bill.setId(rs.getInt(1));
-//			}
-//		} catch (Exception e) {
-//
-//		}
-//
-//	}
-//
 	public static void createOrderDetail(OrderDetail orderDetail) {
         Jdbi me = DBContext.me();
 		String query = "insert into order_details (idOrder,idProduct,quantity,price) values(?,?,?,?);";
@@ -54,64 +38,6 @@ public class OrderDAO {
 		String query = "update orders set totalPrice = ?,createAt =?,sale=?,status=?,statusPay=?,address=?,note=? where id = ?";
         me.withHandle(handle -> handle.createUpdate(query).bind(0,order.getTotalPrice()).bind(1,order.getCreateAt()).bind(2,order.getSale()).bind(3,order.getStatus()).bind(4,order.getStatusPay()).bind(5,order.getAddress()).bind(6,order.getNote()).bind(7,order.getId()).execute());
 	}
-//
-//	public static List<Bill> getListBill() {
-//		List<Bill> list = new ArrayList<>();
-//		String query = "select * from Bill order by bid desc";
-//		try {
-//			Connection conn = DBContext.getConnection();
-//			PreparedStatement ps = conn.prepareStatement(query);
-//			ResultSet rs = ps.executeQuery();
-//			while (rs.next()) {
-//				list.add(new Bill(rs.getInt(1), AuthDAO.checkAccountExistByid(rs.getString(2)), rs.getString(3),
-//						rs.getLong(4), rs.getString(5), rs.getString(6)));
-//			}
-//		} catch (Exception e) {
-//
-//		}
-//		return list;
-//
-//	}
-//
-//
-//
-//	public static Bill getBillforBillProduct(String bid) {
-//		String query = "select b.* from bill b join Billproduct bp on bp.bid = b.bid where bp.bid = ?";
-//		try {
-//			Connection conn = DBContext.getConnection();
-//			PreparedStatement ps = conn.prepareStatement(query);
-//			ps.setString(1, bid);
-//			ResultSet rs = ps.executeQuery();
-//			while (rs.next()) {
-//				return new Bill(rs.getInt(1), AuthDAO.checkAccountExistByid(rs.getString(2)), rs.getString(3),
-//						rs.getLong(4), rs.getString(5), rs.getString(6));
-//			}
-//		} catch (Exception e) {
-//
-//		}
-//		return null;
-//
-//	}
-//
-//	public static List<Product> getListProductBybid(String bid) {
-//		List<Product> list = new ArrayList<>();
-//		String query = "select * from product p join Billproduct bp where bid = ? ";
-//		try {
-//			Connection conn = DBContext.getConnection();
-//			PreparedStatement ps = conn.prepareStatement(query);
-//			ps.setString(1, bid);
-//			ResultSet rs = ps.executeQuery();
-//			while (rs.next()) {
-//				list.add(new Product(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4), rs.getString(5),
-//						rs.getString(6), rs.getDouble(8)));
-//			}
-//		} catch (Exception e) {
-//
-//		}
-//		return list;
-//
-//	}
-
 public static Order getOrderByBid(String id) {
     Jdbi me = DBContext.me();
     String query = "select id,createAt,deliveryAt,statusPay,idAccount,sale,totalPrice,status,address,note,idEmployee,updateAt from orders where id = ?";
@@ -119,10 +45,14 @@ public static Order getOrderByBid(String id) {
      order.setAccount(UtilDAO.findAccountById(order.getIdAccount()));
     return order;
 }
-
+public static int updateInventoryProduct(String idProduct,int new_quantity){
+        Jdbi me = DBContext.me();
+        String query = "update inventorys set quantity = ? where idProduct = ?";
+        return me.withHandle(handle -> handle.createUpdate(query).bind(0,new_quantity).bind(1,idProduct).execute());
+}
 
     public static void main(String[] args) {
-        System.out.println(getOrderByBid("10"));
+        System.out.println(updateInventoryProduct("1",50));
     }
 
 }

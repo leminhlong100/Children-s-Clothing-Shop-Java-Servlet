@@ -14,29 +14,34 @@ import entity.OrderDetail;
 
 @WebServlet("/DeleteBillControl")
 public class DeleteBillControl extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-		String key = request.getParameter("key");
-		request.setCharacterEncoding("UTF-8");
-		response.setContentType("text/html;charset=UTF-8");
-		HttpSession session = request.getSession();
-		Object obj = session.getAttribute("cart");
-		if (obj != null) {
-			Map<String, OrderDetail> map = (Map<String, OrderDetail>) obj;
-			map.remove(key);
-			session.setAttribute("cart", map);// update lai vao session
-		}
+        String key = request.getParameter("key");
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession();
+        Object obj = session.getAttribute("cart");
+        int totalQuantity = 0;
+        if (obj != null) {
+            Map<String, OrderDetail> map = (Map<String, OrderDetail>) obj;
+            map.remove(key);
+            for (OrderDetail o : map.values()) {
+                totalQuantity += o.getQuantity();
+            }
+            session.setAttribute("cartTotalQuantity", totalQuantity);
+            session.setAttribute("cart", map);// update lai vao session
+        }
 
-		request.getRequestDispatcher("CartControl").forward(request, response);
-	}
+        request.getRequestDispatcher("CartControl").forward(request, response);
+    }
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // TODO Auto-generated method stub
+        doGet(request, response);
+    }
 
 }

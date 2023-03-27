@@ -24,7 +24,7 @@ public class Product implements Serializable {
     private List<ColorProduct> productColors;
     private int discount;
     private double discountPrice;
-
+    private Inventory inventory;
     public Product() {
     }
 
@@ -56,6 +56,7 @@ public class Product implements Serializable {
         this.discount = discount;
         this.discountPrice = discountPrice;
     }
+
     public Product(int id, String nameProduct, double listPrice, String description, List<View> views, List<Star> stars, List<Comment> comments, Supplier supplier, Producer producer, Category category, List<ImageProduct> imageProducts, List<SizeProduct> productSizes, List<ColorProduct> productColors, int discount, double discountPrice) {
         this.id = id;
         this.nameProduct = nameProduct;
@@ -83,16 +84,28 @@ public class Product implements Serializable {
         this.discountPrice = discountPrice;
     }
 
-    public Product(int id, String nameProduct, double listPrice, String description, Supplier supplier, Producer producer, List<ImageProduct> imageProducts, int discount, double discountPrice) {
+    public Product(int id, String nameProduct, double listPrice, String description, Supplier supplier, Producer producer, Category category, List<ImageProduct> imageProducts, List<SizeProduct> productSizes, List<ColorProduct> productColors, int discount, double discountPrice,Inventory inventory) {
         this.id = id;
         this.nameProduct = nameProduct;
         this.listPrice = listPrice;
         this.description = description;
         this.supplier = supplier;
         this.producer = producer;
+        this.category = category;
         this.imageProducts = imageProducts;
+        this.productSizes = productSizes;
+        this.productColors = productColors;
         this.discount = discount;
         this.discountPrice = discountPrice;
+        this.inventory = inventory;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
     }
 
     public int getId() {
@@ -278,6 +291,7 @@ public class Product implements Serializable {
                 ", productColors=" + productColors +
                 ", discount=" + discount +
                 ", discountPrice=" + discountPrice +
+                ", inventory=" + inventory +
                 '}';
     }
 }
