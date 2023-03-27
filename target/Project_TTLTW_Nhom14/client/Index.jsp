@@ -114,21 +114,22 @@
 										<c:forEach var="o" items="${listSellProduct}">
 											<div class="sellingProducts-item">
 												<div class="col-md-5 col-sm-5 sellingProducts-image-wrap">
+													<c:url var="detail" value="DetailControl"></c:url>
 													<a class="sellingProducts-image"
-														href="${detail}?pid=${o.idProduct}"> <img
-														src="./images/${o.imageProducts.get(0).getImage()}" alt=""
-														class="img-responsive">
+													   href="${detail}?pid=${o.id}"> <img
+															src="./images/${o.imageProducts.get(0).getImage()}" alt=""
+															class="img-responsive">
 													</a>
 												</div>
 												<div class="col-md-7 col-sm-7">
 													<div class="item-info">
 														<h3 class="item-title">
-															<a href="${detail}?pid=${o.idProduct}">${o.nameProduct}</a>
+															<a href="${detail}?pid=${o.id}">${o.nameProduct}</a>
 														</h3>
 														<div class="price-box">
-															<span class="price">${o.priceProduct-(o.priceProduct*(o.percentage/100))}
+															<span class="price">${o.discountPrice}
 																VNĐ</span> <span class="price-compare">
-																${o.priceProduct} VNĐ</span>
+															${o.listPrice} VNĐ</span>
 														</div>
 													</div>
 												</div>
@@ -140,21 +141,22 @@
 										<c:forEach var="o" items="${listSellProductTwo}">
 											<div class="sellingProducts-item">
 												<div class="col-md-5 col-sm-5 sellingProducts-image-wrap">
+													<c:url var="detail" value="DetailControl"></c:url>
 													<a class="sellingProducts-image"
-														href="${detail}?pid=${o.idProduct}"> <img
-														src="./images/${o.imageProducts.get(0).getImage()}" alt=""
-														class="img-responsive">
+													   href="${detail}?pid=${o.id}"> <img
+															src="./images/${o.imageProducts.get(0).getImage()}" alt=""
+															class="img-responsive">
 													</a>
 												</div>
 												<div class="col-md-7 col-sm-7">
 													<div class="item-info">
 														<h3 class="item-title">
-															<a href="${detail}?pid=${o.idProduct}">${o.nameProduct}</a>
+															<a href="${detail}?pid=${o.id}">${o.nameProduct}</a>
 														</h3>
 														<div class="price-box">
-															<span class="price">${o.priceProduct-(o.priceProduct*(o.percentage/100))}
+															<span class="price">${o.discountPrice}
 																VNĐ</span> <span class="price-compare">
-																${o.priceProduct} VNĐ</span>
+															${o.listPrice} VNĐ</span>
 														</div>
 													</div>
 												</div>
@@ -232,20 +234,20 @@
 											<div class="col-md-6 col-sm-6">
 												<div class="discounts-product-right">
 													<div class="discounts-product-image">
-														<a href="${detail}?pid=${o.idProduct}"> <img
-															src="./images/${o.imageProducts.get(0).getImage()}"
-															alt="./images/${o.imageProducts.get(0).getImage()}"
+														<a href="${detail}?pid=${o.id}"> <img
+																src="./images/${o.imageProducts.get(0).getImage()}"
+																alt="./images/${o.imageProducts.get(0).getImage()}"
 															class="img-responsive">
 														</a>
 
 														<div class="price-box">
-															<span class="price">${o.priceProduct}VNĐ</span>
+															<span class="price">${o.listPrice}VNĐ</span>
 														</div>
 
 													</div>
 													<div class="discounts-product-info">
 														<h3 class="item-title">
-															<a href="${detail}?pid=${o.idProduct}"
+															<a href="${detail}?pid=${o.id}"
 																title="${o.nameProduct }">${o.nameProduct}</a>
 														</h3>
 													</div>
@@ -253,7 +255,7 @@
 														<form action="/cart/add" method="post" class="variants"
 															id="product-actions-3915714"
 															enctype="multipart/form-data">
-															<a href="${detail}?pid=${o.idProduct}"><button
+															<a href="${detail}?pid=${o.id}"><button
 																	class="button btn-cart btn-more product-atc"
 																	title="Mua hàng" type="button">
 																	<span><img src="./images/Muangay.png" alt="" /></span>
@@ -302,21 +304,19 @@
 											<div class="col-md-3 col-sm-3 col-xs-12">
 												<div class="discounts-product-right">
 													<div class="discounts-product-image">
-														<a href="${detail}?pid=${o.idProduct}"> <img
+														<a href="${detail}?pid=${o.id}"> <img
 															src="./images/${o.imageProducts.get(0).getImage()}"
 															alt="./images/${o.imageProducts.get(0).getImage()}"
 															class="img-responsive">
 														</a>
-
 														<div class="price-box">
-															<span class="price">${o.priceProduct} VNĐ</span> <span
-																class="price-compare"> ${o.discount} VNĐ</span>
+															<span class="price"> ${o.discountPrice} VNĐ</span> <span
+																class="price-compare"> ${o.listPrice} VNĐ </span>
 														</div>
-
 													</div>
 													<div class="discounts-product-info">
 														<h3 class="item-title">
-															<a href="${detail}?pid=${o.idProduct}"
+															<a href="${detail}?pid=${o.id}"
 																title="${o.nameProduct }">${o.nameProduct }</a>
 														</h3>
 													</div>
@@ -324,7 +324,7 @@
 														<form action="/cart/add" method="post" class="variants"
 															id="product-actions-3915812"
 															enctype="multipart/form-data">
-															<a href="${detail}?pid=${o.idProduct}"><button
+															<a href="${detail}?pid=${o.id}"><button
 																	class="button btn-cart btn-more product-atc"
 																	title="Mua hàng" type="button">
 																	<span><img src="./images/Muangay.png" alt="" /></span>
@@ -341,21 +341,20 @@
 											<div class="col-md-3 col-sm-3 col-xs-12">
 												<div class="discounts-product-right">
 													<div class="discounts-product-image">
-														<a href="${detail}?pid=${o.idProduct}"> <img
+														<a href="${detail}?pid=${o.id}"> <img
 															src="./images/${o.imageProducts.get(0).getImage()}"
 															alt="./images/${o.imageProducts.get(0).getImage()}"
 															class="img-responsive">
 														</a>
 
 														<div class="price-box">
-															<span class="price">${o.priceProduct} VNĐ</span> <span
-																class="price-compare"> ${o.discount} VNĐ</span>
+															<span class="price"> ${o.discountPrice} VNĐ</span> <span
+																class="price-compare"> ${o.listPrice} VNĐ </span>
 														</div>
-
 													</div>
 													<div class="discounts-product-info">
 														<h3 class="item-title">
-															<a href="${detail}?pid=${o.idProduct}"
+															<a href="${detail}?pid=${o.id}"
 																title="${o.nameProduct }">${o.nameProduct }</a>
 														</h3>
 													</div>
@@ -363,7 +362,7 @@
 														<form action="/cart/add" method="post" class="variants"
 															id="product-aions-3915812"
 															enctype="multipart/form-data">
-															<a href="${detail}?pid=${o.idProduct}"><button
+															<a href="${detail}?pid=${o.id}"><button
 																	class="button btn-cart btn-more product-atc"
 																	title="Mua hàng" type="button">
 																	<span><img src="./images/Muangay.png" alt="" /></span>
@@ -380,21 +379,21 @@
 											<div class="col-md-3 col-sm-3 col-xs-12">
 												<div class="discounts-product-right">
 													<div class="discounts-product-image">
-														<a href="${detail}?pid=${o.idProduct}"> <img
+														<a href="${detail}?pid=${o.id}"> <img
 															src="./images/${o.imageProducts.get(0).getImage()}"
 															alt="./images/${o.imageProducts.get(0).getImage()}"
 															class="img-responsive">
 														</a>
 
 														<div class="price-box">
-															<span class="price">${o.priceProduct} VNĐ</span> <span
-																class="price-compare"> ${o.discount} VNĐ</span>
+															<span class="price">${o.discountPrice} VNĐ</span> <span
+																class="price-compare"> ${o.listPrice} VNĐ</span>
 														</div>
 
 													</div>
 													<div class="discounts-product-info">
 														<h3 class="item-title">
-															<a href="${detail}?pid=${o.idProduct}"
+															<a href="${detail}?pid=${o.id}"
 																title="${o.nameProduct }">${o.nameProduct }</a>
 														</h3>
 													</div>
@@ -402,7 +401,7 @@
 														<form action="/cart/add" method="post" class="variants"
 															id="product-action15812"
 															enctype="multipart/form-data">
-															<a href="${detail}?pid=${o.idProduct}"><button
+															<a href="${detail}?pid=${o.id}"><button
 																	class="button btn-cart btn-more product-atc"
 																	title="Mua hàng" type="button">
 																	<span><img src="./images/Muangay.png" alt="" /></span>

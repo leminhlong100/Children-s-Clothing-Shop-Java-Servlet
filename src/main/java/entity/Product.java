@@ -278,6 +278,6 @@ public class Product implements Serializable {
                 ", productColors=" + productColors +
                 ", discount=" + discount +
                 ", discountPrice=" + discountPrice +
-                '}';
+                '}'+"\n";
     }
 }
