@@ -55,6 +55,11 @@ public class Account {
 
 	}
 
+	public Account(int id, String accountName) {
+		this.id = id;
+		this.accountName = accountName;
+	}
+
 	public Account(int id, String accountName, String password, String fullName, String address, String email, String phone, int idRoleMember) {
 		this.id = id;
 		this.accountName = accountName;
@@ -76,8 +81,7 @@ public class Account {
 		this.phone = phone;
 	}
 
-    public Account(int idAccount, String accountName) {
-    }
+
 
     public int getId() {
 		return id;

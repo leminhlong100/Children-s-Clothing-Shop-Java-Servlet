@@ -8,7 +8,11 @@ public class Category {
 		this.idCategory = id;
 		this.nameCategory = name;
 	}
-	
+
+	public Category(String nameCategory) {
+		this.nameCategory = nameCategory;
+	}
+
 	public Category() {
 		super();
 	}
@@ -17,17 +21,20 @@ public class Category {
 	public String toString() {
 		return "Category [id=" + idCategory + ", name=" + nameCategory + "]";
 	}
-	public int getId() {
+
+	public int getIdCategory() {
 		return idCategory;
 	}
-	public void setId(int id) {
-		this.idCategory = id;
+
+	public void setIdCategory(int idCategory) {
+		this.idCategory = idCategory;
 	}
-	public String getName() {
+
+	public String getNameCategory() {
 		return nameCategory;
 	}
-	public void setName(String name) {
-		this.nameCategory = name;
+
+	public void setNameCategory(String nameCategory) {
+		this.nameCategory = nameCategory;
 	}
-	
 }

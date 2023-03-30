@@ -25,9 +25,14 @@ public class AddBillProductControl extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		HttpSession session = request.getSession();
 		Object obj = session.getAttribute("cart");
+		int totalQuantity =0;
 		if(obj!=null) {
 			Map<String, OrderDetail> map = (Map<String, OrderDetail>) obj;
 			map.get(key).setQuantity(map.get(key).getQuantity()+1);
+			for (OrderDetail o : map.values()) {
+				totalQuantity += o.getQuantity();
+			}
+			session.setAttribute("cartTotalQuantity", totalQuantity);
 			session.setAttribute("cart", map);// update lai vao session
 		}
 		

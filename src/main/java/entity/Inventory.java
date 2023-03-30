@@ -1,12 +1,10 @@
 package entity;
 
 import java.sql.Date;
-import java.util.List;
-import java.util.Map;
 
 public class Inventory {
-	private List<Product> products;
-	private Map<Product, Integer> quantities;
+	private int idProduct;
+	private int quantity;
 	private Date createdDate;
 	private Date lastUpdatedDate;
 
@@ -14,34 +12,32 @@ public class Inventory {
 		super();
 	}
 
-	public Inventory(List<Product> products, Map<Product, Integer> quantities, Date createdDate, Date lastUpdatedDate) {
-		super();
-		this.products = products;
-		this.quantities = quantities;
+	public Inventory(int idProduct, int quantities, Date createdDate, Date lastUpdatedDate) {
+		this.idProduct = idProduct;
+		this.quantity = quantities;
 		this.createdDate = createdDate;
 		this.lastUpdatedDate = lastUpdatedDate;
 	}
 
-	@Override
-	public String toString() {
-		return "Inventory [products=" + products + ", quantities=" + quantities + ", createdDate=" + createdDate
-				+ ", lastUpdatedDate=" + lastUpdatedDate + "]";
+	public Inventory(int idProduct, int quantities) {
+		this.idProduct = idProduct;
+		this.quantity = quantities;
 	}
 
-	public List<Product> getProducts() {
-		return products;
+	public int getIdProduct() {
+		return idProduct;
 	}
 
-	public void setProducts(List<Product> products) {
-		this.products = products;
+	public void setIdProduct(int idProduct) {
+		this.idProduct = idProduct;
 	}
 
-	public Map<Product, Integer> getQuantities() {
-		return quantities;
+	public int getQuantity() {
+		return quantity;
 	}
 
-	public void setQuantities(Map<Product, Integer> quantities) {
-		this.quantities = quantities;
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 
 	public Date getCreatedDate() {
@@ -60,4 +56,13 @@ public class Inventory {
 		this.lastUpdatedDate = lastUpdatedDate;
 	}
 
+	@Override
+	public String toString() {
+		return "Inventory{" +
+				"idProduct=" + idProduct +
+				", quantities=" + quantity +
+				", createdDate=" + createdDate +
+				", lastUpdatedDate=" + lastUpdatedDate +
+				'}';
+	}
 }

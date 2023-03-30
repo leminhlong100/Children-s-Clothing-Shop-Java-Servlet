@@ -33,16 +33,12 @@
 		<link href="//bizweb.dktcdn.net/100/117/632/themes/157694/assets/bootstrap.min.css?1564585558451" rel="stylesheet" type="text/css" media="all" />
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 		<link href="//bizweb.dktcdn.net/100/117/632/themes/157694/assets/style.css?1564585558451" rel="stylesheet" type="text/css" media="all" />
-		
 		<link href="//bizweb.dktcdn.net/100/117/632/themes/157694/assets/front-page.css?1564585558451" rel="stylesheet" type="text/css" media="all" />
-		
-		
 		<link href="//bizweb.dktcdn.net/100/117/632/themes/157694/assets/owl.carousel.css?1564585558451" rel="stylesheet" type="text/css" media="all" />
 		<link href="//bizweb.dktcdn.net/100/117/632/themes/157694/assets/owl.theme.css?1564585558451" rel="stylesheet" type="text/css" media="all" />
 		<link href="//bizweb.dktcdn.net/100/117/632/themes/157694/assets/jquery.fancybox.css?1564585558451" rel="stylesheet" type="text/css" media="all" />
 		<link href="//bizweb.dktcdn.net/100/117/632/themes/157694/assets/responsive.css?1564585558451" rel="stylesheet" type="text/css" media="all" />
 		<link href="//bizweb.dktcdn.net/100/117/632/themes/157694/assets/jgrowl.css?1564585558451" rel="stylesheet" type="text/css" media="all" />
-		<link rel="stylesheet" href="${url}/css/checkout.css">
 		<!-- Script -->
 		<script src="//bizweb.dktcdn.net/100/117/632/themes/157694/assets/jquery.min.js?1564585558451" type="text/javascript"></script>
 		<script src="//bizweb.dktcdn.net/100/117/632/themes/157694/assets/bootstrap.min.js?1564585558451" type="text/javascript"></script>

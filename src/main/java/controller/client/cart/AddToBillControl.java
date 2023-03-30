@@ -39,7 +39,13 @@ public class AddToBillControl extends HttpServlet {
 			int idOrder = OrderDAO.createOrder(order.getAccount().getId());
 			order.setId(idOrder);
 			order.setStatusPay("unpaid");
-			order.setAddress(request.getParameter("transaction_address"));
+			String address = request.getParameter("billingAddress");
+			if(address!=null||!address.isEmpty()){
+				order.setAddress(address);
+			}else{
+				order.setAddress(account.getAddress());
+			}
+
 			long total = 0;// tinh tong gia
 			for (Map.Entry<String, OrderDetail> entry : map.entrySet()) {
 				OrderDetail orderDetail = entry.getValue();
@@ -47,12 +53,14 @@ public class AddToBillControl extends HttpServlet {
 				orderDetail.setIdOrder(order.getId());// set bill id vao day
 				// luu lai cac mat hang
 				OrderDAO.createOrderDetail(orderDetail);
+				// cap nhat so luong cua tung san pham
+				OrderDAO.updateInventoryProduct(String.valueOf(orderDetail.getProduct().getId()),orderDetail.getProduct().getInventory().getQuantity()-orderDetail.getQuantity());
 				// tinh tong gia
 				total += orderDetail.getQuantity() * orderDetail.getPrice();
 			}
 			/// cap nhat lai bill de co tong gia tien
-			order.setTotalPrice(total);
-			order.setNote(request.getParameter("transaction_mess"));
+			order.setTotalPrice(total+40000); // vi du cua phi van chyen
+			order.setNote(request.getParameter("note"));
 			OrderDAO.updateOrder(order);
 			session.removeAttribute("cart");
 			request.getRequestDispatcher("CartControl").forward(request, response);

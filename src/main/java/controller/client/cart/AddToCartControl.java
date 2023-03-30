@@ -26,7 +26,7 @@ public class AddToCartControl extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		HttpSession session = request.getSession();
 		String pId = request.getParameter("pid");
-
+		int totalQuantity = 0;
 		Account account = (Account) session.getAttribute("acc");
 		if (account == null) {
 			response.sendRedirect(request.getContextPath() + "/client/Login.jsp?pid=" + pId);
@@ -46,6 +46,9 @@ public class AddToCartControl extends HttpServlet {
 				Map<String, OrderDetail> map = new HashMap<>();
 				map.put(pId, orderDetail);
 				session.setAttribute("cart", map);
+				for (OrderDetail o : map.values()) {
+					totalQuantity += o.getQuantity();
+				}
 			}
 			else {
 				Map<String, OrderDetail> map = (Map<String, OrderDetail>) obj;
@@ -60,9 +63,13 @@ public class AddToCartControl extends HttpServlet {
 
 					orderDetail.setQuantity(orderDetail.getQuantity() + quantity);
 				}
+				for (OrderDetail o : map.values()) {
+					totalQuantity += o.getQuantity();
+				}
 				session.setAttribute("cart", map);// luu tam vao session
 
 			}
+			session.setAttribute("cartTotalQuantity", totalQuantity);
 			request.getRequestDispatcher("CartControl").forward(request, response);
 		}
 	}

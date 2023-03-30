@@ -12,7 +12,7 @@ import entity.Product;
 import entity.View;
 
 public class IndexDAO {
-//	public static List<Product> getSellProduct() {
+	//	public static List<Product> getSellProduct() {
 //		List<Product> list = new ArrayList<>();
 //		String query = "SELECT p.idProduct,nameProduct,priceProduct,d.percentage FROM kidstore.products p join kidstore.suppliers s on p.idSupplier = s.idSupplier join kidstore.discount_products dp on p.idProduct=dp.idProduct join kidstore.discounts d on dp.idDiscount = d.idDiscount where d.percentage > 15 and p.isActive ='1' and d.Status = 1 and s.isActive = '1' order by priceProduct asc limit 4 ;";
 //		try (Connection conn = DBContext.getConnection();
@@ -30,26 +30,26 @@ public class IndexDAO {
 //		return list;
 //	}
 	public static List<Product> getSellProduct() {
-	Jdbi me = DBContext.me();
-	String query ="SELECT products.id,products.nameProduct,product_prices.listPrice,discount,discountPrice FROM kidstore.products join kidstore.product_prices\n" +
-			"on products.id = product_prices.idProduct\n" +
-			" WHERE id IN (\n" +
-			"    SELECT idProduct\n" +
-			"    FROM kidstore.order_details\n" +
-			"    JOIN kidstore.orders ON order_details.idOrder = orders.id\n" +
-			"    WHERE orders.statusPay = 'paid' and isActive =1\n" +
-			"    AND YEAR(orders.createAt) = YEAR(CURRENT_DATE())\n" +
-			"    AND MONTH(orders.createAt) = MONTH(CURRENT_DATE())\n" +
-			"    GROUP BY idProduct\n" +
-			"    ORDER BY SUM(quantity) DESC\n" +
-			"    \n" +
-			")LIMIT 4;\n";
-return me.withHandle(handle -> handle.createQuery(query)
-			.map((rs, ctx) -> new Product(rs.getInt("id"), rs.getString("nameProduct"),
-					rs.getDouble("listPrice"), UtilDAO.findListImageByIdProduct(rs.getInt("id")),
-					rs.getInt("discount"),rs.getDouble("discountPrice")))
-			.list());
-}
+		Jdbi me = DBContext.me();
+		String query ="SELECT products.id,products.nameProduct,product_prices.listPrice,discount,discountPrice FROM kidstore.products join kidstore.product_prices\n" +
+				"on products.id = product_prices.idProduct\n" +
+				" WHERE id IN (\n" +
+				"    SELECT idProduct\n" +
+				"    FROM kidstore.order_details\n" +
+				"    JOIN kidstore.orders ON order_details.idOrder = orders.id\n" +
+				"    WHERE orders.statusPay = 'paid' and isActive =1\n" +
+				"    AND YEAR(orders.createAt) = YEAR(CURRENT_DATE())\n" +
+				"    AND MONTH(orders.createAt) = MONTH(CURRENT_DATE())\n" +
+				"    GROUP BY idProduct\n" +
+				"    ORDER BY SUM(quantity) DESC\n" +
+				"    \n" +
+				")LIMIT 4;\n";
+		return me.withHandle(handle -> handle.createQuery(query)
+				.map((rs, ctx) -> new Product(rs.getInt("id"), rs.getString("nameProduct"),
+						rs.getDouble("listPrice"), UtilDAO.findListImageByIdProduct(rs.getInt("id")),
+						rs.getInt("discount"),rs.getDouble("discountPrice")))
+				.list());
+	}
 
 	public static List<Product> getSellProductTwo() {
 		Jdbi me = DBContext.me();
@@ -154,8 +154,8 @@ return me.withHandle(handle -> handle.createQuery(query)
 				+ "FROM product p join producers s on p.idProducer = s.idProducer \r\n"
 				+ "where p.isActice ='1' and s.isActice and (100/p.discount*(p.discount-p.priceProduct)>10);";
 		try (Connection conn = DBContext.getConnection();
-				PreparedStatement ps = conn.prepareStatement(query);
-				ResultSet rs = ps.executeQuery();) {
+			 PreparedStatement ps = conn.prepareStatement(query);
+			 ResultSet rs = ps.executeQuery();) {
 			while (rs.next()) {
 				list.add(new Product(rs.getInt("idProduct"), rs.getString("nameProduct"),
 						rs.getDouble("priceProduct"), UtilDAO.findListImageByIdProduct(rs.getInt("idProduct")),

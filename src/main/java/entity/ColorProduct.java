@@ -1,12 +1,13 @@
 package entity;
 
 public class ColorProduct {
-	private int idColorProduct;
+	private int id;
+	private int idProduct;
 	private String color;
 
-	public ColorProduct(int idColorProduct, String color) {
-		super();
-		this.idColorProduct = idColorProduct;
+	public ColorProduct(int id, int idProduct, String color) {
+		this.id = id;
+		this.idProduct = idProduct;
 		this.color = color;
 	}
 
@@ -16,15 +17,19 @@ public class ColorProduct {
 
 	@Override
 	public String toString() {
-		return "ColorProduct [idColorProduct=" + idColorProduct + ", color=" + color + "]";
+		return "ColorProduct{" +
+				"id=" + id +
+				", idProduct=" + idProduct +
+				", color='" + color + '\'' +
+				'}';
 	}
 
-	public int getIdColorProduct() {
-		return idColorProduct;
+	public int getId() {
+		return id;
 	}
 
-	public void setIdColorProduct(int idColorProduct) {
-		this.idColorProduct = idColorProduct;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getColor() {
@@ -35,4 +40,11 @@ public class ColorProduct {
 		this.color = color;
 	}
 
+	public int getIdProduct() {
+		return idProduct;
+	}
+
+	public void setIdProduct(int idProduct) {
+		this.idProduct = idProduct;
+	}
 }

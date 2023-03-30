@@ -18,7 +18,7 @@ if (session.getAttribute("acc") == null) {
 <head>
 <meta charset="UTF-8" />
 <title><fmt:message key="Cart" bundle="${lang}"></fmt:message></title>
-<link rel="icon" type="image" href="../image/HaLoicon.png" />
+<link rel="icon" type="image" href="../images/HaLoicon.png" />
 
 <jsp:include page="./link/Link.jsp"></jsp:include>
 </head>
@@ -79,12 +79,12 @@ if (session.getAttribute("acc") == null) {
 												</td>
 												<td class="text-center"><c:url var="minus"
 														value="MinusBillProductControl"></c:url> <a
-													href="${minus }?key=${o.key}"><button name="minus"
-															value="minus" type="button">-</button></a><input type="text"
+													href="${minus }?key=${o.key}"><button style="border-radius: 50%;background-color: white" name="minus"
+															value="minus" type="button">-</button></a><input style="margin-left: 5px" type="text"
 													class="item-quantity" value="${o.value.quantity} "
 													name="Lines" id="updates_6383545" min="1" readonly>
 													<c:url var="add" value="AddBillProductControl"></c:url><a
-													href="${add}?key=${o.key}"><button name="add"
+													href="${add}?key=${o.key}"><button style="border-radius: 50%;background-color: white" name="add"
 															value="add" type="button">+</button></a></td>
 												<td class="text-center"><p class="l">
 														<c:set var="sumALl"
@@ -104,8 +104,8 @@ if (session.getAttribute("acc") == null) {
 					</div>
 					<c:if test="${!empty sessionScope.cart }">
 						<div class="col-md-9 col-xs-12">
-							<c:url var="showProduct" value="ShowProductControl"></c:url>
-							<a href="${showProduct}" class="btn-cart next"> <fmt:message
+
+							<a href="IndexControl" class="btn-cart next"> <fmt:message
 									key="BUY.MORE" bundle="${lang}"></fmt:message></a>
 						</div>
 

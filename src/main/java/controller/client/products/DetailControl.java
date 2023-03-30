@@ -1,6 +1,8 @@
 package controller.client.products;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,7 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.client.ProductDAO;
 import dao.client.UtilDAO;
+import entity.ColorProduct;
 import entity.Product;
+import entity.SizeProduct;
 
 @WebServlet("/DetailControl")
 public class DetailControl extends HttpServlet {
@@ -21,7 +25,14 @@ public class DetailControl extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		String id = request.getParameter("pid");
 		Product p = UtilDAO.findProductById(Integer.parseInt(id));
+		List<String> listSizeAndColor =new  ArrayList<>();
+		for (ColorProduct color : p.getProductColors()) {
+			for (SizeProduct size : p.getProductSizes()) {
+				listSizeAndColor.add(color.getColor() + " - " + size.getSize());
+			}
+		}
 		request.setAttribute("detail", p);
+		request.setAttribute("listSizeAndColor",listSizeAndColor);
 		request.getRequestDispatcher("/client/Detail.jsp").forward(request, response);
 	}
 

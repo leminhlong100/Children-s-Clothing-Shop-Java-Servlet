@@ -37,7 +37,7 @@ public class LoginControl extends HttpServlet {
 		Log log = new Log(Log.INFO, ipAddress, -1, this.name, "", 0);
 		int num = AuthDAO.loginfail(userName);
 		int	 fail = 0;
-		if(num>=5){
+		if(num>5){
 			request.setAttribute("error", "Bạn đã nhập sai quá 5 lần. Vui lòng liên hệ Admin để mở khóa đăng nhập ");
 			request.getRequestDispatcher("/client/Login.jsp").forward(request, response);
 		}
