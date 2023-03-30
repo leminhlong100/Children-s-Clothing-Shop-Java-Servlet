@@ -81,8 +81,7 @@ public class Account {
 		this.phone = phone;
 	}
 
-    public Account(int idAccount, String accountName) {
-    }
+
 
     public int getId() {
 		return id;

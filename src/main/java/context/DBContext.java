@@ -14,12 +14,12 @@ import com.zaxxer.hikari.HikariDataSource;
 //import entity.Product;
 
 public class DBContext {
-	private static final String serverName = "192.168.18.8";
+	private static final String serverName = "localhost";
 	private static final String dbName = "kidstore";
 	private static final String portNumber = "3306";
 	private static final String instance = "";// LEAVE THIS ONE EMPTY IF YOUR SQL IS A SINGLE INSTANCE
 	private static final String userID = "root";
-	private static final String password = "loc123456789";
+	private static final String password = "123456";
 	private static HikariDataSource dataSource;
 	static Jdbi jdbi;
 	

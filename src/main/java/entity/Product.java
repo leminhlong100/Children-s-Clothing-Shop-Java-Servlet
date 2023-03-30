@@ -291,11 +291,7 @@ public class Product implements Serializable {
                 ", productColors=" + productColors +
                 ", discount=" + discount +
                 ", discountPrice=" + discountPrice +
-<<<<<<< HEAD
                 ", inventory=" + inventory +
                 '}';
-=======
-                '}'+"\n";
->>>>>>> 05053dd619ee6cdc94e5ae497bbd3963e73a628a
     }
 }
