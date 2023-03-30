@@ -63,7 +63,7 @@ public class AddToBillControl extends HttpServlet {
 			order.setNote(request.getParameter("note"));
 			OrderDAO.updateOrder(order);
 			session.removeAttribute("cart");
-			request.getRequestDispatcher("CartControl").forward(request, response);
+			request.getRequestDispatcher("CheckOut.jsp").forward(request, response);
 		} else {
 			request.getRequestDispatcher("CartControl").forward(request, response);
 		}

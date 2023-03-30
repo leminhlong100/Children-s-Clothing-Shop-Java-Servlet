@@ -22,21 +22,21 @@ public class IndexControl extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
 		if (isDispatched == null || !isDispatched) {
-//			List<Product> list = IndexDAO.getSellProduct();
-//			List<Product> listSellProductTwo = IndexDAO.getSellProductTwo();
+			List<Product> list = IndexDAO.getSellProduct();
+			List<Product> listSellProductTwo = IndexDAO.getSellProductTwo();
 			List<Product> listOutstandingProduct = IndexDAO.getOutstandingProduct();
-//		List<Product> listOutstandingProductShoes = IndexDAO.getOutstandingProductShoes();
-//		List<Product> listNewProduct = IndexDAO.getNewProductBoy();
-//		List<Product> listNewProductGirl = IndexDAO.getNewProductGirl();
-//		List<Product> listNewProductAccessory = IndexDAO.getNewProductAccessory();
+			List<Product> listOutstandingProductShoes = IndexDAO.getOutstandingProductShoes();
+			List<Product> listNewProduct = IndexDAO.getNewProductBoy();
+			List<Product> listNewProductGirl = IndexDAO.getNewProductGirl();
+			List<Product> listNewProductAccessory = IndexDAO.getNewProductAccessory();
 //		List<Product> listgetSuperSellProduct = IndexDAO.getSuperSellProduct();
-//			request.setAttribute("listSellProduct", list);
-//			request.setAttribute("listSellProductTwo", listSellProductTwo);
+			request.setAttribute("listSellProduct", list);
+			request.setAttribute("listSellProductTwo", listSellProductTwo);
 			request.setAttribute("listOutstandingProduct", listOutstandingProduct);
-//		request.setAttribute("listOutstandingProductShoes", listOutstandingProductShoes);
-//		request.setAttribute("getNewProductBoy", listNewProduct);
-//		request.setAttribute("listNewProductGirl", listNewProductGirl);
-//		request.setAttribute("listNewProductAccessory", listNewProductAccessory);
+			request.setAttribute("listOutstandingProductShoes", listOutstandingProductShoes);
+			request.setAttribute("getNewProductBoy", listNewProduct);
+			request.setAttribute("listNewProductGirl", listNewProductGirl);
+			request.setAttribute("listNewProductAccessory", listNewProductAccessory);
 //		request.setAttribute("listgetSuperSellProduct", listgetSuperSellProduct);
 			request.getRequestDispatcher("client/Index.jsp").forward(request, response);
 		}
