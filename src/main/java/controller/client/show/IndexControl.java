@@ -25,18 +25,32 @@ public class IndexControl extends HttpServlet {
 			List<Product> list = IndexDAO.getSellProduct();
 			List<Product> listSellProductTwo = IndexDAO.getSellProductTwo();
 			List<Product> listOutstandingProduct = IndexDAO.getOutstandingProduct();
+<<<<<<< HEAD
 			List<Product> listOutstandingProductShoes = IndexDAO.getOutstandingProductShoes();
 			List<Product> listNewProduct = IndexDAO.getNewProductBoy();
 			List<Product> listNewProductGirl = IndexDAO.getNewProductGirl();
 			List<Product> listNewProductAccessory = IndexDAO.getNewProductAccessory();
+=======
+		List<Product> listOutstandingProductShoes = IndexDAO.getOutstandingProductShoes();
+		List<Product> listNewProduct = IndexDAO.getNewProductBoy();
+		List<Product> listNewProductGirl = IndexDAO.getNewProductGirl();
+		List<Product> listNewProductAccessory = IndexDAO.getNewProductAccessory();
+>>>>>>> 05053dd619ee6cdc94e5ae497bbd3963e73a628a
 //		List<Product> listgetSuperSellProduct = IndexDAO.getSuperSellProduct();
 			request.setAttribute("listSellProduct", list);
 			request.setAttribute("listSellProductTwo", listSellProductTwo);
 			request.setAttribute("listOutstandingProduct", listOutstandingProduct);
+<<<<<<< HEAD
 			request.setAttribute("listOutstandingProductShoes", listOutstandingProductShoes);
 			request.setAttribute("getNewProductBoy", listNewProduct);
 			request.setAttribute("listNewProductGirl", listNewProductGirl);
 			request.setAttribute("listNewProductAccessory", listNewProductAccessory);
+=======
+		request.setAttribute("listOutstandingProductShoes", listOutstandingProductShoes);
+		request.setAttribute("getNewProductBoy", listNewProduct);
+		request.setAttribute("listNewProductGirl", listNewProductGirl);
+		request.setAttribute("listNewProductAccessory", listNewProductAccessory);
+>>>>>>> 05053dd619ee6cdc94e5ae497bbd3963e73a628a
 //		request.setAttribute("listgetSuperSellProduct", listgetSuperSellProduct);
 			request.getRequestDispatcher("client/Index.jsp").forward(request, response);
 		}
