@@ -17,22 +17,16 @@ public class UtilDAO {
         return me.withHandle(handle -> handle.createQuery("SELECT id,idProduct,image FROM image_products where idProduct = ?").bind(0, idProduct).mapToBean(ImageProduct.class).list());
     }
 
-    public static List<SizeProduct> findListSizeByIdProduct(int idProduct) {
+    public static List<SizeColorProduct> findListSizeColorByIdProduct(int idProduct) {
         Jdbi me = DBContext.me();
-        return me.withHandle(handle -> handle.createQuery("SELECT id,idProduct,size FROM sizes_products where idProduct = ?").bind(0, idProduct).mapToBean(SizeProduct.class).list());
+        return me.withHandle(handle -> handle.createQuery("SELECT id,idProduct,size,color FROM size_color_products where idProduct = ?").bind(0, idProduct).mapToBean(SizeColorProduct.class).list());
     }
-
-    public static List<ColorProduct> findListColorByIdProduct(int idProduct) {
-        Jdbi me = DBContext.me();
-        return me.withHandle(handle -> handle.createQuery("SELECT id,idProduct,color FROM color_products where idProduct = ?").bind(0, idProduct).mapToBean(ColorProduct.class).list());
-    }
-
     public static Product findProductById(int idProduct) {
         Jdbi me = DBContext.me();
-        String query = "SELECT p.id,p.nameProduct,listPrice,description,nameSupplier,nameProducer,nameCategorie,pp.discount,pp.discountPrice,i.quantity FROM products p join product_prices pp on p.id = pp.idProduct join suppliers s on p.idSupplier = s.id join producers ps on ps.id = p.idProducer join categories c on p.idCategorie = c.id join inventorys i on i.idProduct = p.id where p.isActive ='1' and s.isActive= '1' and p.id = ?";
+        String query = "SELECT p.id,p.nameProduct,listPrice,description,nameSupplier,nameProducer,nameCategorie,pp.discount,pp.discountPrice,i.quantity,i.id_size_color FROM products p join product_prices pp on p.id = pp.idProduct join suppliers s on p.idSupplier = s.id join producers ps on ps.id = p.idProducer join categories c on p.idCategorie = c.id join inventorys i on i.idProduct = p.id where p.isActive ='1' and s.isActive= '1' and p.id = ?";
         return me.withHandle(handle -> handle.createQuery(query).bind(0, idProduct).map((rs, ctx) -> new Product(rs.getInt("id"), rs.getString("nameProduct"),
                         rs.getDouble("listPrice"), rs.getString("description"), new Supplier(rs.getString("nameSupplier")), new Producer(rs.getString("nameProducer")),new Category(rs.getString("nameCategorie")),
-                        UtilDAO.findListImageByIdProduct(rs.getInt("id")), UtilDAO.findListSizeByIdProduct(rs.getInt("id")), UtilDAO.findListColorByIdProduct(rs.getInt("id")), rs.getInt("discount"), rs.getDouble("discountPrice"),new Inventory(rs.getInt("id"), rs.getInt("quantity"))))
+                        UtilDAO.findListImageByIdProduct(rs.getInt("id")), UtilDAO.findListSizeColorByIdProduct(rs.getInt("id")), rs.getInt("discount"), rs.getDouble("discountPrice"),new Inventory(rs.getInt("id"),rs.getInt("id_size_color"), rs.getInt("quantity"))))
                 .findFirst().orElse(null));
     }
 

@@ -109,19 +109,19 @@
                             </ul>
                             <p class="pd-description-mini">${detail.description}</p>
                             <div class="pd-form">
+                                <c:url var="addToCart" value="AddToCartControl"></c:url>
+                                <form action="${addToCart}?pid=${detail.id}" method="post">
                                 <div class="pd-form-top clearfix">
                                     <div class="selector-wrapper">
                                         <select id="product-select" name="variantId"
                                                 class="single-option-selector">
-                                            <c:forEach var="o" items="${listSizeAndColor}">
-                                                <option value="">${o} / ${detail.discountPrice}₫</option>
+                                            <c:forEach var="o" items="${detail.colorSizes}">
+                                                <option value="${o.size}/${o.color}">${o.size}/${o.color} - ${detail.discountPrice}₫</option>
                                             </c:forEach>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="pd-form-bottom clearfix">
-                                    <c:url var="addToCart" value="AddToCartControl"></c:url>
-                                    <form action="${addToCart}?pid=${ detail.id}" method="post">
                                         <input type="number" class="single-input-selector" value="1"
                                                min="1" name="quantity">
 
@@ -130,9 +130,8 @@
                                                 type="submit" class="button" title="Đặt hàng" type="submit">
                                             <span><fmt:message key="ORDER" bundle="${lang}"></fmt:message></span>
                                         </button>
-                                    </form>
                                 </div>
-
+                                </form>
                                 <div class="sk-hotline-block">
 										<span><fmt:message key="Call.now.for.buying.advice"
                                                            bundle="${lang}"></fmt:message></span>
@@ -147,7 +146,6 @@
                                     <img
                                             src="//bizweb.dktcdn.net/100/117/632/themes/157694/assets/icon-dt.jpg?1564585558451"/>
                                 </div>
-
                             </div>
                         </div>
                     </div>

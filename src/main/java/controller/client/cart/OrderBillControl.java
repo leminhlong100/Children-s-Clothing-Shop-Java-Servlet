@@ -3,6 +3,7 @@ package controller.client.cart;
 import entity.OrderDetail;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,13 +30,14 @@ public class OrderBillControl extends HttpServlet {
 		Object obj = session.getAttribute("cart");// luu tam vao session
 		int totalQuantity = 0;
 		if (obj != null) {
-			Map<String, OrderDetail> cartTemporary = (Map<String, OrderDetail>) obj;
-			for (OrderDetail orderDetail : cartTemporary.values()) {
-				totalQuantity += orderDetail.getQuantity();
+			Map<String, List<OrderDetail>> cartTemp = (Map<String, List<OrderDetail>>) obj;
+			for (Map.Entry<String, List<OrderDetail>> entry : cartTemp.entrySet()) {
+				List<OrderDetail> orderDetails = entry.getValue();
+				for (OrderDetail orderDetail : orderDetails) {
+					totalQuantity += orderDetail.getQuantity();
+				}
 			}
 		}
-		System.out.println(totalQuantity);
-
 		request.setAttribute("total", total);
 		request.setAttribute("totalQuantity", totalQuantity);
 		request.getRequestDispatcher("/client/Order.jsp").forward(request, response);

@@ -4,6 +4,7 @@ import java.sql.Date;
 
 public class Inventory {
 	private int idProduct;
+	private int id_size_color;
 	private int quantity;
 	private Date createdDate;
 	private Date lastUpdatedDate;
@@ -12,16 +13,26 @@ public class Inventory {
 		super();
 	}
 
-	public Inventory(int idProduct, int quantities, Date createdDate, Date lastUpdatedDate) {
+	public Inventory(int idProduct, int id_size_color, int quantity, Date createdDate, Date lastUpdatedDate) {
 		this.idProduct = idProduct;
-		this.quantity = quantities;
+		this.id_size_color = id_size_color;
+		this.quantity = quantity;
 		this.createdDate = createdDate;
 		this.lastUpdatedDate = lastUpdatedDate;
 	}
 
-	public Inventory(int idProduct, int quantities) {
+	public Inventory(int idProduct, int id_size_color, int quantity) {
 		this.idProduct = idProduct;
-		this.quantity = quantities;
+		this.id_size_color = id_size_color;
+		this.quantity = quantity;
+	}
+
+	public int getId_size_color() {
+		return id_size_color;
+	}
+
+	public void setId_size_color(int id_size_color) {
+		this.id_size_color = id_size_color;
 	}
 
 	public int getIdProduct() {
