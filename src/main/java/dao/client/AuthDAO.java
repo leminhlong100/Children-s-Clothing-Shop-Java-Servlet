@@ -1,12 +1,13 @@
 package dao.client;
 
-import java.sql.*;
-
-import org.jdbi.v3.core.Jdbi;
-
 import context.DBContext;
 import entity.Account;
+import org.jdbi.v3.core.Jdbi;
 import util.EnCode;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class AuthDAO {
 	public AuthDAO() {
@@ -15,15 +16,12 @@ public class AuthDAO {
 
 	public static Account login(String username, String pass) {
 		Jdbi me = DBContext.me();
-		String passworken = EnCode.toSHA1(pass);
-		try {
-			return (Account) me.withHandle(handle -> handle.createQuery(
-					"select id,accountName,password,fullName,address,email,phone,idRoleMember  from accounts where accountName = ? and password  = ? ")
-					.bind(0, username).bind(1, passworken).mapToBean(Account.class).findFirst().orElse(null));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		String passEncode = EnCode.toSHA1(pass);
+		String queryLogin = "select id,accountName,password,fullName,address,email,phone,idRoleMember from accounts where accountName = ? and password  = ?";
+		return (Account) me.withHandle(handle -> {
+			return handle.createQuery(queryLogin)
+					.bind(0, username).bind(1, passEncode).mapToBean(Account.class).findFirst().orElse(null);
+		});
 	}
 
 	public static boolean checkAccountExist(String userName) { // ton tai la true
@@ -37,14 +35,14 @@ public class AuthDAO {
 			return true;
 		}
 	}
-		public static int loginfail(String username) {
+	public static int loginFail(String username) {
 		Jdbi me = DBContext.me();
 		try {
 			int num = me.withHandle(handle -> handle.createQuery(
 							"SELECT numberloginfail FROM accounts WHERE accountName = ?")
 					.bind(0, username).mapTo(int.class).one());
-			if (num >= 5) { 
-				return 5; 
+			if (num >= 5) {
+				return 5;
 			}
 			me.withHandle(handle -> handle.createUpdate(
 							"UPDATE accounts SET numberloginfail = ? WHERE accountName = ?")
@@ -57,20 +55,18 @@ public class AuthDAO {
 		return 0;
 	}
 
-	public static int resetlogin(String username) {
+	public static void resetlogin(String username) {
 		Jdbi me = DBContext.me();
 		try {
-			int numreset = me.withHandle(handle -> handle.createQuery(
+			me.withHandle(handle -> handle.createQuery(
 							"SELECT numberloginfail FROM accounts WHERE accountName = ?")
 					.bind(0, username).mapTo(int.class).one());
 			me.withHandle(handle -> handle.createUpdate(
 							"UPDATE accounts SET numberloginfail = ? WHERE accountName = ?")
 					.bind(0, 0 ).bind(1, username).execute());
-			return 0;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return 0;
 	}
 
 
@@ -85,19 +81,26 @@ public class AuthDAO {
 			return true;
 		}
 	}
-public static Account signup(String userName, String password, String name, String email, String address,
-			String NumberPhone) {
-		String query = "INSERT INTO accounts (accountName, password, fullName, email, address,phone) VALUES (?, ?, ?, ?, ?, ?);";
-		String passworken = EnCode.toSHA1(password);
-		try{
+	public static boolean signUp(String userName, String password, String name, String email, String address, String NumberPhone) {
+		String signInQuery = "INSERT INTO accounts (accountName, password, fullName, email, address,phone) VALUES (?, ?, ?, ?, ?, ?);";
+		String passEncode = EnCode.toSHA1(password);
 		Jdbi me = DBContext.me();
-		me.withHandle(handle -> handle.createUpdate(query).bind(0, userName).bind(1, passworken).bind(2, name)
-			.bind(3, email).bind(4, address).bind(5, NumberPhone).execute());
-		}catch (Exception e ){
-		e.printStackTrace();
-}
-		return null;
+		me.withHandle(handle -> {
+			try {
+				handle.begin();
+				handle.createUpdate(signInQuery).bind(0, userName).bind(1, passEncode).bind(2, name)
+						.bind(3, email).bind(4, address).bind(5, NumberPhone).execute();
+				handle.commit();
+				return true;
+			} catch (Exception e) {
+				handle.rollback();
+				e.printStackTrace();
+			}
+			return false;
+		});
+		return false;
 	}
+
 	public static void editAccountInfo(String user, String address, String phone, String uid) {
 		String query = "update customer set userName = ? ,Address = ?,NumberPhone = ?  where idCustomer = ?;";
 		try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(query);) {
@@ -141,61 +144,47 @@ public static Account signup(String userName, String password, String name, Stri
 		}
 	}
 
-	public static void signinGoogle(String id, String name, String email, String picture) {
-		String cusQuery = "insert into customers (userName, password, Name, Email, isDelete, isActive, image) values (:userName, :password, :Name, :Email, :isDelete, :isActive, :image)";
-		String googleQuery = "insert into google_logins (idgoogle_login, name, email, idCustomer, image) values (:idgoogle_login, :name, :email, :idCustomer, :image)";
+	public static void signUpGoogle(String id, String name, String email, String picture) {
+		String ggCus = "insert into accounts (accountName, password, fullName, email, image, type, idOther) values (:accountName, :password, :fullName, :email, :image, :type, :idOther)";
 		Jdbi me = DBContext.me();
 		me.useHandle(handle -> {
 			try {
 				handle.begin();
-				int generatedId = handle.createUpdate(cusQuery).bind("userName", EnCode.toSHA1(EnCode.toSHA1(name)))
-						.bind("password", EnCode.toSHA1(EnCode.toSHA1(email))).bind("Name", name).bind("Email", email)
-						.bind("isDelete", 0).bind("isActive", 1).bind("image", picture)
-						.executeAndReturnGeneratedKeys("idCustomer").mapTo(int.class).one();
-
-				handle.createUpdate(googleQuery).bind("idgoogle_login", id).bind("name", name).bind("email", email)
-						.bind("idCustomer", generatedId).bind("image", picture).execute();
+				handle.createUpdate(ggCus).bind("accountName", EnCode.toSHA1(EnCode.toSHA1(name)))
+						.bind("password", EnCode.toSHA1(EnCode.toSHA1(email))).bind("fullName", name).bind("email", EnCode.toSHA1(EnCode.toSHA1(email)))
+						.bind("image", picture).bind("type", 3).bind("idOther", id)
+						.execute();
 				handle.commit();
 			} catch (Exception e) {
 				handle.rollback();
 				e.printStackTrace();
 			}
 		});
-
 	}
 
-	public static Account LoginGG(String id, String email) {
-		String query = "select c.idCustomer, c.userName, c.password, c.Name, c.Address, c.Email, c.NumberPhone, c.id_role_member, c.isDelete, c.isActive, c.create_date, c.image from customers c join google_logins g on c.email = g.email where g.idgoogle_login = ? and g.email = ?";
-		try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
-			ps.setString(1, id);
-			ps.setString(2, email);
-			try (ResultSet rs = ps.executeQuery()) {
-				while (rs.next()) {
-//					return new Account(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
-//							rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getBoolean(9),
-//							rs.getBoolean(10), rs.getDate(11), rs.getString(12));
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+	private static Account getAccount(String id, String email, String loginBy) {
+		Jdbi me = DBContext.me();
+		String emailEncode = EnCode.toSHA1(EnCode.toSHA1(email));
+		return (Account) me.withHandle(handle -> {
+			return handle.createQuery(loginBy).bind(0, id).bind(1, emailEncode).mapToBean(Account.class).findFirst().orElse(null);
+		});
 	}
 
-	public static void signinFacebook(String id, String name, String email, String pic) {
-		String cusQuery = "insert into customers (userName, password, Name, Email, isDelete, isActive, image) values (:userName, :password, :Name, :Email, :isDelete, :isActive, :image)";
-		String fbQuery = "insert into login_facebooks (idlogin_facebook, name, email, idCustomer, image) values (:idlogin_facebook, :name, :email, :idCustomer, :image)";
+	public static Account loginGG(String id, String email) {
+		String loginGGQuery = "select id, accountName, password, fullName, email, image, type, idOther from accounts where idOther= ? and email = ? and type = 3";
+		return getAccount(id, email, loginGGQuery);
+	}
+
+	public static void signUpFacebook(String id, String name, String email, String pic) {
+		String fbCus = "insert into accounts (accountName, password, fullName, email, image, type, idOther) values (:accountName, :password, :fullName, :email, :image, :type, :idOther)";
 		Jdbi me = DBContext.me();
 		me.useHandle(handle -> {
 			try {
 				handle.begin();
-				int generatedId = handle.createUpdate(cusQuery).bind("userName", EnCode.toSHA1(EnCode.toSHA1(name)))
-						.bind("password", EnCode.toSHA1(EnCode.toSHA1(email))).bind("Name", name).bind("Email", email)
-						.bind("isDelete", 0).bind("isActive", 1).bind("image", pic)
-						.executeAndReturnGeneratedKeys("idCustomer").mapTo(int.class).one();
-
-				handle.createUpdate(fbQuery).bind("idlogin_facebook", id).bind("name", name).bind("email", email)
-						.bind("idCustomer", generatedId).bind("image", pic).execute();
+				handle.createUpdate(fbCus).bind("accountName", EnCode.toSHA1(EnCode.toSHA1(name)))
+						.bind("password", EnCode.toSHA1(EnCode.toSHA1(email))).bind("fullName", name).bind("email", EnCode.toSHA1(EnCode.toSHA1(email)))
+						.bind("image", pic).bind("type", 2).bind("idOther", id)
+						.execute();
 				handle.commit();
 			} catch (Exception e) {
 				handle.rollback();
@@ -205,27 +194,15 @@ public static Account signup(String userName, String password, String name, Stri
 	}
 
 	public static Account loginFacebook(String id, String email) {
-		String query = "select c.idCustomer, c.userName, c.password, c.Name, c.Address, c.Email, c.NumberPhone, c.id_role_member, c.isDelete, c.isActive, c.create_date, c.image from customers c join login_facebooks l on c.email = l.email where l.idlogin_facebook = ? and l.email = ?";
-		try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
-			ps.setString(1, id);
-			ps.setString(2, email);
-			try (ResultSet rs = ps.executeQuery()) {
-				while (rs.next()) {
-//					return new Account(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
-//							rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getBoolean(9),
-//							rs.getBoolean(10), rs.getDate(11), rs.getString(12));
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		String loginFBQuery = "select id, accountName, password, fullName, email, image, type, idOther from accounts where idOther= ? and email = ? and type = 2";
+		return getAccount(id, email, loginFBQuery);
 	}
 
 	public static void main(String[] args) {
-//		System.out.println(checkAccountExist("leminhl1ong@gmail.com", "leminhlongi1t@gmail.com"));
-//		signinGoogle("12312", "Hao", "123@gmail.com", "341341");
-		System.out.println(login("locancuc", "L0374781483Lll@"));
+//		System.out.println(loginFacebook("dsadasd", "asdasd@@"));
+//		signUpFacebook("asdas", "asdasd", "asdasd", "rwer");
+//		signUpGoogle("asdas", "asdasd", "asdasd", "rwer");
+		System.out.println(loginGG("asdas", "asdasd"));
 	}
 
 }
