@@ -46,8 +46,8 @@ public class SubmitEmail extends HttpServlet {
 		} else if(!codeverify.equals(session.getAttribute("newVerify"))) {
 			request.setAttribute("error", "Mã xác thực không chính xác!");
 			request.getRequestDispatcher("/client/VerifyEmail.jsp").forward(request, response);
-		} else if (checkCustommerExits == false &&checkCustommerExitss==false) {
-			AuthDAO.signup(customer.getAccountName(), customer.getPassword(), customer.getFullName(), customer.getEmail(),
+		} else if (!checkCustommerExits && !checkCustommerExitss) {
+			AuthDAO.signUp(customer.getAccountName(), customer.getPassword(), customer.getFullName(), customer.getEmail(),
 					customer.getEmail(), customer.getPhone());
 			request.getRequestDispatcher("/client/Login.jsp").forward(request, response);
 		}
