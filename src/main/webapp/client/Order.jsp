@@ -10,22 +10,22 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Kidshop - Thanh toán đơn hàng"/>
-    <title>Halo's shop - Thanh toán đơn hàng</title>
+    <meta name="description" content="HaLoShop - Thanh toán đơn hàng"/>
+    <title>Haloshop - Thanh toán đơn hàng</title>
     <link rel="icon" type="image" href="./images/HaLoicon.png"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css"/>
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/fontawesome.min.css"
           integrity="sha384-QYIZto+st3yW+o8+5OHfT6S482Zsvz2WfOzpFSXMF9zqeLcFV0/wlZpMtyFcZALm" crossorigin="anonymous">
-    <link rel="stylesheet" href="/client/assets/css/checkout.vendor.min.css?v=4fcd86c">
-    <link rel="stylesheet" href="/client/assets/css/checkout.min.css?v=17ca415">
+    <link rel="stylesheet" href="${request.contextPath}client/assets/css/checkout.vendor.min.css?v=4fcd86c">
+    <link rel="stylesheet" href="${request.contextPath}client/assets/css/checkout.min.css?v=17ca415">
     <script src="//bizweb.dktcdn.net/assets/themes_support/libphonenumber-v3.2.30.min.js?1564585558451"></script>
-    <script src="/client/assets/js/checkout.vendor.min.js?v=11006c9"></script>
-    <script src="/client/assets/js/checkout.min.js?v=ee358d5"></script>
+    <script src="${request.contextPath}client/assets/js/checkout.vendor.min.js?v=11006c9"></script>
+    <script src="${request.contextPath}client/assets/js/checkout.min.js?v=ee358d5"></script>
     <script>
         var Bizweb = Bizweb || {};
         Bizweb.id = '117632';
-        Bizweb.store = 'kidshop-1.mysapo.net';
+        Bizweb.store = 'Haloshop-1.mysapo.net';
 
         Bizweb.template = 'checkout';
         Bizweb.Checkout = Bizweb.Checkout || {};
@@ -44,7 +44,7 @@
             window.BizwebAnalytics.meta[attr] = meta[attr];
         }
     </script>
-    <script src="/client/assets/js/stats.min.js?v=69e02f0"></script>
+    <script src="${request.contextPath}client/assets/js/stats.min.js?v=69e02f0"></script>
 </head>
 
 <body data-no-turbolink>
@@ -77,7 +77,7 @@
 <div data-tg-refresh="checkout" id="checkout" class="content">
     <form method="post"
           action="${pageContext.request.contextPath}/AddBillControl"
-          >
+    >
         <input type="hidden" name="_method" value="patch"/>
         <div class="wrap">
             <main class="main">
@@ -85,7 +85,7 @@
                     <div class="logo logo--left">
 
                         <h1 class="shop__name">
-                            <a href="/">Kidshop</a>
+                            <a href="/">Haloshop</a>
                         </h1>
 
                     </div>
@@ -380,34 +380,36 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <c:forEach var="o" items="${sessionScope.cart}">
-                                        <tr class="product">
-                                            <td class="product__image">
-                                                <div class="product-thumbnail">
-                                                    <div class="product-thumbnail__wrapper" data-tg-static>
-                                                        <img src="./images/${o.value.product.imageProducts.get(0).getImage()}"
-                                                             alt="" class="product-thumbnail__image"/>
+                                    <c:forEach items="${sessionScope.cart.entrySet()}" var="entry">
+                                        <c:forEach items="${entry.getValue()}" var="o">
+                                            <tr class="product">
+                                                <td class="product__image">
+                                                    <div class="product-thumbnail">
+                                                        <div class="product-thumbnail__wrapper" data-tg-static>
+                                                            <img src="./images/${o.product.imageProducts.get(0).getImage()}"
+                                                                 alt="" class="product-thumbnail__image"/>
+                                                        </div>
+                                                        <span class="product-thumbnail__quantity">${o.quantity}</span>
                                                     </div>
-                                                    <span class="product-thumbnail__quantity">${o.value.quantity}</span>
-                                                </div>
-                                            </td>
-                                            <th class="product__description">
+                                                </td>
+                                                <th class="product__description">
 													<span class="product__description__name">
-                                                            ${o.value.product.nameProduct}
+                                                            ${o.product.nameProduct}
                                                     </span>
 
-                                                <span class="product__description__property">
-														456 / Trắng classic
+                                                    <span class="product__description__property">
+														 ${o.productSize}/${o.productColor}
 													</span>
 
 
-                                            </th>
-                                            <td class="product__quantity visually-hidden"><em>Số
-                                                lượng:</em> ${o.value.quantity}</td>
-                                            <td class="product__price">
-                                                    ${o.value.product.discountPrice * o.value.quantity}
-                                            </td>
-                                        </tr>
+                                                </th>
+                                                <td class="product__quantity visually-hidden"><em>Số
+                                                    lượng:</em> ${o.quantity}</td>
+                                                <td class="product__price">
+                                                        ${o.price * o.quantity}
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
                                     </c:forEach>
                                     </tbody>
                                 </table>

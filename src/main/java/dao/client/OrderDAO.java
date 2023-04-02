@@ -29,8 +29,8 @@ public class OrderDAO {
     }
 	public static void createOrderDetail(OrderDetail orderDetail) {
         Jdbi me = DBContext.me();
-		String query = "insert into order_details (idOrder,idProduct,quantity,price) values(?,?,?,?);";
-	    me.withHandle(handle -> handle.createUpdate(query).bind(0,orderDetail.getIdOrder()).bind(1,orderDetail.getProduct().getId()).bind(2,orderDetail.getQuantity()).bind(3,orderDetail.getPrice()).execute());
+		String query = "insert into order_details (idOrder,idProduct,quantity,price,productSize,productColor) values(?,?,?,?,?,?);";
+	    me.withHandle(handle -> handle.createUpdate(query).bind(0,orderDetail.getIdOrder()).bind(1,orderDetail.getProduct().getId()).bind(2,orderDetail.getQuantity()).bind(3,orderDetail.getPrice()).bind(4,orderDetail.getProductSize()).bind(5,orderDetail.getProductColor()).execute());
 	}
 
 	public static void updateOrder(Order order) {
@@ -52,7 +52,6 @@ public static int updateInventoryProduct(String idProduct,int new_quantity){
 }
 
     public static void main(String[] args) {
-        System.out.println(updateInventoryProduct("1",50));
     }
 
 }

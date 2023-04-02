@@ -1,4 +1,9 @@
-
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="${sessionScope.LANG}"/>
+<fmt:setBundle basename="app" var="lang"/>
 <!DOCTYPE html>
 <html class="thankyou-page">
 <head>
@@ -27,27 +32,18 @@
     <link rel="shortcut icon" href="//bizweb.dktcdn.net/assets/sapo_favicon.png" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css" />
 
-    <link rel="stylesheet" href="/client/assets/css/checkout.vendor.min.css?v=4fcd86c">
+    <link rel="stylesheet" href="${request.contextPath}client/assets/css/checkout.vendor.min.css?v=4fcd86c">
 
 
-    <link rel="stylesheet" href="/client/assets/css/checkout.min.css?v=17ca415">
+    <link rel="stylesheet" href="${request.contextPath}client/assets/css/checkout.min.css?v=17ca415">
 
     <!-- Begin checkout custom css -->
     <style>
-
     </style>
     <!-- End checkout custom css -->
-
     <script src="//bizweb.dktcdn.net/assets/themes_support/libphonenumber-v3.2.30.min.js?1564585558451"></script>
-
-    <script src="/client/assets/js/checkout.vendor.min.js?v=11006c9"></script>
-
-
-
-    <script src="/client/assets/js/checkout.min.js?v=ee358d5"></script>
-
-
-
+    <script src="${request.contextPath}client/assets/js/checkout.vendor.min.js?v=11006c9"></script>
+    <script src="${request.contextPath}client/assets/js/checkout.min.js?v=ee358d5"></script>
     <script>
         var Bizweb = Bizweb || {};
         Bizweb.id = '117632';
@@ -77,7 +73,7 @@
     </script>
 
 
-    <script src="/client/assets/js/stats.min.js?v=69e02f0"></script>
+    <script src="${request.contextPath}client/assets/js/stats.min.js?v=69e02f0"></script>
 
 
 </head>
@@ -124,7 +120,7 @@
                                     <h2 class="section__title">Cảm ơn bạn đã đặt hàng</h2>
 
                                     <p class="section__text">
-                                        Một email xác nhận đã được gửi tới khangcfff123477asd@gmail.com. <br/>
+                                        Một email xác nhận đã được gửi tới ${sessionScope.acc.email}. <br/>
                                         Xin vui lòng kiểm tra email của bạn
                                     </p>
 
@@ -136,11 +132,11 @@
                             <aside class="order-summary order-summary--bordered order-summary--is-collapsed" id="order-summary">
                                 <div class="order-summary__header">
                                     <div class="order-summary__title">
-                                        Đơn hàng #1012
-                                        <span class="unprintable">(5)</span>
+                                        Đơn hàng
+                                        <span class="unprintable">(${totalQuantity})</span>
                                     </div>
                                     <div class="order-summary__action hide-on-desktop unprintable">
-                                        <a data-toggle="#order-summary" data-toggle-class="order-summary--is-collapsed" class="expandable">
+                                        <a data-toggle="#" data-toggle-class="order-summary--is-collapsed" class="expandable">
                                             Xem chi tiết
                                         </a>
                                     </div>
@@ -149,111 +145,37 @@
                                     <div class="order-summary__section order-summary__section--product-list order-summary__section--is-scrollable order-summary--collapse-element">
                                         <table class="product-table">
                                             <tbody>
+                                            <c:forEach items="${requestScope.cart.entrySet()}" var="entry">
+                                                <c:forEach items="${entry.getValue()}" var="o">
+                                                    <tr class="product">
+                                                        <td class="product__image">
+                                                            <div class="product-thumbnail">
+                                                                <div class="product-thumbnail__wrapper" data-tg-static>
+                                                                    <img src="./images/${o.product.imageProducts.get(0).getImage()}"
+                                                                         alt="" class="product-thumbnail__image"/>
+                                                                </div>
+                                                                <span class="product-thumbnail__quantity">${o.quantity}</span>
+                                                            </div>
+                                                        </td>
+                                                        <th class="product__description">
+													<span class="product__description__name">
+                                                            ${o.product.nameProduct}
+                                                    </span>
 
-                                            <tr class="product">
-                                                <td class="product__image">
-                                                    <div class="product-thumbnail">
-                                                        <div class="product-thumbnail__wrapper">
-                                                            <img src="//bizweb.dktcdn.net/thumb/thumb/100/117/632/products/aovay9.jpg?v=1473603722567" alt="" class="product-thumbnail__image" />
-                                                        </div>
-                                                        <span class="product-thumbnail__quantity unprintable">1</span>
-                                                    </div>
-                                                </td>
-                                                <th class="product__description">
-                                                    <span class="product__description__name">Váy liên thân KIDS - KF5</span>
-
-                                                    <span class="product__description__property">XL / Đỏ</span>
-
-
-                                                </th>
-                                                <td class="product__quantity printable-only">
-                                                    x 1
-                                                </td>
-                                                <td class="product__price">
-
-                                                    250.000₫
-
-                                                </td>
-                                            </tr>
-
-                                            <tr class="product">
-                                                <td class="product__image">
-                                                    <div class="product-thumbnail">
-                                                        <div class="product-thumbnail__wrapper">
-                                                            <img src="//bizweb.dktcdn.net/thumb/thumb/100/117/632/products/kinh5-be409022-0163-4dea-be23-c6bdc04184e0.jpg?v=1473602369697" alt="" class="product-thumbnail__image" />
-                                                        </div>
-                                                        <span class="product-thumbnail__quantity unprintable">1</span>
-                                                    </div>
-                                                </td>
-                                                <th class="product__description">
-                                                    <span class="product__description__name">Kính thời trang Caters - SK</span>
-
-                                                    <span class="product__description__property">DK40 / Đỏ</span>
+                                                            <span class="product__description__property">
+														 ${o.productSize}/${o.productColor}
+													</span>
 
 
-                                                </th>
-                                                <td class="product__quantity printable-only">
-                                                    x 1
-                                                </td>
-                                                <td class="product__price">
-
-                                                    325.000₫
-
-                                                </td>
-                                            </tr>
-
-                                            <tr class="product">
-                                                <td class="product__image">
-                                                    <div class="product-thumbnail">
-                                                        <div class="product-thumbnail__wrapper">
-                                                            <img src="//bizweb.dktcdn.net/thumb/thumb/100/117/632/products/kinh3-63d039b5-b2ef-434a-98f1-661dabd93f3b-4ef5c754-f487-4137-bc30-4830323e7a32.jpg?v=1473602839287" alt="" class="product-thumbnail__image" />
-                                                        </div>
-                                                        <span class="product-thumbnail__quantity unprintable">2</span>
-                                                    </div>
-                                                </td>
-                                                <th class="product__description">
-                                                    <span class="product__description__name">Kính thời trang Gap</span>
-
-                                                    <span class="product__description__property">DK40 / Đỏ</span>
-
-
-                                                </th>
-                                                <td class="product__quantity printable-only">
-                                                    x 2
-                                                </td>
-                                                <td class="product__price">
-
-                                                    650.000₫
-
-                                                </td>
-                                            </tr>
-
-                                            <tr class="product">
-                                                <td class="product__image">
-                                                    <div class="product-thumbnail">
-                                                        <div class="product-thumbnail__wrapper">
-                                                            <img src="//bizweb.dktcdn.net/thumb/thumb/100/117/632/products/kinh3-63d039b5-b2ef-434a-98f1-661dabd93f3b-4ef5c754-f487-4137-bc30-4830323e7a32.jpg?v=1473602839287" alt="" class="product-thumbnail__image" />
-                                                        </div>
-                                                        <span class="product-thumbnail__quantity unprintable">1</span>
-                                                    </div>
-                                                </td>
-                                                <th class="product__description">
-                                                    <span class="product__description__name">Kính thời trang Gap</span>
-
-                                                    <span class="product__description__property">DK40 / Xanh</span>
-
-
-                                                </th>
-                                                <td class="product__quantity printable-only">
-                                                    x 1
-                                                </td>
-                                                <td class="product__price">
-
-                                                    325.000₫
-
-                                                </td>
-                                            </tr>
-
+                                                        </th>
+                                                        <td class="product__quantity visually-hidden"><em>Số
+                                                            lượng:</em> ${o.quantity}</td>
+                                                        <td class="product__price">
+                                                                ${o.price * o.quantity}
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </c:forEach>
                                             </tbody>
                                         </table>
                                     </div>
@@ -264,7 +186,7 @@
 
                                             <tr class="total-line total-line--subtotal">
                                                 <th class="total-line__name">Tạm tính</th>
-                                                <td class="total-line__price">1.550.000₫</td>
+                                                <td class="total-line__price">${order.totalPrice}₫</td>
                                             </tr>
 
                                             <tr class="total-line total-line--shipping-fee">
@@ -287,7 +209,7 @@
                                                     <span class="payment-due__label-total">Tổng cộng</span>
                                                 </th>
                                                 <td class="total-line__price">
-                                                    <span class="payment-due__price">1.590.000₫</span>
+                                                    <span class="payment-due__price">${order.totalPrice+40000}₫</span>
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -304,27 +226,27 @@
 
                                         <div class="col col--md-two">
                                             <h2>Thông tin mua hàng</h2>
-                                            <p>Le Tan Khang</p>
+                                            <p>${sessionScope.acc.fullName}</p>
 
-                                            <p>khangcfff123477asd@gmail.com</p>
+                                            <p>${sessionScope.acc.email}</p>
 
 
-                                            <p>+84374781482</p>
+                                            <p>${sessionScope.acc.phone}</p>
 
                                         </div>
 
                                         <div class="col col--md-two">
                                             <h2>Địa chỉ nhận hàng</h2>
-                                            <p>Le Tan Khang</p>
+                                            <p>${sessionScope.acc.fullName}</p>
 
-                                            <p>ấp Phú Thuận, xã Châu Hòa, huyện Giồng Trôm, tỉnh Bến Tre</p>
-
-
-
-                                            <p>Thành phố Bến Tre, Bến Tre</p>
+                                            <p>${sessionScope.acc.address}</p>
 
 
-                                            <p>+84374781482</p>
+
+                                            <p>${sessionScope.acc.address}</p>
+
+
+                                            <p>${sessionScope.acc.phone}</p>
 
                                         </div>
                                     </div>
@@ -343,9 +265,8 @@
                             </section>
                             <section class="section unprintable">
                                 <div class="field__input-btn-wrapper field__input-btn-wrapper--floating">
-                                    <a href="/" class="btn btn--large">Tiếp tục mua hàng</a>
+                                    <a href="${pageContext.request.contextPath}/IndexControl" class="btn btn--large">Tiếp tục mua hàng</a>
                                     <span class="text-icon-group text-icon-group--large icon-print" onclick="window.print()">
-											<i class="fa fa-print"></i>
 											<span>In </span>
 										</span>
                                 </div>

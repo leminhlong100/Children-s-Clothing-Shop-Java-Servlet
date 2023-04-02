@@ -169,7 +169,7 @@ public class IndexDAO {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(getNewProductAccessory());
+		System.out.println(getSellProduct());
 //		System.out.println(getSellProductTwo());
 
 	}

@@ -34,7 +34,11 @@ public class LoginGoogle extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-			processRequest(request, response);
+			try {
+				processRequest(request, response);
+			}catch (Exception e){
+				e.printStackTrace();
+			}
 	}
 
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
