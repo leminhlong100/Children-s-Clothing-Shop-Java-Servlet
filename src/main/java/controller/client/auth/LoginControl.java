@@ -2,7 +2,6 @@ package controller.client.auth;
 
 import java.io.IOException;
 
-import javax.mail.Session;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,7 +13,6 @@ import bean.Log;
 import context.DB;
 import dao.client.AuthDAO;
 import entity.Account;
-import org.apache.http.impl.conn.SystemDefaultRoutePlanner;
 import util.VerifyRecaptchas;
 
 @WebServlet("/Login")
@@ -35,7 +33,7 @@ public class LoginControl extends HttpServlet {
 		Account account = AuthDAO.login(userName, passWord);
 		String ipAddress = request.getRemoteAddr();
 		Log log = new Log(Log.INFO, ipAddress, -1, this.name, "", 0);
-		int num = AuthDAO.loginfail(userName);
+		int num = AuthDAO.loginFail(userName);
 		int	 fail = 0;
 		if(num>5){
 			request.setAttribute("error", "Bạn đã nhập sai quá 5 lần. Vui lòng liên hệ Admin để mở khóa đăng nhập ");
