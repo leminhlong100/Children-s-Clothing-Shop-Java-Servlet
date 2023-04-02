@@ -140,7 +140,7 @@ if (session.getAttribute("acc") != null) {
 							<fb:login-button scope="public_profile,email"
 								onlogin="checkLoginState();"></fb:login-button>
 							<a
-								href="https://accounts.google.com/o/oauth2/auth?scope=email%20profile%20openid&redirect_uri=http://localhost:8080/HaLoShop/LoginGoogle&response_type=code&client_id=179083726954-c2jcc0955730he68g9vk8s8f2bgi6l3k.apps.googleusercontent.com&approval_prompt=force"
+								href="https://accounts.google.com/o/oauth2/auth?scope=email%20profile%20openid&redirect_uri=http://localhost:8080/TTLTW_2023/LoginGoogle&response_type=code&client_id=179083726954-c2jcc0955730he68g9vk8s8f2bgi6l3k.apps.googleusercontent.com&approval_prompt=force"
 								class="social-login--google"><img width="129px"
 								height="37px" alt="google-login-button"
 								src="//bizweb.dktcdn.net/assets/admin/images/login/gp-btn.svg"></a>

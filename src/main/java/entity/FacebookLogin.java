@@ -1,6 +1,6 @@
 package entity;
 
-public class Facebook {
+public class FacebookLogin {
 	private String idFacebookLogin;
 	private String name;
 	private String email;
@@ -8,8 +8,8 @@ public class Facebook {
 	private String picture;
 	private Account customer;
 
-	public Facebook(String idFacebookLogin, String name, String email, String numberPhone, String picture,
-					Account customer) {
+	public FacebookLogin(String idFacebookLogin, String name, String email, String numberPhone, String picture,
+			Account customer) {
 		super();
 		this.idFacebookLogin = idFacebookLogin;
 		this.name = name;
@@ -19,7 +19,7 @@ public class Facebook {
 		this.customer = customer;
 	}
 
-	public Facebook() {
+	public FacebookLogin() {
 		super();
 	}
 

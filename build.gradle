@@ -59,7 +59,7 @@ publishing {
 apply plugin: 'org.hidetake.ssh'
 remotes {
     host {
-        host = '192.168.56.15'
+        host = '192.168.18.8'
         user = 'root'
         password = '123456'
     }
