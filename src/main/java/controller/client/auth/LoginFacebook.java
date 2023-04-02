@@ -31,7 +31,6 @@ public class LoginFacebook extends HttpServlet {
 		String email = request.getParameter("email");
 		String id = request.getParameter("id");
 		String pic = request.getParameter("picture");
-		System.out.println(pic);
 		String pid = request.getParameter("pid");
 		HttpSession session = request.getSession();
 		if (!name.equalsIgnoreCase("undefined") && !name.isEmpty()) {
