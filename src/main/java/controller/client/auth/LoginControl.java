@@ -2,7 +2,6 @@ package controller.client.auth;
 
 import java.io.IOException;
 
-import javax.mail.Session;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,7 +13,6 @@ import bean.Log;
 import context.DB;
 import dao.client.AuthDAO;
 import entity.Account;
-import org.apache.http.impl.conn.SystemDefaultRoutePlanner;
 import util.VerifyRecaptchas;
 
 @WebServlet("/Login")
@@ -35,7 +33,7 @@ public class LoginControl extends HttpServlet {
 		Account account = AuthDAO.login(userName, passWord);
 		String ipAddress = request.getRemoteAddr();
 		Log log = new Log(Log.INFO, ipAddress, -1, this.name, "", 0);
-		int num = AuthDAO.loginfail(userName);
+		int num = AuthDAO.loginFail(userName);
 		int	 fail = 0;
 		if(num>5){
 			request.setAttribute("error", "Bạn đã nhập sai quá 5 lần. Vui lòng liên hệ Admin để mở khóa đăng nhập ");
@@ -44,34 +42,34 @@ public class LoginControl extends HttpServlet {
 
 		else{
 			if (account == null && verify) {
-			log.setSrc(this.name + " LOGIN FALSE");
-			log.setContent("LOGIN FALSE: USER - " + userName);
-			log.setLevel(Log.WARNING);
-			request.setAttribute("error", "Tài khoản hoặc mật khẩu không hợp lệ " + num + " lần");
+				log.setSrc(this.name + " LOGIN FALSE");
+				log.setContent("LOGIN FALSE: USER - " + userName);
+				log.setLevel(Log.WARNING);
+				request.setAttribute("error", "Tài khoản hoặc mật khẩu không hợp lệ " + num + " lần");
 
 
 				request.getRequestDispatcher("/client/Login.jsp").forward(request, response);
 
-		} else {
-			if (!verify) {
-				request.setAttribute("error", "Chưa nhập Captcha ");
-				request.getRequestDispatcher("/client/Login.jsp").forward(request, response);
 			} else {
-				session.setAttribute("acc", account);
-				session.setMaxInactiveInterval(1800);
-				log.setSrc(this.name + " LOGIN");
-				log.setContent("LOGIN SECCESS: USER - " + userName);
-				AuthDAO.resetlogin(userName);
-				if (pid == null) {
-					request.getRequestDispatcher("IndexControl").forward(request, response);
+				if (!verify) {
+					request.setAttribute("error", "Chưa nhập Captcha ");
+					request.getRequestDispatcher("/client/Login.jsp").forward(request, response);
 				} else {
-					response.sendRedirect("DetailControl?pid=" + pid);
+					session.setAttribute("acc", account);
+					session.setMaxInactiveInterval(1800);
+					log.setSrc(this.name + " LOGIN");
+					log.setContent("LOGIN SECCESS: USER - " + userName);
+					AuthDAO.resetlogin(userName);
+					if (pid == null) {
+						request.getRequestDispatcher("IndexControl").forward(request, response);
+					} else {
+						response.sendRedirect("DetailControl?pid=" + pid);
+					}
 				}
-			}
 
-		}
-		DB.me().insert(log);
-	}}
+			}
+			DB.me().insert(log);
+		}}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
