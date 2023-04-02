@@ -47,8 +47,18 @@ public class Account {
 		this.numberloginfail = numberloginfail;
 	}
 
+	public Account(int id, String accountName, String password, String fullName, String email, String image, int type, String idOther) {
+		this.id = id;
+		this.accountName = accountName;
+		this.password = password;
+		this.fullName = fullName;
+		this.email = email;
+		this.image = image;
+		this.type = type;
+		this.idOther = idOther;
+	}
 
-	public Account(int id,String accountName,int numberloginfail) {
+	public Account(int id, String accountName, int numberloginfail) {
 		this.id =id;
 		this.accountName = accountName;
 		this.numberloginfail = numberloginfail;
