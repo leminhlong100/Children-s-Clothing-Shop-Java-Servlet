@@ -25,12 +25,10 @@ public class VerifyEmailControl extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		Account customer = (Account) request.getAttribute("cus");
 		String email = request.getParameter("email");
-		System.out.println(email);
 		request.setAttribute("email", customer.getEmail());
 		String newVerify = SendEmail.getRandomPass(6);
 		SendEmail.sendMailFogetPassWord(email, newVerify);
 		HttpSession session = request.getSession();
-		System.out.println(newVerify);
 		session.setAttribute("newVerify", newVerify);
 		session.setAttribute("custemp", customer);
 		session.setAttribute("timeNow", LocalDateTime.now());

@@ -133,7 +133,7 @@
 								<div class="order-summary__header">
 									<div class="order-summary__title">
 										Đơn hàng
-										<span class="unprintable">(${totalQuantity})</span>
+										<span class="unprintable">(${billProducts.size()})</span>
 									</div>
 									<div class="order-summary__action hide-on-desktop unprintable">
 										<a data-toggle="#" data-toggle-class="order-summary--is-collapsed" class="expandable">
@@ -145,8 +145,7 @@
 									<div class="order-summary__section order-summary__section--product-list order-summary__section--is-scrollable order-summary--collapse-element">
 										<table class="product-table">
 											<tbody>
-											<c:forEach items="${requestScope.cart.entrySet()}" var="entry">
-												<c:forEach items="${entry.getValue()}" var="o">
+												<c:forEach items="${billProducts}" var="o">
 													<tr class="product">
 														<td class="product__image">
 															<div class="product-thumbnail">
@@ -175,7 +174,6 @@
 														</td>
 													</tr>
 												</c:forEach>
-											</c:forEach>
 											</tbody>
 										</table>
 									</div>
@@ -186,7 +184,7 @@
 
 											<tr class="total-line total-line--subtotal">
 												<th class="total-line__name">Tạm tính</th>
-												<td class="total-line__price">${order.totalPrice}₫</td>
+												<td class="total-line__price">${bill.totalPrice}₫</td>
 											</tr>
 
 											<tr class="total-line total-line--shipping-fee">
@@ -209,7 +207,7 @@
 													<span class="payment-due__label-total">Tổng cộng</span>
 												</th>
 												<td class="total-line__price">
-													<span class="payment-due__price">${order.totalPrice+40000}₫</span>
+													<span class="payment-due__price">${bill.totalPrice+40000}₫</span>
 												</td>
 											</tr>
 											</tbody>

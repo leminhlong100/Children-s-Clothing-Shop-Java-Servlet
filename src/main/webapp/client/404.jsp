@@ -7,7 +7,7 @@
 <html lang="vi">
 <head>
 <title>Error 404</title>
-<link rel="icon" type="image" href="../image/HaLoicon.png" />
+<link rel="icon" type="image" href="../images/HaLoicon.png" />
 <jsp:include page="./link/Link.jsp"></jsp:include>
 </head>
 <body>
