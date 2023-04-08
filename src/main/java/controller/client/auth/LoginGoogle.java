@@ -29,7 +29,7 @@ public class LoginGoogle extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
-				processRequest(request, response);
+		processRequest(request, response);
 	}
 
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -71,15 +71,15 @@ public class LoginGoogle extends HttpServlet {
 		}
 	}
 
-	  static Google getUserInfo(String accessToken) throws IOException {
+	static Google getUserInfo(String accessToken) throws IOException {
 		String link = Constants.GOOGLE_LINK_GET_USER_INFO + accessToken;
 		String response = Request.Get(link).execute().returnContent().asString();
-		  return new Gson().fromJson(response, Google.class);
+		return new Gson().fromJson(response, Google.class);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
-			doGet(request,response);
+		doGet(request,response);
 	}
 
 }

@@ -18,10 +18,10 @@ public class AuthDAO {
 		Jdbi me = DBContext.me();
 		String passEncode = EnCode.toSHA1(pass);
 		String queryLogin = "select id,accountName,password,fullName,address,email,phone,idRoleMember from accounts where accountName = ? and password  = ?";
-			return (Account) me.withHandle(handle -> {
-				return handle.createQuery(queryLogin)
-						.bind(0, username).bind(1, passEncode).mapToBean(Account.class).findFirst().orElse(null);
-			});
+		return (Account) me.withHandle(handle -> {
+			return handle.createQuery(queryLogin)
+					.bind(0, username).bind(1, passEncode).mapToBean(Account.class).findFirst().orElse(null);
+		});
 	}
 
 	public static boolean checkAccountExist(String userName) { // ton tai la true
@@ -35,14 +35,14 @@ public class AuthDAO {
 			return true;
 		}
 	}
-		public static int loginFail(String username) {
+	public static int loginFail(String username) {
 		Jdbi me = DBContext.me();
 		try {
 			int num = me.withHandle(handle -> handle.createQuery(
 							"SELECT numberloginfail FROM accounts WHERE accountName = ?")
 					.bind(0, username).mapTo(int.class).one());
-			if (num >= 5) { 
-				return 5; 
+			if (num >= 5) {
+				return 5;
 			}
 			me.withHandle(handle -> handle.createUpdate(
 							"UPDATE accounts SET numberloginfail = ? WHERE accountName = ?")
@@ -85,20 +85,20 @@ public class AuthDAO {
 		String signInQuery = "INSERT INTO accounts (accountName, password, fullName, email, address,phone) VALUES (?, ?, ?, ?, ?, ?);";
 		String passEncode = EnCode.toSHA1(password);
 		Jdbi me = DBContext.me();
-			me.withHandle(handle -> {
-				try {
-					handle.begin();
-					handle.createUpdate(signInQuery).bind(0, userName).bind(1, passEncode).bind(2, name)
-							.bind(3, email).bind(4, address).bind(5, NumberPhone).execute();
-					handle.commit();
-					return true;
-				} catch (Exception e) {
-					handle.rollback();
-					e.printStackTrace();
-				}
-				return false;
-			});
+		me.withHandle(handle -> {
+			try {
+				handle.begin();
+				handle.createUpdate(signInQuery).bind(0, userName).bind(1, passEncode).bind(2, name)
+						.bind(3, email).bind(4, address).bind(5, NumberPhone).execute();
+				handle.commit();
+				return true;
+			} catch (Exception e) {
+				handle.rollback();
+				e.printStackTrace();
+			}
 			return false;
+		});
+		return false;
 	}
 
 	public static void editAccountInfo(String user, String address, String phone, String uid) {

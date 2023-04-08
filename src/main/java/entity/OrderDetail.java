@@ -8,7 +8,8 @@ public class OrderDetail {
 	private int quantity; // tong so luong
 	private double price;
 	private String node; // ghi chu
-
+	private String productSize;
+	private String productColor;
 	public OrderDetail() {
 	}
 
@@ -29,6 +30,34 @@ public class OrderDetail {
 		this.quantity = quantity;
 		this.price = price;
 		this.node = node;
+	}
+
+	public OrderDetail(int id, int idOrder, int idProduct, Product product, int quantity, double price, String node, String productSize, String productColor) {
+		this.id = id;
+		this.idOrder = idOrder;
+		this.idProduct = idProduct;
+		this.product = product;
+		this.quantity = quantity;
+		this.price = price;
+		this.node = node;
+		this.productSize = productSize;
+		this.productColor = productColor;
+	}
+
+	public String getProductSize() {
+		return productSize;
+	}
+
+	public void setProductSize(String productSize) {
+		this.productSize = productSize;
+	}
+
+	public String getProductColor() {
+		return productColor;
+	}
+
+	public void setProductColor(String productColor) {
+		this.productColor = productColor;
 	}
 
 	public int getId() {
@@ -93,10 +122,11 @@ public class OrderDetail {
 				"id=" + id +
 				", idOrder=" + idOrder +
 				", idProduct=" + idProduct +
-				", product=" + product +
 				", quantity=" + quantity +
 				", price=" + price +
 				", node='" + node + '\'' +
+				", productSize='" + productSize + '\'' +
+				", productColor='" + productColor + '\'' +
 				'}';
 	}
 }

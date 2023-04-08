@@ -136,6 +136,7 @@ public class IndexDAO {
 	public static List<Product> getNewProductAccessory() {
 		Jdbi me = DBContext.me();
 		List<Product> list = new ArrayList<>();
+
 		String query = "SELECT p.id,p.nameProduct,pp.listPrice,pp.discount,pp.discountPrice from kidstore.products p join kidstore.product_prices pp \n" +
 				"on p.id = pp.idProduct join kidstore.producers pd \n" +
 				"on p.idProducer = pd.id  join kidstore.categories ct\n" +
@@ -169,7 +170,7 @@ public class IndexDAO {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(getNewProductAccessory());
+		System.out.println(getSellProduct());
 //		System.out.println(getSellProductTwo());
 
 	}
