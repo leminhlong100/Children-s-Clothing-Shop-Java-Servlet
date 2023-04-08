@@ -10,27 +10,30 @@ public class ProductDAO {
 	public static int getTotalProduct(int cid) {
 		String query = "";
 		switch (cid) {
-		case 0:
-			query = "select count(*) from products";
-			break;
-		case 1:
-			query = "select count(*) from products where idCategorie in(7,2,5,9,13)";
-			break;
-		case 2:
-			query = "select count(*) from products where idCategorie in(4,11,8,3,13)";
-			break;
-		case 3:
-			query = "select count(*) from products where idCategorie in(1,3,5,6,12)";
-			break;
-		case 4:
-			query = "select count(*) from products  where discount>priceProduct";
-			break;
-		default:
-			break;
+			case 0: //tất cả sản phẩm
+				query = "select count(p.nameProduct) from products p join product_prices pp on p.id = pp.idProduct";
+				break;
+			case 1: //góc bé trai
+				query = "select count(p.nameProduct) from products p join categories C on p.idCategorie = c.id where c.id in(1,2,5,7,9,13)";
+				break;
+			case 2: //góc bé gái
+				query = "select count(p.nameProduct) from products p join categories C on p.idCategorie = c.id  where idCategorie in(3,4,6,8,10,11,13)";
+				break;
+			case 3: //phụ kiện
+				query = "select count(p.nameProduct) from products p join categories C on p.idCategorie = c.id  where idCategorie in(14,15)";
+				break;
+			case 4: //khuyến mãi
+				query = "select count(p.nameProduct) from products p join categories C on p.idCategorie = c.id join product_prices pp on pp.idProduct = p.id where pp.listPrice > pp.discountPrice";
+				break;
+			case 5: //đồ chơi
+				query = "select count(p.nameProduct) from products p join categories C on p.idCategorie = c.id  where idCategorie in(12)";
+				break;
+			default:
+				break;
 		}
 		try (Connection conn = DBContext.getConnection();
-				PreparedStatement ps = conn.prepareStatement(query);
-				ResultSet rs = ps.executeQuery();) {
+			 PreparedStatement ps = conn.prepareStatement(query);
+			 ResultSet rs = ps.executeQuery();) {
 
 			while (rs.next()) {
 				return rs.getInt(1);
@@ -47,37 +50,41 @@ public class ProductDAO {
 		List<Product> list = new ArrayList<>();
 		String query = "";
 		switch (cid) {
-		case 0:
-			query = "select idProduct,nameProduct,priceProduct,idCategorie from products order by " + sort + " " + type
-					+ "  limit ?,12";
-			break;
-		case 1:
-			query = "select idProduct,nameProduct,priceProduct,idCategorie from products where idCategorie in(7,2,5,9,13) order by "
-					+ sort + " " + type + "  limit ?,12";
-			break;
-		case 2:
-			query = "select idProduct,nameProduct,priceProduct,idCategorie from products where idCategorie in(4,11,8,3,13) order by "
-					+ sort + " " + type + "  limit ?,12";
-			break;
-		case 3:
-			query = "select idProduct,nameProduct,priceProduct,idCategorie from products where idCategorie in(1,3,5,6,12,13) order by "
-					+ sort + " " + type + "  limit ?,12";
-			break;
-		case 4:
-			query = "select idProduct,nameProduct,priceProduct,idCategorie from products where discount>priceProduct order by "
-					+ sort + " " + type + "  limit ?,12";
-			break;
-		default:
-			break;
+			case 0:
+				query = "select p.id, p.nameProduct, pp.listPrice, pp.discountPrice, pp.discount  from products p join product_prices pp on p.id = pp.idProduct order by " + sort + " " + type
+						+ "  limit ?,12";
+				break;
+			case 1:
+				query = "select p.id, p.nameProduct, pp.listPrice, pp.discountPrice, pp.discount from products p join categories c on p.idCategorie = c.id join product_prices pp on p.id = pp.idProduct where idCategorie in(1,2,5,7,9,13) order by "
+						+ sort + " " + type + "  limit ?,12";
+				break;
+			case 2:
+				query = "select p.id, p.nameProduct, pp.listPrice, pp.discountPrice, pp.discount from products p join categories c on p.idCategorie = c.id join product_prices pp on p.id = pp.idProduct where idCategorie in(3,4,6,8,10,11,13) order by "
+						+ sort + " " + type + "  limit ?,12";
+				break;
+			case 3:
+				query = "select p.id, p.nameProduct, pp.listPrice, pp.discountPrice, pp.discount from products p join categories c on p.idCategorie = c.id join product_prices pp on p.id = pp.idProduct where idCategorie in(14,15) order by "
+						+ sort + " " + type + "  limit ?,12";
+				break;
+			case 4:
+				query = "select p.id, p.nameProduct, pp.listPrice, pp.discountPrice, pp.discount from products p join categories c on p.idCategorie = c.id join product_prices pp on p.id = pp.idProduct where pp.listPrice > pp.discountPrice order by "
+						+ sort + " " + type + "  limit ?,12";
+				break;
+			case 5:
+				query = "select p.id, p.nameProduct, pp.listPrice, pp.discountPrice, pp.discount from products p join categories c on p.idCategorie = c.id join product_prices pp on p.id = pp.idProduct where idCategorie in(12) order by "
+						+ sort + " " + type + "  limit ?,12";
+				break;
+			default:
+				break;
 		}
 
 		try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(query);) {
 			ps.setInt(1, (index - 1) * 12);
 			try (ResultSet rs = ps.executeQuery()) {
 				while (rs.next()) {
-					list.add(new Product(rs.getInt("idProduct"), rs.getString("nameProduct"),
-							rs.getDouble("priceProduct"), UtilDAO.findListImageByIdProduct(rs.getInt("idProduct")),
-							rs.getInt("discount"),rs.getDouble("discountPrice")));
+					list.add(new Product(rs.getInt("id"), rs.getString("nameProduct"),
+							rs.getDouble("listPrice"), UtilDAO.findListImageByIdProduct(rs.getInt("id")),
+							rs.getInt("discount"), rs.getDouble("discountPrice")));
 				}
 			}
 		} catch (Exception e) {

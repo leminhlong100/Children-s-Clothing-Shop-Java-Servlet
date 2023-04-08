@@ -1,74 +1,50 @@
 package dao.client;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 import context.DBContext;
-import entity.Product;
+import entity.*;
+import org.jdbi.v3.core.Handle;
 
 public class AccessDAO {
 	public static List<Product> searchByName(String txtSearch) {
-		List<Product> list = new ArrayList<>();
-		String query = "select * from products where nameProduct like ?";
-		try {
-			Connection conn = DBContext.getConnection();
-			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setString(1, "%" + txtSearch + "%");
-			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
-				list.add(new Product(rs.getInt("idProduct"), rs.getString("nameProduct"),
-						rs.getDouble("priceProduct"), UtilDAO.findListImageByIdProduct(rs.getInt("idProduct")),
-						rs.getInt("discount"),rs.getDouble("discountPrice")));
-			}
+		try (Handle handle = DBContext.me().open()) {
+			String query = "SELECT p.id, p.nameProduct, listPrice, description, nameSupplier, nameProducer, nameCategorie, pp.discount, pp.discountPrice, i.quantity " + "FROM products p " + "JOIN product_prices pp ON p.id = pp.idProduct " + "JOIN suppliers s ON p.idSupplier = s.id " + "JOIN producers ps ON ps.id = p.idProducer " + "JOIN categories c ON p.idCategorie = c.id " + "JOIN inventorys i ON i.idProduct = p.id " + "WHERE p.isActive = '1' AND s.isActive = '1' AND p.nameProduct LIKE ?";
+			return handle.createQuery(query).bind(0, "%" + txtSearch + "%").map((rs, ctx) -> new Product(rs.getInt("id"), rs.getString("nameProduct"),
+							rs.getDouble("listPrice"), UtilDAO.findListImageByIdProduct(rs.getInt("id")),
+							rs.getInt("discount"),rs.getDouble("discountPrice")))
+					.list();
 		} catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<>();
 		}
-
-		return list;
 	}
 
 	public static int getTotalProductSearch(String txtSearch) {
-		String query = " select count(*) from products where  name like ?";
-		try {
-			Connection conn = DBContext.getConnection();
-			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setString(1, "%" + txtSearch + "%");
-			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
-				return rs.getInt(1);
-			}
+		try (Handle handle = DBContext.me().open()) {
+			String query = "SELECT COUNT(nameProduct) FROM products WHERE nameProduct LIKE ?";
+			return handle.createQuery(query).bind(0, "%" + txtSearch + "%").mapTo(Integer.class).one();
 		} catch (Exception e) {
-
+			e.printStackTrace();
+			return 0;
 		}
-
-		return 0;
 	}
 
 	public static List<Product> pagingProductSearch(int index, String txtSearch, String sort, String type) {
-		List<Product> list = new ArrayList<>();
-		String query = "select * from products  where  nameProduct like ? order by " + sort + " " + type
-				+ "  limit ?,12";
-
-		try {
-			Connection conn = DBContext.getConnection();
-			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setString(1, "%" + txtSearch + "%");
-			ps.setInt(2, (index - 1) * 12);
-			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
-				list.add(new Product(rs.getInt("idProduct"), rs.getString("nameProduct"),
-						rs.getDouble("priceProduct"), UtilDAO.findListImageByIdProduct(rs.getInt("idProduct")),
-						rs.getInt("discount"),rs.getDouble("discountPrice")));
-			}
+		String query = "select p.id, p.nameProduct, pp.listPrice,pp.discount, pp.discountPrice from products p join product_prices pp on p.id = pp.idProduct where  p.nameProduct like ? order by " + sort + " " + type + "  limit ?,12";
+		try (Handle handle = DBContext.me().open()) {
+			return handle.createQuery(query).bind(0,"%" + txtSearch + "%").bind(1, (index-1)*12).map((rs, ctx) -> new Product(rs.getInt("id"), rs.getString("nameProduct"),
+							rs.getDouble("listPrice"), UtilDAO.findListImageByIdProduct(rs.getInt("id")),
+							rs.getInt("discount"),rs.getDouble("discountPrice")))
+					.list();
 		} catch (Exception e) {
-
+			e.printStackTrace();
+			return new ArrayList<>();
 		}
-		return list;
 	}
 
 	public static void main(String[] args) {
-		System.out.println(pagingProductSearch(1,"Giày","idProduct","asc"));
+		System.out.println(pagingProductSearch(1, "Váy", "id", "asc").size());
 	}
 }

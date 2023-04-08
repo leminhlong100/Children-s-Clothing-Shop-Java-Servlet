@@ -9,7 +9,7 @@ public class Inventory {
 	private Date createdDate;
 	private Date lastUpdatedDate;
 
-	public Inventory() {
+	public Inventory(int id, int quantity) {
 		super();
 	}
 

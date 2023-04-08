@@ -24,7 +24,7 @@ public class Product implements Serializable {
     private int discount;
     private double discountPrice;
     private Inventory inventory;
-    public Product() {
+    public Product(int id, String nameProduct, double listPrice, String description, Supplier nameSupplier, Producer nameProducer, Category nameCategorie, List<ImageProduct> listImageByIdProduct, List<SizeColorProduct> listSizeColorByIdProduct, List<SizeColorProduct> sizeColorByIdProduct, int discount, double discountPrice, Inventory inventory) {
     }
 
     public Product(int id, String nameProduct, List<ImageProduct> imageProducts) {
