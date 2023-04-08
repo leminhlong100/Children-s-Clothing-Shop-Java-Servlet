@@ -2,6 +2,7 @@
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <fmt:setLocale value="${sessionScope.LANG}"/>
 <fmt:setBundle basename="app" var="lang"/>
 <!DOCTYPE html>
@@ -125,7 +126,7 @@
                                 <td class="text-right"><fmt:message key="Total.amount"
                                                                     bundle="${lang}"></fmt:message></td>
                                 <td class="text-right">${total}<fmt:message key="$"
-                                                                              bundle="${lang}"></fmt:message></td>
+                                                                            bundle="${lang}"></fmt:message></td>
                             </tr>
                         </table>
                         <c:url var="payment" value="Payment.jsp"></c:url>
@@ -147,7 +148,9 @@
                     <fmt:message key="Purchase.history" bundle="${lang}"></fmt:message>
                 </h4>
                 <div class="col-md-12">
+                    <c:if test="${empty listOrders}"> <p>Lịch sử rổng </p></c:if>
                     <div class="table-responsive">
+                        <c:if test="${!empty listOrders}">
                         <table class="table table-bordered cart-table">
                             <thead>
                             <tr>
@@ -199,7 +202,7 @@
                                 </tbody>
                             </c:forEach>
                         </table>
-
+                        </c:if>
                     </div>
                 </div>
             </div>

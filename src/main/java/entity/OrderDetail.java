@@ -32,10 +32,11 @@ public class OrderDetail {
 		this.node = node;
 	}
 
-	public OrderDetail(int id, int idOrder, int idProduct, int quantity, double price, String node, String productSize, String productColor) {
+	public OrderDetail(int id, int idOrder, int idProduct, Product product, int quantity, double price, String node, String productSize, String productColor) {
 		this.id = id;
 		this.idOrder = idOrder;
 		this.idProduct = idProduct;
+		this.product = product;
 		this.quantity = quantity;
 		this.price = price;
 		this.node = node;

@@ -29,6 +29,8 @@ public class DetailBillCotrol extends HttpServlet {
 		List<OrderDetail> orderDetails = OrderDAO.getOrderDetailByBid(id);
 		request.setAttribute("bill", order);
 		request.setAttribute("billProducts", orderDetails);
+		System.out.println(order);
+		System.out.println(orderDetails);
 		request.getRequestDispatcher("/client/BillDetail.jsp").forward(request, response);
 	}
 

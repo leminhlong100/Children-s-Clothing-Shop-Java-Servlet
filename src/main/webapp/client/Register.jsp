@@ -112,7 +112,7 @@
 									</div>
 
 									<div class="col-md-11">
-										<p style="color: red;" class="col-md-11" id="erroremail">${emailexit}</p>
+										<p style="color: red;" class="col-md-11" id="erroresmail">${emailexit}</p>
 									</div>
 
 									<div class="row">

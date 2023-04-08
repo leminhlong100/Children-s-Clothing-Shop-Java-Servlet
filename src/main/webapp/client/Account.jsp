@@ -16,7 +16,7 @@ if (session.getAttribute("acc") == null) {
 <html lang="vi">
 <head>
 <title><fmt:message key="account.information" bundle="${lang}"></fmt:message></title>
-<link rel="icon" type="image" href="../image/HaLoicon.png" />
+<link rel="icon" type="image" href="../images/HaLoicon.png" />
 <jsp:include page="./link/Link.jsp"></jsp:include>
 </head>
 <body>
@@ -64,35 +64,35 @@ if (session.getAttribute("acc") == null) {
 								<tbody>
 									<tr>
 										<td><fmt:message key="Full.name" bundle="${lang}"></fmt:message>:</td>
-										<td class="colum-account"><input class="input-account"
-											id="input-account-name" type="text"
-											value="${sessionScope.acc.user}" name="name" size="70"
-											readonly /></td>
+										<td class="colum-account"><label for="input-account-name"></label><input class="input-account"
+																												 id="input-account-name" type="text"
+																												 value="${sessionScope.acc.user}" name="name" size="70"
+																												 readonly /></td>
 									</tr>
 
 									<tr>
 										<td class="colum-account"><fmt:message key="Email"
 												bundle="${lang}"></fmt:message>:</td>
-										<td><input class="input-account" id="input-account-email"
-											type="text" value="${sessionScope.acc.email}" name="email"
-											readonly size="70" /></td>
+										<td><label for="input-account-email"></label><input class="input-account" id="input-account-email"
+																							type="text" value="${sessionScope.acc.email}" name="email"
+																							readonly size="70" /></td>
 									</tr>
 
 									<tr>
 										<td class="colum-account"><fmt:message key="Address"
 												bundle="${lang}"></fmt:message>:</td>
-										<td><textarea name="address" id="input-account-address"
-												rows="9" cols="70" class="textarea-account" readonly> ${sessionScope.acc.address} 
+										<td><label for="input-account-address"></label><textarea name="address" id="input-account-address"
+																								 rows="9" cols="70" class="textarea-account" readonly> ${sessionScope.acc.address}
 																</textarea></td>
 									</tr>
 
 									<tr>
 										<td class="colum-account"><fmt:message key="Phone.number"
 												bundle="${lang}"></fmt:message>:</td>
-										<td><input class="input-account" type="text"
-											id="input-account-phoneNumber"
-											value="${sessionScope.acc.phoneNumber}" size="70"
-											name="phoneNumber" readonly /></td>
+										<td><label for="input-account-phoneNumber"></label><input class="input-account" type="text"
+																								  id="input-account-phoneNumber"
+																								  value="${sessionScope.acc.phoneNumber}" size="70"
+																								  name="phoneNumber" readonly /></td>
 									</tr>
 								</tbody>
 								<div class="row">
@@ -132,8 +132,10 @@ if (session.getAttribute("acc") == null) {
 									<tr>
 										<td class="colum-account"><fmt:message key="old.password"
 												bundle="${lang}"></fmt:message>:</td>
-										<td><input class="input-account" type="password" value=""
-											name="oldpass" required="required" size="70" /></td>
+										<td><label>
+											<input class="input-account" type="password" value=""
+												name="oldpass" required="required" size="70" />
+										</label></td>
 									</tr>
 
 									<tr>

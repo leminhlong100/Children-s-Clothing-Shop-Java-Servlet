@@ -121,12 +121,12 @@ if (session.getAttribute("acc") != null) {
 	</div>
 	<script type="text/javascript">
 		function sendMail() {
-			var emailvalue = document.getElementById("gmailVa").value;
+			let emailValue = document.getElementById("gmailVa").value;
 			$.ajax({
 				url : "${pageContext.request.contextPath}/VerifyEmailControl",
 				type : "get",
-				data : {
-					email : emailvalue,
+				 : {
+					email : emailValue,
 				},
 				success : function(data) {
 					$("#logInfoEmail").html(data);
@@ -136,8 +136,8 @@ if (session.getAttribute("acc") != null) {
 				}
 			});
 		}
-		var sendMailBtn = document.getElementById("send-mail-btn");
-		var totalSeconds;
+		let sendMailBtn = document.getElementById("send-mail-btn");
+		let totalSeconds;
 
 		window.onload = function() {
 			// Bắt đầu đếm ngay khi trang được load
@@ -152,8 +152,8 @@ if (session.getAttribute("acc") != null) {
 		});
 
 		function countdown(time) {
-			var minutes = Math.floor(time / 60);
-			var seconds = time % 60;
+			let minutes = Math.floor(time / 60);
+			let seconds = time % 60;
 
 			sendMailBtn.innerHTML = "Gửi lại mã xác thực " + minutes + " phút " + seconds
 					+ " giây";

@@ -32,6 +32,7 @@ public class CartControl extends HttpServlet {
         } else {
             double total = 0;
             List<Order> listOrders = OrderDAO.getListOrderByAcountId(String.valueOf(account.getId()));
+            Collections.reverse(listOrders);
             Map<Integer, List<OrderDetail>> map = new HashMap<>();
             for (int i = 0; i < listOrders.size(); i++) {
                 List<OrderDetail> listProducts = OrderDAO.getOrderDetailByBid(String.valueOf(listOrders.get(i).getId()));
