@@ -26,10 +26,10 @@ public class ShowProductControl extends HttpServlet {
 			String sort = "";
 			sort = request.getParameter("sort");
 			if (sort == null) {
-				sort = "idProduct-asc";
+				sort = "id-asc";
 			}
 
-			int cid = 0;
+			int cid = 0; //id loại sản phẩm
 			if (request.getParameter("cid") != null) {
 				cid = Integer.parseInt(request.getParameter("cid"));
 			}
@@ -45,14 +45,15 @@ public class ShowProductControl extends HttpServlet {
 				if (count % 12 != 0) {
 					endPage++;
 				}
-				
+
 				StringTokenizer s = new StringTokenizer(sort, "-");
 				String sortName = s.nextToken();
 				String sortType = s.nextToken();
 				List<Product> list = AccessDAO.pagingProductSearch(index, search, sortName, sortType);
+				System.out.println(list);
 				request.setAttribute("sort", sort);
 				request.setAttribute("listProduct", list);
-				request.setAttribute("endP", endPage);
+				request.setAttribute("endPage", endPage);
 				request.setAttribute("tag", index);
 				request.setAttribute("search", search);
 				request.setAttribute("cid", cid);
@@ -67,7 +68,7 @@ public class ShowProductControl extends HttpServlet {
 				String sortType = s.nextToken();
 				List<Product> list = ProductDAO.pagingProduct(index, cid, sortName, sortType);
 				request.setAttribute("listProduct", list);
-				request.setAttribute("endP", endPage);
+				request.setAttribute("endPage", endPage);
 				request.setAttribute("tag", index);
 				request.setAttribute("cid", cid);
 				request.setAttribute("search", search);
