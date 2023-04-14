@@ -117,7 +117,7 @@
 												<c:url var="detail" value="DetailControl"></c:url>
 												<a class="sellingProducts-image"
 												   href="${detail}?pid=${o.id}"> <img
-														src="./images/${o.imageProducts.get(0).getImage()}" alt=""
+														src="/images/${o.imageProducts.get(0).getImage()}" alt=""
 														class="img-responsive">
 												</a>
 											</div>

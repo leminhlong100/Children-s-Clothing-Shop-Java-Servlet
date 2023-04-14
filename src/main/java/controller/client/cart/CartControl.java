@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebServlet("/CartControl")
+@WebServlet("/cart/CartControl")
 public class CartControl extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -27,9 +27,6 @@ public class CartControl extends HttpServlet {
         Account account = (Account) session.getAttribute("acc");
         Object obj = session.getAttribute("cart");// luu tam vao session
         int totalQuantity = 0;
-        if (account == null) {
-            response.sendRedirect(request.getContextPath() + "/client/Login.jsp");
-        } else {
             double total = 0;
             List<Order> listOrders = OrderDAO.getListOrderByAcountId(String.valueOf(account.getId()));
             Collections.reverse(listOrders);
@@ -54,7 +51,6 @@ public class CartControl extends HttpServlet {
             request.setAttribute("listOrders", listOrders);
             session.setAttribute("cartTotalQuantity", totalQuantity);
             request.getRequestDispatcher("/client/Cart.jsp").forward(request, response);
-        }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

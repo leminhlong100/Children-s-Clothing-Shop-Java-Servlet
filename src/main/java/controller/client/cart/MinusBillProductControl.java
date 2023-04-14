@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import entity.OrderDetail;
 
-@WebServlet("/MinusBillProductControl")
+@WebServlet("/cart/MinusBillProductControl")
 public class MinusBillProductControl extends HttpServlet {
     private static final long serialVersionUID = 1L;
 

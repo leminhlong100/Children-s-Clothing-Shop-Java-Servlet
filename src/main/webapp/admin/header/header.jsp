@@ -3,8 +3,8 @@
 <c:url value="/admin/assets" var="url" />
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<fmt:setLocale value="${sessionScope.LANG}" />
-<fmt:setBundle basename="web.lang.resource.app" var="lang" />
+<fmt:setLocale value="${sessionScope.LANG}"/>
+<fmt:setBundle basename="app" var="lang"/>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,6 +28,8 @@
 <link href="${url}/css/icons.css" rel="stylesheet" type="text/css" />
 <link href="${url}/css/sidebar-menu.css" rel="stylesheet" />
 <link href="${url}/css/app-style.css" rel="stylesheet" />
+	<link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 
 
 </head>
@@ -50,7 +52,7 @@
 			<nav class="navbar navbar-expand fixed-top">
 				<ul class="navbar-nav mr-auto align-items-center">
 					<li class="nav-item"><a class="nav-link toggle-menu"
-						href="javascript:void();"> <i class="icon-menu menu-icon"></i>
+						href=""> <i class="icon-menu menu-icon"></i>
 					</a></li>
 				</ul>
 
@@ -74,7 +76,7 @@
 					</a>
 						<ul class="dropdown-menu dropdown-menu-right">
 							<li class="dropdown-item user-details"><a
-								href="javaScript:void();">
+								href="">
 									<div class="media">
 										<div class="avatar">
 											<img class="align-self-start mr-3"
@@ -83,7 +85,7 @@
 										</div>
 										<div class="media-body">
 											<h6 class="mt-2 user-title">HaLo's Shop</h6>
-											<b> Admin: ${sessionScope.admin.user }</b>
+											<b> Admin: ${sessionScope.admin.fullName }</b>
 										</div>
 									</div>
 							</a></li>

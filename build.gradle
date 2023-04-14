@@ -26,10 +26,10 @@ repositories {
 }
 
 dependencies {
-    implementation 'mysql:mysql-connector-java:8.0.26'
+
+    implementation 'mysql:mysql-connector-java:8.0.28'
     implementation 'org.jdbi:jdbi3-core:3.23.0'
     implementation 'javax.servlet:javax.servlet-api:3.1.0'
-    implementation 'jakarta.servlet:jakarta.servlet-api:5.0.0'
     implementation 'commons-codec:commons-codec:1.15'
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'javax.json:javax.json-api:1.1.4'
@@ -42,6 +42,7 @@ dependencies {
     implementation 'junit:junit:3.8.1'
     implementation 'org.slf4j:slf4j-api:1.7.25'
     implementation 'com.zaxxer:HikariCP:3.1.0'
+    implementation 'javax.websocket:javax.websocket-api:1.1'
 }
 
 group = 'org.example'

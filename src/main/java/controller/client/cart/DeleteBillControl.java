@@ -10,9 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import dao.AuthDAO.SecurityDAO;
 import entity.OrderDetail;
+import util.Util;
 
-@WebServlet("/DeleteBillControl")
+@WebServlet("/cart/DeleteBillControl")
 public class DeleteBillControl extends HttpServlet {
     private static final long serialVersionUID = 1L;
 

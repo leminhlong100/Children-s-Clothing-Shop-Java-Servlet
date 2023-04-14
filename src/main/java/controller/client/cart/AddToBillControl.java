@@ -18,7 +18,7 @@ import entity.Account;
 import entity.Order;
 import entity.OrderDetail;
 
-@WebServlet("/AddBillControl")
+@WebServlet("/cart/AddBillControl")
 public class AddToBillControl extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
