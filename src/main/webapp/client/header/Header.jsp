@@ -1,3 +1,5 @@
+<%@ page import="entity.OrderDetail" %>
+<%@ page import="java.util.Map" %>
 <%@ page language="java" contentType="text/html;UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -70,11 +72,10 @@
                         <form action="${pageContext.request.contextPath}/${searchct}" method="get"
                               class="form-inline sk-search-in-nav">
                             <div class="form-group">
-                                <label>
-                                    <input type="text" class="form-control sk-search-field"
-                                           placeholder="<fmt:message key="Find" bundle="${lang}"></fmt:message>"
-                                           value="${search}" name="search">
-                                </label>
+
+                                <input type="text" class="form-control sk-search-field"
+                                       placeholder="<fmt:message key="Find" bundle="${lang}"></fmt:message>"
+                                       value="${requestScope.search}" name="search">
                             </div>
                             <button type="submit" class="sk-search-btn">
                                 <i class="fa fa-search"></i>
@@ -113,10 +114,10 @@
                         <form action="${searchct}" method="get"
                               class="form-inline sk-search-in-nav">
                             <div class="form-group sk-search-input">
-                                <label for="sk-input"></label><input id="sk-input" type="text"
-                                                                     class="form-control sk-search-field"
-                                                                     placeholder="<fmt:message key="Find" bundle="${lang}"></fmt:message>"
-                                                                     value="${search}" name="query">
+                                <input id="sk-input" type="text"
+                                       class="form-control sk-search-field"
+                                       placeholder="<fmt:message key="Find" bundle="${lang}"></fmt:message>"
+                                       value="${requestScope.search}" name="query">
                             </div>
                             <button id="sk-button" type="button" class="sk-search-btn">
                                 <i class="fa fa-search"></i>
@@ -180,7 +181,9 @@
                             <li class=""><a
                                     href="${pageContext.request.contextPath}/${showProduct}?cid=4"><fmt:message
                                     key="Promotion" bundle="${lang}"></fmt:message></a></li>
-
+                            <li class=""><a
+                                    href="${pageContext.request.contextPath}/${showProduct}?cid=5"><fmt:message
+                                    key="Toys" bundle="${lang}"></fmt:message></a></li>
                         </ul>
                     </li>
 

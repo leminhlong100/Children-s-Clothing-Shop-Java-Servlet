@@ -239,12 +239,12 @@ a:hover {
 	}
 }
 @media(min-width: 768px) and (max-width: 992px){
-	.discounts-product-right .discounts-product-image a{
-		display:block;
-		min-height: 385px;
-		max-height: 385px;
-		overflow:hidden;
-	}
+    .discounts-product-right .discounts-product-image a{
+        display:block;
+        min-height: 200px;
+        max-height: 200px;
+        overflow:hidden;
+    }
 }
 .discounts-product-right .discounts-product-image .price-box {
     position: absolute;
