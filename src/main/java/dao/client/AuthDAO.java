@@ -241,7 +241,7 @@ public class AuthDAO {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(getPermissions(1));
+		System.out.println(getPermissions(9));
 
 
 	}

@@ -39,6 +39,7 @@ public class AuthorizationFilter implements Filter {
         } else {
             requestedResource = "";
         }
+        System.out.println(requestedResource);
         for (String allowedPath : ALLOWED_PATHS) {
             if (requestedResource.equals(allowedPath)) {
                 chain.doFilter(request, response);
