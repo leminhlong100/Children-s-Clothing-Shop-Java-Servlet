@@ -42,6 +42,15 @@ public class Product implements Serializable {
         this.discount = discount;
         this.discountPrice = discountPrice;
     }
+    public Product(int id, String nameProduct, double listPrice, List<ImageProduct> imageProducts, int discount, double discountPrice,String isActive) {
+        this.id = id;
+        this.nameProduct = nameProduct;
+        this.listPrice = listPrice;
+        this.imageProducts = imageProducts;
+        this.discount = discount;
+        this.discountPrice = discountPrice;
+        this.isActive = isActive;
+    }
 
     public Product(int id, String nameProduct, double listPrice, String description, List<View> views, List<Star> stars, List<Comment> comments, int idSupplier, int idProducer, int idCategory, Supplier supplier, Producer producer, Category category, List<ImageProduct> imageProducts, List<SizeColorProduct> colorsizes, String isActive, String isDelete, int discount, double discountPrice, Inventory inventory) {
         this.id = id;
