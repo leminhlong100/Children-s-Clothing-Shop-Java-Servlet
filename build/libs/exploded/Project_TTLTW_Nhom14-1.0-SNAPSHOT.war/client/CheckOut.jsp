@@ -32,18 +32,18 @@
     <link rel="shortcut icon" href="//bizweb.dktcdn.net/assets/sapo_favicon.png" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css" />
 
-    <link rel="stylesheet" href="${request.contextPath}client/assets/css/checkout.vendor.min.css?v=4fcd86c">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/client/assets/css/checkout.vendor.min.css?v=4fcd86c">
 
 
-    <link rel="stylesheet" href="${request.contextPath}client/assets/css/checkout.min.css?v=17ca415">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/client/assets/css/checkout.min.css?v=17ca415">
 
     <!-- Begin checkout custom css -->
     <style>
     </style>
     <!-- End checkout custom css -->
     <script src="//bizweb.dktcdn.net/assets/themes_support/libphonenumber-v3.2.30.min.js?1564585558451"></script>
-    <script src="${request.contextPath}client/assets/js/checkout.vendor.min.js?v=11006c9"></script>
-    <script src="${request.contextPath}client/assets/js/checkout.min.js?v=ee358d5"></script>
+    <script src="${pageContext.request.contextPath}/client/assets/js/checkout.vendor.min.js?v=11006c9"></script>
+    <script src="${pageContext.request.contextPath}/client/assets/js/checkout.min.js?v=ee358d5"></script>
     <script>
         var Bizweb = Bizweb || {};
         Bizweb.id = '117632';
@@ -73,7 +73,7 @@
     </script>
 
 
-    <script src="${request.contextPath}client/assets/js/stats.min.js?v=69e02f0"></script>
+    <script src="${pageContext.request.contextPath}/client/assets/js/stats.min.js?v=69e02f0"></script>
 
 
 </head>
@@ -151,7 +151,7 @@
                                                         <td class="product__image">
                                                             <div class="product-thumbnail">
                                                                 <div class="product-thumbnail__wrapper" data-tg-static>
-                                                                    <img src="./images/${o.product.imageProducts.get(0).getImage()}"
+                                                                    <img src="${pageContext.request.contextPath}/images/${o.product.imageProducts.get(0).getImage()}"
                                                                          alt="" class="product-thumbnail__image"/>
                                                                 </div>
                                                                 <span class="product-thumbnail__quantity">${o.quantity}</span>

@@ -2,26 +2,68 @@ package dao.client;
 
 import context.DBContext;
 import entity.Account;
+import entity.Permission;
+import entity.Resource;
+import entity.Role;
 import org.jdbi.v3.core.Jdbi;
 import util.EnCode;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class AuthDAO {
 	public AuthDAO() {
 		super();
 	}
-
+	public static Set<Role> getRoles(int idAccount) {
+		Jdbi me = DBContext.me();
+		// Lấy ra danh sách role của account
+		Set<Role> roles;
+		return roles = me.withHandle(handle -> {
+			return handle.createQuery("select roles.* from roles join account_roles on roles.id = account_roles.idRole where account_roles.idAccount = ?")
+				   .bind(0, idAccount)
+				   .mapToBean(Role.class)
+				   .collect(Collectors.toSet());
+		});
+	}
+	public static Set<Resource> getResources(int idAccount) {
+		Jdbi me = DBContext.me();
+		// Lấy ra danh sách role của account
+		Set<Resource> resources;
+		return resources = me.withHandle(handle -> {
+			return handle.createQuery("select resources.* from resources join permissions on resources.id = permissions.idResource where permissions.idRole in (select roles.id from roles join account_roles on roles.id = account_roles.idRole where account_roles.idAccount = ?)")
+					.bind(0, idAccount)
+					.mapToBean(Resource.class)
+					.collect(Collectors.toSet());
+	});
+	}
+	public static Set<Permission> getPermissions(int idAccount) {
+		Jdbi me = DBContext.me();
+		// Lấy ra danh sách role của account
+		Set<Permission> permissions;
+		return permissions = me.withHandle(handle -> {
+			return handle.createQuery("select p.id,p.idRole,roles.name,p.idResource,r.name,r.url,p.action from permissions p join roles on p.idRole = roles.id join account_roles on roles.id = account_roles.idRole join resources r on r.id = p.idResource where account_roles.idAccount = ?")
+					.bind(0, idAccount)
+					.map((rs, ctx) -> new Permission(rs.getLong("id"),new Role(rs.getLong("idRole"),rs.getString(3)),new Resource(rs.getLong("idResource"),rs.getString(5),rs.getString("url")),rs.getString("action")))
+					.collect(Collectors.toSet());
+		});
+	}
 	public static Account login(String username, String pass) {
 		Jdbi me = DBContext.me();
 		String passEncode = EnCode.toSHA1(pass);
 		String queryLogin = "select id,accountName,password,fullName,address,email,phone,idRoleMember from accounts where accountName = ? and password  = ?";
-		return (Account) me.withHandle(handle -> {
+		Account account;
+		account= me.withHandle(handle -> {
 			return handle.createQuery(queryLogin)
 					.bind(0, username).bind(1, passEncode).mapToBean(Account.class).findFirst().orElse(null);
 		});
+		account.setRoles(getRoles(account.getId()));
+		account.setResources(getResources(account.getId()));
+		account.setPermissions(getPermissions(account.getId()));
+		return account;
 	}
 
 	public static boolean checkAccountExist(String userName) { // ton tai la true
@@ -124,7 +166,7 @@ public class AuthDAO {
 				while (rs.next()) {
 					return new Account(rs.getInt("idCustomer"), rs.getString("userName"), rs.getString("password"),
 							rs.getString("Name"), rs.getString("Address"), rs.getString("Email"),
-							rs.getString("NumberPhone"), rs.getInt("id_role_member"));
+							rs.getString("NumberPhone"));
 				}
 			}
 		} catch (Exception e) {
@@ -199,10 +241,9 @@ public class AuthDAO {
 	}
 
 	public static void main(String[] args) {
-//		System.out.println(loginFacebook("dsadasd", "asdasd@@"));
-//		signUpFacebook("asdas", "asdasd", "asdasd", "rwer");
-//		signUpGoogle("asdas", "asdasd", "asdasd", "rwer");
-		System.out.println(loginGG("asdas", "asdasd"));
+		System.out.println(getPermissions(9));
+
+
 	}
 
 }

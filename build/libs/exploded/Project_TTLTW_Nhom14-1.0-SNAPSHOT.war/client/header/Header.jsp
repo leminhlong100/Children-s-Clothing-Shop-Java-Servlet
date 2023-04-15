@@ -1,5 +1,3 @@
-<%@ page import="entity.OrderDetail" %>
-<%@ page import="java.util.Map" %>
 <%@ page language="java" contentType="text/html;UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -16,30 +14,29 @@
                 <ul class="nav navbar-nav navbar-left sk-top-nav-left"
                     style="position: relative; z-index: 9;">
                     <c:url var="edit" value="EditControl"></c:url>
-                    <c:url var="admin" value="/admin/login.jsp"></c:url>
                     <c:url var="logout" value="/LogoutControl"></c:url>
                     <c:if test="${sessionScope.acc != null}">
-                        <c:if test="${sessionScope.acc.idRoleMember == 1}">
-                            <li><a href="${pageContext.request.contextPath}/${edit}"><i
-                                    class="fa fa-user"></i> <fmt:message key="Hello"
-                                                                         bundle="${lang}"></fmt:message>: Admin
-                                    ${sessionScope.acc.fullName} </a></li>
-                            <li><a href="${pageContext.request.contextPath}/${admin}">
-                                <fmt:message key="Website.management" bundle="${lang}"></fmt:message>
-                            </a></li>
+                            <c:if test="${!sessionScope.typeacc.equals('customer')}">
+                                <li><a href="${pageContext.request.contextPath}/${edit}"><i
+                                        class="fa fa-user"></i> <fmt:message key="Hello"
+                                                                             bundle="${lang}"></fmt:message>:
+                                        ${sessionScope.acc.fullName} </a></li>
+                                <li><a href="${pageContext.request.contextPath}/admin/login.jsp">
+                                    <fmt:message key="Website.management" bundle="${lang}"></fmt:message>
+                                </a></li>
 
-                            <li><a href="${logout}"> <fmt:message key="log.out"
-                                                                  bundle="${lang}"></fmt:message>
-                            </a></li>
-                        </c:if>
-                        <c:if test="${sessionScope.acc.idRoleMember == 0}">
-                            <li><a href="${pageContext.request.contextPath}/${edit}"><i
-                                    class="fa fa-user"></i> <fmt:message key="Hello"
-                                                                         bundle="${lang}"></fmt:message>: ${sessionScope.acc.fullName}
-                            </a></li>
-                            <li><a href="${logout}"><i class="fa fa-sign-out"></i> <fmt:message
-                                    key="log.out" bundle="${lang}"></fmt:message> </a></li>
-                        </c:if>
+                                <li><a href="${logout}"> <fmt:message key="log.out"
+                                                                      bundle="${lang}"></fmt:message>
+                                </a></li>
+                            </c:if>
+                            <c:if test="${sessionScope.typeacc.equals('customer')}">
+                                <li><a href="${pageContext.request.contextPath}/${edit}"><i
+                                        class="fa fa-user"></i> <fmt:message key="Hello"
+                                                                             bundle="${lang}"></fmt:message>: ${sessionScope.acc.fullName}
+                                </a></li>
+                                <li><a href="${logout}"><i class="fa fa-sign-out"></i> <fmt:message
+                                        key="log.out" bundle="${lang}"></fmt:message> </a></li>
+                            </c:if>
                     </c:if>
                     <c:if test="${empty sessionScope.acc}">
                         <c:url var="login" value="/client/Login.jsp"/>
@@ -73,17 +70,18 @@
                         <form action="${pageContext.request.contextPath}/${searchct}" method="get"
                               class="form-inline sk-search-in-nav">
                             <div class="form-group">
-
-                                <input type="text" class="form-control sk-search-field"
-                                       placeholder="<fmt:message key="Find" bundle="${lang}"></fmt:message>"
-                                       value="${requestScope.search}" name="search">
+                                <label>
+                                    <input type="text" class="form-control sk-search-field"
+                                           placeholder="<fmt:message key="Find" bundle="${lang}"></fmt:message>"
+                                           value="${search}" name="search">
+                                </label>
                             </div>
                             <button type="submit" class="sk-search-btn">
                                 <i class="fa fa-search"></i>
                             </button>
                         </form>
                     </li>
-                    <c:url var="cart" value="CartControl"></c:url>
+                    <c:url var="cart" value="cart/CartControl"></c:url>
                     <li><a href="${pageContext.request.contextPath}/${cart}"><i
                             class="fa fa-shopping-cart"></i> <span class="cart-icon"><c:if
                             test="${!empty sessionScope.cart }">${sessionScope.cartTotalQuantity}</c:if>
@@ -115,10 +113,10 @@
                         <form action="${searchct}" method="get"
                               class="form-inline sk-search-in-nav">
                             <div class="form-group sk-search-input">
-                                <input id="sk-input" type="text"
-                                       class="form-control sk-search-field"
-                                       placeholder="<fmt:message key="Find" bundle="${lang}"></fmt:message>"
-                                       value="${requestScope.search}" name="query">
+                                <label for="sk-input"></label><input id="sk-input" type="text"
+                                                                     class="form-control sk-search-field"
+                                                                     placeholder="<fmt:message key="Find" bundle="${lang}"></fmt:message>"
+                                                                     value="${search}" name="query">
                             </div>
                             <button id="sk-button" type="button" class="sk-search-btn">
                                 <i class="fa fa-search"></i>
@@ -146,12 +144,11 @@
                             href="${pageContext.request.contextPath}/${index}"><fmt:message
                             key="Home" bundle="${lang}"></fmt:message></a></li>
 
-                    <li class=""><c:url var="intro" value="/client/Introduce.jsp"></c:url>
-                        <a href="${pageContext.request.contextPath}/${intro}"><fmt:message
+                    <li class="">
+                        <a href="${pageContext.request.contextPath}/client/Introduce.jsp"><fmt:message
                                 key="Introduce" bundle="${lang}"></fmt:message></a></li>
-
-                    <li class=""><c:url var="service" value="/client/Service.jsp"></c:url>
-                        <a href="${pageContext.request.contextPath}/${service}"><fmt:message
+                    <li class="">
+                        <a href="${pageContext.request.contextPath}/client/Service.jsp"><fmt:message
                                 key="service" bundle="${lang}"></fmt:message></a></li>
 
                 </ul>
@@ -183,9 +180,7 @@
                             <li class=""><a
                                     href="${pageContext.request.contextPath}/${showProduct}?cid=4"><fmt:message
                                     key="Promotion" bundle="${lang}"></fmt:message></a></li>
-                            <li class=""><a
-                                    href="${pageContext.request.contextPath}/${showProduct}?cid=5"><fmt:message
-                                    key="Toys" bundle="${lang}"></fmt:message></a></li>
+
                         </ul>
                     </li>
 
@@ -193,8 +188,8 @@
                             href="https://vnexpress.net/tag/thoi-trang-tre-em-92352"><fmt:message
                             key="news" bundle="${lang}"></fmt:message></a></li>
 
-                    <li class=""><c:url var="contact" value="/client/Contact.jsp"></c:url>
-                        <a href="${pageContext.request.contextPath}/${contact}"><fmt:message
+                    <li class="">
+                        <a href="${pageContext.request.contextPath}/client/Contact.jsp"><fmt:message
                                 key="Contact" bundle="${lang}"></fmt:message></a></li>
                 </ul>
             </div>

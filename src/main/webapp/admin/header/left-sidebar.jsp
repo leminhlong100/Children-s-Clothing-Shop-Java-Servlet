@@ -1,28 +1,26 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<fmt:setLocale value="${sessionScope.LANG}" />
-<fmt:setBundle basename="web.lang.resource.app" var="lang" />
+<fmt:setLocale value="${sessionScope.LANG}"/>
+<fmt:setBundle basename="app" var="lang"/>
 <c:url value="/admin/assets" var="url" />
 <div id="sidebar-wrapper" data-simplebar=""
 	data-simplebar-auto-hide="true">
 	<div class="brand-logo">
-		<c:url value="/IndexAdminController"
-			var="indexAdmin"></c:url>
-		<a href="${indexAdmin}"> <img src="${url}/images/logotitle.png"
+		<a href="${pageContext.request.contextPath}/admin-index"> <img src="${url}/images/logotitle.png"
 			class="logo-icon" alt="logo icon">
 			<h5 class="logo-text">Admin HaLo's Shop</h5>
 		</a>
 	</div>
 	<ul class="sidebar-menu do-nicescrol">
 		<li class="sidebar-header">MENU ADMIN</li>
-		<li><c:url var="indexCon" value="IndexAdminController"></c:url> <a
-			href="${pageContext.request.contextPath}/${indexCon}"> <i
+		<li> <a
+			href="${pageContext.request.contextPath}/admin-index"> <i
 				class="zmdi zmdi-view-dashboard"></i> <span><fmt:message
 						key="overview" bundle="${lang}"></fmt:message></span>
 		</a></li>
-		<li><c:url var="usermanager" value="UserListController"></c:url><a
-			href="${pageContext.request.contextPath}/${usermanager}"> <i
+		<li><a
+			href="${pageContext.request.contextPath}/admin-user"> <i
 				class="zmdi zmdi-accounts"></i> <span><fmt:message
 						key="user.management" bundle="${lang}"></fmt:message></span>
 		</a></li>

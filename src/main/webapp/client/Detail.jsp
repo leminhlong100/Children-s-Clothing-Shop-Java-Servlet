@@ -109,7 +109,7 @@
                             </ul>
                             <p class="pd-description-mini">${detail.description}</p>
                             <div class="pd-form">
-                                <c:url var="addToCart" value="AddToCartControl"></c:url>
+                                <c:url var="addToCart" value="cart/AddToCartControl"></c:url>
                                 <form action="${addToCart}?pid=${detail.id}" method="post">
                                 <div class="pd-form-top clearfix">
                                     <div class="selector-wrapper">

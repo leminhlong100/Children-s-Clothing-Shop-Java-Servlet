@@ -17,11 +17,11 @@
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/fontawesome.min.css"
           integrity="sha384-QYIZto+st3yW+o8+5OHfT6S482Zsvz2WfOzpFSXMF9zqeLcFV0/wlZpMtyFcZALm" crossorigin="anonymous">
-    <link rel="stylesheet" href="${request.contextPath}client/assets/css/checkout.vendor.min.css?v=4fcd86c">
-    <link rel="stylesheet" href="${request.contextPath}client/assets/css/checkout.min.css?v=17ca415">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}//client/assets/css/checkout.vendor.min.css?v=4fcd86c">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/client/assets/css/checkout.min.css?v=17ca415">
     <script src="//bizweb.dktcdn.net/assets/themes_support/libphonenumber-v3.2.30.min.js?1564585558451"></script>
-    <script src="${request.contextPath}client/assets/js/checkout.vendor.min.js?v=11006c9"></script>
-    <script src="${request.contextPath}client/assets/js/checkout.min.js?v=ee358d5"></script>
+    <script src="${pageContext.request.contextPath}/client/assets/js/checkout.vendor.min.js?v=11006c9"></script>
+    <script src="${pageContext.request.contextPath}/client/assets/js/checkout.min.js?v=ee358d5"></script>
     <script>
         var Bizweb = Bizweb || {};
         Bizweb.id = '117632';
@@ -44,7 +44,7 @@
             window.BizwebAnalytics.meta[attr] = meta[attr];
         }
     </script>
-    <script src="${request.contextPath}client/assets/js/stats.min.js?v=69e02f0"></script>
+    <script src="${pageContext.request.contextPath}/client/assets/js/stats.min.js?v=69e02f0"></script>
 </head>
 
 <body data-no-turbolink>
@@ -76,7 +76,7 @@
 
 <div data-tg-refresh="checkout" id="checkout" class="content">
     <form method="post"
-          action="${pageContext.request.contextPath}/AddBillControl"
+          action="${pageContext.request.contextPath}/cart/AddBillControl"
     >
         <input type="hidden" name="_method" value="patch"/>
         <div class="wrap">
@@ -333,7 +333,7 @@
                             </svg>
                         </button>
 
-                        <a href="/cart" class="previous-link">
+                        <a href="${pageContext.request.contextPath}/cart/CartControl" class="previous-link">
                             <i class="previous-link__arrow">❮</i>
                             <span class="previous-link__content">Quay về giỏ hàng</span>
                         </a>
@@ -386,7 +386,7 @@
                                                 <td class="product__image">
                                                     <div class="product-thumbnail">
                                                         <div class="product-thumbnail__wrapper" data-tg-static>
-                                                            <img src="./images/${o.product.imageProducts.get(0).getImage()}"
+                                                            <img src="${pageContext.request.contextPath}/images/${o.product.imageProducts.get(0).getImage()}"
                                                                  alt="" class="product-thumbnail__image"/>
                                                         </div>
                                                         <span class="product-thumbnail__quantity">${o.quantity}</span>
@@ -502,7 +502,7 @@
                                 </button>
 
 
-                                <a href="${pageContext.request.contextPath}/CartControl" class="previous-link">
+                                <a href="${pageContext.request.contextPath}/cart/CartControl" class="previous-link">
                                     <i class="previous-link__arrow">❮</i>
                                     <span class="previous-link__content">Quay về giỏ hàng</span>
                                 </a>

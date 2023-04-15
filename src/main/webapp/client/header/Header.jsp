@@ -16,30 +16,29 @@
                 <ul class="nav navbar-nav navbar-left sk-top-nav-left"
                     style="position: relative; z-index: 9;">
                     <c:url var="edit" value="EditControl"></c:url>
-                    <c:url var="admin" value="/admin/login.jsp"></c:url>
                     <c:url var="logout" value="/LogoutControl"></c:url>
                     <c:if test="${sessionScope.acc != null}">
-                        <c:if test="${sessionScope.acc.idRoleMember == 1}">
-                            <li><a href="${pageContext.request.contextPath}/${edit}"><i
-                                    class="fa fa-user"></i> <fmt:message key="Hello"
-                                                                         bundle="${lang}"></fmt:message>: Admin
-                                    ${sessionScope.acc.fullName} </a></li>
-                            <li><a href="${pageContext.request.contextPath}/${admin}">
-                                <fmt:message key="Website.management" bundle="${lang}"></fmt:message>
-                            </a></li>
+                            <c:if test="${!sessionScope.typeacc.equals('customer')}">
+                                <li><a href="${pageContext.request.contextPath}/${edit}"><i
+                                        class="fa fa-user"></i> <fmt:message key="Hello"
+                                                                             bundle="${lang}"></fmt:message>:
+                                        ${sessionScope.acc.fullName} </a></li>
+                                <li><a href="${pageContext.request.contextPath}/admin/login.jsp">
+                                    <fmt:message key="Website.management" bundle="${lang}"></fmt:message>
+                                </a></li>
 
-                            <li><a href="${logout}"> <fmt:message key="log.out"
-                                                                  bundle="${lang}"></fmt:message>
-                            </a></li>
-                        </c:if>
-                        <c:if test="${sessionScope.acc.idRoleMember == 0}">
-                            <li><a href="${pageContext.request.contextPath}/${edit}"><i
-                                    class="fa fa-user"></i> <fmt:message key="Hello"
-                                                                         bundle="${lang}"></fmt:message>: ${sessionScope.acc.fullName}
-                            </a></li>
-                            <li><a href="${logout}"><i class="fa fa-sign-out"></i> <fmt:message
-                                    key="log.out" bundle="${lang}"></fmt:message> </a></li>
-                        </c:if>
+                                <li><a href="${logout}"> <fmt:message key="log.out"
+                                                                      bundle="${lang}"></fmt:message>
+                                </a></li>
+                            </c:if>
+                            <c:if test="${sessionScope.typeacc.equals('customer')}">
+                                <li><a href="${pageContext.request.contextPath}/${edit}"><i
+                                        class="fa fa-user"></i> <fmt:message key="Hello"
+                                                                             bundle="${lang}"></fmt:message>: ${sessionScope.acc.fullName}
+                                </a></li>
+                                <li><a href="${logout}"><i class="fa fa-sign-out"></i> <fmt:message
+                                        key="log.out" bundle="${lang}"></fmt:message> </a></li>
+                            </c:if>
                     </c:if>
                     <c:if test="${empty sessionScope.acc}">
                         <c:url var="login" value="/client/Login.jsp"/>
@@ -83,7 +82,7 @@
                             </button>
                         </form>
                     </li>
-                    <c:url var="cart" value="CartControl"></c:url>
+                    <c:url var="cart" value="cart/CartControl"></c:url>
                     <li><a href="${pageContext.request.contextPath}/${cart}"><i
                             class="fa fa-shopping-cart"></i> <span class="cart-icon"><c:if
                             test="${!empty sessionScope.cart }">${sessionScope.cartTotalQuantity}</c:if>
@@ -146,12 +145,11 @@
                             href="${pageContext.request.contextPath}/${index}"><fmt:message
                             key="Home" bundle="${lang}"></fmt:message></a></li>
 
-                    <li class=""><c:url var="intro" value="/client/Introduce.jsp"></c:url>
-                        <a href="${pageContext.request.contextPath}/${intro}"><fmt:message
+                    <li class="">
+                        <a href="${pageContext.request.contextPath}/client/Introduce.jsp"><fmt:message
                                 key="Introduce" bundle="${lang}"></fmt:message></a></li>
-
-                    <li class=""><c:url var="service" value="/client/Service.jsp"></c:url>
-                        <a href="${pageContext.request.contextPath}/${service}"><fmt:message
+                    <li class="">
+                        <a href="${pageContext.request.contextPath}/client/Service.jsp"><fmt:message
                                 key="service" bundle="${lang}"></fmt:message></a></li>
 
                 </ul>
@@ -193,8 +191,8 @@
                             href="https://vnexpress.net/tag/thoi-trang-tre-em-92352"><fmt:message
                             key="news" bundle="${lang}"></fmt:message></a></li>
 
-                    <li class=""><c:url var="contact" value="/client/Contact.jsp"></c:url>
-                        <a href="${pageContext.request.contextPath}/${contact}"><fmt:message
+                    <li class="">
+                        <a href="${pageContext.request.contextPath}/client/Contact.jsp"><fmt:message
                                 key="Contact" bundle="${lang}"></fmt:message></a></li>
                 </ul>
             </div>

@@ -80,7 +80,7 @@
 									</p>
 								</div>
 								<div class="col-md-10">
-									<input type="text" value="" name="email" />
+									<input type="text" value="" name="email" required />
 								</div>
 							</div>
 							<div class="row">
@@ -90,7 +90,7 @@
 									</p>
 								</div>
 								<div class="col-md-10">
-									<input id="password" type="password" value="" name="password" />
+									<input id="password" type="password" value="" name="password" required/>
 									<i class="fas fa-eye" id="toggle-password"
 									   style="position: absolute; width: 20%; height: 33%; float: right; left: 80%; top: 21%;"></i>
 

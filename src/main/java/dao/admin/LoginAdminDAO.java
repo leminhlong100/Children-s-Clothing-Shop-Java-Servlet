@@ -5,27 +5,29 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import context.DBContext;
+import dao.client.AuthDAO;
 import entity.Account;
+import org.jdbi.v3.core.Jdbi;
 import util.EnCode;
 
 public class LoginAdminDAO {
-	public static Account loginAdmin(String email, String pass) {
-		pass = EnCode.toSHA1(pass);
-
-		String query = "select * from Account where email = ? and password  = ? and  isAdmin = 1 ";
-		try {
-			Connection conn = DBContext.getConnection();
-			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setString(1, email);
-			ps.setString(2, pass);
-			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
-				return new Account(rs.getInt("idCustomer"), rs.getString("userName"), rs.getString("password"),
-						rs.getString("Name"), rs.getString("Address"), rs.getString("Email"),
-						rs.getString("NumberPhone"), rs.getInt("id_role_member"));
-			}
-		} catch (Exception e) {
-		}
-		return null;
+	public static Account loginAdmin(String username, String pass) {
+		Jdbi me = DBContext.me();
+		String passEncode = EnCode.toSHA1(pass);
+		String queryLogin = "select id,accountName,password,fullName,address,email,phone,idRoleMember from accounts where accountName = ? and password  = ?";
+		Account account;
+		account= me.withHandle(handle -> {
+			return handle.createQuery(queryLogin)
+					.bind(0, username).bind(1, passEncode).mapToBean(Account.class).findFirst().orElse(null);
+		});
+		account.setRoles(AuthDAO.getRoles(account.getId()));
+		account.setResources(AuthDAO.getResources(account.getId()));
+		account.setPermissions(AuthDAO.getPermissions(account.getId()));
+		return account;
 	}
+
+	public static void main(String[] args) {
+		System.out.println(loginAdmin("leminhlo1111ng@gmail.com","L0374781483Lll@").getRoles());
+	}
+
 }

@@ -132,6 +132,7 @@
 		</div>
 	</div>
 </div>
+<jsp:include page="/admin/websocket.jsp"></jsp:include>
 <footer>
 	<div class="container text-center">
 		©
@@ -142,3 +143,4 @@
 			title="author" rel="nofollow">La Thị Thúy Hảo</a>
 	</div>
 </footer>
+

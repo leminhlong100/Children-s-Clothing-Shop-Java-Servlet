@@ -13,7 +13,7 @@ import dao.client.OrderDAO;
 import entity.Order;
 import entity.OrderDetail;
 
-@WebServlet("/DetailBill")
+@WebServlet("/cart/DetailBill")
 public class DetailBillCotrol extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

@@ -1,8 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<fmt:setLocale value="${sessionScope.LANG}" />
-<fmt:setBundle basename="web.lang.resource.app" var="lang" />
+<fmt:setLocale value="${sessionScope.LANG}"/>
+<fmt:setBundle basename="app" var="lang"/>
 <c:url value="/admin/assets" var="url" />
 <!DOCTYPE html>
 <html lang="en">
@@ -69,7 +69,7 @@
 						<fmt:message key="log.in" bundle="${lang}"></fmt:message>
 					</div>
 					<form
-						action="${pageContext.request.contextPath}/AdminLoginController"
+						action="${pageContext.request.contextPath}/admin/AdminLoginController"
 						method="post">
 						<div class="form-group">
 							<label for="exampleInputUsername" class="sr-only">Username</label>

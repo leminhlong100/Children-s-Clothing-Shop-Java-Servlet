@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import entity.OrderDetail;
 
-@WebServlet("/AddBillProductControl")
+@WebServlet("/cart/AddBillProductControl")
 public class AddBillProductControl extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
