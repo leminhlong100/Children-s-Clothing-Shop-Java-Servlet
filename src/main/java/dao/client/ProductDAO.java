@@ -4,7 +4,9 @@ import java.sql.*;
 import java.util.*;
 
 import context.DBContext;
+import entity.Comment;
 import entity.Product;
+import org.jdbi.v3.core.Jdbi;
 
 public class ProductDAO {
 	public static int getTotalProduct(int cid) {
@@ -92,7 +94,43 @@ public class ProductDAO {
 		}
 		return list;
 	}
+	public static Comment findcommentbyid (int idcmt){
+		Jdbi me = DBContext.me();
+		String query="Select content,idCustomer,idProduct,createAt,nameAccount from comments where id =? ";
+		return me.withHandle(handle -> handle.createQuery(query).bind(0,idcmt).mapToBean(Comment.class).findFirst().orElse(null));
+	}
+	public static Comment commentproduct(String content ,int idcustomer,int idproduct,String name) {
+		Jdbi me = DBContext.me();
+		String query = "INSERT into comments (content,idCustomer,idProduct,createAT,nameaccount) values (?,?,?,now(),?);";
+		int id = me.withHandle(handle -> handle.createUpdate(query).bind(0, content).bind(1, idcustomer).bind(2, idproduct).bind(3, name).executeAndReturnGeneratedKeys("id").mapTo(Integer.class).one());
+		return findcommentbyid(id);
+	}
+	public static List<Comment> displayfiveproduct(int idproduct,String idparent,boolean bigcmt){
 
+		List<Comment> listcoment ;
+		String query;
+		Jdbi me = DBContext.me();
+		if(bigcmt){
+			query ="select id,content,idCustomer,idProduct ,nameaccount,createAt  from comments  where idProduct = ? and idParent is null order by createAt desc limit 5   ";
+
+			listcoment = me.withHandle(handle->{
+				return handle.createQuery(query).bind(0,idproduct)
+						.mapToBean(Comment.class).stream().toList();
+			});
+		} else {
+			query = "select  id,content,idCustomer,idProduct ,nameaccount,createAt  from comments  where idProduct = ? and idParent =? order by createAt desc  ";
+			listcoment = me.withHandle(handle -> {
+				return handle.createQuery(query).bind(0,idproduct).bind(1,idparent)
+						.mapToBean(Comment.class).stream().toList();
+			});
+		}
+		for (Comment cmts:listcoment){
+			cmts.setListreply(displayfiveproduct(idproduct,String.valueOf(cmts.getId()),false));
+
+		}
+		return listcoment;
+	}
+	
 	public static void main(String[] args) {
 
 		System.out.println(pagingProduct(1, 0, "idProduct", "asc"));
