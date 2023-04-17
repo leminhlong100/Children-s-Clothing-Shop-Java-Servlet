@@ -2,7 +2,9 @@ package entity;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class Comment {
@@ -14,10 +16,12 @@ public class Comment {
 	private int idParent;
 	private String status;
 	private int level;
-	private static String  createAt;
+	private String  createAt;
 	private String nameAccount;
 
 	private List<Comment> listreply;
+
+	private String differencetime;
 
 	public Comment() {
 	}
@@ -74,6 +78,14 @@ public class Comment {
 		return status;
 	}
 
+	public String getDifferencetime() {
+		return differencetime;
+	}
+
+	public void setDifferencetime(String differencetime) {
+		this.differencetime = differencetime;
+	}
+
 	public void setStatus(String status) {
 		this.status = status;
 	}
@@ -92,6 +104,7 @@ public class Comment {
 
 	public void setCreateAt(String createAt) {
 		this.createAt = createAt;
+		this.differencetime=gettimeover();
 	}
 
 	public String getNameAccount() {
@@ -117,15 +130,37 @@ public class Comment {
 				", listreply=" + listreply +
 				'}'+'\n';
 	}
-	public static long getTimeSinceCreatedInSeconds() {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-		LocalDateTime createTime = LocalDateTime.parse(createAt, formatter);
-		LocalDateTime now = LocalDateTime.now();
-		Duration duration = Duration.between(createTime, now);
-		return duration.toSeconds();
-	}
+
+		public String gettimeover (){
+		String rs = "";
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			LocalDateTime now = LocalDateTime.now();
+			ZoneId zone = ZoneId.of("Asia/Ho_Chi_Minh");
+			LocalDateTime commentTime = LocalDateTime.parse(createAt, formatter).atZone(zone).toLocalDateTime();
+
+			Duration duration = Duration.between(commentTime, now);
+
+			long seconds = duration.getSeconds();
+			long minutes = duration.toMinutes();
+			long hours = duration.toHours();
+			long days = duration.toDays();
+
+			if (seconds<60){
+				return rs.format("%d giây trước",seconds );
+			}
+			if(minutes<60){
+				return String.format("%d phút trước",minutes );
+
+			}
+			if(hours<24) {
+				return String.format("%d giờ trước", hours);
+			}
+			else{
+				return String.format("%d ngày trước", days);
+			}
+
+}
+
+}
 
 
-
-
-		}

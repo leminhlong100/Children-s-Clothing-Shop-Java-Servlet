@@ -22,9 +22,9 @@
 
 <body>
 <!-- Load page -->
-<div id="preloder">
-    <div class="loader"></div>
-</div>
+<%--<div id="preloder">--%>
+<%--    <div class="loader"></div>--%>
+<%--</div>--%>
 <div class="page">
     <jsp:include page="./header/Header.jsp"></jsp:include>
     <!-- Main Content -->
@@ -113,7 +113,7 @@
                                     </div>
                                 </div>
                                 <div class="pd-form-bottom clearfix">
-                                    <c:url var="addToCart" value="AddToCartControl"></c:url>
+                                    <c:url var="addToCart" value="cart/AddBillControl"></c:url>
                                     <form action="${addToCart}?pid=${ detail.id}" method="post">
                                         <input type="number" class="single-input-selector" value="1"
                                                min="1" name="quantity">
@@ -189,7 +189,22 @@
                                         </div>
                                     </c:if>
                                 </form>
+                                <div id="box">
+                                <div id="mycmt">
 
+                                    <c:forEach items="${list}" var="lists" varStatus="status">
+                                        <div class="product-length" id="cmt-box" style="border-bottom: 1px #b3b7bb solid ; padding-top: 5%">
+                                            <div>${lists.nameAccount}</div>
+                                            <div >${lists.gettimeover()}</div>
+                                            <div class="cmts"><h5 style="color: #1d2124">Đánh giá sản
+                                                phẩm:</h5>  ${lists.content}</div>
+                                            <button type="button" class="reply_btn" style="margin-top: 2%"
+                                                    onclick="formContext(this,`show`)">
+                                                Trả lời
+                                            </button>
+
+                                    <button type="button" class="btn-load" id="load" onclick="showmore()">Load more</button>
+                                </div>
                             </div>
 
 
@@ -200,22 +215,20 @@
                                     e.preventDefault();
                                     <c:url var="cmt" value="Commentcontrol"></c:url>;
                                     let content_comment = document.getElementById("comment");
-                                    let url = "${cmt}?content=" + content_comment.value + "&pid=${detail.id}";
-
                                     $.ajax({
-                                        url: url,
+                                        url: "Commentcontrol",
                                         type: 'POST',
-                                        dataType: 'text',  //du lieu gui dang text
-                                        contentType: "text/html",
+                                        data:{
+                                            content: $(content_comment).val(),
+                                                pid:${detail.id},
+                                        },
                                         success: function (data) {
                                             let datarespone = JSON.parse(data);
                                             let dataafter = JSON.parse(datarespone.comment_user);
-
-
-
+                                            let datatime = datarespone.timecmt;
                                             var commentHtml = '<div  id="cmt-box" style="border-bottom: 1px #b3b7bb solid; padding-top: 5% ;margin-bottom: 5%">' +
                                                 '<div>' + dataafter.nameAccount + '</div>' +
-                                                '<div>'+dataafter.createAt+'</div>' +
+                                                '<div>'+datatime +'</div>' +
                                                 '<div class="cmts"><h5 style="color: #1d2124">Đánh giá sản phẩm:</h5> ' + dataafter.content + '</div>'
                                             '</div>';
                                             console.log(dataafter);
@@ -232,6 +245,63 @@
 
 
 
+                                function showmore() {
+                                    var numincrease = document.getElementsByClassName("product-length").length;
+                                    console.log(numincrease);
+                                    $.ajax({
+                                        url: "Showmorecontrol",
+                                        type: "post",
+                                        data: {
+                                            pid:${detail.id},
+                                            num: numincrease,
+
+                                        },
+                                        success: function (data) {
+                                            let respone = JSON.parse(data);
+                                            let show = JSON.parse(respone.showmore);
+                                            console.log(show.length)
+                                            let test = "";
+                                            for (let i = 0; i < show.length; i++) {
+                                                    test += '<div  class="product-length" id="cmt-box" style="border-bottom: 1px #b3b7bb solid; padding-top: 5% ;margin-bottom: 5%">' +
+                                                        '<div>' + show[i].nameAccount + '</div>' +
+                                                        '<div>' +  show[i].differencetime+'</div>' +
+                                                        '<div class="cmts"><h5 style="color: #1d2124">Đánh giá sản phẩm:</h5> ' + show[i].content + '</div>' +
+                                                       ' <button type="button" class="reply_btn" style="margin-top: 2%" onclick="formContext(this,`show`)">'+ "Trả lời"+
+                                                        '</button>' +
+                                                        '</div>';
+                                            }
+
+
+                                            if (show.length>0){
+                                                $('#mycmt').append(test);
+
+                                            }else {
+                                                let  buttonshow = document.getElementById("load")
+
+                                                buttonshow.style.display="none";
+                                            }
+                                        },
+
+                                        error: function (error) {
+                                            // Xử lý lỗi
+                                            console.log(error);
+                                        }
+                                    });
+                                }
+
+                                // let likeCount = 0; // biến đếm số lượt like
+                                //
+                                // function likebutton() {
+                                //     let button = $(document).closest('#like-box').find('.fa-light fa-heart')
+                                //     const numberEl = document.querySelector('#number'); // lấy phần tử HTML hiển thị số lượt like
+                                //     if (likeCount === 0) {
+                                //         numberEl.textContent = '1'; // nếu chưa có like nào, thêm 1 like
+                                //         likeCount++;
+                                //     } else {
+                                //         numberEl.textContent = '0'; // nếu đã có like, xóa bỏ like đó
+                                //         likeCount = 0;
+                                //     }
+                                // }
 
                             </script>
 

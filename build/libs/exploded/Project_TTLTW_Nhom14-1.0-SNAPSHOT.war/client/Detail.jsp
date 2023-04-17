@@ -22,9 +22,9 @@
 
 <body>
 <!-- Load page -->
-<div id="preloder">
-    <div class="loader"></div>
-</div>
+<%--<div id="preloder">--%>
+<%--    <div class="loader"></div>--%>
+<%--</div>--%>
 <div class="page">
     <jsp:include page="./header/Header.jsp"></jsp:include>
     <!-- Main Content -->
@@ -113,7 +113,7 @@
                                     </div>
                                 </div>
                                 <div class="pd-form-bottom clearfix">
-                                    <c:url var="addToCart" value="AddToCartControl"></c:url>
+                                    <c:url var="addToCart" value="cart/AddBillControl"></c:url>
                                     <form action="${addToCart}?pid=${ detail.id}" method="post">
                                         <input type="number" class="single-input-selector" value="1"
                                                min="1" name="quantity">
@@ -195,7 +195,7 @@
                                     <c:forEach items="${list}" var="lists" varStatus="status">
                                         <div class="product-length" id="cmt-box" style="border-bottom: 1px #b3b7bb solid ; padding-top: 5%">
                                             <div>${lists.nameAccount}</div>
-                                            <div>${lists.createAt}</div>
+                                            <div >${lists.gettimeover()}</div>
                                             <div class="cmts"><h5 style="color: #1d2124">Đánh giá sản
                                                 phẩm:</h5>  ${lists.content}</div>
                                             <button type="button" class="reply_btn" style="margin-top: 2%"
@@ -206,6 +206,8 @@
                                                 <c:forEach items="${lists.listreply}" var="listrep">
                                                     <form id="form-reply">
                                                         <div id="cmt-reply-box" class="cssformcomment">
+                                                            <div >${listrep.differencetime}</div>
+
                                                             <div class="rep">${listrep.nameAccount}</div>
                                                             <div class="cmtr" style="padding-left: 6%"><h5
                                                                     style="color: #1d2124">Đã bình luận phản
@@ -213,10 +215,10 @@
 
                                                         </div>
                                                     </form>
-                                                    <div id = "like-box" class="likebth">
-                                                        <button type="button" id ="click" onclick="likebutton()"><i class="fa-light fa-heart"></i></button>
-                                                        <span id="number" type="text">0</span>
-                                                    </div>
+<%--                                                    <div id = "like-box" class="likebth">--%>
+<%--                                                        <button type="button" id ="click" onclick="likebutton()"><i class="fa-light fa-heart"></i></button>--%>
+<%--                                                        <span id="number" type="text">0</span>--%>
+<%--                                                    </div>--%>
                                                 </c:forEach>
                                             </div>
                                             <c:if test="${sessionScope.acc.fullName !=null}">
@@ -251,22 +253,20 @@
                                     e.preventDefault();
                                     <c:url var="cmt" value="Commentcontrol"></c:url>;
                                     let content_comment = document.getElementById("comment");
-                                    let url = "${cmt}?content=" + content_comment.value + "&pid=${detail.id}";
-
                                     $.ajax({
-                                        url: url,
+                                        url: "Commentcontrol",
                                         type: 'POST',
-                                        dataType: 'text',  //du lieu gui dang text
-                                        contentType: "text/html",
+                                        data:{
+                                            content: $(content_comment).val(),
+                                                pid:${detail.id},
+                                        },
                                         success: function (data) {
                                             let datarespone = JSON.parse(data);
                                             let dataafter = JSON.parse(datarespone.comment_user);
-
-
-
+                                            let datatime = datarespone.timecmt;
                                             var commentHtml = '<div  id="cmt-box" style="border-bottom: 1px #b3b7bb solid; padding-top: 5% ;margin-bottom: 5%">' +
                                                 '<div>' + dataafter.nameAccount + '</div>' +
-                                                '<div>'+dataafter.createAt+'</div>' +
+                                                '<div>'+datatime +'</div>' +
                                                 '<div class="cmts"><h5 style="color: #1d2124">Đánh giá sản phẩm:</h5> ' + dataafter.content + '</div>'
                                             '</div>';
                                             console.log(dataafter);
@@ -281,48 +281,6 @@
                                     });
                                 })
 
-                                function showmore() {
-                                    var numincrease = document.getElementsByClassName("product-length").length;
-                                    console.log(numincrease);
-                                    $.ajax({
-                                        url: "Showmorecontrol",
-                                        type: "post",
-                                        data: {
-                                            pid:${detail.id},
-                                            num: numincrease,
-
-                                        },
-                                        success: function (data) {
-                                            let respone = JSON.parse(data);
-                                            let show = JSON.parse(respone.showmore);
-                                            console.log(show.length)
-                                            let test = "";
-                                            for (let i = 0; i < show.length; i++) {
-                                                    test += '<div  class="product-length" id="cmt-box" style="border-bottom: 1px #b3b7bb solid; padding-top: 5% ;margin-bottom: 5%">' +
-                                                        '<div>' + show[i].nameAccount + '</div>' +
-                                                        '<div>' + show[i].createAt + '</div>' +
-                                                        '<div class="cmts"><h5 style="color: #1d2124">Đánh giá sản phẩm:</h5> ' + show[i].content + '</div>' +
-                                                        '</div>';
-
-
-                                            }
-                                            if (show.length>0){
-                                                $('#mycmt').append(test);
-                                            }else{
-
-                                            let   buttonshow = document.getElementById("load")
-                                                buttonshow.style.display="none";
-                                            }
-
-
-                                        },
-
-                                        error: function (error) {
-                                            // Xử lý lỗi
-                                            console.log(error);
-                                        }
-                                    });
-                                }
 
                                 function formContext(button, type) {
                                     let form = $(button).closest("#cmt-box").find(".formReply");
@@ -346,8 +304,10 @@
                                                 let responereply = JSON.parse(data);
 
                                                 let afterresponereply = JSON.parse(responereply.comment_reply);
+                                                let time = responereply.timerep;
                                                 let varreply = '<div class ="cssformcomment">' +
-                                                    '<div id="cmt-reply-box" class="rep">' + afterresponereply.nameAccount + '</div>' +
+                                                    '<div id="cmt-reply-box" class="rep">' + afterresponereply.nameAccount + '</div>'
+                                                    +'<div>'+afterresponereply.differencetime+ '</div>'+
                                                     '<div class="cmtr" style="padding-left: 6%"><h5 style="color: #1d2124">Đã phản hồi bình luận:</h5> ' + afterresponereply.content + '</div>'
                                                 '</div>'
                                                 $(formreplynguoidung).append(varreply);
@@ -360,6 +320,50 @@
                                         });
                                     }
                                 }
+                                function showmore() {
+                                    var numincrease = document.getElementsByClassName("product-length").length;
+                                    console.log(numincrease);
+                                    $.ajax({
+                                        url: "Showmorecontrol",
+                                        type: "post",
+                                        data: {
+                                            pid:${detail.id},
+                                            num: numincrease,
+
+                                        },
+                                        success: function (data) {
+                                            let respone = JSON.parse(data);
+                                            let show = JSON.parse(respone.showmore);
+                                            console.log(show.length)
+                                            let test = "";
+                                            for (let i = 0; i < show.length; i++) {
+                                                    test += '<div  class="product-length" id="cmt-box" style="border-bottom: 1px #b3b7bb solid; padding-top: 5% ;margin-bottom: 5%">' +
+                                                        '<div>' + show[i].nameAccount + '</div>' +
+                                                        '<div>' +  show[i].differencetime+'</div>' +
+                                                        '<div class="cmts"><h5 style="color: #1d2124">Đánh giá sản phẩm:</h5> ' + show[i].content + '</div>' +
+                                                       ' <button type="button" class="reply_btn" style="margin-top: 2%" onclick="formContext(this,`show`)">'+ "Trả lời"+
+                                                        '</button>' +
+                                                        '</div>';
+                                            }
+
+
+                                            if (show.length>0){
+                                                $('#mycmt').append(test);
+
+                                            }else {
+                                                let  buttonshow = document.getElementById("load")
+
+                                                buttonshow.style.display="none";
+                                            }
+                                        },
+
+                                        error: function (error) {
+                                            // Xử lý lỗi
+                                            console.log(error);
+                                        }
+                                    });
+                                }
+
                                 // let likeCount = 0; // biến đếm số lượt like
                                 //
                                 // function likebutton() {
@@ -373,7 +377,6 @@
                                 //         likeCount = 0;
                                 //     }
                                 // }
-
 
                             </script>
 

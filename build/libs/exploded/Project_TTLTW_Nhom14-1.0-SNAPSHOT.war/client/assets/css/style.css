@@ -1029,3 +1029,33 @@ input.checkbox-add {
 	z-index: 99;
 	content: "\f070"; /* Icon ẩn mật khẩu */
 }
+.hiddenForm{
+    display: none!important;
+}
+
+.showForm{
+    display: block!important;
+}
+.rep{
+    color: #8b572a;
+    font-size: 1.275rem;
+    text-transform: capitalize;
+    margin-left: 6%;
+}
+
+.cssformcomment{
+
+    margin-top: 0.75rem;
+    background-color: #f5f5f5;
+    padding: 0.875rem 0.75rem;
+}
+.btn-load{
+    width: 15%;
+    height: 50px;
+    margin-top: 5%;
+    margin-left: 40%;
+}
+.btn-load:hover{
+    border:3px solid black ;
+
+}

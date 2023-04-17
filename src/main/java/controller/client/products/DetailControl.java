@@ -1,6 +1,9 @@
 package controller.client.products;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -23,20 +26,21 @@ public class DetailControl extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
 		String id = request.getParameter("pid");
-		System.out.println("cc");
 
+			try {
+				Product p = UtilDAO.findProductById(Integer.parseInt(id));
+				String pid = request.getParameter("pid");
+				List<Comment> listcmt = ProductDAO.displayfiveproduct(p.getId(),null,true);
+				request.setAttribute("list",listcmt);
+				response.getWriter().println(listcmt);
 
-
-		Product p = UtilDAO.findProductById(Integer.parseInt(id));
-
-		String pid = request.getParameter("pid");
-		List<Comment> listcmt = ProductDAO.displayfiveproduct(p.getId(),null,true);
-		request.setAttribute("list",listcmt);
-		response.getWriter().println(listcmt);
-
-		request.setAttribute("detail", p);
-		request.getRequestDispatcher("/client/Detail.jsp").forward(request, response);
-	}
+//
+				request.setAttribute("detail", p);
+				request.getRequestDispatcher("/client/Detail.jsp").forward(request, response);
+			}catch (Exception e){
+				e.printStackTrace();
+			}
+				}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

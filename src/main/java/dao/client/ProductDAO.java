@@ -101,7 +101,7 @@ public class ProductDAO {
 	}
 	public static Comment commentproduct(String content ,int idcustomer,int idproduct,String name) {
 		Jdbi me = DBContext.me();
-		String query = "INSERT into comments (content,idCustomer,idProduct,createAT,nameaccount) values (?,?,?,now(),?);";
+		String query = "INSERT into comments (content,idCustomer,idProduct,createAt,nameaccount) values (?,?,?,now(),?);";
 		int id = me.withHandle(handle -> handle.createUpdate(query).bind(0, content).bind(1, idcustomer).bind(2, idproduct).bind(3, name).executeAndReturnGeneratedKeys("id").mapTo(Integer.class).one());
 		return findcommentbyid(id);
 	}
@@ -130,9 +130,31 @@ public class ProductDAO {
 		}
 		return listcoment;
 	}
-	
+	public static List<Comment> showmore(int idproduct,int idparent){
+		List<Comment> listmore;
+		String query="select id,content,idCustomer,idProduct ,nameaccount,createAt from comments  " +
+				" where idProduct =? and idParent is null order " +
+				"by createAt desc limit 3  offset ? ;\n" ;
+		Jdbi me = DBContext.me();
+		listmore = me.withHandle(handle -> {
+			return handle.createQuery(query).bind(0,idproduct).bind(1,idparent).mapToBean(Comment.class).stream().toList();
+
+		});
+		return listmore;
+	}
+	public static Comment replycommentproduct(String content , int idcustomer, int idproduct, String name, String idParent) {
+		Jdbi me = DBContext.me();
+		String query = "INSERT into comments (content,idCustomer,idProduct,createAt,nameaccount,idParent) values (?,?,?,now(),?,?);";
+		int id = me.withHandle(handle -> handle.createUpdate(query).bind(0, content).bind(1, idcustomer).bind(2, idproduct).bind(3, name).bind(4,idParent).executeAndReturnGeneratedKeys("id").mapTo(Integer.class).one());
+
+		return findcommentbyid(id);
+	}
+
 	public static void main(String[] args) {
 
-		System.out.println(pagingProduct(1, 0, "idProduct", "asc"));
+//		System.out.println(pagingProduct(1, 0, "idProduct", "asc"));
+//		System.out.println(commentproduct("Hàng này thật đẹp",3,1,"Lê Minh Long"));
+//		System.out.println(displayfiveproduct(1,"3",true));
+		System.out.println(replycommentproduct("tôi đồng ý",1,1,"Lê Minh Long","1"));
 	}
 }

@@ -14,20 +14,17 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.DateTimeException;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-@WebServlet("/Commentcontrol")
-public class CommentControl extends HttpServlet {
+@WebServlet("/Showmorecontrol")
+public class ShowmoreControl extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-            doPost(request,response);
+        doPost(request,response);
     }
 
     @Override
@@ -37,20 +34,24 @@ public class CommentControl extends HttpServlet {
         try {
             request.setCharacterEncoding("UTF-8");
             response.setCharacterEncoding("UTF-8");
-            HttpSession session = request.getSession();
-            Account account =(Account) session.getAttribute("acc");
+            String number = request.getParameter("num");
+           HttpSession session = request.getSession();
             String pid = request.getParameter("pid");
-            String text = request.getParameter("content");
-            Comment cmt=   ProductDAO.commentproduct(text,account.getId(),Integer.parseInt(pid),account.getFullName());
-             String time= cmt.gettimeover();
+            List<Comment> show=  ProductDAO.showmore(Integer.parseInt(pid),Integer.parseInt(number));
+
+
+
             Gson gson = new Gson();
+
+
             JsonObject jsonobj = new JsonObject();
-            jsonobj.addProperty("comment_user",gson.toJson(cmt));
-            jsonobj.addProperty("timecmt",gson.toJson(time));
+            jsonobj.addProperty("showmore",gson.toJson(show));
+
+
             response.getWriter().println(gson.toJson(jsonobj));
 
         }catch (Exception e ){
-            response.getWriter().println(e.getMessage());
+            e.printStackTrace();
 
         }
 
