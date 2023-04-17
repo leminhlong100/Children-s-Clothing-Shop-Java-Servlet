@@ -202,7 +202,45 @@
                                                     onclick="formContext(this,`show`)">
                                                 Trả lời
                                             </button>
+                                            <div class="repuser">
+                                                <c:forEach items="${lists.listreply}" var="listrep">
+                                                    <form id="form-reply">
+                                                        <div id="cmt-reply-box" class="cssformcomment">
+                                                            <div >${listrep.differencetime}</div>
 
+                                                            <div class="rep">${listrep.nameAccount}</div>
+                                                            <div class="cmtr" style="padding-left: 6%"><h5
+                                                                    style="color: #1d2124">Đã bình luận phản
+                                                                hồi:</h5>  ${listrep.content}</div>
+
+                                                        </div>
+                                                    </form>
+<%--                                                    <div id = "like-box" class="likebth">--%>
+<%--                                                        <button type="button" id ="click" onclick="likebutton()"><i class="fa-light fa-heart"></i></button>--%>
+<%--                                                        <span id="number" type="text">0</span>--%>
+<%--                                                    </div>--%>
+                                                </c:forEach>
+                                            </div>
+                                            <c:if test="${sessionScope.acc.fullName !=null}">
+                                                <form class="reply formReply hiddenForm" id="form-reply">
+                                                    <div><textarea name="comment-rep" id="admin-comment"
+                                                                   placeholder="Nhập nội dung bạn muốn phản hồi: "
+                                                                   cols="30" rows="10" required
+                                                                   style="width: 698px; height: 111px; resize: none"
+                                                    ></textarea></div>
+                                                    <div>
+                                                        <button type="button" id="admin-btn-comment"
+                                                                onclick="formContext(this,`submit`)"
+                                                                style="width: 6% ;height: 31px" value="${lists.id}">Gửi
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </c:if>
+
+                                        </div>
+                                    </c:forEach>
+
+                                </div>
                                     <button type="button" class="btn-load" id="load" onclick="showmore()">Load more</button>
                                 </div>
                             </div>
@@ -244,7 +282,44 @@
                                 })
 
 
+                                function formContext(button, type) {
+                                    let form = $(button).closest("#cmt-box").find(".formReply");
+                                    // 2 nút điều tìm tới formReply
+                                    form.toggleClass('showForm');
+                                    if (type === "submit") {
 
+                                        let content_comment = form.find("#admin-comment");
+
+                                        let formreplynguoidung = $(button).closest("#cmt-box").find(".repuser");
+                                        $.ajax({
+                                            url: "Replycontrol",
+                                            type: "post",
+                                            data: {
+                                                content: $(content_comment).val(),
+                                                pid:${detail.id},
+                                                idParent: $(button).val(),
+                                            },
+                                            success: function (data) {
+
+                                                let responereply = JSON.parse(data);
+
+                                                let afterresponereply = JSON.parse(responereply.comment_reply);
+                                                let time = responereply.timerep;
+                                                let varreply = '<div class ="cssformcomment">' +
+                                                    '<div id="cmt-reply-box" class="rep">' + afterresponereply.nameAccount + '</div>'
+                                                    +'<div>'+afterresponereply.differencetime+ '</div>'+
+                                                    '<div class="cmtr" style="padding-left: 6%"><h5 style="color: #1d2124">Đã phản hồi bình luận:</h5> ' + afterresponereply.content + '</div>'
+                                                '</div>'
+                                                $(formreplynguoidung).append(varreply);
+
+                                            },
+                                            error: function (error) {
+                                                // Xử lý lỗi
+                                                console.log(error);
+                                            }
+                                        });
+                                    }
+                                }
                                 function showmore() {
                                     var numincrease = document.getElementsByClassName("product-length").length;
                                     console.log(numincrease);
