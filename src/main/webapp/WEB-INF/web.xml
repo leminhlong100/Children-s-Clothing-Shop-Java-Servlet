@@ -38,13 +38,13 @@
 <!--    <url-pattern>/*</url-pattern>-->
 <!--  </filter-mapping>-->
 
-  <filter>
-    <filter-name>JSPFilter</filter-name>
-    <filter-class>controller.client.filter.JSPFilter</filter-class>
-  </filter>
-  <filter-mapping>
-    <filter-name>JSPFilter</filter-name>
-    <url-pattern>*.jsp</url-pattern>
-  </filter-mapping>
+<!--  <filter>-->
+<!--    <filter-name>JSPFilter</filter-name>-->
+<!--    <filter-class>controller.client.filter.JSPFilter</filter-class>-->
+<!--  </filter>-->
+<!--  <filter-mapping>-->
+<!--    <filter-name>JSPFilter</filter-name>-->
+<!--    <url-pattern>*.jsp</url-pattern>-->
+<!--  </filter-mapping>-->
 
 </web-app>

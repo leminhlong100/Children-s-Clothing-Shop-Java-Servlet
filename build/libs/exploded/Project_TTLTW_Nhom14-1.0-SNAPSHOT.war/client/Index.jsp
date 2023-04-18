@@ -217,7 +217,9 @@
 															<a href="DetailControl?pid=${o.id}">
 																<button class="button btn-cart btn-more product-atc"
 																		title="Mua hàng" type="button">
-																	<span><img src="./images/Muangay.png" alt="" /></span>
+																	<span style="display: inline-block;"> <!-- Dùng inline-block để đảm bảo span chỉ chiếm không gian cần thiết -->
+                                                        <img src="./images/MuaNgay.gif" alt="" style="width: 200%; height: auto;"> <!-- Thay đổi kích thước theo % -->
+                                                    </span>
 																</button>
 															</a>
 														</form>
@@ -258,7 +260,9 @@
 														<a href="${detail}?pid=${o.id}"><button
 																class="button btn-cart btn-more product-atc"
 																title="Mua hàng" type="button">
-															<span><img src="./images/Muangay.png" alt="" /></span>
+															<span style="display: inline-block;"> <!-- Dùng inline-block để đảm bảo span chỉ chiếm không gian cần thiết -->
+                                                        <img src="./images/MuaNgay.gif" alt="" style="width: 160%; height: auto; margin-left: -26%;"> <!-- Thay đổi kích thước theo % -->
+                                                    </span>
 														</button></a>
 													</form>
 												</div>
@@ -327,7 +331,9 @@
 														<a href="${detail}?pid=${o.id}"><button
 																class="button btn-cart btn-more product-atc"
 																title="Mua hàng" type="button">
-															<span><img src="./images/Muangay.png" alt="" /></span>
+															<span style="display: inline-block;"> <!-- Dùng inline-block để đảm bảo span chỉ chiếm không gian cần thiết -->
+                                                        <img src="./images/MuaNgay.gif" alt="" style="width: 160%; height: auto; margin-left: -26%;"> <!-- Thay đổi kích thước theo % -->
+                                                    </span>
 														</button></a>
 													</form>
 												</div>
@@ -365,7 +371,9 @@
 														<a href="${detail}?pid=${o.id}"><button
 																class="button btn-cart btn-more product-atc"
 																title="Mua hàng" type="button">
-															<span><img src="./images/Muangay.png" alt="" /></span>
+															<span style="display: inline-block;"> <!-- Dùng inline-block để đảm bảo span chỉ chiếm không gian cần thiết -->
+                                                        <img src="./images/MuaNgay.gif" alt="" style="width: 160%; height: auto; margin-left: -26%;"> <!-- Thay đổi kích thước theo % -->
+                                                    </span>
 														</button></a>
 													</form>
 												</div>
@@ -404,7 +412,9 @@
 														<a href="${detail}?pid=${o.id}"><button
 																class="button btn-cart btn-more product-atc"
 																title="Mua hàng" type="button">
-															<span><img src="./images/Muangay.png" alt="" /></span>
+															<span style="display: inline-block;"> <!-- Dùng inline-block để đảm bảo span chỉ chiếm không gian cần thiết -->
+                                                        <img src="./images/MuaNgay.gif" alt="" style="width: 160%; height: auto; margin-left: -26%;"> <!-- Thay đổi kích thước theo % -->
+                                                    </span>
 														</button></a>
 													</form>
 												</div>
@@ -526,7 +536,9 @@
 										<a href="${detail}?pid=${o.idProduct}"><button
 												class="button btn-cart btn-more product-atc"
 												title="Mua hàng" type="button">
-											<span><img src="./images/Muangay.png" alt="" /></span>
+											<span style="display: inline-block;"> <!-- Dùng inline-block để đảm bảo span chỉ chiếm không gian cần thiết -->
+                                                        <img src="./images/MuaNgay.gif" alt="" style="width: 160%; height: auto; margin-left: -26%;"> <!-- Thay đổi kích thước theo % -->
+                                                    </span>
 										</button></a>
 									</form>
 								</div>

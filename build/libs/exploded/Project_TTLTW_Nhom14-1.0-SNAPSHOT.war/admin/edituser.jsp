@@ -32,11 +32,17 @@
                                        placeholder="ID" value="${requestScope.account.id}" name="uid">
                             </div>
                             <div class="form-group">
-                                <label for="input-1"><fmt:message key="Full.name"
-                                                                  bundle="${lang}"></fmt:message></label>
+                                <label for="input-1">Tên tài khoản</label>
                                 <input type="text" class="form-control" id="input-2"
                                        placeholder="<fmt:message key="Full.name" bundle="${lang}"></fmt:message>"
                                        value="${requestScope.account.accountName}" name="user-name">
+                            </div>
+                            <div class="form-group">
+                                <label for="input-7"><fmt:message key="Full.name"
+                                                                  bundle="${lang}"></fmt:message></label>
+                                <input type="text" class="form-control" id="input-7"
+                                       placeholder="<fmt:message key="Full.name" bundle="${lang}"></fmt:message>"
+                                       value="${requestScope.account.fullName}" name="full-name">
                             </div>
                             <div class="form-group">
                                 <label for="input-3"><fmt:message key="Phone.number"
@@ -82,9 +88,7 @@
                                                                                            bundle="${lang}"></fmt:message></button>
                             </div>
                         </form>
-                        <a href="${pageContext.request.contextPath}/admin-user/UserPermissionsShow?uid=${requestScope.account.id}">
-                            <button class="btn btn-info">Quản lý quyền hạn người dùng</button>
-                        </a>
+
                     </div>
                 </div>
             </div>

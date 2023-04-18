@@ -28,9 +28,8 @@
 <link href="${url}/css/icons.css" rel="stylesheet" type="text/css" />
 <link href="${url}/css/sidebar-menu.css" rel="stylesheet" />
 <link href="${url}/css/app-style.css" rel="stylesheet" />
-	<!-- Include a required theme -->
-	<link rel="stylesheet" href="@sweetalert2/themes/dark/dark.css">
-	<script src="sweetalert2/dist/sweetalert2.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 
 
 </head>
