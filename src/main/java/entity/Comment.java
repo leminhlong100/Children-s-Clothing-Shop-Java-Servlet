@@ -26,6 +26,16 @@ public class Comment {
 	public Comment() {
 	}
 
+	public Comment(int id, String content, int idCustomer, int idProduct, String createAt, String nameAccount, List<Comment> listreply) {
+		this.id = id;
+		this.content = content;
+		this.idCustomer = idCustomer;
+		this.idProduct = idProduct;
+		this.createAt = createAt;
+		this.nameAccount = nameAccount;
+		this.listreply = listreply;
+	}
+
 	public List<Comment> getListreply() {
 		return listreply;
 	}

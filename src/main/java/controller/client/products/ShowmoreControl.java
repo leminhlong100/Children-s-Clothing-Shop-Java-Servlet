@@ -37,15 +37,15 @@ public class ShowmoreControl extends HttpServlet {
             String number = request.getParameter("num");
            HttpSession session = request.getSession();
             String pid = request.getParameter("pid");
+            String text = request.getParameter("content");
             List<Comment> show=  ProductDAO.showmore(Integer.parseInt(pid),Integer.parseInt(number));
-
-
-
+            System.out.println(show);
             Gson gson = new Gson();
 
 
             JsonObject jsonobj = new JsonObject();
-            jsonobj.addProperty("showmore",gson.toJson(show));
+            jsonobj.addProperty("show",gson.toJson(show));
+
 
 
             response.getWriter().println(gson.toJson(jsonobj));

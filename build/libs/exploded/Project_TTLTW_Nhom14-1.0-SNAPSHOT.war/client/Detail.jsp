@@ -193,33 +193,36 @@
                                 <div id="mycmt">
 
                                     <c:forEach items="${list}" var="lists" varStatus="status">
-                                        <div class="product-length" id="cmt-box" style="border-bottom: 1px #b3b7bb solid ; padding-top: 5%">
+                                        <div class="product-length" id="cmt-box" >
                                             <div>${lists.nameAccount}</div>
-                                            <div >${lists.gettimeover()}</div>
+                                            <div style="margin-top: 1%;">${lists.gettimeover()}</div>
                                             <div class="cmts"><h5 style="color: #1d2124">Đánh giá sản
                                                 phẩm:</h5>  ${lists.content}</div>
                                             <button type="button" class="reply_btn" style="margin-top: 2%"
                                                     onclick="formContext(this,`show`)">
                                                 Trả lời
                                             </button>
-                                            <div class="repuser">
+                                            <div class="repuser" id="repcmt">
                                                 <c:forEach items="${lists.listreply}" var="listrep">
                                                     <form id="form-reply">
                                                         <div id="cmt-reply-box" class="cssformcomment">
-                                                            <div >${listrep.differencetime}</div>
-
                                                             <div class="rep">${listrep.nameAccount}</div>
+                                                            <div style=" margin-left: 6%; margin-top: 1%;" >${listrep.differencetime}</div>
                                                             <div class="cmtr" style="padding-left: 6%"><h5
                                                                     style="color: #1d2124">Đã bình luận phản
                                                                 hồi:</h5>  ${listrep.content}</div>
 
                                                         </div>
+<%--                                                        <button type="button" class="updatetext" id="update" onclick="updatecontent()">Chỉnh sửa</button>--%>
+
                                                     </form>
+
 <%--                                                    <div id = "like-box" class="likebth">--%>
 <%--                                                        <button type="button" id ="click" onclick="likebutton()"><i class="fa-light fa-heart"></i></button>--%>
 <%--                                                        <span id="number" type="text">0</span>--%>
 <%--                                                    </div>--%>
                                                 </c:forEach>
+
                                             </div>
                                             <c:if test="${sessionScope.acc.fullName !=null}">
                                                 <form class="reply formReply hiddenForm" id="form-reply">
@@ -241,11 +244,9 @@
                                     </c:forEach>
 
                                 </div>
-                                    <button type="button" class="btn-load" id="load" onclick="showmore()">Load more</button>
+                                    <button type="button" class="btn-load" id="load" onclick="showmorerep()">Load more</button>
                                 </div>
                             </div>
-
-
                             <script>
 
 
@@ -263,10 +264,9 @@
                                         success: function (data) {
                                             let datarespone = JSON.parse(data);
                                             let dataafter = JSON.parse(datarespone.comment_user);
-                                            let datatime = datarespone.timecmt;
                                             var commentHtml = '<div  id="cmt-box" style="border-bottom: 1px #b3b7bb solid; padding-top: 5% ;margin-bottom: 5%">' +
                                                 '<div>' + dataafter.nameAccount + '</div>' +
-                                                '<div>'+datatime +'</div>' +
+                                                '<div>'+dataafter.differencetime +'</div>' +
                                                 '<div class="cmts"><h5 style="color: #1d2124">Đánh giá sản phẩm:</h5> ' + dataafter.content + '</div>'
                                             '</div>';
                                             console.log(dataafter);
@@ -287,9 +287,7 @@
                                     // 2 nút điều tìm tới formReply
                                     form.toggleClass('showForm');
                                     if (type === "submit") {
-
                                         let content_comment = form.find("#admin-comment");
-
                                         let formreplynguoidung = $(button).closest("#cmt-box").find(".repuser");
                                         $.ajax({
                                             url: "Replycontrol",
@@ -302,12 +300,10 @@
                                             success: function (data) {
 
                                                 let responereply = JSON.parse(data);
-
                                                 let afterresponereply = JSON.parse(responereply.comment_reply);
-                                                let time = responereply.timerep;
                                                 let varreply = '<div class ="cssformcomment">' +
                                                     '<div id="cmt-reply-box" class="rep">' + afterresponereply.nameAccount + '</div>'
-                                                    +'<div>'+afterresponereply.differencetime+ '</div>'+
+                                                    +'<div style=" margin-left: 6%;margin-top: 1%;">'+afterresponereply.differencetime+ '</div>'+
                                                     '<div class="cmtr" style="padding-left: 6%"><h5 style="color: #1d2124">Đã phản hồi bình luận:</h5> ' + afterresponereply.content + '</div>'
                                                 '</div>'
                                                 $(formreplynguoidung).append(varreply);
@@ -320,40 +316,71 @@
                                         });
                                     }
                                 }
-                                function showmore() {
+                                function showmorerep() {
                                     var numincrease = document.getElementsByClassName("product-length").length;
-                                    console.log(numincrease);
+
                                     $.ajax({
                                         url: "Showmorecontrol",
                                         type: "post",
                                         data: {
                                             pid:${detail.id},
                                             num: numincrease,
-
                                         },
                                         success: function (data) {
                                             let respone = JSON.parse(data);
-                                            let show = JSON.parse(respone.showmore);
-                                            console.log(show.length)
+                                            let show = JSON.parse(respone.show);
                                             let test = "";
+                                            let reply ="";
+                                            let comt = "";
+                                            let formrep="";
                                             for (let i = 0; i < show.length; i++) {
+                                                comt =show[i].listreply;
+                                                reply="";
+                                                formrep="";
+                                                for (let j = 0; j < comt.length; j++) {
+                                                    reply += ` <div class="repuser" id="repcmt">
+                                                              <form id="form-reply">
+                                                            <div id="cmt-reply-box" class="cssformcomment">
+                                                            <div class="rep">` + comt[j].nameAccount + `</div>
+                                                            <div style=" margin-left: 6%; margin-top: 1%;" >` + comt[j].differencetime + `</div>
+                                                            <div class="cmtr" style="padding-left: 6%"><h5
+                                                                    style="color: #1d2124">Đã bình luận phản
+                                                                hồi:</h5>` + comt[j].content + `</div>
+                                                        </div>
+                                                         </form>
+                                                        </div> `;
+                                                }
+                                                // if(ahihi!=null){
+                                                    formrep+=` <form class="reply formReply hiddenForm" id="form-reply">
+                                                    <div><textarea name="comment-rep" id="admin-comment"
+                                                                   placeholder="Nhập nội dung bạn muốn phản hồi: "
+                                                                   cols="30" rows="10" required
+                                                                   style="width: 698px; height: 111px; resize: none"
+                                                    ></textarea></div>
+                                                    <div>
+                                                        <button type="button" id="admin-btn-comment"
+                                                                 onclick="formContext(this,`submit`)"
+                                                                style="width: 6% ;height: 31px" value="`+show[i].id+`">Gửi
+                                                        </button>
+                                                    </div>
+                                                </form>`
+                                                // }
+
                                                     test += '<div  class="product-length" id="cmt-box" style="border-bottom: 1px #b3b7bb solid; padding-top: 5% ;margin-bottom: 5%">' +
-                                                        '<div>' + show[i].nameAccount + '</div>' +
-                                                        '<div>' +  show[i].differencetime+'</div>' +
-                                                        '<div class="cmts"><h5 style="color: #1d2124">Đánh giá sản phẩm:</h5> ' + show[i].content + '</div>' +
-                                                       ' <button type="button" class="reply_btn" style="margin-top: 2%" onclick="formContext(this,`show`)">'+ "Trả lời"+
-                                                        '</button>' +
-                                                        '</div>';
+                                                    '<div>' + show[i].nameAccount + '</div>' +
+                                                    '<div>' + show[i].differencetime + '</div>' +
+                                                    '<div class="cmts"><h5 style="color: #1d2124">Đánh giá sản phẩm:</h5> ' + show[i].content + '</div>' +
+                                                    ' <button type="button" class="reply_btn" style="margin-top: 2%" onclick="formContext(this,`show`)">' + "Trả lời" +
+                                                    '</button>'  +reply+formrep+
+                                                    '</div>';
+
                                             }
-
-
                                             if (show.length>0){
                                                 $('#mycmt').append(test);
 
                                             }else {
-                                                let  buttonshow = document.getElementById("load")
-
-                                                buttonshow.style.display="none";
+                                                let buttonshow = document.getElementById("load")
+                                                buttonshow.style.display = "none";
                                             }
                                         },
 
@@ -364,19 +391,6 @@
                                     });
                                 }
 
-                                // let likeCount = 0; // biến đếm số lượt like
-                                //
-                                // function likebutton() {
-                                //     let button = $(document).closest('#like-box').find('.fa-light fa-heart')
-                                //     const numberEl = document.querySelector('#number'); // lấy phần tử HTML hiển thị số lượt like
-                                //     if (likeCount === 0) {
-                                //         numberEl.textContent = '1'; // nếu chưa có like nào, thêm 1 like
-                                //         likeCount++;
-                                //     } else {
-                                //         numberEl.textContent = '0'; // nếu đã có like, xóa bỏ like đó
-                                //         likeCount = 0;
-                                //     }
-                                // }
 
                             </script>
 

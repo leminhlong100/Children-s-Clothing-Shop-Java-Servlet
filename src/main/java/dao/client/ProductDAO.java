@@ -3,6 +3,7 @@ package dao.client;
 import java.sql.*;
 import java.util.*;
 
+import context.DB;
 import context.DBContext;
 import entity.Comment;
 import entity.Product;
@@ -118,7 +119,7 @@ public class ProductDAO {
 						.mapToBean(Comment.class).stream().toList();
 			});
 		} else {
-			query = "select  id,content,idCustomer,idProduct ,nameaccount,createAt  from comments  where idProduct = ? and idParent =? order by createAt desc  ";
+			query = "select  id,content,idCustomer,idProduct ,nameaccount,createAt  from comments  where idProduct = ? and idParent =? order by createAt desc limit 2 ";
 			listcoment = me.withHandle(handle -> {
 				return handle.createQuery(query).bind(0,idproduct).bind(1,idparent)
 						.mapToBean(Comment.class).stream().toList();
@@ -130,17 +131,27 @@ public class ProductDAO {
 		}
 		return listcoment;
 	}
-	public static List<Comment> showmore(int idproduct,int idparent){
+	public static List<Comment> showmore(int idproduct,int length){
 		List<Comment> listmore;
 		String query="select id,content,idCustomer,idProduct ,nameaccount,createAt from comments  " +
 				" where idProduct =? and idParent is null order " +
 				"by createAt desc limit 3  offset ? ;\n" ;
 		Jdbi me = DBContext.me();
 		listmore = me.withHandle(handle -> {
-			return handle.createQuery(query).bind(0,idproduct).bind(1,idparent).mapToBean(Comment.class).stream().toList();
+			return handle.createQuery(query).bind(0,idproduct).bind(1,length).map((rs, ctx) -> new Comment(rs.getInt("id"),rs.getString("content")
+			,rs.getInt("idCustomer"),rs.getInt("idProduct"),rs.getString("createAt"),rs.getString("nameAccount"),listcmtcon(rs.getInt("id")))).list();
 
 		});
 		return listmore;
+	}
+	public static List<Comment> listcmtcon(int idparent){
+		List<Comment> list = null;
+		Jdbi me = DBContext.me();
+		String query ="SELECT id,content,idProduct ,idParent,createAt,nameAccount  FROM comments where idParent =?";
+		return me.withHandle(handle -> {
+			return handle.createQuery(query).bind(0,idparent).mapToBean(Comment.class).list();
+		});
+
 	}
 	public static Comment replycommentproduct(String content , int idcustomer, int idproduct, String name, String idParent) {
 		Jdbi me = DBContext.me();
@@ -156,5 +167,6 @@ public class ProductDAO {
 //		System.out.println(commentproduct("Hàng này thật đẹp",3,1,"Lê Minh Long"));
 //		System.out.println(displayfiveproduct(1,"3",true));
 		System.out.println(replycommentproduct("tôi đồng ý",1,1,"Lê Minh Long","1"));
+
 	}
 }
