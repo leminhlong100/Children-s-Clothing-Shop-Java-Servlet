@@ -307,6 +307,7 @@
                                                     '<div class="cmtr" style="padding-left: 6%"><h5 style="color: #1d2124">Đã phản hồi bình luận:</h5> ' + afterresponereply.content + '</div>'
                                                 '</div>'
                                                 $(formreplynguoidung).append(varreply);
+                                                $('#form-reply')[0].reset();
 
                                             },
                                             error: function (error) {
@@ -331,8 +332,43 @@
                                             let show = JSON.parse(respone.show);
                                             let test = "";
                                             let reply ="";
+                                            let comt = "";
+                                            let formrep="";
                                             for (let i = 0; i < show.length; i++) {
-                                                
+                                                comt =show[i].listreply;
+                                                reply="";
+                                                formrep="";
+                                                for (let j = 0; j < comt.length; j++) {
+                                                    reply += ` <div class="repuser" id="repcmt">
+                                                              <form id="form-reply">
+                                                            <div id="cmt-reply-box" class="cssformcomment">
+                                                            <div class="rep">` + comt[j].nameAccount + `</div>
+                                                            <div style=" margin-left: 6%; margin-top: 1%;" >` + comt[j].differencetime + `</div>
+                                                            <div class="cmtr" style="padding-left: 6%"><h5
+                                                                    style="color: #1d2124">Đã bình luận phản
+                                                                hồi:</h5>` + comt[j].content + `</div>
+                                                        </div>
+                                                         </form>
+                                                        </div> `;
+                                                    $('#form-reply')[0].reset();
+
+                                                }
+                                                // if(ahihi!=null){
+                                                    formrep+=` <form class="reply formReply hiddenForm" id="form-reply">
+                                                    <div><textarea name="comment-rep" id="admin-comment"
+                                                                   placeholder="Nhập nội dung bạn muốn phản hồi: "
+                                                                   cols="30" rows="10" required
+                                                                   style="width: 698px; height: 111px; resize: none"
+                                                    ></textarea></div>
+                                                    <div>
+                                                        <button type="button" id="admin-btn-comment"
+                                                                 onclick="formContext(this,\`submit\`)"
+                                                                style="width: 6% ;height: 31px" value="`+show[i].id+`">Gửi
+                                                        </button>
+                                                    </div>
+                                                </form>`
+                                                // }
+
                                                     test += '<div  class="product-length" id="cmt-box" style="border-bottom: 1px #b3b7bb solid; padding-top: 5% ;margin-bottom: 5%">' +
                                                     '<div>' + show[i].nameAccount + '</div>' +
                                                     '<div>' + show[i].differencetime + '</div>' +

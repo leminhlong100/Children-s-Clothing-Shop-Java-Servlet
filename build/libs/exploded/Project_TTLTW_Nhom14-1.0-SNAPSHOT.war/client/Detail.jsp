@@ -307,6 +307,7 @@
                                                     '<div class="cmtr" style="padding-left: 6%"><h5 style="color: #1d2124">Đã phản hồi bình luận:</h5> ' + afterresponereply.content + '</div>'
                                                 '</div>'
                                                 $(formreplynguoidung).append(varreply);
+                                                $('#form-reply')[0].reset();
 
                                             },
                                             error: function (error) {
@@ -349,6 +350,8 @@
                                                         </div>
                                                          </form>
                                                         </div> `;
+                                                    $('#form-reply')[0].reset();
+
                                                 }
                                                 // if(ahihi!=null){
                                                     formrep+=` <form class="reply formReply hiddenForm" id="form-reply">
@@ -359,7 +362,7 @@
                                                     ></textarea></div>
                                                     <div>
                                                         <button type="button" id="admin-btn-comment"
-                                                                 onclick="formContext(this,`submit`)"
+                                                                 onclick="formContext(this,\`submit\`)"
                                                                 style="width: 6% ;height: 31px" value="`+show[i].id+`">Gửi
                                                         </button>
                                                     </div>
