@@ -64,6 +64,11 @@
       <artifactId>mysql-connector-java</artifactId>
       <version>8.0.27</version>
     </dependency>
+      <dependency>
+          <groupId>com.github.lbovolini</groupId>
+          <artifactId>ObjectMapper</artifactId>
+          <version>0.2.3</version>
+      </dependency>
   </dependencies>
   <build>
     <finalName>Project_TTLTW_Nhom14</finalName>
