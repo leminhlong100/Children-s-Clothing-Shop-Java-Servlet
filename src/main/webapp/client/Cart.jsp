@@ -116,7 +116,7 @@
                 <c:if test="${!empty sessionScope.cart }">
                     <div class="col-md-9 col-xs-12">
 
-                        <a href="IndexControl" class="btn-cart next"> <fmt:message
+                        <a href="${pageContext.request.contextPath}/IndexControl" class="btn-cart next"> <fmt:message
                                 key="BUY.MORE" bundle="${lang}"></fmt:message></a>
                     </div>
                     <div class="col-md-3 col-xs-12">

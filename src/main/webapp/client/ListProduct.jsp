@@ -89,21 +89,21 @@
                                         <div class="form-group">
                                             <label for="selectFilter"></label><select class="sort-by-script" name="sort"
                                                                                       id="selectFilter">
-                                            <option value="pid-asc"
+                                            <option value="id-asc"
                                                     <c:if test="${requestScope.sort==null}">selected</c:if>>
                                                 <fmt:message key="default" bundle="${lang}"></fmt:message></option>
-                                            <option value="price-asc"
+                                            <option value="listPrice-asc"
                                                     <c:if test="${requestScope.sort=='priceProduct-asc'}">selected</c:if>>
                                                 <fmt:message key="prices.increase"
                                                              bundle="${lang}"></fmt:message></option>
-                                            <option value="price-desc"
+                                            <option value="listPrice-desc"
                                                     <c:if test="${requestScope.sort=='priceProduct-desc'}">selected</c:if>>
                                                 <fmt:message key="prices.decrease"
                                                              bundle="${lang}"></fmt:message></option>
-                                            <option value="name-asc"
+                                            <option value="nameProduct-asc"
                                                     <c:if test="${requestScope.sort=='nameProduct-asc'}">selected</c:if>>
                                                 <fmt:message key="A-Z" bundle="${lang}"></fmt:message></option>
-                                            <option value="name-desc"
+                                            <option value="nameProduct-desc"
                                                     <c:if test="${requestScope.sort=='nameProduct-desc'}">selected</c:if>>
                                                 <fmt:message key="Z-A" bundle="${lang}"></fmt:message></option>
                                         </select>
@@ -193,7 +193,7 @@
                                     </c:if></li>
                                 </c:if>
                             </c:forEach>
-                            <c:if test="${tag< endP}">
+                            <c:if test="${tag< requestScope.endPage}">
                                 <li><a
                                         href="${ShowProduct}?index=${tag+1}&sort=${sort}&cid=${cid}&search=${search}"
                                         aria-label="Next"> <span class="fa fa-caret-right"></span>

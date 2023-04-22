@@ -81,7 +81,7 @@ public class LoginControl extends HttpServlet {
 				DB.me().insert(log);
 			}
 		}catch (Exception e){
-e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
