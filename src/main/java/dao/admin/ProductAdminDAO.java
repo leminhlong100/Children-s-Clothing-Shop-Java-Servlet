@@ -11,7 +11,7 @@ import org.jdbi.v3.core.Jdbi;
 public class ProductAdminDAO {
     public static List<Product> getListProduct(int index) {
         Jdbi me = DBContext.me();
-        String query = "SELECT p.id,p.nameProduct,pp.listPrice,pp.discount,pp.discountPrice,p.isActive FROM kidstore.products p join kidstore.suppliers s on p.idSupplier = s.id join kidstore.product_prices pp on pp.idProduct = p.id where p.isActive = '1' and s.isActive ='1' order by p.id limit ?,10";
+        String query = "SELECT p.id,p.nameProduct,pp.listPrice,pp.discount,pp.discountPrice,p.isActive FROM products p join suppliers s on p.idSupplier = s.id join product_prices pp on pp.idProduct = p.id where p.isActive = '1' and s.isActive ='1' order by p.id limit ?,10";
         return me.withHandle(handle -> handle.createQuery(query).bind(0,((index - 1) * 10))
                 .map((rs, ctx) -> new Product(rs.getInt("id"), rs.getString("nameProduct"),
                         rs.getDouble("listPrice"), UtilDAO.findListImageByIdProduct(rs.getInt("id")),

@@ -90,6 +90,9 @@ public class Product implements Serializable {
         this.inventory = inventory;
     }
 
+    public Product() {
+    }
+
     public Inventory getInventory() {
         return inventory;
     }

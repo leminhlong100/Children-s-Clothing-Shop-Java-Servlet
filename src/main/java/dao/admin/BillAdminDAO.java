@@ -32,13 +32,13 @@ public class BillAdminDAO {
 
 	public static List<Order> getListOrder() {
 		Jdbi me = DBContext.me();
-		String query = "SELECT od.id,od.createAt,statusPay,od.status,od.idAccount,acc.accountName,od.totalPrice  FROM kidstore.orders od join kidstore.accounts acc on od.idAccount = acc.id";
+		String query = "SELECT od.id,od.createAt,statusPay,od.status,od.idAccount,acc.accountName,od.totalPrice  FROM orders od join accounts acc on od.idAccount = acc.id";
 		return me.withHandle(handle -> handle.createQuery(query).map((rs, ctx) -> new Order(rs.getInt("id"), rs.getString("createAt"), rs.getString("statusPay"), rs.getString("status"), new Account(rs.getInt("idAccount"), rs.getString("accountName")),rs.getDouble("totalPrice"))).list());
 	}
 
 	public static List<OrderDetail> getOrderDetail() {
 		Jdbi me = DBContext.me();
-		String query = "SELECT od.id,idOrder,idProduct,nameProduct,quantity,price,node,productSize,productColor FROM kidstore.order_details od join kidstore.orders o on  o.id = od.idOrder join kidstore.products p on od.idProduct = p.id";
+		String query = "SELECT od.id,idOrder,idProduct,nameProduct,quantity,price,node,productSize,productColor FROM order_details od join orders o on  o.id = od.idOrder join products p on od.idProduct = p.id";
 		return me.withHandle(handle -> handle.createQuery(query).map((rs, ctx) -> new OrderDetail(rs.getInt("id"), rs.getInt("idOrder"), rs.getInt("idProduct"), new Product(rs.getInt("idProduct"), rs.getString("nameProduct"), UtilDAO.findListImageByIdProduct(rs.getInt("idProduct"))),rs.getInt("quantity"),rs.getDouble("price"),rs.getString("node"),rs.getString("productSize"),rs.getString("productColor"))).list());
 	}
 //	public static Customer getAccountByBid(String bid) {

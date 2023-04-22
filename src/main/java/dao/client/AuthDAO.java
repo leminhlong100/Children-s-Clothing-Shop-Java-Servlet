@@ -60,9 +60,11 @@ public class AuthDAO {
 			return handle.createQuery(queryLogin)
 					.bind(0, username).bind(1, passEncode).mapToBean(Account.class).findFirst().orElse(null);
 		});
-		account.setRoles(getRoles(account.getId()));
-		account.setResources(getResources(account.getId()));
-		account.setPermissions(getPermissions(account.getId()));
+		if(account!=null){
+			account.setRoles(getRoles(account.getId()));
+			account.setResources(getResources(account.getId()));
+			account.setPermissions(getPermissions(account.getId()));
+		}
 		return account;
 	}
 
