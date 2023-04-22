@@ -11,14 +11,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
-@WebServlet("/AdminLogout")
+@WebServlet("/admin-logout")
 public class AdminLogout extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		session.removeAttribute("admin");
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/login.jsp");
+		session.invalidate();
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/admin-login.jsp");
     	dispatcher.forward(request, response);
 	}
 

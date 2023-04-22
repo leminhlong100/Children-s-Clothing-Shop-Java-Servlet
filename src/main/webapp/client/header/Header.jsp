@@ -146,8 +146,12 @@
                             key="Home" bundle="${lang}"></fmt:message></a></li>
 
                     <li class="">
-                        <a href="${pageContext.request.contextPath}/client/Introduce.jsp"><fmt:message
-                                key="Introduce" bundle="${lang}"></fmt:message></a></li>
+                        <a href="${pageContext.request.contextPath}/client/Introduce.jsp">
+<%--                            <fmt:message--%>
+<%--                                key="Introduce" bundle="${lang}"></fmt:message>--%>
+                            GIỚI THIỆU
+                        </a>
+                    </li>
                     <li class="">
                         <a href="${pageContext.request.contextPath}/client/Service.jsp"><fmt:message
                                 key="service" bundle="${lang}"></fmt:message></a></li>

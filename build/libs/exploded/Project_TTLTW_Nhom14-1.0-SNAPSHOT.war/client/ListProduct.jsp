@@ -193,7 +193,7 @@
                                     </c:if></li>
                                 </c:if>
                             </c:forEach>
-                            <c:if test="${tag< endP}">
+                            <c:if test="${tag< requestScope.endPage}">
                                 <li><a
                                         href="${ShowProduct}?index=${tag+1}&sort=${sort}&cid=${cid}&search=${search}"
                                         aria-label="Next"> <span class="fa fa-caret-right"></span>

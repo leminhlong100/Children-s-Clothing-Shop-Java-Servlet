@@ -30,7 +30,7 @@ public class UserListController extends HttpServlet {
         if (SecurityDAO.hasPermission("/admin-user", account.getAccountName(), "read")) {
             List<Account> accounts = AccountDAO.getListAccount();
             request.setAttribute("accounts", accounts);
-            request.getRequestDispatcher("/admin/user.jsp").forward(request, response);
+            request.getRequestDispatcher("/admin/admin-account-manager.jsp").forward(request, response);
         }else{
             request.getRequestDispatcher("/client/403.jsp").forward(request, response);
         }

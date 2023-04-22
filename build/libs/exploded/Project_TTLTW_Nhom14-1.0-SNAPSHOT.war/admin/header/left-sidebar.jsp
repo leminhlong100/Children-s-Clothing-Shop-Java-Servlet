@@ -24,8 +24,8 @@
 				class="zmdi zmdi-accounts"></i> <span><fmt:message
 						key="user.management" bundle="${lang}"></fmt:message></span>
 		</a></li>
-		<li><c:url var="listP" value="ProductListController"></c:url><a
-			href="${pageContext.request.contextPath}/${listP}">
+		<li><c:url var="listP" value="/admin-products/ProductListController"></c:url><a
+			href="${pageContext.request.contextPath}/admin-products/ProductListController">
 				<i class="zmdi zmdi-widgets"></i> <span><fmt:message
 						key="list.of.products" bundle="${lang}"></fmt:message></span>
 		</a></li>
