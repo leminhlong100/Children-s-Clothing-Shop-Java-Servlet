@@ -8,6 +8,7 @@
         <entry key="file://$PROJECT_DIR$/src/main/webapp/admin/admin-login.jsp" value="file://$PROJECT_DIR$/src/main/webapp/admin" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/admin/user.jsp" value="file://$PROJECT_DIR$/src/main/webapp/admin" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/client/BillDetail.jsp" value="file://$PROJECT_DIR$/src/main/webapp/client" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/client/Detail.jsp" value="file://$PROJECT_DIR$/src/main/webapp/client" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/client/Index.jsp" value="file://$PROJECT_DIR$/src/main/webapp/client" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/client/VerifyEmail.jsp" value="file://$PROJECT_DIR$/src/main/webapp/client" />
       </map>
