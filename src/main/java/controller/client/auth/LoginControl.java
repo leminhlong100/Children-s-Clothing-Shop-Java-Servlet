@@ -25,60 +25,65 @@ public class LoginControl extends HttpServlet {
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
-		String userName = request.getParameter("email");
-		String passWord = request.getParameter("password");
-		String pid = request.getParameter("pid");
-		String gRecap = request.getParameter("g-recaptcha-response");
-		String typeHeader = "customer";
-		boolean verify = VerifyRecaptchas.verify(gRecap);
-		 verify = true;
+		try{
+			String userName = request.getParameter("email");
+			String passWord = request.getParameter("password");
+			String pid = request.getParameter("pid");
+			String gRecap = request.getParameter("g-recaptcha-response");
+			String typeHeader = "customer";
+			boolean verify = VerifyRecaptchas.verify(gRecap);
+			verify = true;
 
-		HttpSession session = request.getSession();
-		Account account = AuthDAO.login(userName, passWord);
-		String ipAddress = request.getRemoteAddr();
-		Log log = new Log(Log.INFO, ipAddress, -1, this.name, "", 0);
-		int num = AuthDAO.loginFail(userName);
-		int	 fail = 0;
-		if(num>5){
-			request.setAttribute("error", "Bạn đã nhập sai quá 5 lần. Vui lòng liên hệ Admin để mở khóa đăng nhập ");
-			request.getRequestDispatcher("/client/Login.jsp").forward(request, response);
-		}
-		else{
-			if (account == null && verify) {
-				log.setSrc(this.name + " LOGIN FALSE");
-				log.setContent("LOGIN FALSE: USER - " + userName);
-				log.setLevel(Log.WARNING);
-				request.setAttribute("error", "Tài khoản hoặc mật khẩu không hợp lệ " + num + " lần");
-
-
+			HttpSession session = request.getSession();
+			Account account = AuthDAO.login(userName, passWord);
+			String ipAddress = request.getRemoteAddr();
+			Log log = new Log(Log.INFO, ipAddress, -1, this.name, "", 0);
+			int num = AuthDAO.loginFail(userName);
+			int	 fail = 0;
+			if(num>5){
+				request.setAttribute("error", "Bạn đã nhập sai quá 5 lần. Vui lòng liên hệ Admin để mở khóa đăng nhập ");
 				request.getRequestDispatcher("/client/Login.jsp").forward(request, response);
-
-			} else {
-				if (!verify) {
-					request.setAttribute("error", "Chưa nhập Captcha ");
-					request.getRequestDispatcher("/client/Login.jsp").forward(request, response);
-				} else {
-					System.out.println(account);
-					session.setAttribute("acc", account);
-					session.setMaxInactiveInterval(1800);
-					log.setSrc(this.name + " LOGIN");
-					log.setContent("LOGIN SECCESS: USER - " + userName);
-					AuthDAO.resetlogin(userName);
-					for (Role r:account.getRoles()
-					) {
-						typeHeader = r.getName();
-					}
-					session.setAttribute("typeacc",typeHeader);
-					if (pid == null) {
-						request.getRequestDispatcher("IndexControl").forward(request, response);
-					} else {
-						response.sendRedirect("DetailControl?pid=" + pid);
-					}
-				}
-
 			}
-			DB.me().insert(log);
-		}}
+			else{
+				if (account == null && verify) {
+					log.setSrc(this.name + " LOGIN FALSE");
+					log.setContent("LOGIN FALSE: USER - " + userName);
+					log.setLevel(Log.WARNING);
+					request.setAttribute("error", "Tài khoản hoặc mật khẩu không hợp lệ " + num + " lần");
+
+
+					request.getRequestDispatcher("/client/Login.jsp").forward(request, response);
+
+				} else {
+					if (!verify) {
+						request.setAttribute("error", "Chưa nhập Captcha ");
+						request.getRequestDispatcher("/client/Login.jsp").forward(request, response);
+					} else {
+						System.out.println(account);
+						session.setAttribute("acc", account);
+						session.setMaxInactiveInterval(1800);
+						log.setSrc(this.name + " LOGIN");
+						log.setContent("LOGIN SECCESS: USER - " + userName);
+						AuthDAO.resetlogin(userName);
+						for (Role r:account.getRoles()
+						) {
+							typeHeader = r.getName();
+						}
+						session.setAttribute("typeacc",typeHeader);
+						if (pid == null) {
+							request.getRequestDispatcher("IndexControl").forward(request, response);
+						} else {
+							response.sendRedirect("DetailControl?pid=" + pid);
+						}
+					}
+
+				}
+				DB.me().insert(log);
+			}
+		}catch (Exception e){
+e.printStackTrace();
+		}
+	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub

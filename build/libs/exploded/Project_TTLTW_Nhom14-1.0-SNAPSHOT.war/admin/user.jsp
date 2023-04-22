@@ -19,6 +19,9 @@
 
         <div class="row mt-3">
             <div class="col-lg-12">
+                <a href="${pageContext.request.contextPath}/admin-user/UserPermissionsShow">
+                    <button style="margin-bottom: 10px;" class="btn btn-info">Quản lý quyền</button>
+                </a>
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -50,7 +53,7 @@
                                     </c:forEach>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="renderListAccount">
                                 <c:forEach items="${requestScope.accounts}" var="o" varStatus="stt">
                                     <tr>
                                         <td scope="row">${stt.index+1}</td>
@@ -86,26 +89,76 @@
                             </table>
                         </div>
                     </div>
-                </div>
+                </div><!-- Include a required theme -->
+                <link rel="stylesheet" href="@sweetalert2/themes/dark/dark.css">
+                <script src="sweetalert2/dist/sweetalert2.min.js"></script>
                 <script>
+
                     function deleteUser(id) {
                         let uid = id;
-                        $.ajax({
-                            url: "${pageContext.request.contextPath}/admin-user/UserDelete",
-                            type: "POST",
-                            data: {
-                                uid: uid
-                            },
-                            success: function (data) {
-                      let listAcc   =  JSON.parse(data).listAccount;
-                                    for(let i =0;i<listAcc.length;i++){
-                                        console.log(listAcc[i])
+                        let re="";
+                        let edit="";
+                        Swal.fire({
+                            title: 'Bạn có chắc chắn muốn xóa user này không?',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Yes',
+                            cancelButtonText: 'No'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $.ajax({
+                                    url: "${pageContext.request.contextPath}/admin-user/UserDelete",
+                                    type: "POST",
+                                    data: {
+                                        uid: uid
+                                    },
+                                    success: function (data) {
+                                        let listAcc = JSON.parse(JSON.parse(data).listAccount);
+
+                                        let isAdmin = JSON.parse(data).isAdmin;
+                                        for (let i = 0; i < listAcc.length; i++) {
+                                            if (isAdmin === true) {
+                                                edit = ` <button class="btn btn-danger" onclick="deleteUser(` + listAcc[i].id + `)">
+                                                            <fmt:message key="delete"
+                                                                         bundle="${lang}"></fmt:message>
+                                                        </button>
+                                                        <%--                                                        </a>--%>
+                                                        <a
+                                                                href="${pageContext.request.contextPath}/admin-user/UserUpdate?uid=` + listAcc[i].id + `">
+                                                            <button class="btn btn-success">
+                                                                <fmt:message key="edit" bundle="${lang}"></fmt:message>
+                                                            </button>
+                                                        </a>
+                                                        <a href="${pageContext.request.contextPath}/admin-user/UserPermissionsShow?uid=` + listAcc[i].id + `">
+                                                        <button class="btn btn-info">Quyền</button>
+                                             </a>
+                                                        `
+                                            }
+                                            re += ` <tr>
+                                        <td >` + i + `</td>
+                                        <td>` + listAcc[i].fullName + `</td>
+                                        <td>` + listAcc[i].email + `</td>
+                                        <td>` + listAcc[i].phone + `</td>
+                                        <td>` + listAcc[i].address + `</td>
+                                        <td>` + edit + `</td>
+                                    </tr>`
+                                        }
+                                        document.getElementById("renderListAccount").innerHTML = re;
+                                        // console.log(result)
+                                        Swal.fire('Xóa user thành công', '', 'success');
+                                    },
+                                    error: function (data) {
+                                        console.log(data)
                                     }
-                            },
-                            error: function (data) {
-                                // xử lý lỗi nếu có
+                                });
+
+
+                            } else if (result.isDenied) {
+                                // Nếu người dùng chọn "No"
+                                // Hiển thị thông báo không xóa user bằng SweetAlert2
+                                Swal.fire('Không xóa user', '', 'info');
                             }
-                        });
+                        })
                     }
                 </script>
             </div>
