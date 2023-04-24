@@ -250,8 +250,6 @@ public class API {
 
         return getString(connect);
     }
-
-    // đang bug :((
     public static String getTransportByID(String id) throws IOException {
             URL url = new URL(getTransportsByID_url);
 
@@ -280,7 +278,7 @@ public class API {
 //        System.out.println(getWard());
 //        System.out.println(leadTime("2264", "90816", "2270", "231013", "100", "100", "50", "100"));
 //        System.out.println(feeShip("2264", "90816", "2270", "231013", "100", "100", "100", "100"));
-        System.out.println(getAllTransports());
+//        System.out.println(getAllTransports());
 //        System.out.println(getTransportByID("0acf5c34e5c24a87b36c80491f04a7f3"));
     }
 }

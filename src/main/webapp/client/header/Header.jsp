@@ -18,27 +18,12 @@
                     <c:url var="edit" value="EditControl"></c:url>
                     <c:url var="logout" value="/LogoutControl"></c:url>
                     <c:if test="${sessionScope.acc != null}">
-                            <c:if test="${!sessionScope.typeacc.equals('customer')}">
-                                <li><a href="${pageContext.request.contextPath}/${edit}"><i
-                                        class="fa fa-user"></i> <fmt:message key="Hello"
-                                                                             bundle="${lang}"></fmt:message>:
-                                        ${sessionScope.acc.fullName} </a></li>
-                                <li><a href="${pageContext.request.contextPath}/admin/login.jsp">
-                                    <fmt:message key="Website.management" bundle="${lang}"></fmt:message>
-                                </a></li>
-
-                                <li><a href="${logout}"> <fmt:message key="log.out"
-                                                                      bundle="${lang}"></fmt:message>
-                                </a></li>
-                            </c:if>
-                            <c:if test="${sessionScope.typeacc.equals('customer')}">
-                                <li><a href="${pageContext.request.contextPath}/${edit}"><i
-                                        class="fa fa-user"></i> <fmt:message key="Hello"
-                                                                             bundle="${lang}"></fmt:message>: ${sessionScope.acc.fullName}
-                                </a></li>
-                                <li><a href="${logout}"><i class="fa fa-sign-out"></i> <fmt:message
-                                        key="log.out" bundle="${lang}"></fmt:message> </a></li>
-                            </c:if>
+                        <li><a href="${pageContext.request.contextPath}/${edit}"><i
+                                class="fa fa-user"></i> <fmt:message key="Hello"
+                                                                     bundle="${lang}"></fmt:message>: ${sessionScope.acc.fullName}
+                        </a></li>
+                        <li><a href="${logout}"><i class="fa fa-sign-out"></i> <fmt:message
+                                key="log.out" bundle="${lang}"></fmt:message> </a></li>
                     </c:if>
                     <c:if test="${empty sessionScope.acc}">
                         <c:url var="login" value="/client/Login.jsp"/>
@@ -147,8 +132,8 @@
 
                     <li class="">
                         <a href="${pageContext.request.contextPath}/client/Introduce.jsp">
-<%--                            <fmt:message--%>
-<%--                                key="Introduce" bundle="${lang}"></fmt:message>--%>
+                            <%--                            <fmt:message--%>
+                            <%--                                key="Introduce" bundle="${lang}"></fmt:message>--%>
                             GIỚI THIỆU
                         </a>
                     </li>

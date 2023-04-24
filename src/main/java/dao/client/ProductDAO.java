@@ -116,13 +116,13 @@ public class ProductDAO {
 
 			listcoment = me.withHandle(handle->{
 				return handle.createQuery(query).bind(0,idproduct)
-						.mapToBean(Comment.class).stream().toList();
+						.mapToBean(Comment.class).list();
 			});
 		} else {
 			query = "select  id,content,idCustomer,idProduct ,nameaccount,createAt  from comments  where idProduct = ? and idParent =? order by createAt desc limit 2 ";
 			listcoment = me.withHandle(handle -> {
 				return handle.createQuery(query).bind(0,idproduct).bind(1,idparent)
-						.mapToBean(Comment.class).stream().toList();
+						.mapToBean(Comment.class).list();
 			});
 		}
 		for (Comment cmts:listcoment){

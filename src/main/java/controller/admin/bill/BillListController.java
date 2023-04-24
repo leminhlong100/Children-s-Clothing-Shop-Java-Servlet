@@ -9,14 +9,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.admin.BillAdminDAO;
 
-@WebServlet("/BillListController")
+@WebServlet("/admin-bill")
 public class BillListController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setAttribute("bill", BillAdminDAO.getListOrder());
-		request.getRequestDispatcher("/admin/show-bill.jsp").forward(request, response);
+		request.getRequestDispatcher("/admin/admin-oder.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
