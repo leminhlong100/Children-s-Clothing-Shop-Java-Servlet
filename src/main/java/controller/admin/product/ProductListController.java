@@ -34,7 +34,7 @@ public class ProductListController extends HttpServlet {
 			request.setAttribute("tag", index);
 			request.setAttribute("endPage", endPage);
 			request.setAttribute("productlist", productList);
-			request.getRequestDispatcher("/admin/show-product.jsp").forward(request, response);
+			request.getRequestDispatcher("/admin/admin-product-manager.jsp").forward(request, response);
 		}catch (Exception e){
 			e.printStackTrace();
 		}
