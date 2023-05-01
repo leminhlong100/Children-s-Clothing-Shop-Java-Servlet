@@ -58,7 +58,7 @@ publishing {
 apply plugin: 'org.hidetake.ssh'
 remotes {
     host {
-        host = '34.81.159.195'
+        host = '35.240.198.38'
         user = 'g20130316'
         identity = file('C:/Users/Admin/.ssh/id_rsa')
     }

@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import entity.Order;
 import entity.OrderDetail;
 
-@WebServlet("/BillProductListController")
+@WebServlet("/admin-bill/BillProductListController")
 public class BillProductListController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -28,7 +28,7 @@ public class BillProductListController extends HttpServlet {
 //		}
 //		request.setAttribute("products", map);
 //		request.setAttribute("listBills", listBills);
-//		request.getRequestDispatcher("/admin/show-bill-product.jsp").forward(request, response);
+		request.getRequestDispatcher("/admin/admin-bill-manager.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
