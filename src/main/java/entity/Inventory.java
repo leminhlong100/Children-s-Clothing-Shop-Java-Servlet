@@ -26,6 +26,13 @@ public class Inventory {
 		this.id_size_color = id_size_color;
 		this.quantity = quantity;
 	}
+	public Inventory() {
+
+	}
+
+	public Inventory(int quantity) {
+		this.quantity=quantity;
+	}
 
 	public int getId_size_color() {
 		return id_size_color;
@@ -69,11 +76,6 @@ public class Inventory {
 
 	@Override
 	public String toString() {
-		return "Inventory{" +
-				"idProduct=" + idProduct +
-				", quantities=" + quantity +
-				", createdDate=" + createdDate +
-				", lastUpdatedDate=" + lastUpdatedDate +
-				'}';
+		return "" + quantity ;
 	}
 }

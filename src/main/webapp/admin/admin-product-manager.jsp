@@ -69,6 +69,7 @@
               <th>Tên sản phẩm</th>
               <th>Ảnh</th>
               <th>Số lượng</th>
+              <th>Size</th>
               <th>Tình trạng</th>
               <th>Giá tiền</th>
               <th>Danh mục</th>
@@ -76,15 +77,28 @@
             </tr>
             </thead>
             <tbody>
+            <c:forEach var="list" items="${renderproduct}">
             <tr>
+
               <td width="10"><input type="checkbox" name="check1" value="1"></td>
-              <td>71309005</td>
-              <td>Bàn ăn gỗ Theresa</td>
-              <td><img src="/img-sanpham/theresa.jpg" alt="" width="100px;"></td>
-              <td>40</td>
+              <td>${list.id}</td>
+              <td >${list.nameProduct}</td>
+              <td> <img
+                      src="../images/${list.imageProducts.get(0).getImage()}"
+                      alt="./images/${list.imageProducts.get(0).getImage()}"
+                      class="img-responsive" width="80px"></td>
+              <td>${list.inventory}</td>
+
+              <td>
+                <select>
+                  <c:forEach var="size" items="${list.colorSizes}">
+                    <option value="${size}">${size}</option>
+                  </c:forEach>
+                </select>
+              </td>
               <td><span class="badge bg-success">Còn hàng</span></td>
-              <td>5.600.000 đ</td>
-              <td>Bàn ăn</td>
+              <td>${list.discountPrice}</td>
+              <td>${list.category}</td>
               <td><button class="btn btn-primary btn-sm trash" type="button" title="Xóa"
                           onclick="myFunction(this)"><i class="fas fa-trash-alt"></i>
               </button>
@@ -92,6 +106,8 @@
                         data-target="#ModalUP"><i class="fas fa-edit"></i></button>
               </td>
             </tr>
+            </c:forEach>
+
             </tbody>
           </table>
         </div>
@@ -155,6 +171,7 @@
               <option>Giá đỡ</option>
             </select>
           </div>
+
         </div>
         <BR>
         <a href="#" style="    float: right;

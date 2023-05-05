@@ -4,8 +4,10 @@ import java.sql.*;
 import java.util.*;
 
 import context.*;
+import dao.client.ProductDAO;
 import dao.client.UtilDAO;
 import entity.*;
+import jnr.ffi.annotations.In;
 import org.jdbi.v3.core.Jdbi;
 
 public class ProductAdminDAO {
@@ -84,6 +86,22 @@ public class ProductAdminDAO {
 
     }
 
+
+    public static List<Product> showlistproduct(){
+            List<Product> list;
+            Jdbi me = DBContext.me();
+            String query="select p.id,p.nameProduct,pp.listPrice,pp.discountPrice,cate.nameCategorie,inven.quantity , p.isActive,p.isDelete " +
+                    "  from products p join product_prices pp on p.id = pp.idProduct " +
+                    "join categories cate on cate.id = p.idCategorie " +
+                    "join size_color_products sizepro on sizepro.idProduct = p.id" +
+                    " join inventorys inven on inven.id_size_color =sizepro.id where sizepro.size='S' or sizepro.size ='Nhỏ' or sizepro.size ='8.5' \n";
+         return  list = me.withHandle(handle -> {
+             return handle.createQuery(query).map((rs, ctx) ->new Product(rs.getInt("id"),rs.getString("nameProduct")
+                     ,rs.getDouble("listPrice"),new Category(rs.getString("nameCategorie")),UtilDAO.findListImageByIdProduct(rs.getInt("id")),UtilDAO.findListSizeColorByIdProduct(rs.getInt("id"))
+                     ,rs.getString("isActive"),rs.getString("isDelete"),rs.getDouble("discountPrice"),new Inventory(rs.getInt("quantity")))).list();
+            });
+        }
+
 //	public static void updateProduct(Product product) {
 //		String query = "update Product set [name] = ?,image=?,price=?,title=?,[description]=?,cateID=?,oldPrice=?,sumProduct=?,presentProduct=? where pid = ?";
 //		try {
@@ -124,7 +142,9 @@ public class ProductAdminDAO {
 //	}
 
     public static void main(String[] args) {
-        System.out.println(getListProduct(1));
-        ;
+//        System.out.println(getListProduct(1));
+        System.out.println(showlistproduct());
+
     }
+
 }

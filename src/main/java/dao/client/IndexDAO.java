@@ -14,19 +14,17 @@ import entity.View;
 public class IndexDAO {
 	public static List<Product> getSellProduct() {
 		Jdbi me = DBContext.me();
-		String query ="SELECT products.id,products.nameProduct,product_prices.listPrice,discount,discountPrice FROM products join product_prices\n" +
-				"on products.id = product_prices.idProduct\n" +
-				" WHERE id IN (\n" +
-				"    SELECT idProduct\n" +
-				"    FROM order_details\n" +
-				"    JOIN orders ON order_details.idOrder = orders.id\n" +
-				"    WHERE orders.statusPay = 'paid' and isActive =1\n" +
-				"    AND YEAR(orders.createAt) = YEAR(CURRENT_DATE())\n" +
-				"    AND MONTH(orders.createAt) = MONTH(CURRENT_DATE())\n" +
-				"    GROUP BY idProduct\n" +
-				"    ORDER BY SUM(quantity) DESC\n" +
-				"    \n" +
-				")LIMIT 4;\n";
+		String query ="SELECT p.id, p.nameProduct, pp.listPrice, pp.discount, pp.discountPrice \n" +
+				"FROM kidstore.products p \n" +
+				"join kidstore.product_prices pp on p.id = pp.idProduct\n" +
+				"join kidstore.inventorys  invent on invent.idProduct = p.id\n" +
+				"WHERE p.id IN (\n" +
+				"SELECT orr.idProduct\n" +
+				"FROM kidstore.order_details orr \n" +
+				"JOIN kidstore.orders od ON orr.idOrder = od.id\n" +
+				"WHERE od.statusPay = 'paid' AND YEAR(od.createAt) = YEAR(CURRENT_DATE()) AND MONTH(od.createAt) = MONTH(CURRENT_DATE()))\n" +
+				"\tGROUP BY p.id\n" +
+				"\tORDER BY SUM(invent.quantity) DESC LIMIT 4";
 		return me.withHandle(handle -> handle.createQuery(query)
 				.map((rs, ctx) -> new Product(rs.getInt("id"), rs.getString("nameProduct"),
 						rs.getDouble("listPrice"), UtilDAO.findListImageByIdProduct(rs.getInt("id")),
@@ -36,19 +34,17 @@ public class IndexDAO {
 
 	public static List<Product> getSellProductTwo() {
 		Jdbi me = DBContext.me();
-		String query ="SELECT products.id,products.nameProduct,product_prices.listPrice,discount,discountPrice FROM products join product_prices\n" +
-				"on products.id = product_prices.idProduct\n" +
-				" WHERE id IN (\n" +
-				"    SELECT idProduct\n" +
-				"    FROM order_details\n" +
-				"    JOIN orders ON order_details.idOrder = orders.id\n" +
-				"    WHERE orders.statusPay = 'paid' and isActive =1\n" +
-				"    AND YEAR(orders.createAt) = YEAR(CURRENT_DATE())\n" +
-				"    AND MONTH(orders.createAt) = MONTH(CURRENT_DATE())\n" +
-				"    GROUP BY idProduct\n" +
-				"    ORDER BY SUM(quantity) DESC\n" +
-				"    \n" +
-				")LIMIT 4,4;\n";
+		String query ="SELECT p.id, p.nameProduct, pp.listPrice, pp.discount, pp.discountPrice \n" +
+				"FROM kidstore.products p \n" +
+				"join kidstore.product_prices pp on p.id = pp.idProduct\n" +
+				"join kidstore.inventorys  invent on invent.idProduct = p.id\n" +
+				"WHERE p.id IN (\n" +
+				"SELECT orr.idProduct\n" +
+				"FROM kidstore.order_details orr \n" +
+				"JOIN kidstore.orders od ON orr.idOrder = od.id\n" +
+				"WHERE od.statusPay = 'paid' AND YEAR(od.createAt) = YEAR(CURRENT_DATE()) AND MONTH(od.createAt) = MONTH(CURRENT_DATE()))\n" +
+				"\tGROUP BY p.id\n" +
+				"\tORDER BY SUM(invent.quantity) DESC LIMIT 4,4";
 		return me.withHandle(handle -> handle.createQuery(query)
 				.map((rs, ctx) -> new Product(rs.getInt("id"), rs.getString("nameProduct"),
 						rs.getDouble("listPrice"), UtilDAO.findListImageByIdProduct(rs.getInt("id")),

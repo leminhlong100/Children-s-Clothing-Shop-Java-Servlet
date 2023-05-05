@@ -10,12 +10,9 @@ public class SizeColorProduct {
     public SizeColorProduct() {
     }
 
-    public SizeColorProduct(int id, int idProduct, String size, String color, int inventory) {
-        this.id = id;
-        this.idProduct = idProduct;
+    public SizeColorProduct( String size) {
         this.size = size;
-        this.color = color;
-        this.inventory = inventory;
+
     }
 
     public int getId() {
@@ -60,12 +57,8 @@ public class SizeColorProduct {
 
     @Override
     public String toString() {
-        return "SizeColorProduct{" +
-                "id=" + id +
-                ", idProduct=" + idProduct +
-                ", size='" + size + '\'' +
-                ", color='" + color + '\'' +
-                ", inventory=" + inventory +
-                '}';
+        return size;
+
+
     }
 }

@@ -19,7 +19,7 @@ public class Category {
 
 	@Override
 	public String toString() {
-		return "Category [id=" + idCategory + ", name=" + nameCategory + "]";
+		return nameCategory ;
 	}
 
 	public int getIdCategory() {

@@ -24,6 +24,7 @@ public class Product implements Serializable {
     private int discount;
     private double discountPrice;
     private Inventory inventory;
+    private List<Product> listproduct;
     public Product(int id, String nameProduct, double listPrice, String description, Supplier nameSupplier, Producer nameProducer, Category nameCategorie, List<ImageProduct> listImageByIdProduct, List<SizeColorProduct> listSizeColorByIdProduct, List<SizeColorProduct> sizeColorByIdProduct, int discount, double discountPrice, Inventory inventory) {
     }
 
@@ -91,6 +92,19 @@ public class Product implements Serializable {
     }
 
     public Product() {
+    }
+
+    public Product(int id, String nameProduct, double listPrice, Category category, List<ImageProduct> imageProducts, List<SizeColorProduct> colorSizes, String isActive, String isDelete, double discountPrice, Inventory inventory) {
+        this.id = id;
+        this.nameProduct = nameProduct;
+        this.listPrice = listPrice;
+        this.category = category;
+        this.imageProducts = imageProducts;
+        this.colorSizes = colorSizes;
+        this.isActive = isActive;
+        this.isDelete = isDelete;
+        this.discountPrice = discountPrice;
+        this.inventory = inventory;
     }
 
     public Inventory getInventory() {
@@ -253,27 +267,44 @@ public class Product implements Serializable {
         this.colorSizes = colorSizes;
     }
 
+//    @Override
+//    public String toString() {
+//        return "Product{" +
+//                "id=" + id +
+//                ", nameProduct='" + nameProduct + '\'' +
+//                ", listPrice=" + listPrice +
+//                ", description='" + description + '\'' +
+//                ", views=" + views +
+//                ", stars=" + stars +
+//                ", comments=" + comments +
+//                ", idSupplier=" + idSupplier +
+//                ", idProducer=" + idProducer +
+//                ", idCategory=" + idCategory +
+//                ", supplier=" + supplier +
+//                ", producer=" + producer +
+//                ", category=" + category +
+//                ", imageProducts=" + imageProducts +
+//                ", colorsizes=" + colorSizes +
+//                ", isActive='" + isActive + '\'' +
+//                ", isDelete='" + isDelete + '\'' +
+//                ", discount=" + discount +
+//                ", discountPrice=" + discountPrice +
+//                ", inventory=" + inventory +
+//                '}';
+//    }
+
+
     @Override
     public String toString() {
         return "Product{" +
                 "id=" + id +
                 ", nameProduct='" + nameProduct + '\'' +
                 ", listPrice=" + listPrice +
-                ", description='" + description + '\'' +
-                ", views=" + views +
-                ", stars=" + stars +
-                ", comments=" + comments +
-                ", idSupplier=" + idSupplier +
-                ", idProducer=" + idProducer +
-                ", idCategory=" + idCategory +
-                ", supplier=" + supplier +
-                ", producer=" + producer +
                 ", category=" + category +
                 ", imageProducts=" + imageProducts +
-                ", colorsizes=" + colorSizes +
+                ", colorSizes=" + colorSizes +
                 ", isActive='" + isActive + '\'' +
                 ", isDelete='" + isDelete + '\'' +
-                ", discount=" + discount +
                 ", discountPrice=" + discountPrice +
                 ", inventory=" + inventory +
                 '}';
