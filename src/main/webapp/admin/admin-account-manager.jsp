@@ -201,14 +201,13 @@ MODAL
         let re = "";
         let form = $(button).closest("form");
         let form_data = $(form).serialize(); // lấy thông tin dữ liệu từ form
-        var url = "${pageContext.request.contextPath}/admin-user/UserUpdate"; // đường dẫn đến file xử lý
+        let url = "${pageContext.request.contextPath}/admin-user/UserUpdate"; // đường dẫn đến file xử lý
         $.ajax({
             url: url,
             type: "POST",
             data: form_data,
             success: function (data) {
                 let listAcc = JSON.parse(JSON.parse(data).listAccount);
-
                 let isAdmin = JSON.parse(data).isAdmin;
                 for (let i = 0; i < listAcc.length; i++) {
                     re += ` <tr>
