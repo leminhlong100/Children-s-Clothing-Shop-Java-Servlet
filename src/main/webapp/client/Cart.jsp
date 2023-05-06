@@ -20,8 +20,9 @@
     <meta charset="UTF-8"/>
     <title><fmt:message key="Cart" bundle="${lang}"></fmt:message></title>
     <link rel="icon" type="image" href="../images/HaLoicon.png"/>
-
     <jsp:include page="./link/Link.jsp"></jsp:include>
+    <link rel="stylesheet" type="text/css"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 
@@ -133,7 +134,8 @@
                            class="btn-cart pull-right"><fmt:message
                                 key="payment.methods" bundle="${lang}"></fmt:message></a>
                         <c:url var="order" value="cart/OrderBillControl"></c:url>
-                        <a href="${pageContext.request.contextPath}/${order}?total=${total}" class="btn-cart pull-right"><fmt:message
+                        <a href="${pageContext.request.contextPath}/${order}?total=${total}"
+                           class="btn-cart pull-right"><fmt:message
                                 key="pay" bundle="${lang}"></fmt:message></a>
                     </div>
                 </c:if>
@@ -146,61 +148,54 @@
                 <h4>
                     <fmt:message key="Purchase.history" bundle="${lang}"></fmt:message>
                 </h4>
-                <div class="col-md-12">
+                <div class="col-md-12" style="border: 1px solid #ddd;">
                     <c:if test="${empty listOrders}"><p>Lịch sử rổng </p></c:if>
-                    <div class="table-responsive">
+                    <div class="table-responsive" style=" margin-top: 20px;">
                         <c:if test="${!empty listOrders}">
-                            <table class="table table-bordered cart-table">
+                            <table class="table table-hover table-bordered js-copytextarea" cellpadding="0"
+                                   cellspacing="0"
+                                   border="0"
+                                   id="sampleTable" style="font-family: Arial, sans-serif;
+  font-size: 12px;">
                                 <thead>
                                 <tr>
-                                    <th class="text-center"><fmt:message key="STT"
-                                                                         bundle="${lang}"></fmt:message></th>
-                                    <th class="text-center"><fmt:message
-                                            key="LIST.OF.PRODUCTS" bundle="${lang}"></fmt:message></th>
-                                    <th class="text-center"><fmt:message key="TOTAL.PRICE"
-                                                                         bundle="${lang}"></fmt:message></th>
-                                    <th class="text-center"><fmt:message key="PURCHASE.DATE"
-                                                                         bundle="${lang}"></fmt:message></th>
-                                    <th class="text-center"><fmt:message key="ORDER.STATUS"
-                                                                         bundle="${lang}"></fmt:message></th>
-                                    <th class="text-center"><fmt:message key="DETAIL"
-                                                                         bundle="${lang}"></fmt:message></th>
+                                    <th>ID đơn hàng</th>
+                                    <th>Đanh sách đơn hàng</th>
+                                    <th>Số lượng</th>
+                                    <th>Tổng tiền</th>
+                                    <th>Trạng thái thanh toán</th>
+                                    <th>Trạng thái vận chuyển</th>
+                                    <th>Tính năng</th>
                                 </tr>
                                 </thead>
-                                <c:forEach items="${listOrders}" var="o" varStatus="stt">
-                                    <tbody>
+                                <tbody id="renderListAccount">
+                                <c:forEach items="${requestScope.listOrders}" var="o" varStatus="stt">
+                                    <c:set var="count" value="0"/>
                                     <tr>
-                                        <td class="text-center" valign="middle">
-                                            <p class="">${stt.index}</p>
+                                        <td>#${o.id}</td>
+                                        <td>
+                                            <c:forEach var="h" items="${requestScope.products}">
+                                                <c:if test="${stt.index == h.key}">
+                                                    <c:forEach var="p" items="${h.value}" varStatus="loop">
+                                                        <c:set var="count" value="${count + 1}"/>
+                                                        ${p.product.nameProduct} - ${p.productSize}/${p.productColor}
+                                                        <c:if test="${!loop.last}">,</c:if>
+                                                    </c:forEach>
+                                                </c:if>
+                                            </c:forEach>
                                         </td>
-                                        <c:forEach var="h" items="${products}">
-                                            <c:if test="${stt.index == h.key}">
-                                                <td class="text-center" scope="row"><c:forEach var="p"
-                                                                                               items="${h.value}">
-                                                    <p style="font-weight: 500; color: black;">${p.product.nameProduct}</p>
-                                                </c:forEach></td>
-                                            </c:if>
-                                        </c:forEach>
-
-                                        <td class="text-center"><p class="">${o.totalPrice}
-                                            <fmt:message
-                                                    key="$" bundle="${lang}"></fmt:message>
-                                        </p></td>
-                                        <td class="text-center" valign="middle">
-                                            <p class="">${o.createAt}</p>
-                                        </td>
-                                        <td class="text-center" valign="middle">
-                                            <p class="">${o.status}</p>
-                                        </td>
-                                        <c:url value="${pageContext.request.contextPath}/cart/DetailBill"
-                                               var="DetailBill"></c:url>
+                                        <td>${count}</td>
+                                        <td style="text-align: right;">${o.totalPrice}</td>
+                                        <td>${o.statusPay}</td>
+                                        <td><span class="badge bg-success">${o.status}</span></td>
                                         <td class="text-center" valign="middle"><a
                                                 style="color: green; text-decoration: underline;"
-                                                href="${DetailBill}?id=${o.id}"> <fmt:message
-                                                key="click.to.view" bundle="${lang}"></fmt:message></a></td>
+                                                href="${pageContext.request.contextPath}/cart/DetailBill?id=${o.id}">
+                                            <fmt:message
+                                                    key="click.to.view" bundle="${lang}"></fmt:message></a></td>
                                     </tr>
-                                    </tbody>
                                 </c:forEach>
+                                </tbody>
                             </table>
                         </c:if>
                     </div>
@@ -208,8 +203,13 @@
             </div>
         </div>
     </div>
+    <jsp:include page="../admin/header/link-js.jsp" flush="true"/>
     <!-- End Main Content -->
     <jsp:include page="./footer/Footer.jsp"></jsp:include>
+    <script type="text/javascript">$('#sampleTable').DataTable({
+        order: [[0, 'desc']],
+    });</script>
+
 </div>
 </body>
 

@@ -33,6 +33,18 @@
             <div class="row">
                 <article
                         class="col-lg-12 col-md-12 col-sm-12 col-xs-12 sk-product-detail-content-col">
+                    <div class="sk-main-content-head">
+                        <div class="breadcrumb-wrap">
+                            <ul>
+                                <li><a href="IndexControl">Trang chủ</a></li>
+
+                                <li><a href=""><span>/</span> ${detail.category.nameCategory}</a></li>
+
+                                <li class="active"><a href=""><span>/</span> ${detail.nameProduct}</a></li>
+                            </ul>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
                     <!-- End .sk-main-content-head -->
                     <div class="row sk-sigle-content product-view"
                          itemtype="http://schema.org/Product">
@@ -73,10 +85,16 @@
                                     <span class="price">${detail.discountPrice} VNĐ</span>
                                 </div>
                                 <div class="stock pull-left">
-
-                                    <div class="availability in-stock pull-right">
-                                        <span><fmt:message key="Stocking" bundle="${lang}"></fmt:message></span>
-                                    </div>
+                                    <c:if test="${detail.inventory.quantity == 0}">
+                                        <div class="availability out-stock pull-right">
+                                            <span>Hết hàng</span>
+                                        </div>
+                                    </c:if>
+                                    <c:if test="${detail.inventory.quantity != 0}">
+                                        <div class="availability in-stock pull-right">
+                                            <span><fmt:message key="Stocking" bundle="${lang}"></fmt:message></span>
+                                        </div>
+                                    </c:if>
 
                                 </div>
                             </div>
@@ -96,25 +114,19 @@
                             </ul>
                             <p class="pd-description-mini">${detail.description}</p>
                             <div class="pd-form">
-                                <div class="pd-form-top clearfix">
-                                    <div class="selector-wrapper">
-                                        <select id="product-select" name="variantId"
-                                                class="single-option-selector">
-
-                                            <option value="6383545">Size 214 / ${detail.discountPrice}₫</option>
-
-                                            <option value="6383546">Size 224 / ${detail.discountPrice}₫</option>
-
-                                            <option value="6383547">Size 234 / ${detail.discountPrice}₫</option>
-
-                                            <option value="6383548">Size 244 / ${detail.discountPrice}₫</option>
-
-                                        </select>
+                                <c:url var="addToCart" value="cart/AddToCartControl"></c:url>
+                                <form action="${addToCart}?pid=${detail.id}" method="post">
+                                    <div class="pd-form-top clearfix">
+                                        <div class="selector-wrapper">
+                                            <select id="product-select" name="variantId"
+                                                    class="single-option-selector">
+                                                <c:forEach var="o" items="${detail.colorSizes}">
+                                                    <option value="${o.size}/${o.color}">${o.size}/${o.color} - ${detail.discountPrice}₫</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="pd-form-bottom clearfix">
-                                    <c:url var="addToCart" value="cart/AddBillControl"></c:url>
-                                    <form action="${addToCart}?pid=${ detail.id}" method="post">
+                                    <div class="pd-form-bottom clearfix">
                                         <input type="number" class="single-input-selector" value="1"
                                                min="1" name="quantity">
 
@@ -123,9 +135,8 @@
                                                 type="submit" class="button" title="Đặt hàng" type="submit">
                                             <span><fmt:message key="ORDER" bundle="${lang}"></fmt:message></span>
                                         </button>
-                                    </form>
-                                </div>
-
+                                    </div>
+                                </form>
                                 <div class="sk-hotline-block">
 										<span><fmt:message key="Call.now.for.buying.advice"
                                                            bundle="${lang}"></fmt:message></span>
@@ -140,7 +151,6 @@
                                     <img
                                             src="//bizweb.dktcdn.net/100/117/632/themes/157694/assets/icon-dt.jpg?1564585558451"/>
                                 </div>
-
                             </div>
                         </div>
                     </div>

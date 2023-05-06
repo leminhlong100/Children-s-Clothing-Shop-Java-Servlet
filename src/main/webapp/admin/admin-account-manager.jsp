@@ -96,7 +96,7 @@
                                 <td>${o.email}</td>
                                 <td class="table-td-center">
                                     <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"
-                                            onclick="deleteUser(${o.id})"><i class="fas fa-trash-alt"></i>
+                                            onclick="deleteUser(${o.id},${stt.index})"><i class="fas fa-trash-alt"></i>
                                     </button>
                                     <button class="btn btn-primary btn-sm edit" type="button" title="Sửa"
                                             onclick="editAccount(${o.id})" id="show-emp"
@@ -124,7 +124,7 @@ MODAL
 <jsp:include page="./header/link-js.jsp" flush="true"/>
 <script type="text/javascript">$('#sampleTable').DataTable();</script>
 <script>
-    oTable = $('#sampleTable').dataTable();
+    oTable = $('#sampleTable').DataTable();
     $('#all').click(function (e) {
         $('#sampleTable tbody :checkbox').prop('checked', $(this).is(':checked'));
         e.stopImmediatePropagation();
@@ -331,7 +331,7 @@ MODAL
         });
     });
 
-    function deleteUser(id) {
+    function deleteUser(id,index) {
         let uid = id;
         let re = "";
         Swal.fire({
@@ -349,8 +349,10 @@ MODAL
                         uid: uid
                     },
                     success: function (data) {
+                        var currentPage = oTable.page(); // lưu trang hiện tại
+                        oTable.row(index).remove().draw();
+                        oTable.page(currentPage).draw(false); // thiết lập lại trang hiện tại sau khi vẽ lại bảng dữ liệu
                         let listAcc = JSON.parse(JSON.parse(data).listAccount);
-
                         let isAdmin = JSON.parse(data).isAdmin;
                         for (let i = 0; i < listAcc.length; i++) {
                             re += ` <tr>

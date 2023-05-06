@@ -16,6 +16,24 @@ public class Order implements Serializable {
 	private String address;
 	private String note;
 	private String updateAt; // ngay mua
+	private String wardId;
+	private String districtId;
+
+	public String getWardId() {
+		return wardId;
+	}
+
+	public void setWardId(String wardId) {
+		this.wardId = wardId;
+	}
+
+	public String getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(String districtId) {
+		this.districtId = districtId;
+	}
 
 	private List<OrderDetail> orderDetails;
 
@@ -37,7 +55,25 @@ public class Order implements Serializable {
 		this.orderDetails = orderDetails;
 	}
 
-	public Order(int id, String createAt, String statusPay,  String status,Account account,double totalPrice,int idAccount) {
+	public Order(int id, String createAt, String deliveryDate, String statusPay, int idAccount, Account account, double sale, double totalPrice, String status, String address, String note, String updateAt, String wardId, String districtId, List<OrderDetail> orderDetails) {
+		this.id = id;
+		this.createAt = createAt;
+		this.deliveryDate = deliveryDate;
+		this.statusPay = statusPay;
+		this.idAccount = idAccount;
+		this.account = account;
+		this.sale = sale;
+		this.totalPrice = totalPrice;
+		this.status = status;
+		this.address = address;
+		this.note = note;
+		this.updateAt = updateAt;
+		this.wardId = wardId;
+		this.districtId = districtId;
+		this.orderDetails = orderDetails;
+	}
+
+	public Order(int id, String createAt, String statusPay, String status, Account account, double totalPrice, int idAccount) {
 		this.id = id;
 		this.createAt = createAt;
 		this.statusPay = statusPay;
@@ -46,7 +82,8 @@ public class Order implements Serializable {
 		this.account = account;
 		this.totalPrice = totalPrice;
 	}
-	public Order(int id, String createAt, String statusPay,  String status,Account account,double totalPrice) {
+
+	public Order(int id, String createAt, String statusPay, String status, Account account, double totalPrice) {
 		this.id = id;
 		this.createAt = createAt;
 		this.statusPay = statusPay;
@@ -181,14 +218,18 @@ public class Order implements Serializable {
 				", createAt='" + createAt + '\'' +
 				", deliveryDate='" + deliveryDate + '\'' +
 				", statusPay='" + statusPay + '\'' +
+				", idAccount=" + idAccount +
 				", account=" + account +
 				", sale=" + sale +
 				", totalPrice=" + totalPrice +
 				", status='" + status + '\'' +
 				", address='" + address + '\'' +
-				", node='" + note + '\'' +
+				", note='" + note + '\'' +
 				", updateAt='" + updateAt + '\'' +
+				", wardId='" + wardId + '\'' +
+				", districtId='" + districtId + '\'' +
 				", orderDetails=" + orderDetails +
 				'}';
 	}
 }
+

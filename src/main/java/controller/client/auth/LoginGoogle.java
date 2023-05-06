@@ -39,15 +39,14 @@ public class LoginGoogle extends HttpServlet {
         Google user = getUserInfo(accessToken);
         String pid = request.getParameter("pid");
         HttpSession session = request.getSession();
-        Account cus = AuthDAO.loginGG(user.getId(), user.getEmail());
+        Account cus = AuthDAO.loginGG(user.getId());
         if (cus == null) {
             AuthDAO.signUpGoogle(user.getId(), user.getName(), user.getEmail(), user.getPicture());
-            cus = AuthDAO.loginGG(user.getId(), user.getEmail());
+            cus = AuthDAO.loginGG(user.getId());
         }
         cus.setRoles(AuthDAO.getRoles(cus.getId()));
         cus.setResources(AuthDAO.getResources(cus.getId()));
         cus.setPermissions(AuthDAO.getPermissions(cus.getId()));
-        System.out.println(cus);
         session.setAttribute("acc", cus);
         session.setMaxInactiveInterval(1800);
         if (pid == null) {
