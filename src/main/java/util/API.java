@@ -1,8 +1,16 @@
 package util;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.*;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -153,38 +161,65 @@ public class API {
         return getString(connect);
     }
 
-    public static String getProvince() throws IOException {
-        URL url = new URL(province_url);
-
-        HttpURLConnection connect = (HttpURLConnection) url.openConnection();
-        connect.setRequestMethod("GET");
-        connect.setDoOutput(true);
-        connect.setRequestProperty("Authorization", "Bearer" + getToken());
-
-        return getString(connect);
-    }
-
-    public static String getDistrict(String param) throws IOException {
-        try {
-            String line = district_url + "?provinceID=" + param;
-            String connect = connect(line);
-            if (connect != null) return connect;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public static String getWard(String param){
-        try {
-            String line = ward_url + "?districtID=" + param;
-            String connect = connect(line);
-            if (connect != null) return connect;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+//    public static ArrayList<Province> getProvinces() throws IOException {
+//        URL url = new URL(province_url);
+//        HttpURLConnection connect = (HttpURLConnection) url.openConnection();
+//        connect.setRequestMethod("GET");
+//        connect.setDoOutput(true);
+//        connect.setRequestProperty("Authorization", "Bearer" + getToken());
+//        String json = getString(connect);
+//        Gson gson = new Gson();
+//        JSONObject jsonObject = new JSONObject(json);
+//        JSONArray data = jsonObject.getJSONObject("original").getJSONArray("data");
+//        Type listType = new TypeToken<ArrayList<Province>>() {}.getType();
+//        ArrayList<Province> provinces = gson.fromJson(data.toString(), listType);
+//        return provinces;
+//    }
+//    public static String getProvince() throws IOException {
+//        URL url = new URL(province_url);
+//
+//        HttpURLConnection connect = (HttpURLConnection) url.openConnection();
+//        connect.setRequestMethod("GET");
+//        connect.setDoOutput(true);
+//        connect.setRequestProperty("Authorization", "Bearer" + getToken());
+//
+//        return getString(connect);
+//    }
+//    public static ArrayList<District> getDistricts(String param) throws IOException {
+//        try {
+//            String line = district_url + "?provinceID=" + param;
+//            String connect = connect(line);
+//            if (connect != null) {
+//                Gson gson = new Gson();
+//                JSONObject jsonObject = new JSONObject(connect);
+//                JSONArray data = jsonObject.getJSONObject("original").getJSONArray("data");
+//                Type listType = new TypeToken<ArrayList<District>>() {}.getType();
+//                ArrayList<District> districts = gson.fromJson(data.toString(), listType);
+//                return  districts;
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
+//
+//    public static ArrayList<Ward> getWards(String param){
+//        try {
+//            String line = ward_url + "?districtID=" + param;
+//            String connect = connect(line);
+//            if (connect != null) {
+//                Gson gson = new Gson();
+//                JSONObject jsonObject = new JSONObject(connect);
+//                JSONArray data = jsonObject.getJSONObject("original").getJSONArray("data");
+//                Type listType = new TypeToken<ArrayList<Ward>>() {}.getType();
+//                ArrayList<Ward> wards = gson.fromJson(data.toString(), listType);
+//                return  wards;
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
     private static String connect(String line) throws IOException {
         URL url = new URL(line);
@@ -275,11 +310,12 @@ public class API {
 //        System.out.println(loginAPI("rynvia1522@gmail.com", "thuyhao1234"));
 //        System.out.println(changePass("thuyhao123", "thuyhao1234", "thuyhao1234"));
 //        System.out.println(getToken());
+//        System.out.println(getProvinces());
 //        System.out.println(getProvince());
-//        System.out.println(getDistrict());
-//        System.out.println(getWard());
+//        System.out.println(getDistricts("269"));
+//        System.out.println(getWards("2264"));
 //        System.out.println(leadTime("2264", "90816", "2270", "231013", "100", "100", "50", "100"));
-//        System.out.println(feeShip("2264", "90816", "2270", "231013", "100", "100", "100", "100"));
+//        System.out.println(feeShip("2264", "90816", "2270", "231013", "20", "20", "20", "100"));
         System.out.println(getAllTransports());
 //        System.out.println(getTransportByID("0acf5c34e5c24a87b36c80491f04a7f3"));
     }

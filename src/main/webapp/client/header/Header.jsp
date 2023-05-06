@@ -41,11 +41,9 @@
                             </c:if>
                     </c:if>
                     <c:if test="${empty sessionScope.acc}">
-                        <c:url var="login" value="/client/Login.jsp"/>
-                        <c:url var="register" value="/client/Register.jsp"/>
-                        <li><a href="${login}"><i class="fa fa-user"></i> <fmt:message
+                        <li><a href="${pageContext.request.contextPath}/client/Login.jsp"><i class="fa fa-user"></i> <fmt:message
                                 key="log.in" bundle="${lang}"></fmt:message> </a></li>
-                        <li><a href="${register}"><i class="fa fa-user-plus"></i>
+                        <li><a href="${pageContext.request.contextPath}/client/Register.jsp"><i class="fa fa-user-plus"></i>
                             <fmt:message key="Register" bundle="${lang}"></fmt:message></a></li>
                     </c:if>
 
