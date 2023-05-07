@@ -34,6 +34,16 @@ public class Product implements Serializable {
         this.imageProducts = imageProducts;
     }
 
+    public Product(int id, String nameProduct, double listPrice, Supplier supplier, Producer producer, Category category, double discountPrice, Inventory inventory) {
+        this.id = id;
+        this.nameProduct = nameProduct;
+        this.listPrice = listPrice;
+        this.supplier = supplier;
+        this.producer = producer;
+        this.category = category;
+        this.discountPrice = discountPrice;
+        this.inventory = inventory;
+    }
 
     public Product(int id, String nameProduct, double listPrice, List<ImageProduct> imageProducts, int discount, double discountPrice) {
         this.id = id;
@@ -76,16 +86,13 @@ public class Product implements Serializable {
         this.inventory = inventory;
     }
 
-    public Product(int id, String nameProduct, double listPrice, String description, Supplier supplier, Producer producer, Category category, List<ImageProduct> imageProducts, List<SizeColorProduct> colorSizes, int discount, double discountPrice, Inventory inventory) {
+    public Product(int id, String nameProduct, double listPrice, Supplier supplier, Producer producer, Category category, int discount, double discountPrice, Inventory inventory) {
         this.id = id;
         this.nameProduct = nameProduct;
         this.listPrice = listPrice;
-        this.description = description;
         this.supplier = supplier;
         this.producer = producer;
         this.category = category;
-        this.imageProducts = imageProducts;
-        this.colorSizes = colorSizes;
         this.discount = discount;
         this.discountPrice = discountPrice;
         this.inventory = inventory;

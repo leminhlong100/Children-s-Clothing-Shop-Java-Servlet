@@ -25,7 +25,7 @@ public class ProductAddController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		List<Category> cateList = ProductAdminDAO.getListCategory();
+		List<Category> cateList = ProductAdminDAO.listcate();
 		request.setAttribute("catelist", cateList);
 		request.getRequestDispatcher("/admin/addproduct.jsp").forward(request, response);
 	}
