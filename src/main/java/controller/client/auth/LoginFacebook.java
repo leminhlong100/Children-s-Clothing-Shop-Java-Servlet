@@ -32,11 +32,11 @@ public class LoginFacebook extends HttpServlet {
 		String pid = request.getParameter("pid");
 		HttpSession session = request.getSession();
 		if (!name.equalsIgnoreCase("undefined") && !name.isEmpty()) {
-			Account cus  = AuthDAO.loginFacebook(id, email);
+			Account cus  = AuthDAO.loginFacebook(id);
 			if (cus == null) {
 				if (action.equals("Face")) {
 					AuthDAO.signUpFacebook(id, name, email, pic);
-					cus = AuthDAO.loginFacebook(id, email);
+					cus = AuthDAO.loginFacebook(id);
 					session.setAttribute("acc", cus);
 					session.setMaxInactiveInterval(1800);
 					if (pid == null) {
