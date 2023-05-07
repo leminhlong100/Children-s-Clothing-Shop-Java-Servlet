@@ -59,7 +59,6 @@ public class LoginControl extends HttpServlet {
 						request.setAttribute("error", "Chưa nhập Captcha ");
 						request.getRequestDispatcher("/client/Login.jsp").forward(request, response);
 					} else {
-						System.out.println(account);
 						session.setAttribute("acc", account);
 						session.setMaxInactiveInterval(1800);
 						log.setSrc(this.name + " LOGIN");

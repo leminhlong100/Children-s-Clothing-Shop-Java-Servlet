@@ -189,14 +189,14 @@ public class AuthDAO {
 	}
 
 	public static void signUpGoogle(String id, String name, String email, String picture) {
-		String ggCus = "insert into accounts (accountName, password, fullName, email, image, type, idOther) values (:accountName, :password, :fullName, :email, :image, :type, :idOther)";
+		String ggCus = "insert into accounts (accountName, password, fullName, email, image, type, idOther,isDelete,isActive) values (:accountName, :password, :fullName, :email, :image, :type, :idOther,:isDelete,:isActive)";
 		Jdbi me = DBContext.me();
 		me.useHandle(handle -> {
 			try {
 				handle.begin();
 				handle.createUpdate(ggCus).bind("accountName", EnCode.toSHA1(EnCode.toSHA1(name)))
-						.bind("password", EnCode.toSHA1(EnCode.toSHA1(email))).bind("fullName", name).bind("email", EnCode.toSHA1(EnCode.toSHA1(email)))
-						.bind("image", picture).bind("type", 3).bind("idOther", id)
+						.bind("password", EnCode.toSHA1(EnCode.toSHA1(email))).bind("fullName", name).bind("email", email)
+						.bind("image", picture).bind("type", 3).bind("idOther", id).bind("isDelete",0).bind("isActive",1)
 						.execute();
 				handle.commit();
 			} catch (Exception e) {
@@ -206,17 +206,16 @@ public class AuthDAO {
 		});
 	}
 
-	private static Account getAccount(String id, String email, String loginBy) {
+	private static Account getAccount(String id, String loginBy) {
 		Jdbi me = DBContext.me();
-		String emailEncode = EnCode.toSHA1(EnCode.toSHA1(email));
 		return (Account) me.withHandle(handle -> {
-			return handle.createQuery(loginBy).bind(0, id).bind(1, emailEncode).mapToBean(Account.class).findFirst().orElse(null);
+			return handle.createQuery(loginBy).bind(0, id).mapToBean(Account.class).findFirst().orElse(null);
 		});
 	}
 
-	public static Account loginGG(String id, String email) {
-		String loginGGQuery = "select id, accountName, password, fullName, email, image, type, idOther from accounts where idOther= ? and email = ? and type = 3";
-		return getAccount(id, email, loginGGQuery);
+	public static Account loginGG(String id) {
+		String loginGGQuery = "select id, accountName, password, fullName, email, image, type, idOther from accounts where idOther= ? and type = 3";
+		return getAccount(id, loginGGQuery);
 	}
 
 	public static void signUpFacebook(String id, String name, String email, String pic) {
@@ -237,14 +236,12 @@ public class AuthDAO {
 		});
 	}
 
-	public static Account loginFacebook(String id, String email) {
+	public static Account loginFacebook(String id) {
 		String loginFBQuery = "select id, accountName, password, fullName, email, image, type, idOther from accounts where idOther= ? and email = ? and type = 2";
-		return getAccount(id, email, loginFBQuery);
+		return getAccount(id, loginFBQuery);
 	}
 
 	public static void main(String[] args) {
-
-
 	}
 
 }

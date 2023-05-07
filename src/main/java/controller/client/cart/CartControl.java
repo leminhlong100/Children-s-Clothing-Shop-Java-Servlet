@@ -23,10 +23,16 @@ public class CartControl extends HttpServlet {
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        Account account = (Account) session.getAttribute("acc");
-        Object obj = session.getAttribute("cart");// luu tam vao session
-        int totalQuantity = 0;
+        try {
+            HttpSession session = request.getSession();
+            Account account = (Account) session.getAttribute("acc");
+            if(account==null){
+                request.getRequestDispatcher("/client/Login.jsp").forward(request, response);
+            }else{
+
+
+            Object obj = session.getAttribute("cart");// luu tam vao session
+            int totalQuantity = 0;
             double total = 0;
             List<Order> listOrders = OrderDAO.getListOrderByAcountId(String.valueOf(account.getId()));
             Collections.reverse(listOrders);
@@ -51,6 +57,10 @@ public class CartControl extends HttpServlet {
             request.setAttribute("listOrders", listOrders);
             session.setAttribute("cartTotalQuantity", totalQuantity);
             request.getRequestDispatcher("/client/Cart.jsp").forward(request, response);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

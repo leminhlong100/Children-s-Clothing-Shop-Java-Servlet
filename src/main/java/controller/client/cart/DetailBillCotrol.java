@@ -24,14 +24,18 @@ public class DetailBillCotrol extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String id = request.getParameter("id");
-		Order order = OrderDAO.getOrderByBid(id);
-		List<OrderDetail> orderDetails = OrderDAO.getOrderDetailByBid(id);
-		request.setAttribute("bill", order);
-		request.setAttribute("billProducts", orderDetails);
-		System.out.println(order);
-		System.out.println(orderDetails);
-		request.getRequestDispatcher("/client/BillDetail.jsp").forward(request, response);
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
+		try{
+			String id = request.getParameter("id");
+			Order order = OrderDAO.getOrderByBid(id);
+			List<OrderDetail> orderDetails = OrderDAO.getOrderDetailByBid(id);
+			request.setAttribute("bill", order);
+			request.setAttribute("billProducts", orderDetails);
+			request.getRequestDispatcher("/client/BillDetail.jsp").forward(request, response);
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 	}
 
 }

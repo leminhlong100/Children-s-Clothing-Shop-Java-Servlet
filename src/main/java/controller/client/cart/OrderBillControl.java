@@ -1,8 +1,9 @@
 package controller.client.cart;
 
 import entity.OrderDetail;
-
+import util.API;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.ServletException;
@@ -17,11 +18,6 @@ public class OrderBillControl extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doPost(request, response);
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
@@ -41,6 +37,11 @@ public class OrderBillControl extends HttpServlet {
 		request.setAttribute("total", total);
 		request.setAttribute("totalQuantity", totalQuantity);
 		request.getRequestDispatcher("/client/Order.jsp").forward(request, response);
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
 
 	}
 
