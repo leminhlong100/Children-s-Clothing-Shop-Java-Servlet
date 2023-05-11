@@ -282,7 +282,7 @@
                         let isSuc = JSON.parse(data).isSuc;
                         if (isSuc) {
                             $(tdArray[7]).html('<span class="badge bg-danger"">Đã hủy</span>');
-                            $(parent).html('<button class="btn btn-primary btn-sm cancel" type="button" onclick="back(' + orderId + ',this)" title="Khôi phục đơn hàng"><i class="fa fa-repeat"></i></button>');
+                            $(parent).html('<button class="btn btn-primary btn-sm cancel" type="button" onclick="back' + orderId + ',this)" title="Khôi phục đơn hàng"><i class="fa fa-repeat"></i></button>');
                         }
                         Swal.fire('Hủy đơn hàng thành công', '', 'success');
                     },

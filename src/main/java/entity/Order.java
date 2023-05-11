@@ -73,12 +73,6 @@ public class Order implements Serializable {
 		this.orderDetails = orderDetails;
 	}
 
-	public Order(int id, Account account, double totalPrice) {
-		this.id = id;
-		this.account = account;
-		this.totalPrice = totalPrice;
-	}
-
 	public Order(int id, String createAt, String statusPay, String status, Account account, double totalPrice, int idAccount) {
 		this.id = id;
 		this.createAt = createAt;
