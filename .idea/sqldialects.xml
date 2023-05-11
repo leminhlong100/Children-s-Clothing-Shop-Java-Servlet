@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/src/main/java/dao/admin/BillAdminDAO.java" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/src/main/java/dao/admin/ProductAdminDAO.java" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/src/main/java/dao/client/AccessDAO.java" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/src/main/java/dao/client/ProductDAO.java" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/src/main/java/dao/client/UtilDAO.java" dialect="GenericSQL" />
+  </component>
+  <component name="SqlResolveMappings">
+    <file url="file://$PROJECT_DIR$/src/main/java/dao/admin/ProductAdminDAO.java" scope="{&quot;node&quot;:{  &quot;@negative&quot;:&quot;1&quot;,  &quot;group&quot;:{   &quot;@kind&quot;:&quot;root&quot;,   &quot;node&quot;:{    &quot;name&quot;:{     &quot;@qname&quot;:&quot;3703d330-e604-4906-a200-3777b356d7ee&quot;    },    &quot;group&quot;:{     &quot;@kind&quot;:&quot;schema&quot;,     &quot;node&quot;:{      &quot;name&quot;:{       &quot;@qname&quot;:&quot;kidstore&quot;      }     }    }   }  } }}" />
   </component>
 </project>

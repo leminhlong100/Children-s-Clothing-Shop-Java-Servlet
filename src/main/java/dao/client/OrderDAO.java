@@ -7,6 +7,7 @@ import entity.Account;
 import entity.Order;
 import entity.OrderDetail;
 import entity.Product;
+import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.Jdbi;
 
 public class OrderDAO {
@@ -67,6 +68,7 @@ public class OrderDAO {
         return me.withHandle(handle -> handle.createQuery(query).bind(0, idProduct).bind(1, idSizeColor).mapTo(Integer.class).findFirst().orElse(null))
                 ;
     }
+
 
     public static void main(String[] args) {
         System.out.println(getQuantitySizeColor(1, 2));

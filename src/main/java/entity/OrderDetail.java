@@ -23,6 +23,10 @@ public class OrderDetail {
 		this.node = node;
 	}
 
+	public OrderDetail(int quantity) {
+		this.quantity = quantity;
+	}
+
 	public OrderDetail(int id, int idOrder, int idProduct, int quantity, double price, String node) {
 		this.id = id;
 		this.idOrder = idOrder;

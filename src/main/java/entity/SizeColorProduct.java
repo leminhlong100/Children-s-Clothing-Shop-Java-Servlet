@@ -10,6 +10,11 @@ public class SizeColorProduct {
     public SizeColorProduct() {
     }
 
+    public SizeColorProduct(String size, String color) {
+        this.size = size;
+        this.color = color;
+    }
+
     public SizeColorProduct(int id, int idProduct, String size, String color, int inventory) {
         this.id = id;
         this.idProduct = idProduct;

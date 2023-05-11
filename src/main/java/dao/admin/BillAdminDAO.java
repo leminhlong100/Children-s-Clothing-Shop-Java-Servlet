@@ -1,17 +1,12 @@
 package dao.admin;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
 
 import context.DBContext;
 import dao.client.UtilDAO;
-import entity.Account;
-import entity.Order;
-import entity.OrderDetail;
-import entity.Product;
+import entity.*;
+import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.Jdbi;
 
 public class BillAdminDAO {
@@ -20,9 +15,16 @@ public class BillAdminDAO {
 		String query = "SELECT od.id,od.createAt,statusPay,od.status,od.idAccount,acc.accountName,od.totalPrice  FROM orders od join accounts acc on od.idAccount = acc.id";
 		return me.withHandle(handle -> handle.createQuery(query).map((rs, ctx) -> new Order(rs.getInt("id"), rs.getString("createAt"), rs.getString("statusPay"), rs.getString("status"), new Account(rs.getInt("idAccount"), rs.getString("accountName")),rs.getDouble("totalPrice"))).list());
 	}
+	public static List<Order> getListOrderSucess() {
+		Jdbi me = DBContext.me();
+		String query = "SELECT od.id,od.createAt,statusPay,od.idAccount,acc.fullName,od.totalPrice  FROM orders od join accounts acc on od.idAccount = acc.id where od.status = 'Hoàn thành' and od.statusPay = 'paid'";
+		return me.withHandle(handle -> handle.createQuery(query)
+				.map((rs, ctx) -> new Order(rs.getInt("id"), new Account(rs.getInt("id"),
+						rs.getString("fullName")),rs.getDouble("totalPrice"))).list());
+	}
 	public static Order getOrderById(int idOrder) {
 		Jdbi me = DBContext.me();
-		String query = "SELECT id,createAt,deliveryAt,statusPay,idAccount,feeship,totalPrice,status,address,wardId,districtId,note FROM kidstore.orders where id = ?";
+		String query = "SELECT id,createAt,deliveryAt,statusPay,idAccount,feeship,totalPrice,status,address,note FROM orders where id = ?";
 		return me.withHandle(handle -> handle.createQuery(query).bind(0,idOrder).mapToBean(Order.class).findFirst().orElse(null));
 	}
 
@@ -42,8 +44,68 @@ public class BillAdminDAO {
 		Jdbi me = DBContext.me();
 		return me.withHandle(handle -> handle.createUpdate(query).bind(0,status).bind(1,bid).execute())==1;
 	}
+
+	public static int getTotalAcceptProduct() {
+		String query = "SELECT distinct count(id) FROM orders where status = 'Đã duyệt'";
+		try (Handle handle = DBContext.me().open()) {
+			return handle.createQuery(query)
+					.mapTo(Integer.class)
+					.findOne()
+					.orElse(0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public static int getTotalCancelProduct() {
+		String query = "SELECT distinct count(id) FROM orders where status = 'Đã hủy'";
+		try (Handle handle = DBContext.me().open()) {
+			return handle.createQuery(query)
+					.mapTo(Integer.class)
+					.findOne()
+					.orElse(0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public static int getTotalPrice() {
+		String query = "SELECT sum(totalPrice) FROM orders where statusPay = 'paid'";
+		try (Handle handle = DBContext.me().open()) {
+			return handle.createQuery(query)
+					.mapTo(Integer.class)
+					.findOne()
+					.orElse(0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public static int countBillInMonth(int month) {
+		String query = "select sum(od.quantity) from order_details od join orders o on od.idOrder = o.id where year(o.createAt) = year(current_date()) and month(o.createAt) = ? and o.status = 'Hoàn thành'";
+		try (Handle handle = DBContext.me().open()) {
+			return handle.createQuery(query).bind(0, month).mapTo(Integer.class).findOne().orElse(0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public static int SumMoneyInMonth(int month) {
+		String query = "select sum(o.totalPrice) from order_details od join orders o on od.idOrder = o.id where year(o.createAt) = year(current_date()) and month(o.createAt) = ? and o.status = 'Hoàn thành'";
+		try (Handle handle = DBContext.me().open()) {
+			return handle.createQuery(query).bind(0, month).mapTo(Integer.class).findOne().orElse(0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
 	public static void main(String[] args) {
-		System.out.println(getOrderById(39));
+		System.out.println(getListOrderSucess());
 	}
 
 }

@@ -34,8 +34,8 @@
     <div class="col-md-6 col-lg-3">
       <div class="widget-small primary coloured-icon"><i class='icon  bx bxs-user fa-3x'></i>
         <div class="info">
-          <h4>Tổng Nhân viên</h4>
-          <p><b>26 nhân viên</b></p>
+          <h4>Số khách hàng</h4>
+          <p><b>${requestScope.sumAccount} Khách hàng</b></p>
         </div>
       </div>
     </div>
@@ -43,7 +43,7 @@
       <div class="widget-small info coloured-icon"><i class='icon bx bxs-purchase-tag-alt fa-3x' ></i>
         <div class="info">
           <h4>Tổng sản phẩm</h4>
-          <p><b>8580 sản phẩm</b></p>
+          <p><b>${requestScope.sumProduct} sản phẩm</b></p>
         </div>
       </div>
     </div>
@@ -51,7 +51,7 @@
       <div class="widget-small warning coloured-icon"><i class='icon fa-3x bx bxs-shopping-bag-alt'></i>
         <div class="info">
           <h4>Tổng đơn hàng</h4>
-          <p><b>457 đơn hàng</b></p>
+          <p><b>${requestScope.sumOrder} đơn hàng</b></p>
         </div>
       </div>
     </div>
@@ -69,7 +69,7 @@
       <div class="widget-small primary coloured-icon"><i class='icon fa-3x bx bxs-chart' ></i>
         <div class="info">
           <h4>Tổng thu nhập</h4>
-          <p><b>104.890.000 đ</b></p>
+          <p><b>${requestScope.sumPrice} VNĐ</b></p>
         </div>
       </div>
     </div>
@@ -85,7 +85,7 @@
       <div class="widget-small warning coloured-icon"><i class='icon fa-3x bx bxs-tag-x' ></i>
         <div class="info">
           <h4>Hết hàng</h4>
-          <p><b>1 sản phẩm</b></p>
+          <p><b>${requestScope.sumOutOfStock} sản phẩm</b></p>
         </div>
       </div>
     </div>
@@ -93,7 +93,7 @@
       <div class="widget-small danger coloured-icon"><i class='icon fa-3x bx bxs-receipt' ></i>
         <div class="info">
           <h4>Đơn hàng hủy</h4>
-          <p><b>2 đơn hàng</b></p>
+          <p><b>${requestScope.sumOrderCancel} đơn hàng</b></p>
         </div>
       </div>
     </div>
@@ -115,36 +115,14 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-              <td>71309005</td>
-              <td>Bàn ăn gỗ Theresa</td>
-              <td>5.600.000 đ</td>
-              <td>Bàn ăn</td>
-            </tr>
-            <tr>
-              <td>62304003</td>
-              <td>Bàn ăn Vitali mặt đá</td>
-              <td>33.235.000 đ</td>
-              <td>Bàn ăn</td>
-            </tr>
-            <tr>
-              <td>72109004</td>
-              <td>Ghế làm việc Zuno</td>
-              <td>3.800.000 đ</td>
-              <td>Ghế gỗ</td>
-            </tr>
-            <tr>
-              <td>83826226</td>
-              <td>Tủ ly - tủ bát</td>
-              <td>2.450.000 đ</td>
-              <td>Tủ</td>
-            </tr>
-            <tr>
-              <td>71304041</td>
-              <td>Bàn ăn mở rộng Vegas</td>
-              <td>21.550.000 đ</td>
-              <td>Bàn thông minh</td>
-            </tr>
+            <c:forEach items="${requestScope.listProduct}" var="o">
+              <tr>
+                <td>${o.id}</td>
+                <td>${o.nameProduct}</td>
+                <td>${o.listPrice} VNĐ</td>
+                <td>${o.category.nameCategory}</td>
+              </tr>
+            </c:forEach>
             </tbody>
           </table>
         </div>
@@ -169,52 +147,30 @@
             </tr>
             </thead>
             <tbody>
+            <c:forEach items="${requestScope.listOrders}" var="o" varStatus="stt">
+              <c:set var="count" value="0"></c:set>
             <tr>
-              <td>MD0837</td>
-              <td>Triệu Thanh Phú</td>
-              <td>Ghế làm việc Zuno, Bàn ăn gỗ Theresa</td>
-              <td>2 sản phẩm</td>
-              <td>9.400.000 đ</td>
+              <td>${o.id}</td>
+              <td>${o.account.accountName}</td>
+              <td>
+                <c:forEach var="h" items="${requestScope.products}">
+                <c:if test="${stt.index == h.key}">
+                  <c:forEach var="p" items="${h.value}" varStatus="loop">
+                    <c:set var="count" value="${count + p.quantity}"/>
+                    ${p.product.nameProduct} - ${p.productSize}/${p.productColor} - ${p.quantity}
+                    <c:if test="${!loop.last}">,</c:if>
+                  </c:forEach>
+                </c:if>
+              </c:forEach>
+              </td>
+              <td>${count}</td>
+              <td style="text-align: right;">${o.totalPrice} VNĐ</td>
             </tr>
-            <tr>
-              <td>MĐ8265</td>
-              <td>Nguyễn Thị Ngọc Cẩm</td>
-              <td>Ghế ăn gỗ Lucy màu trắng</td>
-              <td>1 sản phẩm</td>
-              <td>3.800.000 đ</td>
-            </tr>
-            <tr>
-              <td>MT9835</td>
-              <td>Đặng Hoàng Phúc</td>
-              <td>Giường ngủ Jimmy, Bàn ăn mở rộng cao cấp Dolas, Ghế làm việc Zuno</td>
-              <td>3 sản phẩm</td>
-              <td>40.650.000 đ</td>
-            </tr>
-            <tr>
-              <td>ER3835</td>
-              <td>Nguyễn Thị Mỹ Yến</td>
-              <td>Bàn ăn mở rộng Gepa</td>
-              <td>1 sản phẩm</td>
-              <td>16.770.000 đ</td>
-            </tr>
-            <tr>
-              <td>AL3947</td>
-              <td>Phạm Thị Ngọc</td>
-              <td>Bàn ăn Vitali mặt đá, Ghế ăn gỗ Lucy màu trắng</td>
-              <td>2 sản phẩm</td>
-              <td>19.770.000 đ</td>
-            </tr>
-            <tr>
-              <td>QY8723</td>
-              <td>Ngô Thái An</td>
-              <td>Giường ngủ Kara 1.6x2m</td>
-              <td>1 sản phẩm</td>
-              <td>14.500.000 đ</td>
-            </tr>
+            </c:forEach>
             </tbody>
             <tr>
               <th colspan="4">Tổng cộng:</th>
-              <td>104.890.000 đ</td>
+              <td>${requestScope.sumPrice} VNĐ</td>
             </tr>
           </table>
         </div>
@@ -233,72 +189,19 @@
             <tr>
               <th>Mã sản phẩm</th>
               <th>Tên sản phẩm</th>
-              <th>Ảnh</th>
-              <th>Số lượng</th>
-              <th>Tình trạng</th>
               <th>Giá tiền</th>
               <th>Danh mục</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-              <td>83826226</td>
-              <td>Tủ ly - tủ bát</td>
-              <td><img src="/img-sanpham/tu.jpg" alt="" width="100px;"></td>
-              <td>0</td>
-              <td><span class="badge bg-danger">Hết hàng</span></td>
-              <td>2.450.000 đ</td>
-              <td>Tủ</td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12">
-      <div class="tile">
-        <div>
-          <h3 class="tile-title">NHÂN VIÊN MỚI</h3>
-        </div>
-        <div class="tile-body">
-          <table class="table table-hover table-bordered" id="sampleTable4">
-            <thead>
-            <tr>
-              <th>Họ và tên</th>
-              <th>Địa chỉ</th>
-              <th>Ngày sinh</th>
-              <th>Giới tính</th>
-              <th>SĐT</th>
-              <th>Chức vụ</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <td>Hồ Thị Thanh Ngân</td>
-              <td>155-157 Trần Quốc Thảo, Quận 3, Hồ Chí Minh </td>
-              <td>12/02/1999</td>
-              <td>Nữ</td>
-              <td>0926737168</td>
-              <td>Bán hàng</td>
-            </tr>
-            <tr>
-              <td>Trần Khả Ái</td>
-              <td>6 Nguyễn Lương Bằng, Tân Phú, Quận 7, Hồ Chí Minh</td>
-              <td>22/12/1999</td>
-              <td>Nữ</td>
-              <td>0931342432</td>
-              <td>Bán hàng</td>
-            </tr>
-            <tr>
-              <td>Nguyễn Đặng Trọng Nhân</td>
-              <td>59C Nguyễn Đình Chiểu, Quận 3, Hồ Chí Minh </td>
-              <td>23/07/1996</td>
-              <td>Nam</td>
-              <td>0846881155</td>
-              <td>Dịch vụ</td>
-            </tr>
+            <c:forEach items="${requestScope.listProductOOS}" var="o">
+              <tr>
+                <td>${o.id}</td>
+                <td>${o.nameProduct}</td>
+                <td>${o.listPrice} VNĐ</td>
+                <td>${o.category.nameCategory}</td>
+              </tr>
+            </c:forEach>
             </tbody>
           </table>
         </div>
@@ -310,7 +213,7 @@
       <div class="tile">
         <h3 class="tile-title">DỮ LIỆU HÀNG THÁNG</h3>
         <div class="embed-responsive embed-responsive-16by9">
-          <canvas class="embed-responsive-item" id="lineChartDemo"></canvas>
+          <canvas class="embed-responsive-item" id="lineChart"></canvas>
         </div>
       </div>
     </div>
@@ -318,14 +221,14 @@
       <div class="tile">
         <h3 class="tile-title">THỐNG KÊ DOANH SỐ</h3>
         <div class="embed-responsive embed-responsive-16by9">
-          <canvas class="embed-responsive-item" id="barChartDemo"></canvas>
+          <canvas class="embed-responsive-item" id="barChart"></canvas>
         </div>
       </div>
     </div>
   </div>
 
   <div class="text-right" style="font-size: 12px">
-    <p><b>Hệ thống quản lý V2.0 | Code by Trường</b></p>
+    <p><b>Hệ thống quản lý V2.0</b></p>
   </div>
 </main>
 <!-- Essential javascripts for application to work-->
@@ -336,17 +239,19 @@
 <script type="text/javascript">$('#sampleTable4').DataTable();</script>
 
 <script type="text/javascript">
+<%--  Map 1 --%>
+  let listSumOrderByMonth = ${requestScope.sumOrdersMonth}
   var data = {
     labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
     datasets: [{
-      label: "Dữ liệu đầu tiên",
+      label: "Dữ liệu",
       fillColor: "rgba(255, 255, 255, 0.158)",
       strokeColor: "black",
       pointColor: "rgb(220, 64, 59)",
       pointStrokeColor: "#fff",
-      pointHighlightFill: "#fff",
+      pointHighlightFill: "green",
       pointHighlightStroke: "green",
-      data: [20, 59, 90, 51, 56, 100, 40, 60, 78, 53, 33, 81]
+      data: listSumOrderByMonth
     },
       {
         label: "Dữ liệu kế tiếp",
@@ -354,19 +259,46 @@
         strokeColor: "rgb(220, 64, 59)",
         pointColor: "black",
         pointStrokeColor: "#fff",
-        pointHighlightFill: "#fff",
+        pointHighlightFill: "green",
         pointHighlightStroke: "green",
         data: [48, 48, 49, 39, 86, 10, 50, 70, 60, 70, 75, 90]
       }
     ]
   };
+  // map 2
+  let listSumMoneyByMonth = ${requestScope.sumMoneyMonth}
+  var data1 = {
+    labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
+    datasets: [{
+      label: "Dữ liệu đầu tiên",
+      fillColor: "rgba(255, 255, 255, 0.158)",
+      strokeColor: "black",
+      pointColor: "rgb(220, 64, 59)",
+      pointStrokeColor: "#fff",
+      pointHighlightFill: "green",
+      pointHighlightStroke: "green",
+      data: listSumMoneyByMonth
+    },
+      {
+        label: "Dữ liệu kế tiếp",
+        fillColor: "rgba(255, 255, 255, 0.158)",
+        strokeColor: "rgb(220, 64, 59)",
+        pointColor: "black",
+        pointStrokeColor: "#fff",
+        pointHighlightFill: "green",
+        pointHighlightStroke: "green",
+        data: [8, 48, 49, 39, 86, 10, 50, 70, 60, 70, 75, 90]
+      }
+    ]
+  };
 
-
-  var ctxl = $("#lineChartDemo").get(0).getContext("2d");
+  // Map 1
+  var ctxl = $("#lineChart").get(0).getContext("2d");
   var lineChart = new Chart(ctxl).Line(data);
 
-  var ctxb = $("#barChartDemo").get(0).getContext("2d");
-  var barChart = new Chart(ctxb).Bar(data);
+  // Map 2
+  var ctxb = $("#barChart").get(0).getContext("2d");
+  var barChart = new Chart(ctxb).Bar(data1);
 </script>
 <!-- Google analytics script-->
 <script type="text/javascript">

@@ -10,6 +10,7 @@ import entity.Account;
 import entity.Permission;
 import entity.Resource;
 import entity.Role;
+import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.Jdbi;
 import util.EnCode;
 
@@ -87,6 +88,20 @@ public class AccountDAO {
         Jdbi me = DBContext.me();
         return me.withHandle(handle -> handle.createUpdate(query).bind(0,idRole).bind(1,idResource).bind(2,action).execute());
     }
+
+    public static int getTotalAccount() {
+        String query = "SELECT distinct count(email) FROM accounts where isActive = 1";
+        try (Handle handle = DBContext.me().open()) {
+            return handle.createQuery(query)
+                    .mapTo(Integer.class)
+                    .findOne()
+                    .orElse(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public static void main(String[] args) {
 
         System.out.println(insertPermission("1","1","read"));

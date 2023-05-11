@@ -33,6 +33,20 @@ public class Product implements Serializable {
         this.imageProducts = imageProducts;
     }
 
+    public Product(int id, String nameProduct, double listPrice, Category category) {
+        this.id = id;
+        this.nameProduct = nameProduct;
+        this.listPrice = listPrice;
+        this.category = category;
+    }
+
+    public Product(int id, String nameProduct, double listPrice, Category category, List<SizeColorProduct> colorSizes) {
+        this.id = id;
+        this.nameProduct = nameProduct;
+        this.listPrice = listPrice;
+        this.category = category;
+        this.colorSizes = colorSizes;
+    }
 
     public Product(int id, String nameProduct, double listPrice, List<ImageProduct> imageProducts, int discount, double discountPrice) {
         this.id = id;
@@ -42,6 +56,7 @@ public class Product implements Serializable {
         this.discount = discount;
         this.discountPrice = discountPrice;
     }
+
     public Product(int id, String nameProduct, double listPrice, List<ImageProduct> imageProducts, int discount, double discountPrice,String isActive) {
         this.id = id;
         this.nameProduct = nameProduct;

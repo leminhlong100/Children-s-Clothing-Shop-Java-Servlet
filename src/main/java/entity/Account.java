@@ -272,7 +272,7 @@ public class Account {
         this.currentPassword = currentPassword;
     }
 
-    public int getNumberloginfail() {
+    public int getnumerological() {
         return numberloginfail;
     }
 
@@ -300,7 +300,7 @@ public class Account {
                 ", type=" + type +
                 ", idOther='" + idOther + '\'' +
                 ", currentPassword='" + currentPassword + '\'' +
-                ", numberloginfail=" + numberloginfail +
+                ", numerological=" + numberloginfail +
                 ", roles=" + roles +
                 ", resources=" + resources +
                 ", permissions=" + permissions +
