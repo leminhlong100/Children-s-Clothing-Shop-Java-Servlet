@@ -27,6 +27,11 @@ public class OrderDAO {
         String query = "insert into orders (idAccount) values(?);";
         return me.withHandle(handle -> handle.createUpdate(query).bind(0, idAccount).executeAndReturnGeneratedKeys("id").mapTo(int.class).one());
     }
+    public static int deleteOrder(int idOrder) {
+        Jdbi me = DBContext.me();
+        String query = "delete from orders where id = ?;";
+        return me.withHandle(handle -> handle.createUpdate(query).bind(0, idOrder).execute());
+    }
 
     public static void createOrderDetail(OrderDetail orderDetail) {
         Jdbi me = DBContext.me();
@@ -36,8 +41,8 @@ public class OrderDAO {
 
     public static void updateOrder(Order order) {
         Jdbi me = DBContext.me();
-        String query = "update orders set totalPrice = ?,createAt =?,sale=?,status=?,statusPay=?,address=?,note=?,wardId=?,districtId=? where id = ?";
-        me.withHandle(handle -> handle.createUpdate(query).bind(0, order.getTotalPrice()).bind(1, order.getCreateAt()).bind(2, order.getSale()).bind(3, order.getStatus()).bind(4, order.getStatusPay()).bind(5, order.getAddress()).bind(6, order.getNote()).bind(7, order.getWardId()).bind(8, order.getDistrictId()).bind(9, order.getId()).execute());
+        String query = "update orders set totalPrice = ?,sale=?,status=?,statusPay=?,address=?,note=?,wardId=?,districtId=? where id = ?";
+        me.withHandle(handle -> handle.createUpdate(query).bind(0, order.getTotalPrice()).bind(1, order.getSale()).bind(2, order.getStatus()).bind(3, order.getStatusPay()).bind(4, order.getAddress()).bind(5, order.getNote()).bind(6, order.getWardId()).bind(7, order.getDistrictId()).bind(8, order.getId()).execute());
     }
 
     public static Order getOrderByBid(String id) {
@@ -69,7 +74,7 @@ public class OrderDAO {
     }
 
     public static void main(String[] args) {
-        System.out.println(getQuantitySizeColor(1, 2));
+        System.out.println(deleteOrder(67));
     }
 
 }

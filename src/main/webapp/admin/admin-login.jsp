@@ -10,6 +10,8 @@
 <head>
     <title>Đăng nhập quản trị | Website quản trị v2.0</title>
     <meta charset="UTF-8">
+    <link rel="icon" href="//bizweb.dktcdn.net/100/117/632/themes/157694/assets/favicon.png?1564585558451"
+          type="image/x-icon"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="${url}/css/login.css">
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">

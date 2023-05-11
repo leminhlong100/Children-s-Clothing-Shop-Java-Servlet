@@ -62,6 +62,7 @@ public class LoginControl extends HttpServlet {
 						session.setAttribute("acc", account);
 						session.setMaxInactiveInterval(1800);
 						log.setSrc(this.name + " LOGIN");
+						log.setUserId(account.getId());
 						log.setContent("LOGIN SECCESS: USER - " + userName);
 						AuthDAO.resetlogin(userName);
 						for (Role r:account.getRoles()

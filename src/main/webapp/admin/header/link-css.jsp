@@ -7,6 +7,8 @@
 <fmt:setBundle basename="app" var="lang"/>
 
 <!-- Main CSS-->
+<link rel="icon" href="//bizweb.dktcdn.net/100/117/632/themes/157694/assets/favicon.png?1564585558451"
+      type="image/x-icon"/>
 <link rel="stylesheet" type="text/css" href="${url}/css/main.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
 <!-- or -->

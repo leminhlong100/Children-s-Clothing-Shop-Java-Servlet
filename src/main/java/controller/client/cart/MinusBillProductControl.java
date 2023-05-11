@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import dao.client.OrderDAO;
 import entity.OrderDetail;
 
 @WebServlet("/cart/MinusBillProductControl")
@@ -34,9 +35,24 @@ public class MinusBillProductControl extends HttpServlet {
                     if (String.valueOf(o.getProduct().getId()).equalsIgnoreCase(key)) {
                         if (o.getProductSize() == null && size == null || o.getProductSize() != null && o.getProductSize().equals(size)) {
                             if (o.getProductColor() == null && color == null || o.getProductColor() != null && o.getProductColor().equals(color)) {
-                               if(o.getQuantity()>1){
-                                   o.setQuantity(o.getQuantity()-1);
-                               }
+                                if (o.getQuantity() > 1) {
+                                    int idProductSizeColor = OrderDAO.getIdSizeColor(o.getProduct().getId(), o.getProductSize(), o.getProductColor());
+                                    int quantitySizeColor = OrderDAO.getQuantitySizeColor(o.getProduct().getId(), idProductSizeColor);
+                                    if (quantitySizeColor == 0) {
+                                        orderDetails.remove(o);
+                                        if(orderDetails.isEmpty()){
+                                            session.removeAttribute("cart");
+                                            request.getRequestDispatcher("CartControl").forward(request, response);
+                                            return;
+                                        }
+                                    } else {
+                                        if (quantitySizeColor < o.getQuantity()) {
+                                            o.setQuantity(quantitySizeColor);
+                                        } else {
+                                            o.setQuantity(o.getQuantity() - 1);
+                                        }
+                                    }
+                                }
                             }
                         }
                     }

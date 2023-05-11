@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import controller.client.auth.UpdateAccountEndPoint;
+import controller.admin.webSocket.UpdateAccountEndPoint;
 import dao.admin.AccountDAO;
 import entity.Account;
 import entity.Role;

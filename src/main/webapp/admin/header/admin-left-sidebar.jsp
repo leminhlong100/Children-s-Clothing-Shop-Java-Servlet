@@ -44,6 +44,9 @@
     <li><a class="app-menu__item" href="${pageContext.request.contextPath}/admin-products/RevenueShowController"><i
             class='app-menu__icon bx bx-pie-chart-alt-2'></i><span class="app-menu__label">Báo cáo doanh thu</span></a>
     </li>
+    <li><a class="app-menu__item" href="${pageContext.request.contextPath}/admin-log/show-log"><i class='app-menu__icon fas fa-book'></i>
+      <span class="app-menu__label">Quản lý log</span></a>
+    </li>
     <li><a class="app-menu__item" href="#"><i class='app-menu__icon bx bx-cog'></i><span class="app-menu__label">Cài
             đặt hệ thống</span></a></li>
   </ul>

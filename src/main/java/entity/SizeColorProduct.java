@@ -5,17 +5,17 @@ public class SizeColorProduct {
     private int idProduct;
     private String size;
     private String color;
-    private int  inventory;
+    private int  quantity;
 
     public SizeColorProduct() {
     }
 
-    public SizeColorProduct(int id, int idProduct, String size, String color, int inventory) {
+    public SizeColorProduct(int id, int idProduct, String size, String color, int quantity) {
         this.id = id;
         this.idProduct = idProduct;
         this.size = size;
         this.color = color;
-        this.inventory = inventory;
+        this.quantity = quantity;
     }
 
     public int getId() {
@@ -50,12 +50,12 @@ public class SizeColorProduct {
         this.color = color;
     }
 
-    public int getInventory() {
-        return inventory;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setInventory(int inventory) {
-        this.inventory = inventory;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     @Override
@@ -65,7 +65,7 @@ public class SizeColorProduct {
                 ", idProduct=" + idProduct +
                 ", size='" + size + '\'' +
                 ", color='" + color + '\'' +
-                ", inventory=" + inventory +
+                ", quantity=" + quantity +
                 '}';
     }
 }

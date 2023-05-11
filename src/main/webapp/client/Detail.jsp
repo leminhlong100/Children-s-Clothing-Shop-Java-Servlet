@@ -112,31 +112,53 @@
                                 </li>
 
                             </ul>
-                            <p class="pd-description-mini">${detail.description}</p>
+                            <p class="pd-description-mini">${requestScope.detail.description}</p>
                             <div class="pd-form">
                                 <c:url var="addToCart" value="cart/AddToCartControl"></c:url>
-                                <form action="${addToCart}?pid=${detail.id}" method="post">
+                                <form action="${addToCart}?pid=${requestScope.detail.id}" method="post">
                                     <div class="pd-form-top clearfix">
                                         <div class="selector-wrapper">
-                                            <select id="product-select" name="variantId"
-                                                    class="single-option-selector">
-                                                <c:forEach var="o" items="${detail.colorSizes}">
-                                                    <option value="${o.size}/${o.color}">${o.size}/${o.color} - ${detail.discountPrice}₫</option>
+                                            <select id="product-select" name="variantId" class="single-option-selector">
+                                                <c:forEach var="o" items="${requestScope.detail.colorSizes}">
+                                                    <c:if test="${o.quantity==0}">
+                                                        <option disabled value="${o.size}/${o.color}" data-quantity="0">HẾT HÀNG - ${o.size}/${o.color} - ${requestScope.detail.discountPrice}₫</option>
+                                                    </c:if>
+                                                    <c:if test="${o.quantity!=0}">
+                                                        <option value="${o.size}/${o.color}" data-quantity="${o.quantity}">${o.size}/${o.color} - ${requestScope.detail.discountPrice}₫ --- Còn ${o.quantity} sản phẩm</option>
+                                                    </c:if>
                                                 </c:forEach>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="pd-form-bottom clearfix">
-                                        <input type="number" class="single-input-selector" value="1"
-                                               min="1" name="quantity">
+                                        <c:set var="found" value="false" />
+                                        <c:forEach var="o" items="${requestScope.detail.colorSizes}" varStatus="loop">
+                                            <c:if test="${!found && o.quantity!=0}">
+                                                <c:set var="quantity" value="${o.quantity}" />
+                                                <c:set var="found" value="true" />
+                                            </c:if>
+                                            <c:if test="${found}">
+                                                <c:set var="loop.break" value="true" />
+                                            </c:if>
+                                        </c:forEach>
 
-                                        <button
-                                                style="padding: 10px 23px; border: 0; background-color: #79bd9a; text-transform: uppercase; font-weight: 700; color: #fff"
-                                                type="submit" class="button" title="Đặt hàng" type="submit">
+                                        <input type="number" class="single-input-selector" value="1" min="1" max="${quantity}" name="quantity">
+                                        <button style="padding: 10px 23px; border: 0; background-color: #79bd9a; text-transform: uppercase; font-weight: 700; color: #fff" type="submit" class="button" title="Đặt hàng" type="submit">
                                             <span><fmt:message key="ORDER" bundle="${lang}"></fmt:message></span>
                                         </button>
                                     </div>
                                 </form>
+                                <script>// Lấy các phần tử cần dùng
+                                const select = document.getElementById("product-select");
+                                const input = document.querySelector("input[name=quantity]");
+
+                                // Lắng nghe sự kiện onchange trên select
+                                select.addEventListener("change", function(event) {
+                                    const selectedOption = event.target.selectedOptions[0];
+                                    input.max = selectedOption.getAttribute("data-quantity");
+                                    input.value = 1; // reset giá trị của input khi select thay đổi
+                                });
+                                </script>
                                 <div class="sk-hotline-block">
 										<span><fmt:message key="Call.now.for.buying.advice"
                                                            bundle="${lang}"></fmt:message></span>
