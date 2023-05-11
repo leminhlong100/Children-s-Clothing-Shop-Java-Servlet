@@ -82,6 +82,7 @@
                             <th>Ngày đặt</th>
                             <th>Số lượng</th>
                             <th>Tổng tiền</th>
+                            <th>Trạng thái thanh toán</th>
                             <th>Tình trạng</th>
                             <th>Tác vụ</th>
                             <th>Xóa</th>
@@ -108,6 +109,7 @@
                                 <td>${o.createAt}</td>
                                 <td>${count}</td>
                                 <td style="text-align: right;">${o.totalPrice}</td>
+                                <td>${o.statusPay}</td>
                                 <td>
                                     <c:if test="${o.status=='Đang xử lý'}">
                                     <span class="badge bg-warning">${o.status}</span>
@@ -282,7 +284,7 @@
                         let isSuc = JSON.parse(data).isSuc;
                         if (isSuc) {
                             $(tdArray[7]).html('<span class="badge bg-danger"">Đã hủy</span>');
-                            $(parent).html('<button class="btn btn-primary btn-sm cancel" type="button" onclick="back' + orderId + ',this)" title="Khôi phục đơn hàng"><i class="fa fa-repeat"></i></button>');
+                            $(parent).html('<button class="btn btn-primary btn-sm cancel" type="button" onclick="back(' + orderId + ',this)" title="Khôi phục đơn hàng"><i class="fa fa-repeat"></i></button>');
                         }
                         Swal.fire('Hủy đơn hàng thành công', '', 'success');
                     },

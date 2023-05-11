@@ -33,8 +33,6 @@ public class DetailControl extends HttpServlet {
 				List<Comment> listcmt = ProductDAO.displayfiveproduct(p.getId(),null,true);
 				request.setAttribute("list",listcmt);
 				response.getWriter().println(listcmt);
-
-//
 				request.setAttribute("detail", p);
 				request.getRequestDispatcher("/client/Detail.jsp").forward(request, response);
 			}catch (Exception e){

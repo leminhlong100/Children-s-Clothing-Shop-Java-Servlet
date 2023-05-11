@@ -187,7 +187,23 @@
                                         <td>${count}</td>
                                         <td style="text-align: right;">${o.totalPrice}</td>
                                         <td>${o.statusPay}</td>
-                                        <td><span class="badge bg-success">${o.status}</span></td>
+                                        <td>
+                                            <c:if test="${o.status=='Đang xử lý'}">
+                                                <span class="badge bg-warning">${o.status}</span>
+                                            </c:if>
+                                            <c:if test="${o.status=='Đã xác nhận'}">
+                                                <span class="badge bg-primary">${o.status}</span>
+                                            </c:if>
+                                            <c:if test="${o.status=='Đang vận chuyển'}">
+                                                <span class="badge bg-info">${o.status}</span>
+                                            </c:if>
+                                            <c:if test="${o.status=='Đã hủy'}">
+                                                <span class="badge bg-danger">${o.status}</span>
+                                            </c:if>
+                                            <c:if test="${o.status=='Hoàn thành'}">
+                                                <span class="badge bg-success">${o.status}</span>
+                                            </c:if>
+                                        </td>
                                         <td class="text-center" valign="middle"><a
                                                 style="color: green; text-decoration: underline;"
                                                 href="${pageContext.request.contextPath}/cart/DetailBill?id=${o.id}">
@@ -206,9 +222,20 @@
     <jsp:include page="../admin/header/link-js.jsp" flush="true"/>
     <!-- End Main Content -->
     <jsp:include page="./footer/Footer.jsp"></jsp:include>
-    <script type="text/javascript">$('#sampleTable').DataTable({
-        order: [[0, 'desc']],
-    });</script>
+    <script type="text/javascript">
+        $('#sampleTable').DataTable({
+            order: [[0, 'desc']],
+        });
+        let error =`${requestScope.sorry}`;
+        console.log(error);
+        if (error !== ``) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            });
+        }
+    </script>
 
 </div>
 </body>

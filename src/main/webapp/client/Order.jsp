@@ -69,7 +69,6 @@
 					<span class="order-summary-toggle__text expandable">
 						Đơn hàng (${totalQuantity} sản phẩm)
 					</span>
-					<span class="order-summary-toggle__total-recap" data-bind="getTextTotalPrice()"></span>
 				</span>
 			</span>
     </button>
@@ -98,8 +97,6 @@
                                 <div class="section__header">
                                     <div class="layout-flex">
                                         <h2 class="section__title layout-flex__item layout-flex__item--stretch">
-                                            <i class="fa fa-id-card-o fa-lg section__title--icon hide-on-desktop"></i>
-
                                             Thông tin nhận hàng
 
                                         </h2>
@@ -235,7 +232,6 @@
                                 <div class="section__header">
                                     <div class="layout-flex">
                                         <h2 class="section__title layout-flex__item layout-flex__item--stretch">
-                                            <i class="fa fa-truck fa-lg section__title--icon hide-on-desktop"></i>
                                             Vận chuyển
                                         </h2>
                                     </div>
@@ -253,8 +249,7 @@
                                     <div class="alert alert-retry alert--danger hide"
                                          data-bind-event-click="handleShippingMethodErrorRetry()"
                                          data-bind-show="!isLoadingShippingMethod && !isAddressSelecting && isLoadingShippingError">
-                                        <span data-bind="loadingShippingErrorMessage"></span> <i
-                                            class="fa fa-refresh"></i>
+                                        <span data-bind="loadingShippingErrorMessage"></span>
                                     </div>
 
 
@@ -297,7 +292,6 @@
                                 <div class="section__header">
                                     <div class="layout-flex">
                                         <h2 class="section__title layout-flex__item layout-flex__item--stretch">
-                                            <i class="fa fa-credit-card fa-lg section__title--icon hide-on-desktop"></i>
                                             Thanh toán
                                         </h2>
                                     </div>
@@ -313,7 +307,7 @@
                                                     <input name="paymentMethod" id="paymentMethod-120771"
                                                            type="radio" class="input-radio"
                                                            data-bind="paymentMethod"
-                                                           value="120771"
+                                                           value="120771" required
                                                     >
                                                 </div>
                                                 <label for="paymentMethod-120771" class="radio__label">
@@ -345,7 +339,6 @@
                         </button>
 
                         <a href="${pageContext.request.contextPath}/cart/CartControl" class="previous-link">
-                            <i class="previous-link__arrow">❮</i>
                             <span class="previous-link__content">Quay về giỏ hàng</span>
                         </a>
 
@@ -515,7 +508,6 @@
 
 
                                 <a href="${pageContext.request.contextPath}/cart/CartControl" class="previous-link">
-                                    <i class="previous-link__arrow">❮</i>
                                     <span class="previous-link__content">Quay về giỏ hàng</span>
                                 </a>
 

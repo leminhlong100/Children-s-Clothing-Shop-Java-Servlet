@@ -31,8 +31,13 @@
 <script src="${url}/js/home.js" type="text/javascript"></script> --%>
 <!-- CSS -->
 <%--		<link href="//bizweb.dktcdn.net/100/117/632/themes/157694/assets/bootstrap.min.css?1564585558451" rel="stylesheet" type="text/css" media="all" />--%>
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <link rel="stylesheet" href="${url}/css/bootstrap.min.css">
 
+<link rel="canonical" href="https://kidshop-1.mysapo.net/"/>
+<link rel="icon" href="//bizweb.dktcdn.net/100/117/632/themes/157694/assets/favicon.png?1564585558451"
+      type="image/x-icon"/>
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 <link href="//bizweb.dktcdn.net/100/117/632/themes/157694/assets/style.css?1564585558451" rel="stylesheet"
       type="text/css" media="all"/>

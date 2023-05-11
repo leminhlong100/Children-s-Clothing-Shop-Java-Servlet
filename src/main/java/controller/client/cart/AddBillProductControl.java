@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import dao.client.OrderDAO;
 import entity.OrderDetail;
 
 @WebServlet("/cart/AddBillProductControl")
@@ -26,26 +27,36 @@ public class AddBillProductControl extends HttpServlet {
 		String color = request.getParameter("color");
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
-		HttpSession session = request.getSession();
-		Object obj = session.getAttribute("cart");
-		if (obj != null) {
-			Map<String, List<OrderDetail>> map = (Map<String, List<OrderDetail>>) obj;
-			for (Map.Entry<String, List<OrderDetail>> entry : map.entrySet()) {
-				List<OrderDetail> orderDetails = entry.getValue();
-				for (OrderDetail o : orderDetails) {
-					if (String.valueOf(o.getProduct().getId()).equalsIgnoreCase(key)) {
-						if (o.getProductSize() == null && size == null || o.getProductSize() != null && o.getProductSize().equals(size)) {
-							if (o.getProductColor() == null && color == null || o.getProductColor() != null && o.getProductColor().equals(color)) {
-									o.setQuantity(o.getQuantity()+1);
+		try{
+			HttpSession session = request.getSession();
+			Object obj = session.getAttribute("cart");
+			if (obj != null) {
+				Map<String, List<OrderDetail>> map = (Map<String, List<OrderDetail>>) obj;
+				for (Map.Entry<String, List<OrderDetail>> entry : map.entrySet()) {
+					List<OrderDetail> orderDetails = entry.getValue();
+					for (OrderDetail o : orderDetails) {
+						if (String.valueOf(o.getProduct().getId()).equalsIgnoreCase(key)) {
+							if (o.getProductSize() == null && size == null || o.getProductSize() != null && o.getProductSize().equals(size)) {
+								if (o.getProductColor() == null && color == null || o.getProductColor() != null && o.getProductColor().equals(color)) {
+									int idProductSizeColor = OrderDAO.getIdSizeColor(o.getProduct().getId(), o.getProductSize(), o.getProductColor());
+									if(OrderDAO.getQuantitySizeColor(o.getProduct().getId(),idProductSizeColor)>=o.getQuantity()+1){
+										o.setQuantity(o.getQuantity()+1);
+									}else{
+										request.setAttribute("sorry","Xin lỗi chúng tôi không đủ số lượng sản phẩm này");
+									}
+								}
 							}
 						}
 					}
 				}
+				session.setAttribute("cart", map); // update lại vào session
 			}
-			session.setAttribute("cart", map); // update lại vào session
+
+			request.getRequestDispatcher("CartControl").forward(request, response);
+		}catch (Exception e){
+			e.printStackTrace();
 		}
-		
-		request.getRequestDispatcher("CartControl").forward(request, response);
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

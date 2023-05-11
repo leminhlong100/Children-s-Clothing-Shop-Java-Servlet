@@ -47,13 +47,16 @@ public class AddToBillControl extends HttpServlet {
             String ship = request.getParameter("shipFee");
             String districtId = request.getParameter("calc_shipping_district");
             String wardId = request.getParameter("calc_shipping_ward");
+            boolean isSuc = false;
+            int idProductSizeColor;
+            int quantitySizeColor;
+            int newQuantitySizeColor = 0;
             int totalQuantity = 0;
             if (obj != null) {// KIEM TRA XEM CO SP TRONG GIO HANG KO?
                 Map<String, List<OrderDetail>> map = (Map<String, List<OrderDetail>>) obj;
 //			 TAO HOA DON TRUOC, DE LAY DUOC ID BILL
                 Order order = new Order();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                order.setCreateAt(sdf.format(new Date()));
                 Account account = (Account) session.getAttribute("acc");
                 order.setAccount(account);
                 order.setStatus("Đang xử lý");
@@ -72,16 +75,19 @@ public class AddToBillControl extends HttpServlet {
                     List<OrderDetail> orderDetails = entry.getValue();
                     for (OrderDetail orderDetail : orderDetails) {
                         orderDetail.setIdOrder(order.getId());// set bill id vao day
-                        // luu lai cac mat hang
-                        OrderDAO.createOrderDetail(orderDetail);
                         // cap nhat so luong cua tung san pham
-                        int idProductSizeColor = OrderDAO.getIdSizeColor(orderDetail.getProduct().getId(), orderDetail.getProductSize(), orderDetail.getProductColor());
-                        int quantitySizeColor = OrderDAO.getQuantitySizeColor(orderDetail.getProduct().getId(), idProductSizeColor);
-                        int newQuantitySizeColor = quantitySizeColor - orderDetail.getQuantity();
-                        if(newQuantitySizeColor<0){
-                            System.out.println("Không đủ hàng");
-                        }else {
+                         idProductSizeColor = OrderDAO.getIdSizeColor(orderDetail.getProduct().getId(), orderDetail.getProductSize(), orderDetail.getProductColor());
+                         quantitySizeColor = OrderDAO.getQuantitySizeColor(orderDetail.getProduct().getId(), idProductSizeColor);
+                         newQuantitySizeColor = quantitySizeColor - orderDetail.getQuantity();
+                        if(newQuantitySizeColor>=0){
+                            // luu lai cac mat hang
+                            OrderDAO.createOrderDetail(orderDetail);
                             OrderDAO.updateInventoryProduct(String.valueOf(orderDetail.getProduct().getId()), newQuantitySizeColor, idProductSizeColor);
+                        }else{
+                            OrderDAO.deleteOrder(idOrder);
+                            request.setAttribute("sorry","Xin lỗi chúng tôi không đủ số lượng sản phẩm này");
+                            request.getRequestDispatcher("CartControl").forward(request, response);
+                            return;
                         }
                         // tinh tong gia
                         total += orderDetail.getQuantity() * orderDetail.getPrice();
