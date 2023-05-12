@@ -36,7 +36,7 @@ public class ProductAdminDAO {
     }
 
     public static int getTotalActiveProduct() {
-        String query = "select distinct count(nameProduct) from products where status = 'active'";
+        String query = "select count(id) from products where status = 'active'";
         try (Handle handle = DBContext.me().open()) {
             return handle.createQuery(query)
                     .mapTo(Integer.class)
