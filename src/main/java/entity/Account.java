@@ -1,8 +1,7 @@
 package entity;
 
 import java.sql.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Account {
     private int id;
@@ -24,35 +23,10 @@ public class Account {
     private String currentPassword;
     private int numberloginfail;
     private Set<Role> roles = new HashSet<>();
-    ;
     private Set<Resource> resources = new HashSet<>();
-    ;
     private Set<Permission> permissions = new HashSet<>();
-    ;
-
     public Account() {
         super();
-    }
-
-    public Account(int id, String accountName, String password, String fullName, String address, String email, String phone, int idRoleMember, boolean isDelete, boolean isActive, Date createAt, String image, Date updateAt, Date deleteAt, int type, String idOther, String currentPassword, int numberloginfail) {
-        this.id = id;
-        this.accountName = accountName;
-        this.password = password;
-        this.fullName = fullName;
-        this.address = address;
-        this.email = email;
-        this.phone = phone;
-        this.idRoleMember = idRoleMember;
-        this.isDelete = isDelete;
-        this.isActive = isActive;
-        this.createAt = createAt;
-        this.image = image;
-        this.updateAt = updateAt;
-        this.deleteAt = deleteAt;
-        this.type = type;
-        this.idOther = idOther;
-        this.currentPassword = currentPassword;
-        this.numberloginfail = numberloginfail;
     }
 
     public Account(int id, String accountName, String password, String fullName, String email, String image, int type, String idOther) {
@@ -110,6 +84,7 @@ public class Account {
         this.email = email;
         this.phone = phone;
     }
+
 
 
     public Set<Role> getRoles() {

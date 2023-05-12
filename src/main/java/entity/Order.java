@@ -19,7 +19,13 @@ public class Order implements Serializable {
 	private String wardId;
 	private String districtId;
 
-	public String getWardId() {
+    public Order(int id, Account account, double totalPrice) {
+		this.id=id;
+		this.account = account;
+		this.totalPrice = totalPrice;
+    }
+
+    public String getWardId() {
 		return wardId;
 	}
 
