@@ -121,10 +121,10 @@
                                             <select id="product-select" name="variantId" class="single-option-selector">
                                                 <c:forEach var="o" items="${requestScope.detail.colorSizes}">
                                                     <c:if test="${o.quantity==0}">
-                                                        <option disabled value="${o.size}/${o.color}" data-quantity="0">HẾT HÀNG - ${o.size}/${o.color} - ${requestScope.detail.discountPrice}₫</option>
+                                                        <option disabled value="${o.size}/${o.color}" data-quantity="0">HẾT HÀNG - ${o.size}/${o.color}</option>
                                                     </c:if>
                                                     <c:if test="${o.quantity!=0}">
-                                                        <option value="${o.size}/${o.color}" data-quantity="${o.quantity}">${o.size}/${o.color} - ${requestScope.detail.discountPrice}₫ --- Còn ${o.quantity} sản phẩm</option>
+                                                        <option value="${o.size}/${o.color}" data-quantity="${o.quantity}">${o.size}/${o.color} - Còn ${o.quantity} sản phẩm</option>
                                                     </c:if>
                                                 </c:forEach>
                                             </select>

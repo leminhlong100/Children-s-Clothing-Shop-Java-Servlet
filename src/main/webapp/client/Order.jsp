@@ -113,7 +113,7 @@
                                                     Email
                                                 </label>
                                                 <input name="email" id="email"
-                                                       type="email" class="field__input"
+                                                       type="email" class="field__input" required
                                                        data-bind="email" value="${sessionScope.acc.email}">
                                             </div>
 
@@ -125,7 +125,7 @@
                                             <div class="field__input-wrapper">
                                                 <label for="billingName" class="field__label">Họ và tên</label>
                                                 <input name="billingName" id="billingName"
-                                                       type="text" class="field__input"
+                                                       type="text" class="field__input" required
                                                        data-bind="billing.name" value="${sessionScope.acc.fullName}">
                                             </div>
 
@@ -139,7 +139,7 @@
                                                     Số điện thoại (tùy chọn)
                                                 </label>
                                                 <input name="billingPhone" id="billingPhone"
-                                                       type="tel" class="field__input"
+                                                       type="tel" class="field__input" REQUIRED
                                                        data-bind="billing.phone" value="${sessionScope.acc.phone}">
 
                                             </div>
@@ -154,7 +154,7 @@
                                                     Địa chỉ (tùy chọn)
                                                 </label>
                                                 <input name="billingAddress" id="billingAddress"
-                                                       type="text" class="field__input"
+                                                       type="text" class="field__input" required
                                                        data-bind="billing.address" value="${sessionScope.acc.address }">
                                             </div>
 

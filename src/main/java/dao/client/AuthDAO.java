@@ -225,7 +225,7 @@ public class AuthDAO {
 			try {
 				handle.begin();
 				handle.createUpdate(fbCus).bind("accountName", EnCode.toSHA1(EnCode.toSHA1(name)))
-						.bind("password", EnCode.toSHA1(EnCode.toSHA1(email))).bind("fullName", name).bind("email", EnCode.toSHA1(EnCode.toSHA1(email)))
+						.bind("password", EnCode.toSHA1(EnCode.toSHA1(email))).bind("fullName", name).bind("email", email)
 						.bind("image", pic).bind("type", 2).bind("idOther", id)
 						.execute();
 				handle.commit();
@@ -237,11 +237,12 @@ public class AuthDAO {
 	}
 
 	public static Account loginFacebook(String id) {
-		String loginFBQuery = "select id, accountName, password, fullName, email, image, type, idOther from accounts where idOther= ? and email = ? and type = 2";
+		String loginFBQuery = "select id, accountName, password, fullName, email, image, type, idOther from accounts where idOther= ? and type = 2";
 		return getAccount(id, loginFBQuery);
 	}
 
 	public static void main(String[] args) {
+		System.out.println();
 	}
 
 }

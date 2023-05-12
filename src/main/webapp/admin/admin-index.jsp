@@ -38,7 +38,7 @@
                     <div class="widget-small primary coloured-icon"><i class='icon bx bxs-user-account fa-3x'></i>
                         <div class="info">
                             <h4>Tổng khách hàng</h4>
-                            <p><b>56 khách hàng</b></p>
+                            <p><b>${requestScope.sumAccount} Khách hàng</b></p>
                             <p class="info-tong">Tổng số khách hàng được quản lý.</p>
                         </div>
                     </div>
@@ -48,7 +48,7 @@
                     <div class="widget-small info coloured-icon"><i class='icon bx bxs-data fa-3x'></i>
                         <div class="info">
                             <h4>Tổng sản phẩm</h4>
-                            <p><b>1850 sản phẩm</b></p>
+                            <p><b>${requestScope.sumProduct} sản phẩm</b></p>
                             <p class="info-tong">Tổng số sản phẩm được quản lý.</p>
                         </div>
                     </div>
