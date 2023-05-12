@@ -89,7 +89,8 @@ public class AccountDAO {
     }
     public static void main(String[] args) {
 
-        System.out.println(insertPermission("1","1","read"));
+//        System.out.println(insertPermission("1","1","read"));
+        System.out.println(getListAccount());
     }
 
 

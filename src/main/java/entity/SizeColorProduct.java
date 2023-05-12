@@ -15,6 +15,9 @@ public class SizeColorProduct {
 
     }
 
+    public SizeColorProduct(int id, String size) {
+    }
+
     public int getId() {
         return id;
     }

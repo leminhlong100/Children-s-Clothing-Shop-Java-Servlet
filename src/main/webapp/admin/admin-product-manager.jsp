@@ -74,26 +74,28 @@
                             <th>Mã sản phẩm</th>
                             <th>Tên sản phẩm</th>
                             <th>Ảnh</th>
-                            <th>Số lượng</th>
                             <th>Size</th>
                             <th>Tình trạng</th>
+                            <th>Nha San Xuat</th>
                             <th>Giá tiền</th>
+                            <th>Giam gia</th>
+
                             <th>Danh mục</th>
                             <th>Chức năng</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody id ="afterupdate">
                         <c:forEach var="list" items="${renderproduct}" varStatus="stt">
                             <tr>
 
                                 <td width="10"><input type="checkbox" name="check1" value="1"></td>
                                 <td>${list.id}</td>
                                 <td>${list.nameProduct}</td>
+
                                 <td><img
                                         src="../images/${list.imageProducts.get(0).getImage()}"
                                         alt="./images/${list.imageProducts.get(0).getImage()}"
                                         class="img-responsive" width="80px"></td>
-                                <td>${list.inventory}</td>
 
                                 <td>
                                     <select>
@@ -103,6 +105,8 @@
                                     </select>
                                 </td>
                                 <td><span class="badge bg-success">Còn hàng</span></td>
+                                <td></td>
+                                <td>${list.listPrice}</td>
                                 <td>${list.discountPrice}</td>
                                 <td>${list.category}</td>
                                 <td>
@@ -227,7 +231,7 @@ MODAL
         let idproduct = id;
         let content = ""
         $.ajax({
-            url: "${pageContext.request.contextPath}/ProductEditController",
+            url: "${pageContext.request.contextPath}/admin-products/ProductEditController",
             type: "GET",
             data: {
                 idproduct: idproduct,
@@ -236,32 +240,30 @@ MODAL
                 let datarepsone = JSON.parse(data);
                 let pardata = JSON.parse(datarepsone.products)
                 let categories = JSON.parse(datarepsone.listcate);
-                let option="";
+                let option = "";
                 for (let i = 0; i < categories.length; i++) {
-                    option+= `<option value="">`+ categories[i].nameCategory+ ` </option>`
+                    option += `<option value="">` + categories[i].nameCategory + ` </option>`
                 }
-                content = `<div class="modal fade" id="ModalUP" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"
-                 data-keyboard="false">
-                <div class="modal-dialog modal-dialog-centered" role="document" style="display: block" >
-               <div class="modal-content">
-           <div class="modal-body">
-                 <form id="edit" action="${pageContext.request.contextPath}/ProductEditController " method="post" >
-
-        <div class="row">
-          <div class="form-group  col-md-12">
-          <span class="thong-tin-thanh-toan">
-            <h5>Chỉnh sửa thông tin sản phẩm cơ bản</h5>
-          </span>
-          </div>
-        </div>
+                content = `<div class="modal fade show" id="ModalUP" style="display: block">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+       <form id"edit" action="${pageContext.request.contextPath}/admin-products/ProductEditController" method="post" >
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group  col-md-12">
+              <span class="thong-tin-thanh-toan">
+                <h5>Chỉnh sửa thông tin sản phẩm cơ bản</h5>
+              </span>
+                    </div>
+                </div>
        <div class="row">
           <div class="form-group col-md-6">
             <label class="control-label">Mã sản phẩm </label>
-            <input class="form-control" type="number" name="idproduct" value="` + pardata.id + `" readonly>
+            <input class="form-control" type="number" name="idproducts" value="` + pardata.id + `" readonly>
           </div>
           <div class="form-group col-md-6">
             <label class="control-label">Tên sản phẩm</label>
-            <input class="form-control" type="text" name="nameproduct" required value="` + pardata.nameProduct + `">
+            <input class="form-control" type="text" name="nameproducts" required value="` + pardata.nameProduct + `">
           </div>
           <div class="form-group  col-md-6">
             <label class="control-label">Số lượng</label>
@@ -277,36 +279,96 @@ MODAL
           </div>
           <div class="form-group col-md-6">
             <label class="control-label">Giá bán</label>
-            <input class="form-control" name="cost" type="text" value="5.600.000">
+            <input class="form-control" name="cost" type="text" >
           </div>
           <div class="form-group col-md-6">
             <label for="exampleSelect1" class="control-label">Danh mục</label>
 
-            <select class="form-control" name="list" id="exampleSelect2">
-              `+option+`
+            <select class="form-control" name="listselected" id="exampleSelect2">
+              ` + option + `
             </select>
           </div>
-          </div>
-        <BR>
-        <a href="#" style="    float: right;
-      font-weight: 600;
-      color: #ea0000;">Chỉnh sửa sản phẩm nâng cao</a>
-        <BR>
-        <BR>
-        <button class="btn btn-save" type="button">Lưu lại</button>
-        <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
-        <BR>
+                </div>
+                <BR>
+                <a href="#" style="    float: right;
+        font-weight: 600;
+        color: #ea0000;">Chỉnh sửa nâng cao</a>
+                <BR>
+                <BR>
+                <button class="btn btn-save" type="button" onclick="save(this)">Lưu lại</button>
+                <a class="btn btn-cancel" onclick="closeModal()" href="#">Hủy bỏ</a>
+                <BR>
+            </div>
+</form>
+            <div class="modal-footer">
+            </div>
+
+        </div>
     </div>
-     </form>
-      <div class="modal-footer">
-      </div>
-    </div>
-</div>
-</div>`;
+</div>`
                 document.getElementById("showproduct").innerHTML = content;
             },
             error: function (data) {
                 console.log("error");
+            }
+        });
+    }
+        function closeModal() {
+            let modal = document.getElementById("showproduct");
+            modal.innerHTML = '';
+        }
+    function save(button) {
+        let success = $(button).closest("form");
+        let dataform = $(success).serialize();
+        let newdata = "";
+        $.ajax({
+            url: "${pageContext.request.contextPath}/admin-products/ProductEditController",
+            type: "POST",
+            data: dataform,
+
+            success: function (data) {
+                let response = JSON.parse(data);
+                let listcate = JSON.parse(response.cate);
+                let loadpage = JSON.parse(response.load);
+                let optionsize = "";
+                for (let i=0;i<listcate.length;i++){
+                    optionsize += `<option value="">` + listcate[i].nameCategory + ` </option>`
+                }
+                for(let x=0;x<loadpage.length;x++) {
+                    newdata += ` <tr>
+                                <td width="10"><input type="checkbox" name="check1" value="1"></td>
+                            <td>` + loadpage[x].id + `</td>
+                            <td>` + loadpage[x].nameProduct + `</td>
+                            <td></td>
+                            <td></td>
+
+                            <td>
+                                <select>
+                                   ` + optionsize + `
+                                </select>
+                            </td>
+                            <td><span class="badge bg-success">Còn hàng</span></td>
+
+                             <td>`+loadpage[x].listPrice+`</td>
+                            <td></td>
+                            <td>
+                                <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"
+                                        onclick="deleteProduct( )"><i class="fas fa-trash-alt"></i>
+                                </button>
+                                <button class="btn btn-primary btn-sm edit" type="button" title="Sửa" id="show-emp"
+                                        data-toggle="modal"
+                                        data-target="#ModalUP" onclick="UpdateProduct(`+loadpage[x].id+`)"><i
+                                    class="fas fa-edit"></i></button>
+                            </td>
+                        </tr>`
+                }
+                console.log(loadpage)
+                document.getElementById("afterupdate").innerHTML=newdata;
+
+            },
+
+            error: function (data) {
+                console.log("error3");
             }
         });
     }

@@ -34,6 +34,9 @@ public class Inventory {
 		this.quantity=quantity;
 	}
 
+	public Inventory(String nameCategorie) {
+	}
+
 	public int getId_size_color() {
 		return id_size_color;
 	}

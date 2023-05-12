@@ -8,8 +8,6 @@ import dao.client.UtilDAO;
 import entity.*;
 import org.jdbi.v3.core.Jdbi;
 
-import javax.swing.*;
-
 public class ProductAdminDAO {
     public static List<Product> getListProduct(int index) {
         Jdbi me = DBContext.me();
@@ -37,23 +35,6 @@ public class ProductAdminDAO {
 
     }
 
-    public static void removeProduct(String pid) {
-        String query = "DELETE FROM Product WHERE [pid] = ?";
-        try {
-            Connection conn = DBContext.getConnection();
-            PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, pid);
-            ps.executeUpdate();
-            ps.close();
-        } catch (Exception e) {
-
-        }
-    }
-
-
-
-
-
     public static Product getProductByID(String cid) {
 
         String query = "select * from product\r\n" + "where pid = ?;";
@@ -77,15 +58,16 @@ public class ProductAdminDAO {
     public static List<Product> showlistproduct(){
             List<Product> list;
             Jdbi me = DBContext.me();
-            String query="select p.id,p.nameProduct,pp.listPrice,pp.discountPrice,cate.nameCategorie,inven.quantity , p.isActive,p.isDelete \n" +
-                    "                     from kidstore.products p join kidstore.product_prices pp on p.id = pp.idProduct \n" +
-                    "                    join kidstore.categories cate on cate.id = p.idCategorie \n" +
-                    "                    join kidstore.size_color_products sizepro on sizepro.idProduct = p.id\n" +
-                    "                    join kidstore.inventorys inven on inven.id_size_color =sizepro.id where sizepro.size in ('Nhỏ','8.5','S') and p.isActive =1 \n";
+            String query="select distinct p.id,p.nameProduct ,pp.listPrice,pp.discountPrice,cate.nameCategorie , p.isActive,p.isDelete \n" +
+                    "                                    from products p join  product_prices pp on p.id = pp.idProduct \n" +
+                    "                                      join categories cate on cate.id = p.idCategorie \n" +
+                    "                                    join size_color_products sizepro on sizepro.idProduct = p.id\n" +
+                    "                                                   \n" +
+                    "                    where p.isActive =1 ";
          return  list = me.withHandle(handle -> {
              return handle.createQuery(query).map((rs, ctx) ->new Product(rs.getInt("id"),rs.getString("nameProduct")
                      ,rs.getDouble("listPrice"),new Category(rs.getString("nameCategorie")),UtilDAO.findListImageByIdProduct(rs.getInt("id")),UtilDAO.findListSizeColorByIdProduct(rs.getInt("id"))
-                     ,rs.getString("isActive"),rs.getString("isDelete"),rs.getDouble("discountPrice"),new Inventory(rs.getInt("quantity")))).list();
+                     ,rs.getString("isActive"),rs.getString("isDelete"),rs.getDouble("discountPrice"))).list();
             });
         }
     public static boolean deleteproduct(String idpro){
@@ -94,19 +76,29 @@ public class ProductAdminDAO {
                 "set p.isActive = 0 , p.isDelete =1\n" +
                 "where id = ?";
 
-        return me.withHandle(handle -> handle.createUpdate(query).bind(0,idpro).execute()==1) ;
+        return me.withHandle(handle ->  handle.createUpdate(query).bind(0,idpro).execute()==1) ;
     }
-//    public static void updateProduct(){
-//        Jdbi me = DBContext.me();
-//        String query = "update kidstore.products p join kidstore.product_prices pp \n" +
-//                "on p.id = pp.idProduct\n" +
-//                "join kidstore.categories cate on cate.id = p.idCategorie\n" +
-//                "join kidstore.inventorys invent on invent.idProduct = p.id\n" +
-//                "set  pp.listPrice =? , p.idCategorie =?, invent.quantity = ?\n" +
-//                "where p.id = ? and cate.nameCategorie =?;";
-//        return me.withHandle(handle -> handle.createUpdate(query).)
-//
-//    }
+    public static int updatenameproduct(Product p){
+        Jdbi me = DBContext.me();
+        String query = "update products set nameProduct = ? where id = ? ";
+        return me.withHandle(handle -> handle.createUpdate(query).bind(0,p.getNameProduct()).bind(1,p.getId()).execute());
+
+    }
+    public static int updatecost(Product p){
+        Jdbi me = DBContext.me();
+        String query = "update product_prices set listPrice = ? where idProduct = ? ";
+        return me.withHandle(handle ->
+                handle.createUpdate(query).bind(0,p.getListPrice()).bind(1,p.getId()).execute());
+
+    }
+    public static int updatequantity(Product p){
+        Jdbi me = DBContext.me();
+        String query = "update products set nameProduct = ? where id = ? ";
+        return me.withHandle(handle ->
+                handle.createUpdate(query).bind(0,p.getNameProduct()).bind(1,p.getId()).execute());
+
+    }
+
     public static List<Category> listcate(){
         Jdbi me = DBContext.me();
         List<Category> list;
@@ -117,6 +109,24 @@ public class ProductAdminDAO {
         });
         return list;
     }
+        public static int idproduct (String name){
+        Jdbi me = DBContext.me();
+        String query="Select id from categories where nameCategorie =?";
+        return me.withHandle(handle -> handle.createQuery(query).bind(0,name).mapTo(Integer.class).one());
+
+        }
+        public static List<SizeColorProduct> listsize(){
+            List<SizeColorProduct> list;
+            Jdbi me = DBContext.me();
+            String query="Select id,size from size_color_products";
+
+             list= me.withHandle(handle -> {
+             return  handle.createQuery(query).map((rs, ctx) -> new SizeColorProduct(rs.getInt("id"),rs.getString("size"))).list();
+            });
+            return list;
+
+        }
+
 //	public static void insertProduct(Product product) {
 //		String query = "insert Product values( ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 //		try {
@@ -138,9 +148,9 @@ public class ProductAdminDAO {
 
     public static void main(String[] args) {
 //        System.out.println(getListProduct(1));
-//        System.out.println(showlistproduct());
+        System.out.println(showlistproduct());
 //        System.out.println(deleteproduct("17"));
-        System.out.println(listcate());
+//        System.out.println(listcate());
         }
 
 }

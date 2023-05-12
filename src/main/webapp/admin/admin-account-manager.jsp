@@ -334,6 +334,7 @@ MODAL
     function deleteUser(id) {
         let uid = id;
         let re = "";
+
         Swal.fire({
             title: 'Bạn có chắc chắn muốn xóa tài khoản này không?',
             icon: 'warning',

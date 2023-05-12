@@ -23,11 +23,17 @@ public class UtilDAO {
     }
     public static Product findProductById(int idProduct) {
         Jdbi me = DBContext.me();
-        String query = "SELECT p.id,p.nameProduct,listPrice,nameSupplier,nameProducer,nameCategorie,pp.discount,pp.discountPrice,i.quantity FROM products p join product_prices pp on p.id = pp.idProduct join suppliers s on p.idSupplier = s.id join producers ps on ps.id = p.idProducer join categories c on p.idCategorie = c.id join inventorys i on i.idProduct = p.id where p.isActive ='1' and s.isActive= '1' and p.id = ?";
+        String query = "SELECT p.id,p.nameProduct,listPrice,description,nameSupplier,nameProducer,nameCategorie,pp.discount,pp.discountPrice,i.quantity,i.id_size_color FROM products p join product_prices pp on p.id = pp.idProduct join suppliers s on p.idSupplier = s.id join producers ps on ps.id = p.idProducer join categories c on p.idCategorie = c.id join inventorys i on i.idProduct = p.id where p.isActive ='1' and s.isActive= '1' and p.id = ?";
         return me.withHandle(handle -> handle.createQuery(query).bind(0, idProduct).map((rs, ctx) -> new Product(rs.getInt("id"), rs.getString("nameProduct"),
-                        rs.getDouble("listPrice"), new Supplier(rs.getString("nameSupplier")), new Producer(rs.getString("nameProducer")),new Category(rs.getString("nameCategorie")),
-                         rs.getInt("discount"), rs.getDouble("discountPrice"),new Inventory(rs.getInt("id"), rs.getInt("quantity"))))
+                        rs.getDouble("listPrice"), rs.getString("description"), new Supplier(rs.getString("nameSupplier")), new Producer(rs.getString("nameProducer")),new Category(rs.getString("nameCategorie")),
+                        UtilDAO.findListImageByIdProduct(rs.getInt("id")), UtilDAO.findListSizeColorByIdProduct(rs.getInt("id")), rs.getInt("discount"), rs.getDouble("discountPrice")))
                 .findFirst().orElse(null));
+    }
+    public static Product findproductByID(int idp){
+        Jdbi me = DBContext.me();
+        String query = "select  id, nameProduct  from products  where id = ? and isActive =1 ";
+            return (Product) me.withHandle(handle -> handle.createQuery(query).bind(0,idp).map((rs, ctx) -> new Product(rs.getInt("id")
+            ,rs.getString("nameProduct"))).findFirst().orElse(null));
     }
 
     public static Account findAccountById(int idAccount) {
@@ -38,7 +44,7 @@ public class UtilDAO {
     }
 
     public static void main(String[] args) {
-        System.out.println(findProductById(7));
+        System.out.println(findproductByID(2));
     }
 
 }

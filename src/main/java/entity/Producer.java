@@ -58,5 +58,5 @@ public class Producer { // nha san suat
 	public void setIsActive(String isActive) {
 		this.isActive = isActive;
 	}
-	
+
 }
