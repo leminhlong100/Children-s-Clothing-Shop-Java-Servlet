@@ -90,6 +90,7 @@ public class Product implements Serializable {
 
     }
 
+
     public Product(int id, String nameProduct, double listPrice, String description, List<View> views, List<Star> stars, List<Comment> comments, int idSupplier, int idProducer, int idCategory, Supplier supplier, Producer producer, Category category, List<ImageProduct> imageProducts, List<SizeColorProduct> colorsizes, String isActive, String isDelete, int discount, double discountPrice, Inventory inventory) {
         this.id = id;
         this.nameProduct = nameProduct;
@@ -112,7 +113,6 @@ public class Product implements Serializable {
         this.discountPrice = discountPrice;
         this.inventory = inventory;
     }
-
     public Product(int id, String nameProduct, double listPrice, String description, Supplier supplier, Producer producer, Category category, List<ImageProduct> imageProducts, List<SizeColorProduct> colorSizes, int discount, double discountPrice) {
         this.id = id;
         this.nameProduct = nameProduct;
@@ -134,6 +134,9 @@ public class Product implements Serializable {
     }
 
     public Product(int id, String nameProduct, double listPrice, Producer nameProducer, Category nameCategorie, List<ImageProduct> id1, List<SizeColorProduct> id2, String isActive, String isDelete, Inventory nameCategorie1) {
+    }
+
+    public Product(int id, String s, double listPrice, Category nameCategorie) {
     }
 
     public Inventory getInventory() {
@@ -310,5 +313,8 @@ public class Product implements Serializable {
                 ", discountPrice=" + discountPrice +
                 ", inventory=" + inventory +
                 '}';
+    }
+
+    public void setImage(String s) {
     }
 }

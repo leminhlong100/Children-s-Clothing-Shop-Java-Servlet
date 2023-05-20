@@ -19,7 +19,7 @@ public class UtilDAO {
 
     public static List<SizeColorProduct> findListSizeColorByIdProduct(int idProduct) {
         Jdbi me = DBContext.me();
-        return me.withHandle(handle -> handle.createQuery("SELECT id,sl.idProduct,size,color,i.quantity FROM size_color_products sl join inventorys i  on i.id_size_color = sl.id  where sl.idProduct = ?").bind(0, idProduct).mapToBean(SizeColorProduct.class).list());
+        return me.withHandle(handle -> handle.createQuery("SELECT id,idProduct,size,color FROM size_color_products where idProduct = ?").bind(0, idProduct).mapToBean(SizeColorProduct.class).list());
     }
     public static Product findProductById(int idProduct) {
         Jdbi me = DBContext.me();
@@ -28,6 +28,12 @@ public class UtilDAO {
                         rs.getDouble("listPrice"), rs.getString("description"), new Supplier(rs.getString("nameSupplier")), new Producer(rs.getString("nameProducer")),new Category(rs.getString("nameCategorie")),
                         UtilDAO.findListImageByIdProduct(rs.getInt("id")), UtilDAO.findListSizeColorByIdProduct(rs.getInt("id")), rs.getInt("discount"), rs.getDouble("discountPrice")))
                 .findFirst().orElse(null));
+    }
+    public static Product findproductByID(int idp){
+        Jdbi me = DBContext.me();
+        String query = "select  id, nameProduct  from products  where id = ? and isActive =1 ";
+        return (Product) me.withHandle(handle -> handle.createQuery(query).bind(0,idp).map((rs, ctx) -> new Product(rs.getInt("id")
+                ,rs.getString("nameProduct"))).findFirst().orElse(null));
     }
 
     public static Account findAccountById(int idAccount) {
@@ -38,7 +44,7 @@ public class UtilDAO {
     }
 
     public static void main(String[] args) {
-        System.out.println(findListSizeColorByIdProduct(1));
+        System.out.println(findproductByID(2));
     }
 
 }
