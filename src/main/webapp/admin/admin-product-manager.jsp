@@ -111,11 +111,11 @@
                 <td>${list.category}</td>
                 <td>
                   <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"
-                          onclick="deleteProduct(${list.id} )"><i class="fas fa-trash-alt"></i>
+                          onclick="deleteProduct(${list.id} ,this)"><i class="fas fa-trash-alt"></i>
                   </button>
                   <button class="btn btn-primary btn-sm edit" type="button" title="Sửa" id="show-emp"
                           data-toggle="modal"
-                          data-target="#ModalUP" onclick="UpdateProduct(${list.id} )"><i
+                          data-target="#ModalUP" onclick="UpdateProduct(${list.id},this )"><i
                           class="fas fa-edit"></i></button>
                 </td>
               </tr>
@@ -226,6 +226,7 @@ MODAL
       }
     })
   }
+ 
 </script>
 </body>
 

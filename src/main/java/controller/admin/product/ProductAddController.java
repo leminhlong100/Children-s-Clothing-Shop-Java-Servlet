@@ -46,19 +46,19 @@ public class ProductAddController extends HttpServlet {
 //				product_desc, Double.parseDouble(product_oldPrice), Integer.parseInt(product_cate),
 //				Integer.parseInt(sum_Product), Integer.parseInt(present_Product));
 
-		Part part = request.getPart("product-image");
-		String realPath = request.getServletContext().getRealPath("/image");
-		String filename = Path.of(part.getSubmittedFileName()).getFileName().toString();
-
-		if (!Files.exists(Path.of(realPath))) {
-			Files.createDirectory(Path.of(realPath));
-		}
-		part.write(realPath + "/" + filename);
+//		Part part = request.getPart("product-image");
+//		String realPath = request.getServletContext().getRealPath("/image");
+//		String filename = Path.of(part.getSubmittedFileName()).getFileName().toString();
+//
+//		if (!Files.exists(Path.of(realPath))) {
+//			Files.createDirectory(Path.of(realPath));
+//		}
+//		part.write(realPath + "/" + filename);
 //		product.setImage("./image/" + filename);
 //		ProductAdminDAO.insertProduct(product);
-		HttpSession session = request.getSession();
-		String sessionID = ";jsessionid="+session.getId();
-		response.sendRedirect(request.getContextPath() + "/ProductListController"+sessionID);
+//		HttpSession session = request.getSession();
+//		String sessionID = ";jsessionid="+session.getId();
+//		response.sendRedirect(request.getContextPath() + "/ProductListController"+sessionID);
 	}
 
 }
