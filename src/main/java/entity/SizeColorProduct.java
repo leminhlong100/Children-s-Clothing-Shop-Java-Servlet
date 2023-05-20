@@ -18,6 +18,9 @@ public class SizeColorProduct {
         this.quantity = quantity;
     }
 
+    public SizeColorProduct(int id, String size) {
+    }
+
     public int getId() {
         return id;
     }

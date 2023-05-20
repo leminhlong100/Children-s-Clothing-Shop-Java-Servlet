@@ -29,7 +29,7 @@ public class IndexControl extends HttpServlet {
 			List<Product> listNewProduct = IndexDAO.getNewProductBoy();
 			List<Product> listNewProductGirl = IndexDAO.getNewProductGirl();
 			List<Product> listNewProductAccessory = IndexDAO.getNewProductAccessory();
-//		List<Product> listgetSuperSellProduct = IndexDAO.getSuperSellProduct();
+		List<Product> listgetSuperSellProduct = IndexDAO.getSuperSellProduct();
 			request.setAttribute("listSellProduct", list);
 			request.setAttribute("listSellProductTwo", listSellProductTwo);
 			request.setAttribute("listOutstandingProduct", listOutstandingProduct);
@@ -37,7 +37,7 @@ public class IndexControl extends HttpServlet {
 			request.setAttribute("getNewProductBoy", listNewProduct);
 			request.setAttribute("listNewProductGirl", listNewProductGirl);
 			request.setAttribute("listNewProductAccessory", listNewProductAccessory);
-//		request.setAttribute("listgetSuperSellProduct", listgetSuperSellProduct);
+		request.setAttribute("listgetSuperSellProduct", listgetSuperSellProduct);
 			request.getRequestDispatcher("client/Index.jsp").forward(request, response);
 		}
 	}
