@@ -1,11 +1,11 @@
 package entity;
 
 public class Category {
-	private int idCategory;
+	private int id;
 	private String nameCategory;
 	public Category(int id, String name) {
 		super();
-		this.idCategory = id;
+		this.id = id;
 		this.nameCategory = name;
 	}
 
@@ -17,17 +17,20 @@ public class Category {
 		super();
 	}
 
+	public Category(int id) {
+	}
+
 	@Override
 	public String toString() {
-		return "Category [id=" + idCategory + ", name=" + nameCategory + "]";
+		return nameCategory ;
 	}
 
-	public int getIdCategory() {
-		return idCategory;
+	public int getId() {
+		return id;
 	}
 
-	public void setIdCategory(int idCategory) {
-		this.idCategory = idCategory;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getNameCategory() {
