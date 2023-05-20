@@ -1,15 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<fmt:setLocale value="${sessionScope.LANG}"/>
-<fmt:setBundle basename="app" var="lang"/>
+         pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<fmt:setLocale value="${sessionScope.LANG}" />
+<fmt:setBundle basename="app" var="lang" />
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <title>HaLo's Shop</title>
-    <link rel="icon" type="image" href="./images/HaLoicon.png"/>
+    <link rel="icon" type="image" href="./images/HaLoicon.png" />
     <jsp:include page="./link/Link.jsp"></jsp:include>
 </head>
 <body>
@@ -113,11 +113,6 @@
                                 <div class="item">
                                     <c:forEach var="o" items="${listSellProduct}">
                                         <div class="sellingProducts-item">
-                                            <c:if test="${o.discount!=0}">
-                                                <div class="sale-box text-center">
-                                                    <span class="price">- ${o.discount}% </span>
-                                                </div>
-                                            </c:if>
                                             <div class="col-md-5 col-sm-5 sellingProducts-image-wrap">
                                                 <c:url var="detail" value="DetailControl"></c:url>
                                                 <a class="sellingProducts-image"
@@ -195,11 +190,9 @@
                                     <c:forEach var="o" items="${listOutstandingProduct}">
                                         <div class="item">
                                             <div class="discounts-product-item">
-                                                <c:if test="${o.discount!=0}">
-                                                    <div class="sale-box text-center">
-                                                        <span class="price">- ${o.discount}% </span>
-                                                    </div>
-                                                </c:if>
+                                                <div class="sale-box text-center">
+                                                    <span class="price">- ${o.discount}% </span>
+                                                </div>
                                                 <div class="discounts-product-image">
                                                     <a href="${detail}?pid=${o.id}"> <img
                                                             src="./images/${o.imageProducts.get(0).getImage()}"
@@ -210,10 +203,8 @@
                                                 <div class="discounts-product-info text-center">
 
                                                     <div class="price-box">
-                                                        <span class="price"> ${o.discountPrice} VNĐ</span>
-                                                        <c:if test="${o.discount!=0}"> <c:if
-                                                                test="${o.discount!=0}"><span
-                                                                class="price-compare"> ${o.listPrice} VNĐ </span></c:if></c:if>
+                                                        <span class="price"> ${o.discountPrice} VNĐ</span> <span
+                                                            class="price-compare"> ${o.listPrice} VNĐ </span>
                                                     </div>
 
                                                     <h3 class="item-title">
@@ -227,9 +218,7 @@
                                                                 <button class="button btn-cart btn-more product-atc"
                                                                         title="Mua hàng" type="button">
 																	<span style="display: inline-block;"> <!-- Dùng inline-block để đảm bảo span chỉ chiếm không gian cần thiết -->
-                                                        <img src="./images/MuaNgay.gif" alt=""
-                                                             style="width: 200%; height: auto;">
-                                                                        <!-- Thay đổi kích thước theo % -->
+                                                        <img src="./images/MuaNgay.gif" alt="" style="width: 200%; height: auto;"> <!-- Thay đổi kích thước theo % -->
                                                     </span>
                                                                 </button>
                                                             </a>
@@ -268,17 +257,13 @@
                                                     <form action="/cart/add" method="post" class="variants"
                                                           id="product-actions-3915714"
                                                           enctype="multipart/form-data">
-                                                        <a href="${detail}?pid=${o.id}">
-                                                            <button
-                                                                    class="button btn-cart btn-more product-atc"
-                                                                    title="Mua hàng" type="button">
+                                                        <a href="${detail}?pid=${o.id}"><button
+                                                                class="button btn-cart btn-more product-atc"
+                                                                title="Mua hàng" type="button">
 															<span style="display: inline-block;"> <!-- Dùng inline-block để đảm bảo span chỉ chiếm không gian cần thiết -->
-                                                        <img src="./images/MuaNgay.gif" alt=""
-                                                             style="width: 160%; height: auto; margin-left: -26%;">
-                                                                <!-- Thay đổi kích thước theo % -->
+                                                        <img src="./images/MuaNgay.gif" alt="" style="width: 160%; height: auto; margin-left: -26%;"> <!-- Thay đổi kích thước theo % -->
                                                     </span>
-                                                            </button>
-                                                        </a>
+                                                        </button></a>
                                                     </form>
                                                 </div>
                                             </div>
@@ -288,7 +273,7 @@
                                 <div class="clearfix"></div>
                                 <div class="sk-viewmore-block-green">
                                     <div class="sk-viewmore-block-inner text-center">
-                                        <c:url var="ShowProduct" value="ShowProductControl"/>
+                                        <c:url var="ShowProduct" value="ShowProductControl" />
                                         <a href="${ShowProduct}"><span><fmt:message
                                                 key="VIEW.ALL.PRODUCTS" bundle="${lang}"></fmt:message><i
                                                 class="fa fa-arrow-circle-o-right" aria-hidden="true"></i></span></a>
@@ -322,11 +307,6 @@
                                     <c:forEach var="o" items="${getNewProductBoy }">
                                         <div class="col-md-3 col-sm-3 col-xs-12">
                                             <div class="discounts-product-right">
-                                                <c:if test="${o.discount!=0}">
-                                                    <div class="sale-box text-center">
-                                                        <span class="price">- ${o.discount}% </span>
-                                                    </div>
-                                                </c:if>
                                                 <div class="discounts-product-image">
                                                     <a href="${detail}?pid=${o.id}"> <img
                                                             src="./images/${o.imageProducts.get(0).getImage()}"
@@ -348,17 +328,13 @@
                                                     <form action="/cart/add" method="post" class="variants"
                                                           id="product-actions-3915812"
                                                           enctype="multipart/form-data">
-                                                        <a href="${detail}?pid=${o.id}">
-                                                            <button
-                                                                    class="button btn-cart btn-more product-atc"
-                                                                    title="Mua hàng" type="button">
+                                                        <a href="${detail}?pid=${o.id}"><button
+                                                                class="button btn-cart btn-more product-atc"
+                                                                title="Mua hàng" type="button">
 															<span style="display: inline-block;"> <!-- Dùng inline-block để đảm bảo span chỉ chiếm không gian cần thiết -->
-                                                        <img src="./images/MuaNgay.gif" alt=""
-                                                             style="width: 160%; height: auto; margin-left: -26%;">
-                                                                <!-- Thay đổi kích thước theo % -->
+                                                        <img src="./images/MuaNgay.gif" alt="" style="width: 160%; height: auto; margin-left: -26%;"> <!-- Thay đổi kích thước theo % -->
                                                     </span>
-                                                            </button>
-                                                        </a>
+                                                        </button></a>
                                                     </form>
                                                 </div>
                                             </div>
@@ -370,11 +346,6 @@
                                     <c:forEach var="o" items="${listNewProductGirl }">
                                         <div class="col-md-3 col-sm-3 col-xs-12">
                                             <div class="discounts-product-right">
-                                                <c:if test="${o.discount!=0}">
-                                                    <div class="sale-box text-center">
-                                                        <span class="price">- ${o.discount}% </span>
-                                                    </div>
-                                                </c:if>
                                                 <div class="discounts-product-image">
                                                     <a href="${detail}?pid=${o.id}"> <img
                                                             src="./images/${o.imageProducts.get(0).getImage()}"
@@ -397,17 +368,13 @@
                                                     <form action="/cart/add" method="post" class="variants"
                                                           id="product-aions-3915812"
                                                           enctype="multipart/form-data">
-                                                        <a href="${detail}?pid=${o.id}">
-                                                            <button
-                                                                    class="button btn-cart btn-more product-atc"
-                                                                    title="Mua hàng" type="button">
+                                                        <a href="${detail}?pid=${o.id}"><button
+                                                                class="button btn-cart btn-more product-atc"
+                                                                title="Mua hàng" type="button">
 															<span style="display: inline-block;"> <!-- Dùng inline-block để đảm bảo span chỉ chiếm không gian cần thiết -->
-                                                        <img src="./images/MuaNgay.gif" alt=""
-                                                             style="width: 160%; height: auto; margin-left: -26%;">
-                                                                <!-- Thay đổi kích thước theo % -->
+                                                        <img src="./images/MuaNgay.gif" alt="" style="width: 160%; height: auto; margin-left: -26%;"> <!-- Thay đổi kích thước theo % -->
                                                     </span>
-                                                            </button>
-                                                        </a>
+                                                        </button></a>
                                                     </form>
                                                 </div>
                                             </div>
@@ -419,11 +386,6 @@
                                     <c:forEach var="o" items="${listNewProductAccessory }">
                                         <div class="col-md-3 col-sm-3 col-xs-12">
                                             <div class="discounts-product-right">
-                                                <c:if test="${o.discount!=0}">
-                                                    <div class="sale-box text-center">
-                                                        <span class="price">- ${o.discount}% </span>
-                                                    </div>
-                                                </c:if>
                                                 <div class="discounts-product-image">
                                                     <a href="${detail}?pid=${o.id}"> <img
                                                             src="./images/${o.imageProducts.get(0).getImage()}"
@@ -432,8 +394,8 @@
                                                     </a>
 
                                                     <div class="price-box">
-                                                        <span class="price">${o.discountPrice} VNĐ</span> <span
-                                                            class="price-compare"> ${o.listPrice} VNĐ</span>
+                                                        <span class="price"> ${o.discountPrice} VNĐ</span> <span
+                                                            class="price-compare"> ${o.listPrice} VNĐ </span>
                                                     </div>
 
                                                 </div>
@@ -447,17 +409,13 @@
                                                     <form action="/cart/add" method="post" class="variants"
                                                           id="product-action15812"
                                                           enctype="multipart/form-data">
-                                                        <a href="${detail}?pid=${o.id}">
-                                                            <button
-                                                                    class="button btn-cart btn-more product-atc"
-                                                                    title="Mua hàng" type="button">
+                                                        <a href="${detail}?pid=${o.id}"><button
+                                                                class="button btn-cart btn-more product-atc"
+                                                                title="Mua hàng" type="button">
 															<span style="display: inline-block;"> <!-- Dùng inline-block để đảm bảo span chỉ chiếm không gian cần thiết -->
-                                                        <img src="./images/MuaNgay.gif" alt=""
-                                                             style="width: 160%; height: auto; margin-left: -26%;">
-                                                                <!-- Thay đổi kích thước theo % -->
+                                                        <img src="./images/MuaNgay.gif" alt="" style="width: 160%; height: auto; margin-left: -26%;"> <!-- Thay đổi kích thước theo % -->
                                                     </span>
-                                                            </button>
-                                                        </a>
+                                                        </button></a>
                                                     </form>
                                                 </div>
                                             </div>
@@ -545,52 +503,47 @@
                     <div class="productCareNavigation">
                         <a class="btn prev"> <img
                                 src="//bizweb.dktcdn.net/100/117/632/themes/157694/assets/left-control.png?1564585558451"
-                                alt="left-control" class="img-responsive"/>
+                                alt="left-control" class="img-responsive" />
                         </a> <a class="btn next"> <img
                             src="//bizweb.dktcdn.net/100/117/632/themes/157694/assets/right-control.png?1564585558451"
-                            alt="right-control" class="img-responsive"/>
+                            alt="right-control" class="img-responsive" />
                     </a>
                     </div>
                     <div id="product-care" class="owl-carousel owl-theme">
-                        <c:forEach var="o" items="${listgetSuperSellProduct }">
+                        <c:forEach var="o" items="${listgetSuperSellProduct}">
                             <div class="discounts-product-right">
-                                <c:if test="${o.discount!=0}">
-                                    <div class="sale-box text-center">
-                                        <span class="price">- ${o.discount}% </span>
-                                    </div>
-                                </c:if>
+                                <div class="sale-box text-center">
+                                    <span class="price">- ${o.discount}% </span>
+                                </div>
                                 <div class="discounts-product-image">
-                                    <a href="${detail}?pid=${o.idProduct}"> <img
+                                    <a href="${detail}?pid=${o.id}"> <img
                                             src="./images/${o.imageProducts.get(0).getImage()}"
-                                            alt="Váy liên thân KIDS - KF5" class="img-responsive">
+                                            alt="./images/${o.imageProducts.get(0).getImage()}"
+                                            class="img-responsive">
                                     </a>
 
                                     <div class="price-box">
-                                        <span class="price">${o.priceProduct} VNĐ</span> <span
-                                            class="price-compare"> ${o.discount} VNĐ</span>
+                                        <span class="price"> ${o.discountPrice} VNĐ</span> <span
+                                            class="price-compare"> ${o.listPrice} VNĐ </span>
                                     </div>
 
                                 </div>
                                 <div class="discounts-product-info">
                                     <h3 class="item-title">
-                                        <a href="${detail}?pid=${o.idProduct}"
+                                        <a href="${detail}?pid=${o.id}"
                                            title="${o.nameProduct }">${o.nameProduct }</a>
                                     </h3>
                                 </div>
                                 <div class="text-center">
                                     <form action="/cart/add" method="post" class="variants"
                                           id="product-actions-3915726" enctype="multipart/form-data">
-                                        <a href="${detail}?pid=${o.idProduct}">
-                                            <button
-                                                    class="button btn-cart btn-more product-atc"
-                                                    title="Mua hàng" type="button">
+                                        <a href="${detail}?pid=${o.id}"><button
+                                                class="button btn-cart btn-more product-atc"
+                                                title="Mua hàng" type="button">
 											<span style="display: inline-block;"> <!-- Dùng inline-block để đảm bảo span chỉ chiếm không gian cần thiết -->
-                                                        <img src="./images/MuaNgay.gif" alt=""
-                                                             style="width: 160%; height: auto; margin-left: -26%;">
-                                                <!-- Thay đổi kích thước theo % -->
+                                                        <img src="./images/MuaNgay.gif" alt="" style="width: 160%; height: auto; margin-left: -26%;"> <!-- Thay đổi kích thước theo % -->
                                                     </span>
-                                            </button>
-                                        </a>
+                                        </button></a>
                                     </form>
                                 </div>
                             </div>
