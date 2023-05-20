@@ -32,7 +32,41 @@ public class Product implements Serializable {
         this.nameProduct = nameProduct;
         this.imageProducts = imageProducts;
     }
+    public Product(int id, String nameProduct,int listPrice) {
+        this.id = id;
+        this.nameProduct = nameProduct;
+        this.listPrice = listPrice;
+    }
+    public Product(int id, String nameProduct, double listPrice, Category category, List<ImageProduct> imageProducts, List<SizeColorProduct> colorSizes, String isActive, String isDelete, double discountPrice) {
+        this.id = id;
+        this.nameProduct = nameProduct;
+        this.listPrice = listPrice;
+        this.category = category;
+        this.imageProducts = imageProducts;
+        this.colorSizes = colorSizes;
+        this.isActive = isActive;
+        this.isDelete = isDelete;
+        this.discountPrice = discountPrice;
+    }
 
+    public Product(int id, String nameProduct) {
+        this.id = id;
+        this.nameProduct = nameProduct;
+    }
+
+    public Product(int id, String nameProduct, double listPrice, Producer producer, Category category, List<ImageProduct> imageProducts, List<SizeColorProduct> colorSizes, String isActive, String isDelete, double discountPrice, Inventory inventory) {
+        this.id = id;
+        this.nameProduct = nameProduct;
+        this.listPrice = listPrice;
+        this.producer = producer;
+        this.category = category;
+        this.imageProducts = imageProducts;
+        this.colorSizes = colorSizes;
+        this.isActive = isActive;
+        this.isDelete = isDelete;
+        this.discountPrice = discountPrice;
+        this.inventory = inventory;
+    }
 
     public Product(int id, String nameProduct, double listPrice, List<ImageProduct> imageProducts, int discount, double discountPrice) {
         this.id = id;
@@ -50,6 +84,10 @@ public class Product implements Serializable {
         this.discount = discount;
         this.discountPrice = discountPrice;
         this.isActive = isActive;
+    }
+
+    public Product( String nameProduct,int listPrice) {
+
     }
 
     public Product(int id, String nameProduct, double listPrice, String description, List<View> views, List<Star> stars, List<Comment> comments, int idSupplier, int idProducer, int idCategory, Supplier supplier, Producer producer, Category category, List<ImageProduct> imageProducts, List<SizeColorProduct> colorsizes, String isActive, String isDelete, int discount, double discountPrice, Inventory inventory) {
@@ -92,19 +130,10 @@ public class Product implements Serializable {
     public Product() {
     }
 
-    public Product(int id, String nameProduct, double listPrice, Category category) {
-        this.id = id;
-        this.nameProduct = nameProduct;
-        this.listPrice = listPrice;
-        this.category = category;
+    public Product(int id, String nameProduct, double listPrice, Supplier nameSupplier, Producer nameProducer, Category nameCategorie, int discount, double discountPrice, Inventory inventory) {
     }
 
-    public Product(int id, String nameProduct, double listPrice, Category category, List<SizeColorProduct> colorSizes) {
-        this.id = id;
-        this.nameProduct = nameProduct;
-        this.listPrice = listPrice;
-        this.category = category;
-        this.colorSizes = colorSizes;
+    public Product(int id, String nameProduct, double listPrice, Producer nameProducer, Category nameCategorie, List<ImageProduct> id1, List<SizeColorProduct> id2, String isActive, String isDelete, Inventory nameCategorie1) {
     }
 
     public Inventory getInventory() {
@@ -273,21 +302,11 @@ public class Product implements Serializable {
                 "id=" + id +
                 ", nameProduct='" + nameProduct + '\'' +
                 ", listPrice=" + listPrice +
-                ", description='" + description + '\'' +
-                ", views=" + views +
-                ", stars=" + stars +
-                ", comments=" + comments +
-                ", idSupplier=" + idSupplier +
-                ", idProducer=" + idProducer +
-                ", idCategory=" + idCategory +
-                ", supplier=" + supplier +
-                ", producer=" + producer +
                 ", category=" + category +
                 ", imageProducts=" + imageProducts +
-                ", colorsizes=" + colorSizes +
+                ", colorSizes=" + colorSizes +
                 ", isActive='" + isActive + '\'' +
                 ", isDelete='" + isDelete + '\'' +
-                ", discount=" + discount +
                 ", discountPrice=" + discountPrice +
                 ", inventory=" + inventory +
                 '}';
