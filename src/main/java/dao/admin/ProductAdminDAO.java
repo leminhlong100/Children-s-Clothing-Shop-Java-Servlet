@@ -6,6 +6,7 @@ import java.util.*;
 import context.*;
 import dao.client.UtilDAO;
 import entity.*;
+import jnr.a64asm.SIZE;
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.Jdbi;
 
@@ -135,16 +136,16 @@ public class ProductAdminDAO {
     public static List<Product> showlistproduct(){
         List<Product> list;
         Jdbi me = DBContext.me();
-        String query="select distinct p.id,p.nameProduct ,pp.listPrice,pp.discountPrice,cate.nameCategorie , p.isActive,p.isDelete \n" +
+        String query="select distinct p.id,p.nameProduct,pd.nameProducer,p.status ,pp.listPrice,pp.discount,pp.discountPrice,cate.nameCategorie , p.isActive,p.isDelete  \n" +
                 "                                    from products p join  product_prices pp on p.id = pp.idProduct \n" +
                 "                                      join categories cate on cate.id = p.idCategorie \n" +
                 "                                    join size_color_products sizepro on sizepro.idProduct = p.id\n" +
-                "                                                   \n" +
+                "                                      join producers pd on pd.id = p.idProducer           \n" +
                 "                    where p.isActive =1 ";
         return  list = me.withHandle(handle -> {
             return handle.createQuery(query).map((rs, ctx) ->new Product(rs.getInt("id"),rs.getString("nameProduct")
-                    ,rs.getDouble("listPrice"),new Category(rs.getString("nameCategorie")),UtilDAO.findListImageByIdProduct(rs.getInt("id")),UtilDAO.findListSizeColorByIdProduct(rs.getInt("id"))
-                    ,rs.getString("isActive"),rs.getString("isDelete"),rs.getDouble("discountPrice"))).list();
+                    ,rs.getDouble("listPrice"),new Category(rs.getString("nameCategorie")),new Producer(rs.getString("nameProducer")),UtilDAO.findListImageByIdProduct(rs.getInt("id")),UtilDAO.findListSizeColorByIdProduct(rs.getInt("id"))
+                    ,rs.getString("isActive"),rs.getString("isDelete"),rs.getInt("discount"),rs.getDouble("discountPrice"),rs.getString("status"))).list();
         });
     }
     public static boolean deleteproduct(String idpro){
@@ -168,11 +169,24 @@ public class ProductAdminDAO {
                 handle.createUpdate(query).bind(0,p.getListPrice()).bind(1,p.getId()).execute());
 
     }
+    public static int updatediscount(Product p){
+        Jdbi me = DBContext.me();
+        String query = "update product_prices set discount = ? where idProduct = ? ";
+        return me.withHandle(handle ->
+                handle.createUpdate(query).bind(0,p.getDiscount()).bind(1,p.getId()).execute());
+
+    }
     public static int updatequantity(Product p){
         Jdbi me = DBContext.me();
         String query = "update products set nameProduct = ? where id = ? ";
         return me.withHandle(handle ->
                 handle.createUpdate(query).bind(0,p.getNameProduct()).bind(1,p.getId()).execute());
+
+    }
+    public static int updatestatus(Product p){
+        Jdbi me = DBContext.me();
+        String query = "update products set status = ?  where id = ? ";
+        return me.withHandle(handle -> handle.createUpdate(query).bind(0,p.getStatus()).bind(1,p.getId()).execute());
 
     }
 
@@ -186,31 +200,43 @@ public class ProductAdminDAO {
         });
         return list;
     }
-    public static int updatecategory(Category c){
-        Jdbi me = DBContext.me();
-        String query = "update categories set nameCategorie = ? where id = ? ";
-        return me.withHandle(handle -> handle.createUpdate(query).bind(0,c.getNameCategory()).bind(1,c.getId()).execute());
 
-    }
+
     public static int idproduct (String name){
         Jdbi me = DBContext.me();
         String query="Select id from categories where nameCategorie =?";
         return me.withHandle(handle -> handle.createQuery(query).bind(0,name).mapTo(Integer.class).one());
 
     }
-    public static List<SizeColorProduct> listsize(){
-        List<SizeColorProduct> list;
-        Jdbi me = DBContext.me();
-        String query="Select id,size from size_color_products";
 
-        list= me.withHandle(handle -> {
-            return  handle.createQuery(query).map((rs, ctx) -> new SizeColorProduct(rs.getInt("id"),rs.getString("size"))).list();
-        });
-        return list;
+    public static int updateidcate(Product p){
+        Jdbi me = DBContext.me();
+        String query = "update products set idCategorie = ?  where id = ? ";
+        return me.withHandle(handle -> handle.createUpdate(query).bind(0,p.getIdCategory()).bind(1,p.getId()).execute());
 
     }
+    public static int quantityofsize(Product p){
+            Jdbi me = DBContext.me();
+            String query="select i.quantity from size_color_products s join inventorys i \n" +
+                    "on i.id_size_color = s.id where i.idProduct = ? and i.id_size_color =?";
+            return me.withHandle(handle -> handle.createQuery(query).bind(0,p.getId()).bind(1,p.getInventory())).mapTo(Integer.class).one();
+    }
+
+        public static int updatecolor (SizeColorProduct s){
+            Jdbi me = DBContext.me();
+            String query = "update size_color_products set color = ? where idProduct = ? and id = ?";
+            return me.withHandle(handle -> handle.createUpdate(query).bind(0,s.getColor()).bind(1,s.getIdProduct()).bind(2,s.getId()).execute());
+        }
+        public static int updatenumber(Inventory i){
+        Jdbi me = DBContext.me();
+        String query = "update inventorys set quantity = ? where id_size_color = ? and idProduct=?";
+        return me.withHandle(handle -> handle.createUpdate(query).bind(0,i.getQuantity()).bind(1,i.getId_size_color()).bind(2,i.getIdProduct()).execute());
+
+    }
+
     public static void main(String[] args) {
-        System.out.println(getListProduct(1));
-        ;
+//        System.out.println(findsizebyid(1));
+
+
     }
 }

@@ -1,22 +1,45 @@
-package entity;
+
+        package entity;
 
 public class SizeColorProduct {
     private int id;
     private int idProduct;
     private String size;
     private String color;
-    private int  inventory;
+    private int  quantity;
 
     public SizeColorProduct() {
     }
 
-    public SizeColorProduct( String size) {
+    public SizeColorProduct(int id, int idProduct, String size, String color, int quantity) {
+        this.id = id;
+        this.idProduct = idProduct;
         this.size = size;
-
+        this.color = color;
+        this.quantity = quantity;
     }
 
-    public SizeColorProduct(int id, String size) {
+    public SizeColorProduct(int idProduct, String size, String color, int quantity) {
+        this.idProduct = idProduct;
+        this.size = size;
+        this.color = color;
+        this.quantity = quantity;
     }
+
+    public SizeColorProduct(int id, int idProduct, String color) {
+        this.id = id;
+        this.idProduct = idProduct;
+        this.color = color;
+    }
+
+    public SizeColorProduct(int parseInt, String name, String color) {
+    }
+
+    public SizeColorProduct(int idProduct) {
+    }
+
+
+
 
     public int getId() {
         return id;
@@ -50,18 +73,22 @@ public class SizeColorProduct {
         this.color = color;
     }
 
-    public int getInventory() {
-        return inventory;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setInventory(int inventory) {
-        this.inventory = inventory;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     @Override
     public String toString() {
-        return size;
-
-
+        return "SizeColorProduct{" +
+                "id=" + id +
+                ", idProduct=" + idProduct +
+                ", size='" + size + '\'' +
+                ", color='" + color + '\'' +
+                ", quantity=" + quantity +
+                '}';
     }
 }

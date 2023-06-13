@@ -164,9 +164,9 @@ public class ProductDAO {
 	public static void main(String[] args) {
 
 //		System.out.println(pagingProduct(1, 0, "idProduct", "asc"));
-//		System.out.println(commentproduct("Hàng này thật đẹp",3,1,"Lê Minh Long"));
+		System.out.println(commentproduct("Hàng này thật đẹp",3,1,"Lê Minh Long"));
 //		System.out.println(displayfiveproduct(1,"3",true));
-		System.out.println(replycommentproduct("tôi đồng ý",1,1,"Lê Minh Long","1"));
+//		System.out.println(replycommentproduct("tôi đồng ý",1,1,"Lê Minh Long","1"));
 
 	}
 }
