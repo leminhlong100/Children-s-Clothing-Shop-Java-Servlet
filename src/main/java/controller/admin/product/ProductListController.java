@@ -25,32 +25,16 @@ public class ProductListController extends HttpServlet {
 			throws ServletException, IOException {
 
 		try{
-			String indexPage = request.getParameter("index");
-			if (indexPage == null) {
-				indexPage = "1";
-			}
-			int index = Integer.parseInt(indexPage);
-			int count = ProductAdminDAO.getTotalProduct();
-			int endPage = count / 10;
-			if (count % 10 != 0) {
-				endPage++;
-			}
-			List<Product> productList = ProductAdminDAO.getListProduct(index);
-			List<Product> render = ProductAdminDAO.showlistproduct();
-			request.setAttribute("tag", index);
-			request.setAttribute("endPage", endPage);
-			request.setAttribute("productlist", productList);
+		List<Product> render = ProductAdminDAO.showlistproduct();
 			request.setAttribute("renderproduct", render);
 			request.getRequestDispatcher("/admin/admin-product-manager.jsp").forward(request, response);
 		}catch (Exception e){
 			e.printStackTrace();
 		}
-
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 
 		String id = request.getParameter("idproduct");
 		boolean isdelete =false;

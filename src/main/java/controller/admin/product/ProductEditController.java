@@ -3,6 +3,7 @@ package controller.admin.product;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -14,57 +15,79 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import dao.admin.ProductAdminDAO;
+import dao.client.AuthDAO;
+import dao.client.UtilDAO;
 import entity.Category;
+import entity.ImageProduct;
 import entity.Product;
+import entity.SizeColorProduct;
 
 @MultipartConfig
-@WebServlet("/ProductEditController")
+@WebServlet("/admin-products/ProductEditController")
 public class ProductEditController extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		List<Category> cateList = ProductAdminDAO.getListCategory();
-		request.setAttribute("catelist", cateList);
-		String id = request.getParameter("id");
-		Product product = ProductAdminDAO.getProductByID(id);
-		request.setAttribute("product", product);
-		request.getRequestDispatcher("/admin/editproduct.jsp").forward(request, response);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        String idp = request.getParameter("idproduct");
+        Gson gson = new Gson();
+        Product products = UtilDAO.findProductById(Integer.parseInt(idp));
 
-	}
+        List<Category> list = ProductAdminDAO.listcate();
+        request.setAttribute("product", products);
+        JsonObject obj = new JsonObject();
+        obj.addProperty("listcate", gson.toJson(list));
+        obj.addProperty("products", gson.toJson(products));
+        response.getWriter().println(gson.toJson(obj));
+    }
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		request.setCharacterEncoding("utf-8");
-		response.setContentType("text/html;charset=UTF-8");
-		Product product = ProductAdminDAO.getProductByID(request.getParameter("product-id"));
-//		product.setName(request.getParameter("product-name"));
-//		product.setOlePrice(Double.parseDouble(request.getParameter("product-oldPrice")));
-//		product.setCateId(Integer.parseInt(request.getParameter("product-cate")));
-//		product.setPrice(Double.parseDouble(request.getParameter("product-price")));
-//		product.setPresentProduct(Integer.parseInt(request.getParameter("present-Product")));
-//		product.setDescription(request.getParameter("product-desc"));
-//		product.setTitle(request.getParameter("product-title"));
-//		product.setSumProduct(Integer.parseInt(request.getParameter("sum-Product")));
-		try {
-			Part part = request.getPart("product-image");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try {
 
-			String realPath = request.getServletContext().getRealPath("/image");
-			String filename = Path.of(part.getSubmittedFileName()).getFileName().toString();
+            String idproduct = request.getParameter("idproducts");
 
-			if (!Files.exists(Path.of(realPath))) {
-				Files.createDirectory(Path.of(realPath));
-			}
-			part.write(realPath + "/" + filename);
-//			product.setImage("./image/" + filename);
-		} catch (Exception e) {
-			
-		}
-//		ProductAdminDAO.updateProduct(product);
-		HttpSession session = request.getSession();
-		String sessionID = ";jsessionid="+session.getId();
-		response.sendRedirect(request.getContextPath() + "/ProductListController"+sessionID);
-	}
+            String name = request.getParameter("nameproducts");
+            String namecategory = request.getParameter("namecate");
 
+            String discount = request.getParameter("discount");
+            String status = request.getParameter("status");
+            String cost = request.getParameter("cost");
+            String idcate = request.getParameter("idcate");
+            System.out.println(idcate);
+            int intValue = Integer.parseInt(cost); // Chuyển thành số nguyên
+            double doubleValue = (double) intValue; // Chuyển thành số thực\
+            int gg = Integer.parseInt(discount);
+            HttpSession session = request.getSession();
+            //            if(gg<=100 && gg>=0){
+                Product p = new Product(Integer.parseInt(idproduct), name, doubleValue, status, Integer.parseInt(discount),Integer.parseInt(idcate));
+                SizeColorProduct s = new SizeColorProduct();
+                ProductAdminDAO.updatenameproduct(p);
+                ProductAdminDAO.updatecost(p);
+                ProductAdminDAO.updatediscount(p);
+                ProductAdminDAO.updatestatus(p);
+                ProductAdminDAO.updateidcate(p);
+
+                Product product = UtilDAO.findProduct(p.getId());
+            System.out.println(product);
+                Gson gson = new Gson();
+                JsonObject obj = new JsonObject();
+                obj.addProperty("product", gson.toJson(product));
+//                obj.addProperty("size", gson.toJson(size));
+
+                response.getWriter().println(obj);
+//            }
+//                session.setAttribute("errordis","So luong khong hop le");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
 }
