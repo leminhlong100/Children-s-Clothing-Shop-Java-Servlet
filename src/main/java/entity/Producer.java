@@ -25,9 +25,10 @@ public class Producer { // nha san suat
 
 	@Override
 	public String toString() {
-		return "Producer [idProducer=" + idProducer + ", nameProducer=" + nameProducer + ", information=" + information
-				+ ", logo=" + logo + ", isActive=" + isActive + "]";
+		return  nameProducer ;
+
 	}
+
 	public int getIdProducer() {
 		return idProducer;
 	}

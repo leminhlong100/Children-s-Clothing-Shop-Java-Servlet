@@ -24,6 +24,9 @@ public class Product implements Serializable {
     private int discount;
     private double discountPrice;
     private Inventory inventory;
+
+    private String status;
+
     public Product(int id, String nameProduct, double listPrice, String description, Supplier nameSupplier, Producer nameProducer, Category nameCategorie, List<ImageProduct> listImageByIdProduct, List<SizeColorProduct> listSizeColorByIdProduct, List<SizeColorProduct> sizeColorByIdProduct, int discount, double discountPrice, Inventory inventory) {
     }
 
@@ -32,12 +35,18 @@ public class Product implements Serializable {
         this.nameProduct = nameProduct;
         this.imageProducts = imageProducts;
     }
-    public Product(int id, String nameProduct,int listPrice) {
+
+    public Product(int id, String nameProduct, double listPrice,String status,int discount,int idCategory) {
         this.id = id;
         this.nameProduct = nameProduct;
         this.listPrice = listPrice;
+        this.status =status;
+        this.discount = discount;
+        this.idCategory =idCategory;
+
     }
-    public Product(int id, String nameProduct, double listPrice, Category category, List<ImageProduct> imageProducts, List<SizeColorProduct> colorSizes, String isActive, String isDelete, double discountPrice) {
+
+    public Product(int id, String nameProduct, double listPrice, Category category,Producer producer, List<ImageProduct> imageProducts, List<SizeColorProduct> colorSizes, String isActive, String isDelete,int discount, double discountPrice,String status) {
         this.id = id;
         this.nameProduct = nameProduct;
         this.listPrice = listPrice;
@@ -46,12 +55,23 @@ public class Product implements Serializable {
         this.colorSizes = colorSizes;
         this.isActive = isActive;
         this.isDelete = isDelete;
+        this.discount = discount;
         this.discountPrice = discountPrice;
+        this.status=status;
+        this.producer = producer;
     }
+
+
 
     public Product(int id, String nameProduct) {
         this.id = id;
         this.nameProduct = nameProduct;
+    }
+
+    public Product(int id, String nameProduct, String status) {
+        this.id = id;
+        this.nameProduct = nameProduct;
+        this.status = status;
     }
 
     public Product(int id, String nameProduct, double listPrice, Producer producer, Category category, List<ImageProduct> imageProducts, List<SizeColorProduct> colorSizes, String isActive, String isDelete, double discountPrice, Inventory inventory) {
@@ -76,6 +96,7 @@ public class Product implements Serializable {
         this.discount = discount;
         this.discountPrice = discountPrice;
     }
+
     public Product(int id, String nameProduct, double listPrice, List<ImageProduct> imageProducts, int discount, double discountPrice,String isActive) {
         this.id = id;
         this.nameProduct = nameProduct;
@@ -125,8 +146,22 @@ public class Product implements Serializable {
         this.colorSizes = colorSizes;
         this.discount = discount;
         this.discountPrice = discountPrice;
-    }
 
+    }
+    public Product(int id, String nameProduct, double listPrice, String description, Supplier supplier, Producer producer, Category category, List<ImageProduct> imageProducts, List<SizeColorProduct> colorSizes, int discount, double discountPrice,String status) {
+        this.id = id;
+        this.nameProduct = nameProduct;
+        this.listPrice = listPrice;
+        this.description = description;
+        this.supplier = supplier;
+        this.producer = producer;
+        this.category = category;
+        this.imageProducts = imageProducts;
+        this.colorSizes = colorSizes;
+        this.discount = discount;
+        this.discountPrice = discountPrice;
+        this.status=status;
+    }
     public Product() {
     }
 
@@ -138,6 +173,13 @@ public class Product implements Serializable {
 
     public Product(int id, String s, double listPrice, Category nameCategorie) {
     }
+
+    public Product(int id) {
+    }
+
+    public Product(int id, String name, String color, int quantity) {
+    }
+
 
     public Inventory getInventory() {
         return inventory;
@@ -181,6 +223,14 @@ public class Product implements Serializable {
 
     public int getIdProducer() {
         return idProducer;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public int getIdCategory() {
@@ -312,8 +362,12 @@ public class Product implements Serializable {
                 ", isDelete='" + isDelete + '\'' +
                 ", discountPrice=" + discountPrice +
                 ", inventory=" + inventory +
+                ", status='" + status + '\'' +
+                ", idcate='" + idCategory + '\'' +
+                ", producer='" + producer + '\'' +
                 '}';
     }
+
 
     public void setImage(String s) {
     }

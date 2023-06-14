@@ -7,11 +7,7 @@ public class ImageProduct {
 
 	@Override
 	public String toString() {
-		return "ImageProduct{" +
-				"id=" + id +
-				", idProduct=" + idProduct +
-				", image='" + image + '\'' +
-				'}';
+		return image ;
 	}
 
 	public ImageProduct() {
