@@ -186,10 +186,13 @@ MODAL
             type: "GET",
             data: {
                 idproduct: idProduct,
+                idsize:id
             },
             success: function (data) {
                 let datarepsone = JSON.parse(data);
                 let pardata = JSON.parse(datarepsone.products);
+                let color =  JSON.parse(datarepsone.colorSize);
+
                 content = `<div class="modal fade show" id="ModalUP" style="display: block">
           <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -214,14 +217,15 @@ MODAL
            <div class="form-group col-md-6">
             <label class="control-label">Mã kích thước </label>
          <input class="form-control" type="text" name="idSize" required value="` + id + `" readonly>
+
           </div>
          <div class="form-group col-md-6">
             <label for="exampleSelect1" class="control-label">Nhập màu bạn muốn thay đổi</label>
-            <input class="form-control" type="text" name="color" required value="">
+          <input class="form-control" type="text" name="color" required value="`+color.color+`">
           </div>
           <div class="form-group col-md-6">
             <label for="exampleSelect1" class="control-label">Số lượng</label>
-              <input class="form-control" name="number" type="number" min="0" max="100" required  value= "">
+              <input class="form-control" name="number" type="number" min="1"  required  value= "` + color.quantity + `">
 
           </div>
                 </div>
@@ -237,7 +241,7 @@ MODAL
     </div>
 </div>`
                 document.getElementById("showproduct").innerHTML = content;
-            },
+                 },
             error: function (data) {
                 console.log("error");
             }
@@ -265,10 +269,10 @@ MODAL
                 let newSize = "";
                 let newQuantity = response.newquantity;
                 let idSizeColor = response.idSizeColor;
-                console.log(idSizeColor);
                 for (let i =0;i<newdata.colorSizes.length;i++){
                     if(newdata.colorSizes[i].id==idSizeColor){
                         newSize = newdata.colorSizes[i].size;
+
                     }
                 }
 
@@ -285,13 +289,14 @@ MODAL
                              <td>`+newColor+`</td>
                               <td>`+newQuantity+`</td>
                             <td>
-                                <button class="btn btn-primary btn-sm edit" type="button" title="Sửa" id="show-emp ` + newdata.id + `"
+                                <button class="btn btn-primary btn-sm edit" type="button" title="Sửa" id="show-emp`+ idSizeColor + `"
                                         data-toggle="modal"
                                         data-target="#ModalUP" onclick="UpdateProduct(` + newdata.id + `,` + idSizeColor + `)"><i
                                     class="fas fa-edit"></i></button>
                             </td>
                        `
-                let row = $("#show-emp" + idSize).closest('tr').html(newinvent);
+                let row = $("#show-emp" + idSizeColor).closest('tr').html(newinvent);
+                console.log(newinvent)
                 closeModal();
                 Swal.fire('Chỉnh sửa thành công :))))) ', '', 'success');
 

@@ -27,8 +27,7 @@ public class Inventory {
 		this.quantity = quantity;
 	}
 
-	public Inventory(int quantity) {
-	}
+
 
 	public int getId_size_color() {
 		return id_size_color;

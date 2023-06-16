@@ -7,6 +7,7 @@ import context.*;
 import dao.client.UtilDAO;
 import entity.*;
 import jnr.a64asm.SIZE;
+import jnr.ffi.annotations.In;
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.Jdbi;
 
@@ -233,9 +234,17 @@ public class ProductAdminDAO {
         return me.withHandle(handle -> handle.createUpdate(query).bind(0,i.getQuantity()).bind(1,i.getId_size_color()).bind(2,i.getIdProduct()).execute());
 
     }
+    public static SizeColorProduct colorsize(SizeColorProduct s ){
+        Jdbi me = DBContext.me();
+    String query="select s.id,s.idProduct,s.color,i.quantity from size_color_products s join inventorys i " +
+            "on i.idProduct =s.idProduct" +
+            "  where s.id =? and s.idProduct =?";
+    return me.withHandle(handle -> handle.createQuery(query).bind(0,s.getId()).bind(1,s.getIdProduct()).map((rs, ctx) -> new SizeColorProduct(rs.getInt("id"),rs.getInt("idProduct"),rs.getString("color"),rs.getInt("quantity"))).findFirst().orElse(null));
+    }
 
     public static void main(String[] args) {
-//        System.out.println(findsizebyid(1));
+//        System.out.println(colorsize(2,1));
+
 
 
     }
