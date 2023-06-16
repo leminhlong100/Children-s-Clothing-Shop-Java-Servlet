@@ -279,6 +279,6 @@ public class Account {
                 ", roles=" + roles +
                 ", resources=" + resources +
                 ", permissions=" + permissions +
-                '}';
+                '}'+"\n";
     }
 }

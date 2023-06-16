@@ -36,7 +36,6 @@ public class DBContext {
 		String url = "jdbc:mysql://" + serverName + ":" + portNumber + "\\" + instance + "/" + dbName;
 		if (instance == null || instance.trim().isEmpty())
 			url = "jdbc:mysql://" + serverName + ":" + portNumber + "/" + dbName;
-//		String url = "jdbc:mysql://google/kidstore?cloudSqlInstance=ttltw-384415:asia-south1:kidstore&socketFactory=com.google.cloud.sql.mysql.SocketFactory&user=root&password=123456";
 		dataSource = new HikariDataSource();
 		dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
 		dataSource.setJdbcUrl(url);

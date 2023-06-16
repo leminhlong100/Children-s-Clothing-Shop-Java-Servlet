@@ -11,6 +11,7 @@ import util.EnCode;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -34,20 +35,20 @@ public class AuthDAO {
 		// Lấy ra danh sách role của account
 		Set<Resource> resources;
 		return resources = me.withHandle(handle -> {
-			return handle.createQuery("select resources.* from resources join permissions on resources.id = permissions.idResource where permissions.idRole in (select roles.id from roles join account_roles on roles.id = account_roles.idRole where account_roles.idAccount = ?)")
+			return handle.createQuery("select resources.* from resources join permissions on resources.id = permissions.idResource join role_resource rr on rr.idResource =resources.id  where rr.idRole in (select roles.id from roles join account_roles on roles.id = account_roles.idRole where account_roles.idAccount = ?)")
 					.bind(0, idAccount)
 					.mapToBean(Resource.class)
 					.collect(Collectors.toSet());
 	});
 	}
-	public static Set<Permission> getPermissions(int idAccount) {
+public static Set<Permission> getPermissions(int idAccount) {
 		Jdbi me = DBContext.me();
 		// Lấy ra danh sách role của account
 		Set<Permission> permissions;
 		return permissions = me.withHandle(handle -> {
-			return handle.createQuery("select p.id,p.idRole,roles.name,p.idResource,r.name,r.url,p.action from permissions p join roles on p.idRole = roles.id join account_roles on roles.id = account_roles.idRole join resources r on r.id = p.idResource where account_roles.idAccount = ?")
+			return handle.createQuery("select p.id,r.id,r.name,r.url,p.action from resources r join permissions p on r.id = p.idResource join role_resource rr on rr.idResource =r.id  where rr.idRole in (select roles.id from roles join account_roles on roles.id = account_roles.idRole where account_roles.idAccount = ?)")
 					.bind(0, idAccount)
-					.map((rs, ctx) -> new Permission(rs.getLong("id"),new Role(rs.getLong("idRole"),rs.getString(3)),new Resource(rs.getLong("idResource"),rs.getString(5),rs.getString("url")),rs.getString("action")))
+					.map((rs, ctx) -> new Permission(rs.getLong("id"),new Resource(rs.getLong("id"),rs.getString("name"),rs.getString("url")),rs.getString("action")))
 					.collect(Collectors.toSet());
 		});
 	}
@@ -126,14 +127,28 @@ public class AuthDAO {
 		}
 	}
 	public static boolean signUp(String userName, String password, String name, String email, String address, String NumberPhone) {
-		String signInQuery = "INSERT INTO accounts (accountName, password, fullName, email, address,phone) VALUES (?, ?, ?, ?, ?, ?);";
+		String signInQuery = "INSERT INTO accounts (accountName, password, fullName, email, address, phone) VALUES (?, ?, ?, ?, ?, ?);";
+		String rollAccountQuery = "INSERT INTO account_roles (idRole,idAccount) VALUES (1,?);";
 		String passEncode = EnCode.toSHA1(password);
 		Jdbi me = DBContext.me();
 		me.withHandle(handle -> {
 			try {
 				handle.begin();
-				handle.createUpdate(signInQuery).bind(0, userName).bind(1, passEncode).bind(2, name)
-						.bind(3, email).bind(4, address).bind(5, NumberPhone).execute();
+				long accountId = handle.createUpdate(signInQuery)
+						.bind(0, userName)
+						.bind(1, passEncode)
+						.bind(2, name)
+						.bind(3, email)
+						.bind(4, address)
+						.bind(5, NumberPhone)
+						.executeAndReturnGeneratedKeys()
+						.mapTo(Long.class)
+						.one();
+
+				handle.createUpdate(rollAccountQuery)
+						.bind(0, accountId)
+						.execute();
+
 				handle.commit();
 				return true;
 			} catch (Exception e) {
@@ -144,6 +159,8 @@ public class AuthDAO {
 		});
 		return false;
 	}
+
+
 
 	public static void editAccountInfo(String user, String address, String phone, String uid) {
 		String query = "update customer set userName = ? ,Address = ?,NumberPhone = ?  where idCustomer = ?;";
@@ -189,15 +206,30 @@ public class AuthDAO {
 	}
 
 	public static void signUpGoogle(String id, String name, String email, String picture) {
-		String ggCus = "insert into accounts (accountName, password, fullName, email, image, type, idOther,isDelete,isActive) values (:accountName, :password, :fullName, :email, :image, :type, :idOther,:isDelete,:isActive)";
+		String ggCus = "INSERT INTO accounts (accountName, password, fullName, email, image, type, idOther, isDelete, isActive) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
 		Jdbi me = DBContext.me();
 		me.useHandle(handle -> {
 			try {
 				handle.begin();
-				handle.createUpdate(ggCus).bind("accountName", EnCode.toSHA1(EnCode.toSHA1(name)))
-						.bind("password", EnCode.toSHA1(EnCode.toSHA1(email))).bind("fullName", name).bind("email", email)
-						.bind("image", picture).bind("type", 3).bind("idOther", id).bind("isDelete",0).bind("isActive",1)
+				long accountId = handle.createUpdate(ggCus)
+						.bind(0, EnCode.toSHA1(EnCode.toSHA1(name)))
+						.bind(1, EnCode.toSHA1(EnCode.toSHA1(email)))
+						.bind(2, name)
+						.bind(3, email)
+						.bind(4, picture)
+						.bind(5, 3)
+						.bind(6, id)
+						.bind(7, 0)
+						.bind(8, 1)
+						.executeAndReturnGeneratedKeys()
+						.mapTo(Long.class)
+						.one();
+
+				String rollAccountQuery = "INSERT INTO account_roles (idRole, idAccount) VALUES (1, ?);";
+				handle.createUpdate(rollAccountQuery)
+						.bind(0, accountId)
 						.execute();
+
 				handle.commit();
 			} catch (Exception e) {
 				handle.rollback();
@@ -205,6 +237,7 @@ public class AuthDAO {
 			}
 		});
 	}
+
 
 	private static Account getAccount(String id, String loginBy) {
 		Jdbi me = DBContext.me();
@@ -219,15 +252,28 @@ public class AuthDAO {
 	}
 
 	public static void signUpFacebook(String id, String name, String email, String pic) {
-		String fbCus = "insert into accounts (accountName, password, fullName, email, image, type, idOther) values (:accountName, :password, :fullName, :email, :image, :type, :idOther)";
+		String fbCus = "INSERT INTO accounts (accountName, password, fullName, email, image, type, idOther) VALUES (?, ?, ?, ?, ?, ?, ?);";
 		Jdbi me = DBContext.me();
 		me.useHandle(handle -> {
 			try {
 				handle.begin();
-				handle.createUpdate(fbCus).bind("accountName", EnCode.toSHA1(EnCode.toSHA1(name)))
-						.bind("password", EnCode.toSHA1(EnCode.toSHA1(email))).bind("fullName", name).bind("email", email)
-						.bind("image", pic).bind("type", 2).bind("idOther", id)
+				long accountId = handle.createUpdate(fbCus)
+						.bind(0, EnCode.toSHA1(EnCode.toSHA1(name)))
+						.bind(1, EnCode.toSHA1(EnCode.toSHA1(email)))
+						.bind(2, name)
+						.bind(3, email)
+						.bind(4, pic)
+						.bind(5, 2)
+						.bind(6, id)
+						.executeAndReturnGeneratedKeys()
+						.mapTo(Long.class)
+						.one();
+
+				String rollAccountQuery = "INSERT INTO account_roles (idRole, idAccount) VALUES (1, ?);";
+				handle.createUpdate(rollAccountQuery)
+						.bind(0, accountId)
 						.execute();
+
 				handle.commit();
 			} catch (Exception e) {
 				handle.rollback();
@@ -236,13 +282,14 @@ public class AuthDAO {
 		});
 	}
 
+
 	public static Account loginFacebook(String id) {
 		String loginFBQuery = "select id, accountName, password, fullName, email, image, type, idOther from accounts where idOther= ? and type = 2";
 		return getAccount(id, loginFBQuery);
 	}
 
 	public static void main(String[] args) {
-		System.out.println();
+		System.out.println(getPermissions(1));
 	}
 
 }

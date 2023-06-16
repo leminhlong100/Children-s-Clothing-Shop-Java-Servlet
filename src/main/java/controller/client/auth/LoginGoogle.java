@@ -46,7 +46,7 @@ public class LoginGoogle extends HttpServlet {
         }
         cus.setRoles(AuthDAO.getRoles(cus.getId()));
         cus.setResources(AuthDAO.getResources(cus.getId()));
-        cus.setPermissions(AuthDAO.getPermissions(cus.getId()));
+//        cus.setPermissions(AuthDAO.getPermissions(cus.getId()));
         session.setAttribute("acc", cus);
         session.setMaxInactiveInterval(1800);
         if (pid == null) {

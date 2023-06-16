@@ -429,23 +429,11 @@
                                                     <label for="reductionCode" class="field__label">Nhập mã giảm
                                                         giá</label>
                                                     <input name="reductionCode" id="reductionCode"
-                                                           type="text" class="field__input"
-                                                           autocomplete="off"
-                                                           data-bind-disabled="isLoadingReductionCode"
-                                                           data-bind-event-keypress="handleReductionCodeKeyPress(event)"
-
-                                                           data-define="{reductionCode: null}"
-
-                                                           data-bind="reductionCode">
+                                                           type="text" class="field__input">
                                                 </div>
-                                                <button class="field__input-btn btn spinner" type="button"
-                                                        data-bind-disabled="isLoadingReductionCode || !reductionCode"
-                                                        data-bind-class="{'spinner--active': isLoadingReductionCode, 'btn--disabled': !reductionCode}"
-                                                        data-bind-event-click="applyReductionCode()">
+                                                <button onclick="appDiscount()" class="field__input-btn btn spinner"
+                                                        type="button">
                                                     <span class="spinner-label">Áp dụng</span>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="spinner-loader">
-                                                        <use href="#spinner"></use>
-                                                    </svg>
                                                 </button>
                                             </div>
 
@@ -474,7 +462,7 @@
                                         <th class="total-line__name">
                                             Tạm tính
                                         </th>
-                                        <td class="total-line__price">${total}</td>
+                                        <td id="provisional" class="total-line__price">${total}</td>
                                     </tr>
 
                                     <tr class="total-line total-line--shipping-fee">
@@ -547,6 +535,63 @@
     API api = new API();
 %>
 <script>
+    function appDiscount() {
+        // Lấy giá trị mã giảm giá từ ô input
+        var reductionCode = $('#reductionCode').val();
+
+        // Kiểm tra nếu mã giảm giá không rỗng
+        if (reductionCode !== '') {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/cart/DiscountControl',
+                method: 'POST',
+                data: { reductionCode: reductionCode }, // Gửi mã giảm giá lên máy chủ
+                success: function(data) {
+                    let isSuc = JSON.parse(data).isSuc;
+                    if (isSuc > 0) {
+                        alert('Mã giảm giá hợp lệ!');
+                        // Lấy giá trị gốc từ các thẻ <td>
+                        let originalPriceTotal = parseFloat($('#spanShipId').text().replace('$', '')); // Phí ship
+                        let originalPrice = ${total}; // Phí tạm thời
+                        let total = ""; // Tổng chi phí
+                        let newPriceDiscount = originalPrice - originalPrice * (isSuc/100);
+                        if (!isNaN(originalPriceTotal)) {
+                            total = newPriceDiscount + originalPriceTotal;
+                        } else {
+                            total = newPriceDiscount;
+                        }
+
+                        $('#provisional').text(newPriceDiscount.toFixed(1));
+                        $('#totalId').text(total.toFixed(1));
+                    } else {
+                        alert('Mã giảm giá không hợp lệ!');
+                        let originalPriceTotal = parseFloat($('#spanShipId').text().replace('$', ''));
+                        let total = "";
+                        if (!isNaN(originalPriceTotal)) {
+                            total =${total} + originalPriceTotal;
+                        } else {
+                            total =${total}; // Phí tạm thời;
+                        }
+
+                        $('#provisional').text('${total}');
+                        $('#totalId').text(total.toFixed(1));
+                    }
+
+
+                },
+                error: function() {
+                    // Xử lý lỗi trong quá trình gửi yêu cầu Ajax
+                    alert('Đã xảy ra lỗi!');
+                    isProcessing = false; // Đánh dấu rằng xử lý sự kiện đã hoàn thành
+                }
+            });
+        } else {
+            // Hiển thị thông báo nếu ô input rỗng
+            alert('Vui lòng nhập mã giảm giá!');
+            isProcessing = false; // Đánh dấu rằng xử lý sự kiện đã hoàn thành
+        }
+    }
+
+
     let token = '<%= api.getToken() %>';
     let provinceUrl = 'http://140.238.54.136/api/province';
     let districtUrl = 'http://140.238.54.136/api/district';
@@ -635,27 +680,28 @@
         wardId = event.target.value;
         document.getElementById("submitBtn").disabled = true; // Disable the submit button
         $.ajax({
-            url : "${pageContext.request.contextPath}/cart/AddBillControl",
-            type : "get",
-            data : {
-                wardId : wardId,
-                districtId :districtId,
+            url: "${pageContext.request.contextPath}/cart/AddBillControl",
+            type: "get",
+            data: {
+                wardId: wardId,
+                districtId: districtId,
                 provinceId: provinceId,
             },
-            success : function(data) {
+            success: function (data) {
                 let feeShip = JSON.parse(data).ship; // API
                 let serviceFee = JSON.parse(feeShip).data[0].service_fee;
-                let total = ${total};
-                total +=serviceFee;
-                document.getElementById("feeShipId").innerHTML = ` <td id="feeShipId" class="total-line__price">   `+serviceFee+`
-                                        <input type="hidden" name="shipFee" value="`+serviceFee+`"/></td>`;
+                <%--let total = ${total};--%>
+                let total = parseFloat($('#provisional').text().replace('$', ''));
+                total += serviceFee;
+                document.getElementById("feeShipId").innerHTML = ` <td id="feeShipId" class="total-line__price">   ` + serviceFee + `
+                                        <input type="hidden" name="shipFee" value="` + serviceFee + `"/></td>`;
                 document.getElementById("spanShipId").innerHTML = ` <span id="spanShipId"  class="content-box__emphasis price">
-                                                                 `+serviceFee+`
+                                                                 ` + serviceFee + `
                                                             </span>`;
-                document.getElementById("totalId").innerHTML = ` <span id="totalId" class="payment-due__price">`+total+`</span> `;
+                document.getElementById("totalId").innerHTML = ` <span id="totalId" class="payment-due__price">` + total + `</span> `;
                 document.getElementById("submitBtn").disabled = false; // Enable the submit button
             },
-            error : function(data) {
+            error: function (data) {
                 console.log(data);
                 document.getElementById("submitBtn").disabled = false; // Enable the submit button
             }
