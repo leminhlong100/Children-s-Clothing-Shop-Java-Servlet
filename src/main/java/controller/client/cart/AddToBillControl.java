@@ -47,6 +47,7 @@ public class AddToBillControl extends HttpServlet {
             String ship = request.getParameter("shipFee");
             String districtId = request.getParameter("calc_shipping_district");
             String wardId = request.getParameter("calc_shipping_ward");
+            String reductionCode = request.getParameter("reductionCode");
             boolean isSuc = false;
             int idProductSizeColor;
             int quantitySizeColor;
@@ -70,7 +71,7 @@ public class AddToBillControl extends HttpServlet {
                     order.setAddress(account.getAddress());
                 }
 
-                long total = 0;// tinh tong gia
+                float total = 0;// tinh tong gia
                 for (Map.Entry<String, List<OrderDetail>> entry : map.entrySet()) {
                     List<OrderDetail> orderDetails = entry.getValue();
                     for (OrderDetail orderDetail : orderDetails) {
@@ -92,6 +93,11 @@ public class AddToBillControl extends HttpServlet {
                         // tinh tong gia
                         total += orderDetail.getQuantity() * orderDetail.getPrice();
                         totalQuantity += orderDetail.getQuantity();
+                        //Thêm phieu giam vào
+                        int discount = OrderDAO.checkDiscount(reductionCode);
+                        if (discount>0){
+                            total = total - (total * ((float) discount / 100));
+                        }
                     }
                 }
                 /// cap nhat lai bill de co tong gia tien
