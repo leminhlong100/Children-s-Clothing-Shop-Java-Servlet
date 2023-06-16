@@ -31,15 +31,25 @@ public class SizeColorProduct {
         this.idProduct = idProduct;
         this.color = color;
     }
+    public SizeColorProduct(int id, String color) {
+        this.id = id;
 
-    public SizeColorProduct(int parseInt, String name, String color) {
+        this.color = color;
     }
-
+    public SizeColorProduct(int id, int idProduct, String color,int quantity) {
+        this.id = id;
+        this.idProduct = idProduct;
+        this.color = color;
+        this.quantity=quantity;
+    }
     public SizeColorProduct(int idProduct) {
     }
 
 
-
+    public SizeColorProduct(int id, int idProduct) {
+        this.id = id;
+        this.idProduct = idProduct;
+    }
 
     public int getId() {
         return id;
