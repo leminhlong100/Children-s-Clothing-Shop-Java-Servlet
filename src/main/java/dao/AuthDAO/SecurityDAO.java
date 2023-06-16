@@ -12,12 +12,13 @@ import java.sql.ResultSet;
 public class SecurityDAO {
     public static boolean hasPermission(String requestedResource, String accountName, String action) {
         String query = "SELECT DISTINCT r.name \n" +
-                "FROM permissions p \n" +
-                "JOIN account_roles rm ON p.idRole = rm.idRole\n" +
-                "JOIN accounts a ON a.id = rm.idAccount \n" +
-                "JOIN resources res ON p.idResource = res.id\n" +
-                "JOIN roles r ON r.id = p.idRole \n" +
-                "WHERE a.accountName = ? AND res.url = ? AND p.action = ?;";
+                "                FROM permissions p\n" +
+                "                JOIN resources rs  ON p.idResource = rs.id\n" +
+                "                JOIN role_resource res ON p.idResource = res.idResource\n" +
+                "                JOIN roles r ON r.id = res.idRole \n" +
+                "                JOIN account_roles ar on r.id = ar.idRole\n" +
+                "                JOIN accounts a on a.id = ar.idAccount\n" +
+                "                WHERE a.accountName = ? AND rs.url = ? AND p.action = ?;";
         try (Connection conn = DBContext.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, accountName);

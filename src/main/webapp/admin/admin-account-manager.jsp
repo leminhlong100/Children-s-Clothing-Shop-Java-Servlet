@@ -14,6 +14,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <jsp:include page="./header/link-css.jsp" flush="true"/>
+    <style>select[name="role"] option:checked {
+        background-color: yellow; /* Thay đổi màu sắc tại đây */
+    }</style>
 </head>
 
 <body onload="time()" class="app sidebar-mini rtl">
@@ -31,10 +34,10 @@
         <div class="col-md-12">
             <div class="tile">
                 <div class="tile-body">
-
                     <div class="row element-button">
                         <div class="col-sm-2">
-                            <a class="btn btn-add btn-sm" href="form-add-nhan-vien.html" title="Thêm"><i
+                            <a class="btn btn-add btn-sm"
+                               href="${pageContext.request.contextPath}/admin-user/permission"><i
                                     class="fas fa-plus"></i>
                                 Tủy chình quyền tài khoản</a>
                         </div>
@@ -75,12 +78,13 @@
                             <th width="10"><input type="checkbox" id="all"></th>
                             <th>ID khách hàng</th>
                             <th>Tên tài khoản</th>
-                            <th width="150">Họ và tên</th>
-                            <th width="20">Ảnh đại diện</th>
-                            <th width="300">SĐT</th>
+                            <th>Họ và tên</th>
+                            <th>Ảnh đại diện</th>
+                            <th>SĐT</th>
+                            <th>Loại tài khoản</th>
                             <th>Địa chỉ</th>
                             <th>Email</th>
-                            <th width="100">Tính năng</th>
+                            <th width="80">Tính năng</th>
                         </tr>
                         </thead>
                         <tbody id="renderListAccount">
@@ -92,6 +96,11 @@
                                 <td>${o.fullName}</td>
                                 <td><img class="img-card-person" src="${url}/images/avatar-admin.png" alt=""></td>
                                 <td>${o.phone}</td>
+                                <td>
+                                    <c:forEach items="${o.roles}" var="role" varStatus="status">
+                                        ${role.name}<c:if test="${not status.last}">,</c:if>
+                                    </c:forEach>
+                                </td>
                                 <td>${o.address }</td>
                                 <td>${o.email}</td>
                                 <td class="table-td-center">
@@ -197,26 +206,46 @@ MODAL
             console.log('Oops, unable to copy');
         }
     });
+
     function submitForm(button) {
         let re = "";
         let form = $(button).closest("form");
         let form_data = $(form).serialize(); // lấy thông tin dữ liệu từ form
         let url = "${pageContext.request.contextPath}/admin-user/UserUpdate"; // đường dẫn đến file xử lý
-        $.ajax({
-            url: url,
-            type: "POST",
-            data: form_data,
-            success: function (data) {
-                let listAcc = JSON.parse(JSON.parse(data).listAccount);
-                let isAdmin = JSON.parse(data).isAdmin;
-                for (let i = 0; i < listAcc.length; i++) {
-                    re += ` <tr>
+        let reRoles;
+        Swal.fire({
+            title: 'Bạn có chắc chắn muốn sửa thông tin tài khoản này không?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No'
+        }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: url,
+                        type: "POST",
+                        data: form_data,
+                        success: function (data) {
+                            let listAcc = JSON.parse(JSON.parse(data).listAccount);
+                            let isAdmin = JSON.parse(data).isAdmin;
+                            for (let i = 0; i < listAcc.length; i++) {
+                                reRoles = "";
+                                for (let j = 0; j < listAcc[i].roles.length; j++) {
+                                    reRoles += listAcc[i].roles[j].name;
+                                    if (j < listAcc[i].roles.length - 1) {
+                                        reRoles += ", ";
+                                    }
+                                }
+                                re += ` <tr>
                                 <td width="10"><input type="checkbox" name="check1" value="1"></td>
                                 <td >` + listAcc[i].id + `</td>
                                 <td>` + listAcc[i].accountName + `</td>
                                 <td>` + listAcc[i].fullName + `</td>
                                 <td><img class="img-card-person" src="${pageContext.request.contextPath}/admin/assets/images/avatar-admin.png" alt=""></td>
                                 <td>` + listAcc[i].phone + `</td>
+                                <td>
+                                        ` + reRoles + `
+                                </td>
                                 <td>` + listAcc[i].address + `</td>
                                 <td>` + listAcc[i].email + `</td>
                                 <td class="table-td-center">
@@ -229,20 +258,27 @@ MODAL
                                     </button>
                                 </td>
                             </tr>`
+                            }
+                            document.getElementById("renderListAccount").innerHTML = re;
+                            Swal.fire('Sửa tài khoản thành công', '', 'success');
+                        }
+                        ,
+                        error: function (xhr) {
+                            console.log(xhr.statusText);
+                        }
+                    });
+                } else if (result.isDenied) {
+                    Swal.fire('Hủy sửa tài khoản', '', 'info');
                 }
-                console.log(re);
-                document.getElementById("renderListAccount").innerHTML = re;
-                Swal.fire('Sửa tài khoản thành công', '', 'success');
-            },
-            error: function (xhr) {
-                console.log(xhr.statusText);
             }
-        });
+        )
     }
+
     //Modal
     function editAccount(id) {
         let uid = id;
         let re = "";
+        let roleRe = "";
         $.ajax({
             url: "${pageContext.request.contextPath}/admin-user/UserUpdate",
             type: "GET",
@@ -251,6 +287,15 @@ MODAL
             },
             success: function (data) {
                 let acc = JSON.parse(data).account;
+                let roles = JSON.parse(data).roles;
+                roleRe = `
+  <label class="control-label">Loại tài khoản</label>
+  <select class="form-control" style="height: 70px" name="role" multiple>
+    <option value="1">Khách hàng</option>
+    <option value="2">Nhân viên</option>
+    <option value="3">Quản lý</option>
+  </select>
+`
                 re = `<div class="modal fade show" id="ModalUP" style="display: block">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -286,11 +331,14 @@ MODAL
                     </div>
                     <div class="form-group col-md-6">
                         <label class="control-label">Mật khẩu</label>
-                       <input class="form-control" name="user-password" type="password" value="` + acc.password + `">
+                       <input class="form-control" name="user-password" type="password" value="` + acc.password + `" readonly>
                     </div>
                     <div class="form-group col-md-6">
                         <label class="control-label">Đỉa chỉ</label>
                         <input class="form-control" name="user-address" type="text" value="` + acc.address + `">
+                    </div>
+                    <div class="form-group col-md-6">
+                        ` + roleRe + `
                     </div>
                 </div>
                 <BR>
@@ -300,7 +348,7 @@ MODAL
                 <BR>
                 <BR>
                 <button class="btn btn-save" type="button" onclick="submitForm(this)">Lưu lại</button>
-                <a class="btn btn-cancel" onclick="closeModal()" href="#">Hủy bỏ</a>
+                <a class="btn btn-cancel" onclick="closeModal()" href="#">Thoát</a>
                 <BR>
             </div>
 </form>
@@ -311,6 +359,16 @@ MODAL
     </div>
 </div>`
                 document.getElementById("showEdit").innerHTML = re;
+                // Lấy thẻ select
+                var select = document.querySelector('select[name="role"]');
+
+                // Đặt thuộc tính selected cho từng tùy chọn dựa trên mảng roles
+                roles.forEach(function (role) {
+                    var option = select.querySelector('option[value="' + role.id + '"]');
+                    if (option) {
+                        option.selected = true;
+                    }
+                });
             },
             error: function (data) {
                 console.log(data)
@@ -322,6 +380,7 @@ MODAL
         let modal = document.getElementById("showEdit");
         modal.innerHTML = '';
     }
+
     // xuất file excel
     $("#exportButton").click(function () {
         $("#sampleTable").table2excel({
@@ -331,9 +390,10 @@ MODAL
         });
     });
 
-    function deleteUser(id,index) {
+    function deleteUser(id, index) {
         let uid = id;
         let re = "";
+        let reRoles;
         Swal.fire({
             title: 'Bạn có chắc chắn muốn xóa tài khoản này không?',
             icon: 'warning',
@@ -355,6 +415,13 @@ MODAL
                         let listAcc = JSON.parse(JSON.parse(data).listAccount);
                         let isAdmin = JSON.parse(data).isAdmin;
                         for (let i = 0; i < listAcc.length; i++) {
+                            reRoles = "";
+                            for (let j = 0; j < listAcc[i].roles.length; j++) {
+                                reRoles += listAcc[i].roles[j].name;
+                                if (j < listAcc[i].roles.length - 1) {
+                                    reRoles += ", ";
+                                }
+                            }
                             re += ` <tr>
                                 <td width="10"><input type="checkbox" name="check1" value="1"></td>
                                 <td >` + listAcc[i].id + `</td>
@@ -362,6 +429,7 @@ MODAL
                                 <td>` + listAcc[i].fullName + `</td>
                                 <td><img class="img-card-person" src="${pageContext.request.contextPath}/admin/assets/images/avatar-admin.png" alt=""></td>
                                 <td>` + listAcc[i].phone + `</td>
+                                <td>` + reRoles + `</td>
                                 <td>` + listAcc[i].address + `</td>
                                 <td>` + listAcc[i].email + `</td>
                                 <td class="table-td-center">
@@ -375,7 +443,6 @@ MODAL
                                 </td>
                             </tr>`
                         }
-                        console.log(re);
                         document.getElementById("renderListAccount").innerHTML = re;
                         // console.log(result)
                         Swal.fire('Xóa user thành công', '', 'success');

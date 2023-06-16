@@ -58,7 +58,6 @@ public class AuthorizationFilter implements Filter {
                     if (permission.getAction().equalsIgnoreCase("read") && permission.getResource().getUrl().equalsIgnoreCase(requestedResource)) {
                         resourceName = true;
                     }
-
                 }
                 if (resourceName) {
                     chain.doFilter(request, response);

@@ -29,5 +29,22 @@
                 }
             });
         }
+        if(type==="update" && ${sessionScope.acc.id} === idUser){
+            $.ajax({
+                url : "${pageContext.request.contextPath}/client/NotifyAccount",
+                type : "post",
+                data : {
+                    idUser : idUser,
+                },
+                success : function(data) {
+                    Swal.fire('Tài khoản của bạn có một số thay đổi vui lòng đăng nhập lại ', '', 'success').then(()=>{
+                        window.location.href = "${pageContext.request.contextPath}/IndexControl";
+                    });
+                },
+                error : function(data) {
+                    console.log("error")
+                }
+            });
+        }
     });
 </script>
