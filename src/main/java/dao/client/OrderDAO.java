@@ -72,9 +72,19 @@ public class OrderDAO {
         return me.withHandle(handle -> handle.createQuery(query).bind(0, idProduct).bind(1, idSizeColor).mapTo(Integer.class).findFirst().orElse(null))
                 ;
     }
+    public static int checkDiscount(String reductionCode) {
+        Jdbi me = DBContext.me();
+        String query = "SELECT percentage FROM discounts WHERE codeDiscount = ? AND status = 1 AND NOW() BETWEEN startTime AND endTime";
+        return me.withHandle(handle -> handle.createQuery(query)
+                .bind(0, reductionCode)
+                .mapTo(Integer.class)
+                .findFirst()
+                .orElse(0));
+    }
+
 
     public static void main(String[] args) {
-        System.out.println(deleteOrder(67));
+        System.out.println(checkDiscount("BF2023"));
     }
 
 }

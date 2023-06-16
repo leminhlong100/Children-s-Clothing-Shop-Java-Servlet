@@ -14,19 +14,7 @@ import entity.View;
 public class IndexDAO {
 	public static List<Product> getSellProduct() {
 		Jdbi me = DBContext.me();
-		String query ="SELECT products.id,products.nameProduct,product_prices.listPrice,discount,discountPrice FROM products join product_prices\n" +
-				"on products.id = product_prices.idProduct\n" +
-				" WHERE id IN (\n" +
-				"    SELECT idProduct\n" +
-				"    FROM order_details\n" +
-				"    JOIN orders ON order_details.idOrder = orders.id\n" +
-				"    WHERE orders.statusPay = 'paid' and isActive =1\n" +
-				"    AND YEAR(orders.createAt) = YEAR(CURRENT_DATE())\n" +
-				"    AND MONTH(orders.createAt) = MONTH(CURRENT_DATE())\n" +
-				"    GROUP BY idProduct\n" +
-				"    ORDER BY SUM(quantity) DESC\n" +
-				"    \n" +
-				")LIMIT 4;\n";
+		String query ="SELECT products.id,products.nameProduct,product_prices.listPrice,discount,discountPrice FROM products join product_prices on products.id = product_prices.idProduct WHERE id IN (SELECT idProduct FROM order_details JOIN orders ON order_details.idOrder = orders.id WHERE orders.status = 'Hoàn thành'  AND YEAR(orders.createAt) = YEAR(CURRENT_DATE()) AND MONTH(orders.createAt) = MONTH(CURRENT_DATE()) GROUP BY idProduct ORDER BY SUM(quantity) DESC) LIMIT 4 ; ";
 		return me.withHandle(handle -> handle.createQuery(query)
 				.map((rs, ctx) -> new Product(rs.getInt("id"), rs.getString("nameProduct"),
 						rs.getDouble("listPrice"), UtilDAO.findListImageByIdProduct(rs.getInt("id")),
@@ -36,19 +24,7 @@ public class IndexDAO {
 
 	public static List<Product> getSellProductTwo() {
 		Jdbi me = DBContext.me();
-		String query ="SELECT products.id,products.nameProduct,product_prices.listPrice,discount,discountPrice FROM products join product_prices\n" +
-				"on products.id = product_prices.idProduct\n" +
-				" WHERE id IN (\n" +
-				"    SELECT idProduct\n" +
-				"    FROM order_details\n" +
-				"    JOIN orders ON order_details.idOrder = orders.id\n" +
-				"    WHERE orders.statusPay = 'paid' and isActive =1\n" +
-				"    AND YEAR(orders.createAt) = YEAR(CURRENT_DATE())\n" +
-				"    AND MONTH(orders.createAt) = MONTH(CURRENT_DATE())\n" +
-				"    GROUP BY idProduct\n" +
-				"    ORDER BY SUM(quantity) DESC\n" +
-				"    \n" +
-				")LIMIT 4,4;\n";
+		String query ="SELECT products.id,products.nameProduct,product_prices.listPrice,discount,discountPrice FROM products join product_prices on products.id = product_prices.idProduct WHERE id IN (SELECT idProduct FROM order_details JOIN orders ON order_details.idOrder = orders.id WHERE orders.status = 'Hoàn thành'  AND YEAR(orders.createAt) = YEAR(CURRENT_DATE()) AND MONTH(orders.createAt) = MONTH(CURRENT_DATE()) GROUP BY idProduct ORDER BY SUM(quantity) DESC) LIMIT 4,4 ; ";
 		return me.withHandle(handle -> handle.createQuery(query)
 				.map((rs, ctx) -> new Product(rs.getInt("id"), rs.getString("nameProduct"),
 						rs.getDouble("listPrice"), UtilDAO.findListImageByIdProduct(rs.getInt("id")),
@@ -146,7 +122,7 @@ public class IndexDAO {
 
 
 	public static void main(String[] args) {
-		System.out.println(getOutstandingProduct());
+		System.out.println(getSellProductTwo());
 //		System.out.println(getSellProductTwo());
 
 	}
