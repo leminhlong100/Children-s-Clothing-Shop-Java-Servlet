@@ -23,7 +23,7 @@ public class LoginAdminDAO {
         if (account != null) {
             account.setRoles(AuthDAO.getRoles(account.getId()));
             account.setResources(AuthDAO.getResources(account.getId()));
-            account.setPermissions(AuthDAO.getPermissions(account.getId()));
+//            account.setPermissions(AuthDAO.getPermissions(account.getId()));
         }
         return account;
     }

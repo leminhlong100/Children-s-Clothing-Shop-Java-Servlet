@@ -198,7 +198,7 @@
                     success: function (data) {
                         let isSuc = JSON.parse(data).isSuc;
                         if (isSuc) {
-                            $(tdArray[7]).html('<span class="badge bg-primary"">Đã xác nhận</span>');
+                            $(tdArray[8 ]).html('<span class="badge bg-primary"">Đã xác nhận</span>');
                             $(parent).html('<button class="btn btn-primary btn-sm register" type="button"  onclick="transport(' + orderId + ',this)" title="Đăng ký vận chuyển"><i class="fa fa-truck"></i></button>' +
                                 ' <button class="btn btn-primary btn-sm cancel" onclick="deny(' + orderId + ',this)" type="button" title="Hủy đơn hàng"><i class="fas fa-times"></i></button>')
                         }
@@ -241,7 +241,7 @@
                         console.log(data)
                         let isSuc = JSON.parse(data).isSuc;
                         if (isSuc) {
-                            $(tdArray[7]).html('<span class="badge bg-info"">Đang vận chuyển</span>');
+                            $(tdArray[8]).html('<span class="badge bg-info"">Đang vận chuyển</span>');
                             $(parent).html( ' <button class="btn btn-primary btn-sm cancel" type="button" onclick="success(' + orderId + ',this)" title="Hoàn thành đơn hàng"><i class="fas fa-check-double"></i></button>'+' <button class="btn btn-primary btn-sm cancel" onclick="deny(' + orderId + ',this)" type="button" title="Hủy đơn hàng"><i class="fas fa-times"></i></button>'
                            )
                         }
@@ -283,7 +283,7 @@
                     success: function (data) {
                         let isSuc = JSON.parse(data).isSuc;
                         if (isSuc) {
-                            $(tdArray[7]).html('<span class="badge bg-danger"">Đã hủy</span>');
+                            $(tdArray[8]).html('<span class="badge bg-danger"">Đã hủy</span>');
                             $(parent).html('<button class="btn btn-primary btn-sm cancel" type="button" onclick="back(' + orderId + ',this)" title="Khôi phục đơn hàng"><i class="fa fa-repeat"></i></button>');
                         }
                         Swal.fire('Hủy đơn hàng thành công', '', 'success');
@@ -323,7 +323,7 @@
                     success: function (data) {
                         let isSuc = JSON.parse(data).isSuc;
                         if (isSuc) {
-                            $(tdArray[7]).html('<span class="badge bg-primary"">Đã xác nhận</span>');
+                            $(tdArray[8]).html('<span class="badge bg-primary"">Đã xác nhận</span>');
                             $(parent).html('<button class="btn btn-primary btn-sm register" type="button"  onclick="transport(' + orderId + ',this)" title="Đăng ký vận chuyển"><i class="fa fa-truck"></i></button>' +
                                 ' <button class="btn btn-primary btn-sm cancel" onclick="deny(' + orderId + ',this)" type="button" title="Hủy đơn hàng"><i class="fas fa-times"></i></button>')
                         }
@@ -364,7 +364,7 @@
                     success: function (data) {
                         let isSuc = JSON.parse(data).isSuc;
                         if (isSuc) {
-                            $(tdArray[7]).html('<span class="badge bg-success"">Hoàn thành</span>');
+                            $(tdArray[8]).html('<span class="badge bg-success"">Hoàn thành</span>');
                             $(parent).html('')
                         }
                         Swal.fire('Hoàn thành đơn hàng thành công', '', 'success');
