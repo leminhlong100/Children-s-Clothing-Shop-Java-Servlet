@@ -186,14 +186,14 @@
 
                                             <tr class="total-line total-line--subtotal">
                                                 <th class="total-line__name">Tạm tính</th>
-                                                <td class="total-line__price">${order.totalPrice}₫</td>
+                                                <td class="total-line__price">${requestScope.order.totalPrice-requestScope.ship}₫</td>
                                             </tr>
 
                                             <tr class="total-line total-line--shipping-fee">
                                                 <th class="total-line__name">Phí vận chuyển</th>
                                                 <td class="total-line__price">
 
-                                                    40.000₫
+                                                    ${requestScope.ship}
 
                                                 </td>
                                             </tr>
@@ -209,7 +209,7 @@
                                                     <span class="payment-due__label-total">Tổng cộng</span>
                                                 </th>
                                                 <td class="total-line__price">
-                                                    <span class="payment-due__price">${order.totalPrice+40000}₫</span>
+                                                    <span class="payment-due__price">${requestScope.order.totalPrice}₫</span>
                                                 </td>
                                             </tr>
                                             </tbody>

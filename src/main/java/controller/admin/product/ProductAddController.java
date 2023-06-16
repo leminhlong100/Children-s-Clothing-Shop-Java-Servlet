@@ -1,64 +1,74 @@
 package controller.admin.product;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
+import java.io.*;
+import java.util.*;
+import javax.servlet.*;
+import javax.servlet.annotation.*;
+import javax.servlet.http.*;
+import dao.admin.*;
+import entity.*;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
+import static jdk.jpackage.internal.IOUtils.getFileName;
 
-import dao.admin.ProductAdminDAO;
-import entity.Category;
-import entity.Product;
-
-@MultipartConfig
-@WebServlet("/ProductAddController")
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 *2, //2MB
+				maxFileSize = 1024 * 1024 * 10, //10MB
+				maxRequestSize = 1024 * 1024 * 50 ) // 50MB
+@WebServlet("/admin-products/ProductAddController")
 public class ProductAddController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static final String UPLOAD_DIR = "upload"; // file save image
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		List<Category> cateList = ProductAdminDAO.getListCategory();
-		request.setAttribute("catelist", cateList);
-		request.getRequestDispatcher("/admin/addproduct.jsp").forward(request, response);
+		response.sendRedirect(request.getContextPath() + "/admin/admin-add-product.jsp");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.setCharacterEncoding("utf-8");
-		response.setContentType("text/html;charset=UTF-8");
-		String product_cate = request.getParameter("product-cate");
-		String product_name = request.getParameter("product-name");
-		String product_price = request.getParameter("product-price");
-		String product_title = request.getParameter("product-title");
-		String product_desc = request.getParameter("product-desc");
-		String sum_Product = request.getParameter("sum-Product");
-		String present_Product = request.getParameter("present-Product");
-		String product_oldPrice = request.getParameter("product-oldPrice");
-//		Product product = new Product(0, product_name, null, Double.parseDouble(product_price), product_title,
-//				product_desc, Double.parseDouble(product_oldPrice), Integer.parseInt(product_cate),
-//				Integer.parseInt(sum_Product), Integer.parseInt(present_Product));
+	try{
+		//Get imformation from form
 
-//		Part part = request.getPart("product-image");
-//		String realPath = request.getServletContext().getRealPath("/image");
-//		String filename = Path.of(part.getSubmittedFileName()).getFileName().toString();
-//
-//		if (!Files.exists(Path.of(realPath))) {
-//			Files.createDirectory(Path.of(realPath));
-//		}
-//		part.write(realPath + "/" + filename);
-//		product.setImage("./image/" + filename);
-//		ProductAdminDAO.insertProduct(product);
-//		HttpSession session = request.getSession();
-//		String sessionID = ";jsessionid="+session.getId();
-//		response.sendRedirect(request.getContextPath() + "/ProductListController"+sessionID);
+		//Save informmation in CSDL
+
+		//Save images
+//		String uploadPath = getServletContext().getRealPath("/images");
+		String uploadPath = "D:\\TTLTW\\src\\main\\webapp\\images";
+		System.out.println(uploadPath);
+		File uploadDir = new File(uploadPath);
+		if(!uploadDir.exists()){
+			uploadDir.mkdir();
+		}
+
+		//Save main image
+		Part mainImagePart = request.getPart(("mainImage"));
+		String mainImageFileName = "main_" + System.currentTimeMillis() + "_" + getFileName(mainImagePart);
+		mainImagePart.write(uploadPath + File.separator + mainImageFileName);
+
+		//Save description of product
+		Collection<Part> descriptionImageParts = request.getParts();
+		for(Part part : descriptionImageParts){
+			if(part.getName().equals("descriptionImages")){
+				String descriptionImageFileName = System.currentTimeMillis() + "_" + getFileName(part);
+				part.write(uploadPath + File.separator + descriptionImageFileName);
+			}
+		}
+
+		//Send redirect when save success
+		response.sendRedirect(request.getContextPath() + "/admin-products/ProductListController");
+	}catch (Exception e){
+		e.printStackTrace();
+	}
+	}
+
+	private String getFileName(Part part) {
+		String contentDisp = part.getHeader("content-disposition");
+		String[] tokens = contentDisp.split(";");
+		for (String token : tokens) {
+			if (token.trim().startsWith("filename")) {
+				return token.substring(token.indexOf("=") + 2, token.length() - 1);
+			}
+		}
+		return "";
 	}
 
 }
