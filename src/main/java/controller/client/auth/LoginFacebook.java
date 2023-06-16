@@ -14,7 +14,7 @@ import java.io.IOException;
  * Servlet implementation class LoginFacebook
  */
 @WebServlet("/client/LoginFacebook")
-public class LoginFacebook extends HttpServlet {
+public class  LoginFacebook extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

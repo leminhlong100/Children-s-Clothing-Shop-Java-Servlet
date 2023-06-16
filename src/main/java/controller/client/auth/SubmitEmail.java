@@ -48,7 +48,7 @@ public class SubmitEmail extends HttpServlet {
 			request.getRequestDispatcher("/client/VerifyEmail.jsp").forward(request, response);
 		} else if (!checkCustommerExits && !checkCustommerExitss) {
 			AuthDAO.signUp(customer.getAccountName(), customer.getPassword(), customer.getFullName(), customer.getEmail(),
-					customer.getEmail(), customer.getPhone());
+					customer.getAddress(), customer.getPhone());
 			request.getRequestDispatcher("/client/Login.jsp").forward(request, response);
 		}
 

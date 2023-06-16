@@ -216,18 +216,18 @@ public class ProductAdminDAO {
 
     }
     public static int quantityofsize(Product p){
-            Jdbi me = DBContext.me();
-            String query="select i.quantity from size_color_products s join inventorys i \n" +
-                    "on i.id_size_color = s.id where i.idProduct = ? and i.id_size_color =?";
-            return me.withHandle(handle -> handle.createQuery(query).bind(0,p.getId()).bind(1,p.getInventory())).mapTo(Integer.class).one();
+        Jdbi me = DBContext.me();
+        String query="select i.quantity from size_color_products s join inventorys i \n" +
+                "on i.id_size_color = s.id where i.idProduct = ? and i.id_size_color =?";
+        return me.withHandle(handle -> handle.createQuery(query).bind(0,p.getId()).bind(1,p.getInventory())).mapTo(Integer.class).one();
     }
 
-        public static int updatecolor (SizeColorProduct s){
-            Jdbi me = DBContext.me();
-            String query = "update size_color_products set color = ? where idProduct = ? and id = ?";
-            return me.withHandle(handle -> handle.createUpdate(query).bind(0,s.getColor()).bind(1,s.getIdProduct()).bind(2,s.getId()).execute());
-        }
-        public static int updatenumber(Inventory i){
+    public static int updatecolor (SizeColorProduct s){
+        Jdbi me = DBContext.me();
+        String query = "update size_color_products set color = ? where idProduct = ? and id = ?";
+        return me.withHandle(handle -> handle.createUpdate(query).bind(0,s.getColor()).bind(1,s.getIdProduct()).bind(2,s.getId()).execute());
+    }
+    public static int updatenumber(Inventory i){
         Jdbi me = DBContext.me();
         String query = "update inventorys set quantity = ? where id_size_color = ? and idProduct=?";
         return me.withHandle(handle -> handle.createUpdate(query).bind(0,i.getQuantity()).bind(1,i.getId_size_color()).bind(2,i.getIdProduct()).execute());

@@ -10,7 +10,7 @@
   <!-- Navbar Right Menu-->
   <ul class="app-nav">
     <!-- User Menu-->
-    <li><a class="app-nav__item" href="${pageContext.request.contextPath}/admin-logout"><i class='bx bx-log-out bx-rotate-180'></i> </a>
+    <li><a class="app-nav__item" href="${pageContext.request.contextPath}/admin/admin-logout"><i class='bx bx-log-out bx-rotate-180'></i> </a>
 
     </li>
   </ul>
@@ -38,9 +38,6 @@
     </li>
     <li><a class="app-menu__item" href="${pageContext.request.contextPath}/admin-bill/BillProductListController"><i class='app-menu__icon bx bx-task'></i><span
             class="app-menu__label">Quản lý đơn hàng</span></a></li>
-    <li><a class="app-menu__item" href="${pageContext.request.contextPath}/admin/admin-banned-manager.jsp"><i class='app-menu__icon bx bx-run'></i><span
-            class="app-menu__label">Quản lý nội bộ
-          </span></a></li>
     <li><a class="app-menu__item" href="${pageContext.request.contextPath}/admin-products/RevenueShowController"><i
             class='app-menu__icon bx bx-pie-chart-alt-2'></i><span class="app-menu__label">Báo cáo doanh thu</span></a>
     </li>
