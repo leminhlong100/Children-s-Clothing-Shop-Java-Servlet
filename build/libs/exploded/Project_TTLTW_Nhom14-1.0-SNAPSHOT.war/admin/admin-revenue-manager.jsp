@@ -1,3 +1,5 @@
+<%@ page import="java.util.Date" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -24,7 +26,7 @@
     <div class="col-md-12">
       <div class="app-title">
         <ul class="app-breadcrumb breadcrumb">
-          <li class="breadcrumb-item"><a href="#"><b>Báo cáo doanh thu </b></a></li>
+          <li class="breadcrumb-item"><a href="#"><b>Báo cáo doanh thu tháng ${requestScope.thisMonth}</b></a></li>
         </ul>
         <div id="clock"></div>
       </div>
@@ -50,7 +52,7 @@
     <div class="col-md-6 col-lg-3">
       <div class="widget-small warning coloured-icon"><i class='icon fa-3x bx bxs-shopping-bag-alt'></i>
         <div class="info">
-          <h4>Tổng đơn hàng</h4>
+          <h4>Tổng đơn hàng thành công</h4>
           <p><b>${requestScope.sumOrder} đơn hàng</b></p>
         </div>
       </div>
@@ -77,7 +79,7 @@
       <div class="widget-small info coloured-icon"><i class='icon fa-3x bx bxs-user-badge' ></i>
         <div class="info">
           <h4>Nhân viên mới</h4>
-          <p><b>3 nhân viên</b></p>
+          <p><b>${requestScope.sumNewMembers} nhân viên</b></p>
         </div>
       </div>
     </div>
@@ -211,7 +213,7 @@
   <div class="row">
     <div class="col-md-6">
       <div class="tile">
-        <h3 class="tile-title">sẢN PHẨM BÁN RA HÀNG THÁNG</h3>
+        <h3 class="tile-title">SẢN PHẨM BÁN RA HÀNG THÁNG</h3>
         <div class="embed-responsive embed-responsive-16by9">
           <canvas class="embed-responsive-item" id="lineChart"></canvas>
         </div>
@@ -244,13 +246,13 @@
   var data = {
     labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
     datasets: [{
-      label: "Dữ liệu",
-      fillColor: "rgba(255, 255, 255, 0.158)",
-      strokeColor: "black",
+      label: 'Sản phẩm',
+      fillColor: "rgba(2,50,130,0.65)",
+      strokeColor: "rgba(2,50,130,0.65)",
       pointColor: "rgb(220, 64, 59)",
       pointStrokeColor: "#fff",
-      pointHighlightFill: "green",
-      pointHighlightStroke: "green",
+      pointHighlightFill: "yellow",
+      pointHighlightStroke: "yellow",
       data: listSumOrderByMonth
     },
     ]
@@ -260,13 +262,13 @@
   var data1 = {
     labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
     datasets: [{
-      label: "Dữ liệu đầu tiên",
-      fillColor: "rgba(255, 255, 255, 0.158)",
-      strokeColor: "black",
+      label: "Dữ liệu",
+      fillColor: "rgb(120,227,184)",
+      strokeColor: "Green",
       pointColor: "rgb(220, 64, 59)",
       pointStrokeColor: "#fff",
-      pointHighlightFill: "green",
-      pointHighlightStroke: "green",
+      pointHighlightFill: "yellow",
+      pointHighlightStroke: "yellow",
       data: listSumMoneyByMonth
     },
     ]

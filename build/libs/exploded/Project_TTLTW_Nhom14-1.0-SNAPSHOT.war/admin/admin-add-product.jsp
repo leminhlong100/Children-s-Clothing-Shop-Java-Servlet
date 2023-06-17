@@ -134,34 +134,16 @@
               <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#adddanhmuc"><i
                       class="fas fa-folder-plus"></i> Thêm danh mục</a>
             </div>
-            <div class="col-sm-2">
-              <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#addtinhtrang"><i
-                      class="fas fa-folder-plus"></i> Thêm tình trạng</a>
-            </div>
           </div>
           <form class="row" enctype="multipart/form-data" method="post"
                 action="${pageContext.request.contextPath}/admin-products/ProductAddController">
             <div class="form-group col-md-3">
-              <label class="control-label">Mã sản phẩm </label>
-              <input class="form-control" type="number" placeholder="">
-            </div>
-            <div class="form-group col-md-3">
               <label class="control-label">Tên sản phẩm</label>
               <input class="form-control" type="text">
             </div>
-
-
             <div class="form-group  col-md-3">
               <label class="control-label">Số lượng</label>
               <input class="form-control" type="number">
-            </div>
-            <div class="form-group col-md-3 ">
-              <label for="exampleSelect1" class="control-label">Tình trạng</label>
-              <select class="form-control" id="exampleSelect1">
-                <option>-- Chọn tình trạng --</option>
-                <option>Còn hàng</option>
-                <option>Hết hàng</option>
-              </select>
             </div>
             <div class="form-group col-md-3">
               <label for="exampleSelect2" class="control-label">Danh mục</label>

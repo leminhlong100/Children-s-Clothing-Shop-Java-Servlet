@@ -1,14 +1,15 @@
 package controller.admin.product;
 
-import java.io.*;
-import java.util.*;
-import javax.servlet.*;
-import javax.servlet.annotation.*;
-import javax.servlet.http.*;
-import dao.admin.*;
-import entity.*;
-
-import static jdk.jpackage.internal.IOUtils.getFileName;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
+import java.io.File;
+import java.io.IOException;
+import java.util.Collection;
 
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 *2, //2MB
 				maxFileSize = 1024 * 1024 * 10, //10MB
