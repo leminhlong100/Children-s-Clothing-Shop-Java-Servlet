@@ -19,26 +19,39 @@ public class RevenueShowController extends HttpServlet {
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
+        Map<Integer , List<OrderDetail>> map = new HashMap<>();
 
+        // Sum accounts
         int sumAccount = AccountDAO.getTotalAccount();
         request.setAttribute("sumAccount", sumAccount);
 
+        // Sum product isActive
         int sumProduct = ProductAdminDAO.getTotalActiveProduct();
         request.setAttribute("sumProduct", sumProduct);
 
+        // Sum success orders
         int sumOrder = BillAdminDAO.getTotalAcceptProduct();
         request.setAttribute("sumOrder", sumOrder);
 
+        // Sum cancel orders
         int sumOrderCancel = BillAdminDAO.getTotalCancelProduct();
         request.setAttribute("sumOrderCancel", sumOrderCancel);
 
+        // Sum price in this month
         int sumPrice = BillAdminDAO.getTotalPrice();
         request.setAttribute("sumPrice", sumPrice);
 
+        // Get this month
+        int thisMonth = BillAdminDAO.thisMonth();
+        request.setAttribute("thisMonth", thisMonth);
+
+        // Sum new members
+        int sumNewMembers = BillAdminDAO.sumNewMembers();
+        request.setAttribute("sumNewMembers", sumNewMembers);
+
+        // Sum out of stock
         int sumOutOfStock = ProductAdminDAO.getTotalOutOfStock();
         request.setAttribute("sumOutOfStock", sumOutOfStock);
-
-        Map<Integer , List<OrderDetail>> map = new HashMap<>();
 
         //take detail orders
         List<Order> listOrder = BillAdminDAO.getListOrderSucess();
@@ -56,6 +69,7 @@ public class RevenueShowController extends HttpServlet {
         //Take products out of stock
         List<Product> listProductOOS = ProductAdminDAO.getProductOOS();
         request.setAttribute("listProductOOS", listProductOOS);
+        System.out.println(listProductOOS);
 
         //Take sum orders every month
         List<Integer> ordersMonth = new ArrayList<>();

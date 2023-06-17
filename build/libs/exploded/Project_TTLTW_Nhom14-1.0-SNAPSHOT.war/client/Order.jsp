@@ -1,3 +1,4 @@
+<%@ page import="util.API" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -7,7 +8,7 @@
 <!DOCTYPE html>
 <html class="floating-labels">
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="HaLoShop - Thanh toán đơn hàng"/>
@@ -17,7 +18,8 @@
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/fontawesome.min.css"
           integrity="sha384-QYIZto+st3yW+o8+5OHfT6S482Zsvz2WfOzpFSXMF9zqeLcFV0/wlZpMtyFcZALm" crossorigin="anonymous">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}//client/assets/css/checkout.vendor.min.css?v=4fcd86c">
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}//client/assets/css/checkout.vendor.min.css?v=4fcd86c">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/client/assets/css/checkout.min.css?v=17ca415">
     <script src="//bizweb.dktcdn.net/assets/themes_support/libphonenumber-v3.2.30.min.js?1564585558451"></script>
     <script src="${pageContext.request.contextPath}/client/assets/js/checkout.vendor.min.js?v=11006c9"></script>
@@ -67,7 +69,6 @@
 					<span class="order-summary-toggle__text expandable">
 						Đơn hàng (${totalQuantity} sản phẩm)
 					</span>
-					<span class="order-summary-toggle__total-recap" data-bind="getTextTotalPrice()"></span>
 				</span>
 			</span>
     </button>
@@ -76,8 +77,7 @@
 
 <div data-tg-refresh="checkout" id="checkout" class="content">
     <form method="post"
-          action="${pageContext.request.contextPath}/cart/AddBillControl"
-    >
+          action="${pageContext.request.contextPath}/cart/AddBillControl">
         <input type="hidden" name="_method" value="patch"/>
         <div class="wrap">
             <main class="main">
@@ -85,7 +85,7 @@
                     <div class="logo logo--left">
 
                         <h1 class="shop__name">
-                            <a href="/">Haloshop</a>
+                            <a href="${pageContext.request.contextPath}/IndexControl">Haloshop</a>
                         </h1>
 
                     </div>
@@ -97,8 +97,6 @@
                                 <div class="section__header">
                                     <div class="layout-flex">
                                         <h2 class="section__title layout-flex__item layout-flex__item--stretch">
-                                            <i class="fa fa-id-card-o fa-lg section__title--icon hide-on-desktop"></i>
-
                                             Thông tin nhận hàng
 
                                         </h2>
@@ -115,7 +113,7 @@
                                                     Email
                                                 </label>
                                                 <input name="email" id="email"
-                                                       type="email" class="field__input"
+                                                       type="email" class="field__input" required
                                                        data-bind="email" value="${sessionScope.acc.email}">
                                             </div>
 
@@ -127,7 +125,7 @@
                                             <div class="field__input-wrapper">
                                                 <label for="billingName" class="field__label">Họ và tên</label>
                                                 <input name="billingName" id="billingName"
-                                                       type="text" class="field__input"
+                                                       type="text" class="field__input" required
                                                        data-bind="billing.name" value="${sessionScope.acc.fullName}">
                                             </div>
 
@@ -141,7 +139,7 @@
                                                     Số điện thoại (tùy chọn)
                                                 </label>
                                                 <input name="billingPhone" id="billingPhone"
-                                                       type="tel" class="field__input"
+                                                       type="tel" class="field__input" REQUIRED
                                                        data-bind="billing.phone" value="${sessionScope.acc.phone}">
 
                                             </div>
@@ -156,7 +154,7 @@
                                                     Địa chỉ (tùy chọn)
                                                 </label>
                                                 <input name="billingAddress" id="billingAddress"
-                                                       type="text" class="field__input"
+                                                       type="text" class="field__input" required
                                                        data-bind="billing.address" value="${sessionScope.acc.address }">
                                             </div>
 
@@ -170,15 +168,13 @@
                                                         size="1"
                                                         class="field__input field__input--select"
                                                         required="">
-                                                    <option value="">Tỉnh / Thành phố</option>
-
+                                                    <option value="" selected>Tỉnh / Thành phố</option>
                                                 </select>
                                             </div>
 
                                         </div>
 
-                                        <div class="field field--show-floating-label "
-                                        >
+                                        <div class="field field--show-floating-label ">
                                             <div class="field__input-wrapper field__input-wrapper--select2">
                                                 <label for="billingDistrict" class="field__label">
                                                     Quận huyện (tùy chọn)
@@ -188,12 +184,26 @@
                                                         size="1"
                                                         class="field__input field__input--select"
                                                         required="">
-
                                                     <option value="">Quận / Huyện</option>
 
                                                 </select>
                                             </div>
+                                        </div>
+                                        <div class="field field--show-floating-label ">
+                                            <div class="field__input-wrapper field__input-wrapper--select2">
+                                                <label for="billingWard" class="field__label">
+                                                    Xã / Thị trấn (tùy chọn)
+                                                </label>
+                                                <select name="calc_shipping_ward"
+                                                        id="billingWard"
+                                                        size="1"
+                                                        class="field__input field__input--select"
+                                                        required="">
 
+                                                    <option value="">Xã / Thị trấn</option>
+
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -222,7 +232,6 @@
                                 <div class="section__header">
                                     <div class="layout-flex">
                                         <h2 class="section__title layout-flex__item layout-flex__item--stretch">
-                                            <i class="fa fa-truck fa-lg section__title--icon hide-on-desktop"></i>
                                             Vận chuyển
                                         </h2>
                                     </div>
@@ -240,8 +249,7 @@
                                     <div class="alert alert-retry alert--danger hide"
                                          data-bind-event-click="handleShippingMethodErrorRetry()"
                                          data-bind-show="!isLoadingShippingMethod && !isAddressSelecting && isLoadingShippingError">
-                                        <span data-bind="loadingShippingErrorMessage"></span> <i
-                                            class="fa fa-refresh"></i>
+                                        <span data-bind="loadingShippingErrorMessage"></span>
                                     </div>
 
 
@@ -263,8 +271,8 @@
 														</span>
                                                     <span class="radio__label__accessory">
 
-															<span class="content-box__emphasis price">
-																40.000₫
+															<span id="spanShipId" class="content-box__emphasis price">
+																Đang tính
 															</span>
 														</span>
                                                 </label>
@@ -284,7 +292,6 @@
                                 <div class="section__header">
                                     <div class="layout-flex">
                                         <h2 class="section__title layout-flex__item layout-flex__item--stretch">
-                                            <i class="fa fa-credit-card fa-lg section__title--icon hide-on-desktop"></i>
                                             Thanh toán
                                         </h2>
                                     </div>
@@ -300,7 +307,7 @@
                                                     <input name="paymentMethod" id="paymentMethod-120771"
                                                            type="radio" class="input-radio"
                                                            data-bind="paymentMethod"
-                                                           value="120771"
+                                                           value="120771" required
                                                     >
                                                 </div>
                                                 <label for="paymentMethod-120771" class="radio__label">
@@ -324,9 +331,7 @@
                         </div>
                     </article>
                     <div class="field__input-btn-wrapper field__input-btn-wrapper--vertical hide-on-desktop">
-                        <button type="submit" class="btn btn-checkout spinner"
-                                data-bind-class="{'spinner--active': isSubmitingCheckout}"
-                                data-bind-disabled="isSubmitingCheckout || isLoadingReductionCode">
+                        <button id="submitBtnMobile" type="submit" class="btn btn-checkout spinner">
                             <span class="spinner-label">ĐẶT HÀNG</span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="spinner-loader">
                                 <use href="#spinner"></use>
@@ -334,7 +339,6 @@
                         </button>
 
                         <a href="${pageContext.request.contextPath}/cart/CartControl" class="previous-link">
-                            <i class="previous-link__arrow">❮</i>
                             <span class="previous-link__content">Quay về giỏ hàng</span>
                         </a>
 
@@ -425,23 +429,11 @@
                                                     <label for="reductionCode" class="field__label">Nhập mã giảm
                                                         giá</label>
                                                     <input name="reductionCode" id="reductionCode"
-                                                           type="text" class="field__input"
-                                                           autocomplete="off"
-                                                           data-bind-disabled="isLoadingReductionCode"
-                                                           data-bind-event-keypress="handleReductionCodeKeyPress(event)"
-
-                                                           data-define="{reductionCode: null}"
-
-                                                           data-bind="reductionCode">
+                                                           type="text" class="field__input">
                                                 </div>
-                                                <button class="field__input-btn btn spinner" type="button"
-                                                        data-bind-disabled="isLoadingReductionCode || !reductionCode"
-                                                        data-bind-class="{'spinner--active': isLoadingReductionCode, 'btn--disabled': !reductionCode}"
-                                                        data-bind-event-click="applyReductionCode()">
+                                                <button onclick="appDiscount()" class="field__input-btn btn spinner"
+                                                        type="button">
                                                     <span class="spinner-label">Áp dụng</span>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="spinner-loader">
-                                                        <use href="#spinner"></use>
-                                                    </svg>
                                                 </button>
                                             </div>
 
@@ -470,14 +462,15 @@
                                         <th class="total-line__name">
                                             Tạm tính
                                         </th>
-                                        <td class="total-line__price">${total}</td>
+                                        <td id="provisional" class="total-line__price">${total}</td>
                                     </tr>
 
                                     <tr class="total-line total-line--shipping-fee">
                                         <th class="total-line__name">
                                             Phí vận chuyển
                                         </th>
-                                        <td class="total-line__price"> 40000.0
+                                        <td id="feeShipId" class="total-line__price"> Đang tính
+                                            <input type="hidden" name="shipFee" value=""/>
                                         </td>
                                     </tr>
 
@@ -490,20 +483,19 @@
 													</span>
                                         </th>
                                         <td class="total-line__price">
-                                            <span class="payment-due__price">${total+40000} </span>
+                                            <span id="totalId" class="payment-due__price">${total} </span>
                                         </td>
                                     </tr>
                                     </tfoot>
                                 </table>
                             </div>
                             <div class="order-summary__nav field__input-btn-wrapper hide-on-mobile layout-flex--row-reverse">
-                                <button type="submit" class="btn btn-checkout spinner">
+                                <button id="submitBtn" type="submit" class="btn btn-checkout spinner">
                                     <span class="spinner-label">ĐẶT HÀNG</span>
                                 </button>
 
 
                                 <a href="${pageContext.request.contextPath}/cart/CartControl" class="previous-link">
-                                    <i class="previous-link__arrow">❮</i>
                                     <span class="previous-link__content">Quay về giỏ hàng</span>
                                 </a>
 
@@ -539,76 +531,182 @@
         </symbol>
     </svg>
 </div>
-<script src="https://cdn.jsdelivr.net/gh/vietblogdao/js/districts.min.js"></script>
-<script>//<![CDATA[
-if (address_2 = localStorage.getItem('address_2_saved')) {
-    $('select[name="calc_shipping_district"] option').each(function () {
-        if ($(this).text() == address_2) {
-            $(this).attr('selected', '')
-        }
-    })
-    $('input.billing_address_2').attr('value', address_2)
-}
-if (district = localStorage.getItem('district')) {
-    $('select[name="calc_shipping_district"]').html(district)
-    $('select[name="calc_shipping_district"]').on('change', function () {
-        var target = $(this).children('option:selected')
-        target.attr('selected', '')
-        $('select[name="calc_shipping_district"] option').not(target).removeAttr('selected')
-        address_2 = target.text()
-        $('input.billing_address_2').attr('value', address_2)
-        district = $('select[name="calc_shipping_district"]').html()
-        localStorage.setItem('district', district)
-        localStorage.setItem('address_2_saved', address_2)
-    })
-}
-$('select[name="calc_shipping_provinces"]').each(function () {
-    var $this = $(this),
-        stc = ''
-    c.forEach(function (i, e) {
-        e += +1
-        stc += '<option value=' + e + '>' + i + '</option>'
-        $this.html('<option value="">Tỉnh / Thành phố</option>' + stc)
-        if (address_1 = localStorage.getItem('address_1_saved')) {
-            $('select[name="calc_shipping_provinces"] option').each(function () {
-                if ($(this).text() == address_1) {
-                    $(this).attr('selected', '')
+<%
+    API api = new API();
+%>
+<script>
+    function appDiscount() {
+        // Lấy giá trị mã giảm giá từ ô input
+        var reductionCode = $('#reductionCode').val();
+
+        // Kiểm tra nếu mã giảm giá không rỗng
+        if (reductionCode !== '') {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/cart/DiscountControl',
+                method: 'POST',
+                data: { reductionCode: reductionCode }, // Gửi mã giảm giá lên máy chủ
+                success: function(data) {
+                    let isSuc = JSON.parse(data).isSuc;
+                    if (isSuc > 0) {
+                        alert('Mã giảm giá hợp lệ!');
+                        // Lấy giá trị gốc từ các thẻ <td>
+                        let originalPriceTotal = parseFloat($('#spanShipId').text().replace('$', '')); // Phí ship
+                        let originalPrice = ${total}; // Phí tạm thời
+                        let total = ""; // Tổng chi phí
+                        let newPriceDiscount = originalPrice - originalPrice * (isSuc/100);
+                        if (!isNaN(originalPriceTotal)) {
+                            total = newPriceDiscount + originalPriceTotal;
+                        } else {
+                            total = newPriceDiscount;
+                        }
+
+                        $('#provisional').text(newPriceDiscount.toFixed(1));
+                        $('#totalId').text(total.toFixed(1));
+                    } else {
+                        alert('Mã giảm giá không hợp lệ!');
+                        let originalPriceTotal = parseFloat($('#spanShipId').text().replace('$', ''));
+                        let total = "";
+                        if (!isNaN(originalPriceTotal)) {
+                            total =${total} + originalPriceTotal;
+                        } else {
+                            total =${total}; // Phí tạm thời;
+                        }
+
+                        $('#provisional').text('${total}');
+                        $('#totalId').text(total.toFixed(1));
+                    }
+
+
+                },
+                error: function() {
+                    // Xử lý lỗi trong quá trình gửi yêu cầu Ajax
+                    alert('Đã xảy ra lỗi!');
+                    isProcessing = false; // Đánh dấu rằng xử lý sự kiện đã hoàn thành
                 }
-            })
-            $('input.billing_address_1').attr('value', address_1)
+            });
+        } else {
+            // Hiển thị thông báo nếu ô input rỗng
+            alert('Vui lòng nhập mã giảm giá!');
+            isProcessing = false; // Đánh dấu rằng xử lý sự kiện đã hoàn thành
         }
-        $this.on('change', function (i) {
-            i = $this.children('option:selected').index() - 1
-            var str = '',
-                r = $this.val()
-            if (r != '') {
-                arr[i].forEach(function (el) {
-                    str += '<option value="' + el + '">' + el + '</option>'
-                    $('select[name="calc_shipping_district"]').html('<option value="">Quận / Huyện</option>' + str)
-                })
-                var address_1 = $this.children('option:selected').text()
-                var district = $('select[name="calc_shipping_district"]').html()
-                localStorage.setItem('address_1_saved', address_1)
-                localStorage.setItem('district', district)
-                $('select[name="calc_shipping_district"]').on('change', function () {
-                    var target = $(this).children('option:selected')
-                    target.attr('selected', '')
-                    $('select[name="calc_shipping_district"] option').not(target).removeAttr('selected')
-                    var address_2 = target.text()
-                    $('input.billing_address_2').attr('value', address_2)
-                    district = $('select[name="calc_shipping_district"]').html()
-                    localStorage.setItem('district', district)
-                    localStorage.setItem('address_2_saved', address_2)
-                })
-            } else {
-                $('select[name="calc_shipping_district"]').html('<option value="">Quận / Huyện</option>')
-                district = $('select[name="calc_shipping_district"]').html()
-                localStorage.setItem('district', district)
-                localStorage.removeItem('address_1_saved', address_1)
+    }
+
+
+    let token = '<%= api.getToken() %>';
+    let provinceUrl = 'http://140.238.54.136/api/province';
+    let districtUrl = 'http://140.238.54.136/api/district';
+    let wardUrl = 'http://140.238.54.136/api/ward';
+    let selectProvinceElement = document.getElementById('billingProvince');
+    let selectDistrictElement = document.getElementById('billingDistrict');
+    let selectWardElement = document.getElementById('billingWard');
+    let provinceId = -1;
+    let districtId = -1;
+    let wardId = -1
+    // Lấy danh sách các tỉnh
+    fetch(provinceUrl, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ` + token + ``
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            // Xử lý dữ liệu ở đây
+            data.original.data.forEach(province => {
+                const option = document.createElement('option');
+                option.value = province.ProvinceID;
+                option.text = province.ProvinceName;
+                selectProvinceElement.appendChild(option);
+            });
+        })
+        .catch(error => {
+            // Xử lý lỗi ở đây
+            console.error(error);
+        });
+
+    // Lấy danh sách các huyện khi chọn tỉnh
+    selectProvinceElement.addEventListener('change', (event) => {
+        provinceId = event.target.value;
+        fetch(`http://140.238.54.136/api/district?provinceID=` + provinceId + ``, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ` + token + ``
             }
         })
-    })
-})
-//]]></script>
+            .then(response => response.json())
+            .then(data => {
+                // Xử lý dữ liệu ở đây
+                selectDistrictElement.innerHTML = '<option value="" selected>Huyện / Quận</option>';
+                selectWardElement.innerHTML = '<option value="" selected>Xã / Phường</option>';
+                data.original.data.forEach(district => {
+                    const option = document.createElement('option');
+                    option.value = district.DistrictID;
+                    option.text = district.DistrictName;
+                    selectDistrictElement.appendChild(option);
+                });
+            })
+            .catch(error => {
+                // Xử lý lỗi ở đây
+                console.error(error);
+            });
+    });
+
+    // Lấy danh sách các xã khi chọn huyện
+    selectDistrictElement.addEventListener('change', (event) => {
+        districtId = event.target.value;
+        fetch(`http://140.238.54.136/api/ward?districtID=` + districtId + ``, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ` + token + ``
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Xử lý dữ liệu ở đây
+                selectWardElement.innerHTML = '<option value="" selected>Xã / Phường</option>';
+                data.original.data.forEach(ward => {
+                    const option = document.createElement('option');
+                    option.value = ward.WardCode;
+                    option.text = ward.WardName;
+                    selectWardElement.appendChild(option);
+                });
+            })
+            .catch(error => {
+                // Xử lý lỗi ở đây
+                console.error(error);
+            });
+    });
+    selectWardElement.addEventListener('change', (event) => {
+        wardId = event.target.value;
+        document.getElementById("submitBtn").disabled = true; // Disable the submit button
+        $.ajax({
+            url: "${pageContext.request.contextPath}/cart/AddBillControl",
+            type: "get",
+            data: {
+                wardId: wardId,
+                districtId: districtId,
+                provinceId: provinceId,
+            },
+            success: function (data) {
+                let feeShip = JSON.parse(data).ship; // API
+                let serviceFee = JSON.parse(feeShip).data[0].service_fee;
+                <%--let total = ${total};--%>
+                let total = parseFloat($('#provisional').text().replace('$', ''));
+                total += serviceFee;
+                document.getElementById("feeShipId").innerHTML = ` <td id="feeShipId" class="total-line__price">   ` + serviceFee + `
+                                        <input type="hidden" name="shipFee" value="` + serviceFee + `"/></td>`;
+                document.getElementById("spanShipId").innerHTML = ` <span id="spanShipId"  class="content-box__emphasis price">
+                                                                 ` + serviceFee + `
+                                                            </span>`;
+                document.getElementById("totalId").innerHTML = ` <span id="totalId" class="payment-due__price">` + total + `</span> `;
+                document.getElementById("submitBtn").disabled = false; // Enable the submit button
+            },
+            error: function (data) {
+                console.log(data);
+                document.getElementById("submitBtn").disabled = false; // Enable the submit button
+            }
+        });
+    });
+</script>
 </body>
 </html>

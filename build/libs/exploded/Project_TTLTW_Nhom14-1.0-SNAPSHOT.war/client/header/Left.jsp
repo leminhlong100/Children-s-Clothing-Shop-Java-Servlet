@@ -27,7 +27,7 @@
 				<li><a
 						href="${pageContext.request.contextPath}/${showProduct}?cid=4"><fmt:message key="Promotion" bundle="${lang}"></fmt:message></a></li>
 				<li><a
-						href="${pageContext.request.contextPath}/${showProduct}?cid=5"><fmt:message key="Toys" bundle="${lang}"></fmt:message></a></li>
+						href="${pageContext.request.contextPath}/${showProduct}?cid=5">Đồ chơi</a></li>
 			</ul>
 		</div>
 	</div>

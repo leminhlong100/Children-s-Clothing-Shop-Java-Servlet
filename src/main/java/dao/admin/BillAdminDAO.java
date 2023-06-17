@@ -41,7 +41,7 @@ public class BillAdminDAO {
 	}
 
 	public static int getTotalAcceptProduct() {
-		String query = "SELECT distinct count(id) FROM orders where status = 'Hoàn thành'";
+		String query = "SELECT count(createAt) FROM orders where status = 'Hoàn thành'";
 		try (Handle handle = DBContext.me().open()) {
 			return handle.createQuery(query)
 					.mapTo(Integer.class)
@@ -54,7 +54,7 @@ public class BillAdminDAO {
 	}
 
 	public static int getTotalCancelProduct() {
-		String query = "SELECT distinct count(id) FROM orders where status = 'Đã hủy'";
+		String query = "SELECT count(createAt) FROM orders where status = 'Đã hủy'";
 		try (Handle handle = DBContext.me().open()) {
 			return handle.createQuery(query)
 					.mapTo(Integer.class)
@@ -67,7 +67,33 @@ public class BillAdminDAO {
 	}
 
 	public static int getTotalPrice() {
-		String query = "SELECT sum(totalPrice) FROM orders where statusPay = 'paid'";
+		String query = "SELECT sum(totalPrice) FROM orders where status = 'Hoàn thành' and month(createAt) = month(current_date())";
+		try (Handle handle = DBContext.me().open()) {
+			return handle.createQuery(query)
+					.mapTo(Integer.class)
+					.findOne()
+					.orElse(0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public static int thisMonth() {
+		String query = "SELECT distinct month(current_date()) FROM orders";
+		try (Handle handle = DBContext.me().open()) {
+			return handle.createQuery(query)
+					.mapTo(Integer.class)
+					.findOne()
+					.orElse(0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public static int sumNewMembers() {
+		String query = "select count(id) from accounts a join account_roles ar on a.id = ar.idAccount where month(createAt) = month(current_date()) and ar.idRole in (2,3,4)";
 		try (Handle handle = DBContext.me().open()) {
 			return handle.createQuery(query)
 					.mapTo(Integer.class)
@@ -81,7 +107,7 @@ public class BillAdminDAO {
 
 	public static List<Order> getListOrderSucess() {
 		Jdbi me = DBContext.me();
-		String query = "SELECT od.id,od.createAt,statusPay,od.idAccount,acc.fullName,od.totalPrice  FROM orders od join accounts acc on od.idAccount = acc.id where od.status = 'Hoàn thành' and od.statusPay = 'paid'";
+		String query = "SELECT od.id,od.createAt,statusPay,od.idAccount,acc.fullName,od.totalPrice  FROM orders od join accounts acc on od.idAccount = acc.id where od.status = 'Hoàn thành'";
 		return me.withHandle(handle -> handle.createQuery(query)
 				.map((rs, ctx) -> new Order(rs.getInt("id"), new Account(rs.getInt("id"),
 						rs.getString("fullName")),rs.getDouble("totalPrice"))).list());
