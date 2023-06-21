@@ -5,6 +5,10 @@ public class Supplier { // nha cung cap
 	private String nameSupplier;
 	private String emailSupplier;
 	private String numberPhone;
+
+	public Supplier(){
+	}
+
 	public Supplier(int idSupplier, String nameSupplier, String emailSupplier, String numberPhone) {
 		super();
 		this.idSupplier = idSupplier;

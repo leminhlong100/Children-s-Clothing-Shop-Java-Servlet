@@ -224,7 +224,7 @@ public class AccountDAO {
         return me.withHandle(handle -> handle.createUpdate(query).bind(0, a.getAccountName()).bind(1, a.getFullName()).bind(2, a.getEmail()).bind(3, a.getPhone()).bind(4, a.getAddress()).bind(5,activeStatus).bind(6, a.getId()).execute());
     }
     public static int getTotalAccount() {
-        String query = "SELECT distinct count(email) FROM accounts where isActive = 1";
+        String query = "SELECT count(id) FROM accounts where isDelete = 0";
         try (Handle handle = DBContext.me().open()) {
             return handle.createQuery(query)
                     .mapTo(Integer.class)
@@ -266,8 +266,5 @@ public class AccountDAO {
         String query = "insert into roles (name) values(?)";
         Jdbi me = DBContext.me();
         return me.withHandle(handle -> handle.createUpdate(query).bind(0, name).execute());
-    }
-    public static void main(String[] args) {
-        System.out.println(removeRole("12"));
     }
 }

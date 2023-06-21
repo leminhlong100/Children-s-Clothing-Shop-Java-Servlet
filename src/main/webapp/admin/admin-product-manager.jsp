@@ -105,10 +105,10 @@
                                     <c:if test="${list.status == 'Đang nhập hàng'}">
                                         <td><span class="badge bg-warning">${list.status}</span></td>
                                     </c:if>
-                                    <td>${list.producer}</td>
+                                    <td>${list.producer.nameProducer}</td>
                                     <td>${list.listPrice}</td>
                                     <td>${list.discount}</td>
-                                    <td>${list.category}</td>
+                                    <td>${list.category.nameCategory}</td>
                                     <td>
                                         <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"
                                                 onclick="deleteProduct(${list.id} ,this)"><i class="fas fa-trash-alt"></i>
