@@ -18,34 +18,17 @@
                     <c:url var="edit" value="EditControl"></c:url>
                     <c:url var="logout" value="/LogoutControl"></c:url>
                     <c:if test="${sessionScope.acc != null}">
-                            <c:if test="${!sessionScope.typeacc.equals('customer')}">
-                                <li><a href="${pageContext.request.contextPath}/${edit}"><i
-                                        class="fa fa-user"></i> <fmt:message key="Hello"
-                                                                             bundle="${lang}"></fmt:message>:
-                                        ${sessionScope.acc.fullName} </a></li>
-                                <li><a href="${pageContext.request.contextPath}/admin/login.jsp">
-                                    <fmt:message key="Website.management" bundle="${lang}"></fmt:message>
-                                </a></li>
-
-                                <li><a href="${logout}"> <fmt:message key="log.out"
-                                                                      bundle="${lang}"></fmt:message>
-                                </a></li>
-                            </c:if>
-                            <c:if test="${sessionScope.typeacc.equals('customer')}">
                                 <li><a href="${pageContext.request.contextPath}/${edit}"><i
                                         class="fa fa-user"></i> <fmt:message key="Hello"
                                                                              bundle="${lang}"></fmt:message>: ${sessionScope.acc.fullName}
                                 </a></li>
                                 <li><a href="${logout}"><i class="fa fa-sign-out"></i> <fmt:message
                                         key="log.out" bundle="${lang}"></fmt:message> </a></li>
-                            </c:if>
                     </c:if>
                     <c:if test="${empty sessionScope.acc}">
-                        <c:url var="login" value="/client/Login.jsp"/>
-                        <c:url var="register" value="/client/Register.jsp"/>
-                        <li><a href="${login}"><i class="fa fa-user"></i> <fmt:message
+                        <li><a href="${pageContext.request.contextPath}/client/Login.jsp"><i class="fa fa-user"></i> <fmt:message
                                 key="log.in" bundle="${lang}"></fmt:message> </a></li>
-                        <li><a href="${register}"><i class="fa fa-user-plus"></i>
+                        <li><a href="${pageContext.request.contextPath}/client/Register.jsp"><i class="fa fa-user-plus"></i>
                             <fmt:message key="Register" bundle="${lang}"></fmt:message></a></li>
                     </c:if>
 
@@ -146,8 +129,12 @@
                             key="Home" bundle="${lang}"></fmt:message></a></li>
 
                     <li class="">
-                        <a href="${pageContext.request.contextPath}/client/Introduce.jsp"><fmt:message
-                                key="Introduce" bundle="${lang}"></fmt:message></a></li>
+                        <a href="${pageContext.request.contextPath}/client/Introduce.jsp">
+<%--                            <fmt:message--%>
+<%--                                key="Introduce" bundle="${lang}"></fmt:message>--%>
+                            GIỚI THIỆU
+                        </a>
+                    </li>
                     <li class="">
                         <a href="${pageContext.request.contextPath}/client/Service.jsp"><fmt:message
                                 key="service" bundle="${lang}"></fmt:message></a></li>

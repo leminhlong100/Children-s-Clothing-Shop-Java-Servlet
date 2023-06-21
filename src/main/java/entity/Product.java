@@ -170,6 +170,7 @@ public class Product implements Serializable {
 
     public Product(int id, String nameProduct, double listPrice, Producer nameProducer, Category nameCategorie, List<ImageProduct> id1, List<SizeColorProduct> id2, String isActive, String isDelete, Inventory nameCategorie1) {
     }
+
     public Product(int id, String nameProduct, double listPrice, Category category) {
         this.id = id;
         this.nameProduct = nameProduct;
@@ -182,7 +183,6 @@ public class Product implements Serializable {
 
     public Product(int id, String name, String color, int quantity) {
     }
-
 
 
     public Inventory getInventory() {

@@ -9,7 +9,6 @@ import entity.Account;
 import entity.Permission;
 import entity.Resource;
 import entity.Role;
-import jnr.ffi.annotations.In;
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.statement.PreparedBatch;
@@ -18,7 +17,7 @@ import util.EnCode;
 public class AccountDAO {
     public static List<Account> getListAccount() {
         Jdbi me = DBContext.me();
-        String query = "SELECT DISTINCT a.id, accountName, password, fullName, address, email,isActive, phone, " +
+        String query = "SELECT DISTINCT a.id, accountName, password, fullName, address, email, phone, " +
                 "GROUP_CONCAT(r.id) AS roleIds, GROUP_CONCAT(r.name) AS roleNames " +
                 "FROM accounts a " +
                 "JOIN account_roles ar ON a.id = ar.idAccount " +
@@ -35,7 +34,6 @@ public class AccountDAO {
                 account.setFullName(rs.getString("fullName"));
                 account.setAddress(rs.getString("address"));
                 account.setEmail(rs.getString("email"));
-                account.setActive(rs.getBoolean("isActive"));
                 account.setPhone(rs.getString("phone"));
                 String roleIds = rs.getString("roleIds");
                 String roleNames = rs.getString("roleNames");
@@ -134,7 +132,7 @@ public class AccountDAO {
 
 
     public static int removeAccount(String uid) {
-        String query = "update accounts  set isDelete = 1,isActive = 0 where id = ?";
+        String query = "update accounts set isDelete = 1 where id = ?";
         Jdbi me = DBContext.me();
         return me.withHandle(handle -> handle.createUpdate(query).bind(0, uid).execute());
     }

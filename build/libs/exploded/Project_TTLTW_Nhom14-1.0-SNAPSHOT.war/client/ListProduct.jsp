@@ -33,7 +33,7 @@
                         <div class="row">
                             <div class="col-md-6 col-sm-6 breadcrumb-wrap">
                                 <ol class="breadcrumb">
-                                    <li><a href="#">Trang ch?</a></li>
+                                    <li><a href="#">Trang chủ</a></li>
                                     <li class="active">Tất cả sản phẩm</li>
                                 </ol>
                             </div>
@@ -89,21 +89,21 @@
                                         <div class="form-group">
                                             <label for="selectFilter"></label><select class="sort-by-script" name="sort"
                                                                                       id="selectFilter">
-                                            <option value="pid-asc"
+                                            <option value="id-asc"
                                                     <c:if test="${requestScope.sort==null}">selected</c:if>>
                                                 <fmt:message key="default" bundle="${lang}"></fmt:message></option>
-                                            <option value="price-asc"
+                                            <option value="listPrice-asc"
                                                     <c:if test="${requestScope.sort=='priceProduct-asc'}">selected</c:if>>
                                                 <fmt:message key="prices.increase"
                                                              bundle="${lang}"></fmt:message></option>
-                                            <option value="price-desc"
+                                            <option value="listPrice-desc"
                                                     <c:if test="${requestScope.sort=='priceProduct-desc'}">selected</c:if>>
                                                 <fmt:message key="prices.decrease"
                                                              bundle="${lang}"></fmt:message></option>
-                                            <option value="name-asc"
+                                            <option value="nameProduct-asc"
                                                     <c:if test="${requestScope.sort=='nameProduct-asc'}">selected</c:if>>
                                                 <fmt:message key="A-Z" bundle="${lang}"></fmt:message></option>
-                                            <option value="name-desc"
+                                            <option value="nameProduct-desc"
                                                     <c:if test="${requestScope.sort=='nameProduct-desc'}">selected</c:if>>
                                                 <fmt:message key="Z-A" bundle="${lang}"></fmt:message></option>
                                         </select>
@@ -122,9 +122,11 @@
                             <c:forEach var="o" items="${requestScope.listProduct}">
                                 <div class="col-md-3 col-sm-6 col-xs-12">
                                     <div class="discounts-product-right">
-                                        <div class="sale-box text-center">
-                                            <span class="price">- ${o.discount}% </span>
-                                        </div>
+                                        <c:if test="${o.discount!=0}">
+                                            <div class="sale-box text-center">
+                                                <span class="price">- ${o.discount}% </span>
+                                            </div>
+                                        </c:if>
                                         <div class="discounts-product-image">
                                             <a href="${detailP}?pid=${o.id}"> <img
                                                     src="./images/${o.imageProducts.get(0).getImage()}"
@@ -133,8 +135,9 @@
                                             </a>
 
                                             <div class="price-box">
-                                                <span class="price"> ${o.listPrice} </span> <span
-                                                    class="price-compare"> ${o.discountPrice}? </span>
+                                                <span class="price"> ${o.listPrice} VNĐ </span>
+                                                <c:if test="${o.discount!=0}"><span
+                                                        class="price-compare"> ${o.discountPrice} VNĐ </span></c:if>
                                             </div>
 
                                         </div>
@@ -149,7 +152,9 @@
                                                 <button class="button btn-cart btn-more product-atc"
                                                         title="Mua hàng" type="button">
 													<span style="display: inline-block;"> <!-- Dùng inline-block để đảm bảo span chỉ chiếm không gian cần thiết -->
-                                                        <img src="./images/MuaNgay.gif" alt="" style="width: 140%; height: auto; margin-left: -20%;"> <!-- Thay đổi kích thước theo % -->
+                                                        <img src="./images/MuaNgay.gif" alt=""
+                                                             style="width: 140%; height: auto; margin-left: -20%;">
+                                                        <!-- Thay đổi kích thước theo % -->
                                                     </span>
                                                 </button>
                                             </a>

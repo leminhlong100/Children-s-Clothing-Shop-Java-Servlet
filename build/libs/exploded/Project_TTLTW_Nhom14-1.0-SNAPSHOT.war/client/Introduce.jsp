@@ -36,7 +36,7 @@
 						</h1>
 						<div class="article-content">
 							<p>
-								<strong><fmt:message key="Come" bundle="${lang}"></fmt:message></strong>
+									<strong><fmt:message key="Come" bundle="${lang}"></fmt:message></strong>
 							</p>
 
 							<p>
