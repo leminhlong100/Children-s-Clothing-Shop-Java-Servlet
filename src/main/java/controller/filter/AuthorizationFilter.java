@@ -19,7 +19,7 @@ public class AuthorizationFilter implements Filter {
     private ServletContext context;
     private final String[] ALLOWED_PATHS = {"/IndexControl", "/client", "/Login", "/DetailControl", "/LoginGoogle",
             "/Register", "/SubmitEmail", "/VerifyEmailControl", "/SearchControl", "/ShowProductControl", "/ErrorPageController", "/LogoutControl", "/images", "/sweetalert2" +
-            "/@sweetalert2","/observer","/ForgetPasswordController"};
+            "/@sweetalert2","/observer","/ForgetPasswordController","/rating-product"};
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

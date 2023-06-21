@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @WebServlet("/cart/CartControl")
-public class CartControl extends HttpServlet {
+public class  CartControl extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -29,8 +29,6 @@ public class CartControl extends HttpServlet {
             if(account==null){
                 request.getRequestDispatcher("/client/Login.jsp").forward(request, response);
             }else{
-
-
             Object obj = session.getAttribute("cart");// luu tam vao session
             int totalQuantity = 0;
             double total = 0;

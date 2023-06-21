@@ -18,6 +18,47 @@
 
     <link href="//bizweb.dktcdn.net/100/117/632/themes/157694/assets/single-product.css?1564585558451" rel="stylesheet"
           type="text/css" media="all"/>
+    <style>div.stars {
+        width: 220px;
+        display: inline-block;
+    }
+
+    input.star {
+        display: none;
+    }
+
+    label.star {
+        float: right;
+        padding: 10px;
+        font-size: 25px;
+        color: #444;
+        transition: all .2s;
+    }
+
+    input.star:checked ~ label.star:before {
+        content: '\f005';
+        color: #FD4;
+        transition: all .25s;
+    }
+
+    input.star-5:checked ~ label.star:before {
+        color: #FE7;
+        text-shadow: 0 0 20px #952;
+    }
+
+    input.star-1:checked ~ label.star:before {
+        color: #F62;
+    }
+
+    label.star:hover {
+        transform: rotate(-15deg) scale(1.3);
+    }
+
+    label.star:before {
+        content: '\f006';
+        font-family: FontAwesome;
+    }
+    </style>
 </head>
 
 <body>
@@ -69,10 +110,79 @@
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-12 col-xs-12">
-
                             <div class="sk-page-detail-title">
                                 <h1 itemprop="name" class="pd-name">${detail.nameProduct}</h1>
                             </div>
+                            <div>
+                                <div class="stars">
+                                    <form action="">
+                                        <input class="star_input star star-5" id="star-5" type="radio" name="star"
+                                               value="5"/>
+                                        <label class="star star-5" for="star-5"></label>
+                                        <input class="star_input star star-4" id="star-4" type="radio" name="star"
+                                               value="4"/>
+                                        <label class="star star-4" for="star-4"></label>
+                                        <input class="star_input star star-3" id="star-3" type="radio" name="star"
+                                               value="3"/>
+                                        <label class="star star-3" for="star-3"></label>
+                                        <input class="star_input star star-2" id="star-2" type="radio" name="star"
+                                               value="2"/>
+                                        <label class="star star-2" for="star-2"></label>
+                                        <input class="star_input star star-1" id="star-1" type="radio" name="star"
+                                               value="1"/>
+                                        <label class="star star-1" for="star-1"></label>
+                                    </form>
+                                </div>
+                                <div style="margin-left: 16px" id="average-rating"></div>
+                            </div>
+                            <script>
+                                let rate = "${requestScope.rate}"; // Giá trị rate từ server
+                                $('.star_input[value="' + rate + '"]').prop('checked', true);
+
+                                let averageRating = ${requestScope.averageRating};
+                                let ratingCount = ${requestScope.ratingCount};
+                                let averageRatingLabel = document.getElementById("average-rating");
+                                averageRatingLabel.innerText = "(Lượt đánh giá: " + ratingCount + "/Điểm: " + averageRating.toFixed(2) + ")";
+
+                                // ajax
+                                $(document).ready(function () {
+                                    // Sự kiện khi người dùng chọn sao
+                                    $('.star_input').on('click', function () {
+                                        let selectedStar = $(this).val(); // Lấy giá trị sao đã chọn
+                                        sendRating(selectedStar); // Gửi giá trị sao đã chọn lên máy chủ
+                                    });
+
+                                    // Hàm gửi dữ liệu sao đã chọn lên máy chủ
+                                    function sendRating(rating) {
+                                        $.ajax({
+                                            url: '${pageContext.request.contextPath}/rating-product', // Thay thế 'your_server_url' bằng URL của máy chủ
+                                            type: 'POST',
+                                            data: {
+                                                rating: rating,
+                                                idProduct: ${requestScope.detail.id}
+                                            },
+                                            success: function (data) {
+                                                let isSuc = JSON.parse(data).isSuc;
+                                                let isSucPay = JSON.parse(data).isSucPay;
+                                                if (isSucPay) {
+                                                    if (isSuc) {
+                                                        Swal.fire('Đánh giá sao thành công', '', 'success');
+                                                    } else {
+                                                        $('.star_input').removeAttr('checked');
+                                                    }
+                                                } else {
+                                                    $('.star_input').removeAttr('checked');
+                                                }
+                                            },
+                                            error: function (xhr, status, error) {
+                                                // Xử lý lỗi (nếu có)
+                                            }
+                                        });
+                                    }
+                                });
+
+                            </script>
+
                             <div class="sk-price-box clearfix">
                                 <div class="pull-left">
                                     <div class="sale">
@@ -102,7 +212,7 @@
 
                                 <li>
                                     <span>Mã sản phẩm:</span>
-                                    <span>${detail.supplier.nameSupplier}</span>
+                                    <span>${detail.id}</span>
                                 </li>
 
 
@@ -218,9 +328,9 @@
 
                                         <div style="  max-width: 100%;
     max-height: 100%;"><textarea name="comment" id="comment"
-                                                       placeholder="Nhập nội dung bạn muốn bình luận: " cols="30"
-                                                       rows="10" required
-                                                       style="width: 100%; height: 111px; resize: none"
+                                 placeholder="Nhập nội dung bạn muốn bình luận: " cols="30"
+                                 rows="10" required
+                                 style="width: 100%; height: 111px; resize: none"
                                         ></textarea></div>
                                         <div>
                                             <button style="padding: 10px 23px; border: 0; background-color: #79bd9a; text-transform: uppercase; font-weight: 700; color: #fff"
