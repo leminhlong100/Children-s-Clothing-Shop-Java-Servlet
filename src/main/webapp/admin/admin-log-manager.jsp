@@ -207,6 +207,9 @@ MODAL
     });
 
 </script>
+<script>
+    document.getElementById("admin-log").classList.add("active");
+</script>
 </body>
 
 </html>

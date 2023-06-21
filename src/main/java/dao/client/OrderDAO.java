@@ -44,6 +44,11 @@ public class OrderDAO {
         String query = "update orders set totalPrice = ?,sale=?,status=?,statusPay=?,address=?,note=?,wardId=?,districtId=? where id = ?";
         me.withHandle(handle -> handle.createUpdate(query).bind(0, order.getTotalPrice()).bind(1, order.getSale()).bind(2, order.getStatus()).bind(3, order.getStatusPay()).bind(4, order.getAddress()).bind(5, order.getNote()).bind(6, order.getWardId()).bind(7, order.getDistrictId()).bind(8, order.getId()).execute());
     }
+    public static void updateStatusOrder(String status,String id) {
+        Jdbi me = DBContext.me();
+        String query = "update orders set status = ?  where id = ?";
+        me.withHandle(handle -> handle.createUpdate(query).bind(0, status).bind(1,id).execute());
+    }
 
     public static Order getOrderByBid(String id) {
         Jdbi me = DBContext.me();
@@ -74,7 +79,7 @@ public class OrderDAO {
     }
     public static int checkDiscount(String reductionCode) {
         Jdbi me = DBContext.me();
-        String query = "SELECT percentage FROM discounts WHERE codeDiscount = ? AND status = 1 AND NOW() BETWEEN startTime AND endTime";
+        String query = "SELECT percentage FROM discounts WHERE codeDiscount = ? AND status = 1 and isDelete = 0 AND NOW() BETWEEN startTime AND endTime";
         return me.withHandle(handle -> handle.createQuery(query)
                 .bind(0, reductionCode)
                 .mapTo(Integer.class)
@@ -84,7 +89,7 @@ public class OrderDAO {
 
 
     public static void main(String[] args) {
-        System.out.println(checkDiscount("BF2023"));
+        System.out.println(checkDiscount("SUMMERSALE2023"));
     }
 
 }

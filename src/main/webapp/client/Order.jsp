@@ -24,6 +24,9 @@
     <script src="//bizweb.dktcdn.net/assets/themes_support/libphonenumber-v3.2.30.min.js?1564585558451"></script>
     <script src="${pageContext.request.contextPath}/client/assets/js/checkout.vendor.min.js?v=11006c9"></script>
     <script src="${pageContext.request.contextPath}/client/assets/js/checkout.min.js?v=ee358d5"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AbenXsywXYlbMw4GpzHDSdiXPx7hKY7adwNFIjsSlY7HfsmSRD6DOzeswhhcBtKiqC46A2kiwzyk_Wf7&currency=USD"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.css"/>
     <script>
         var Bizweb = Bizweb || {};
         Bizweb.id = '117632';
@@ -299,8 +302,6 @@
                                 <div class="section__content">
 
                                     <div class="content-box" data-define="{paymentMethod: undefined}">
-
-
                                         <div class="content-box__row">
                                             <div class="radio-wrapper">
                                                 <div class="radio__input">
@@ -316,15 +317,12 @@
 														</span>
                                                 </label>
                                             </div>
-
                                             <div class="content-box__row__desc"
                                                  data-bind-show="paymentMethod == 120771">
                                                 <p>COD</p>
 
                                             </div>
-
                                         </div>
-
                                     </div>
                                 </div>
                             </section>
@@ -341,7 +339,6 @@
                         <a href="${pageContext.request.contextPath}/cart/CartControl" class="previous-link">
                             <span class="previous-link__content">Quay về giỏ hàng</span>
                         </a>
-
                     </div>
 
                     <div id="common-alert" data-tg-refresh="refreshError">
@@ -498,8 +495,15 @@
                                 <a href="${pageContext.request.contextPath}/cart/CartControl" class="previous-link">
                                     <span class="previous-link__content">Quay về giỏ hàng</span>
                                 </a>
-
                             </div>
+                            <div style="margin-top: 10px" class="section__header">
+                                <div class="layout-flex">
+                                    <h2 class="section__title layout-flex__item layout-flex__item--stretch">
+                                        Thanh toán Online
+                                    </h2>
+                                </div>
+                            </div>
+                            <div style="margin-top: 10px" id="paypal-button-container"></div>
                             <div id="common-alert-sidebar" data-tg-refresh="refreshError">
 
 
@@ -544,8 +548,8 @@
             $.ajax({
                 url: '${pageContext.request.contextPath}/cart/DiscountControl',
                 method: 'POST',
-                data: { reductionCode: reductionCode }, // Gửi mã giảm giá lên máy chủ
-                success: function(data) {
+                data: {reductionCode: reductionCode}, // Gửi mã giảm giá lên máy chủ
+                success: function (data) {
                     let isSuc = JSON.parse(data).isSuc;
                     if (isSuc > 0) {
                         alert('Mã giảm giá hợp lệ!');
@@ -553,7 +557,7 @@
                         let originalPriceTotal = parseFloat($('#spanShipId').text().replace('$', '')); // Phí ship
                         let originalPrice = ${total}; // Phí tạm thời
                         let total = ""; // Tổng chi phí
-                        let newPriceDiscount = originalPrice - originalPrice * (isSuc/100);
+                        let newPriceDiscount = originalPrice - originalPrice * (isSuc / 100);
                         if (!isNaN(originalPriceTotal)) {
                             total = newPriceDiscount + originalPriceTotal;
                         } else {
@@ -567,7 +571,7 @@
                         let originalPriceTotal = parseFloat($('#spanShipId').text().replace('$', ''));
                         let total = "";
                         if (!isNaN(originalPriceTotal)) {
-                            total =${total} + originalPriceTotal;
+                            total = ${total} +originalPriceTotal;
                         } else {
                             total =${total}; // Phí tạm thời;
                         }
@@ -578,7 +582,7 @@
 
 
                 },
-                error: function() {
+                error: function () {
                     // Xử lý lỗi trong quá trình gửi yêu cầu Ajax
                     alert('Đã xảy ra lỗi!');
                     isProcessing = false; // Đánh dấu rằng xử lý sự kiện đã hoàn thành
@@ -707,6 +711,117 @@
             }
         });
     });
+</script>
+<script>
+    let currency = 0;
+
+    async function convertCurrency() {
+        let totalId = parseFloat($('#totalId').text().replace('$', '')); // Phí ship
+        const url = `https://api.apilayer.com/exchangerates_data/convert?to=USD&from=VND&amount=` + totalId;
+
+        try {
+            const response = await fetch(url, {
+                headers: {
+                    "apikey": "ql75lcTRsSTM4fOXovHfVOHWK6NcYPB4"
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const convertedAmount = data.result.toFixed(2);
+                currency = convertedAmount;
+                console.log(currency);
+            } else {
+                // Xử lý lỗi nếu cần thiết
+            }
+        } catch (error) {
+            // Xử lý lỗi nếu có
+        }
+    }
+
+    paypal.Buttons({
+        async createOrder() {
+            if (!isFormValid()) {
+                // Hiển thị thông báo lỗi và không tạo đơn hàng
+                Swal.fire({
+                    title: 'Vui lòng điền đầy đủ thông tin',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                return false;
+            }
+            await convertCurrency();
+            let selectedValue = currency;
+            console.log(selectedValue);
+            return fetch("${pageContext.request.contextPath}/cart/PayPalCheckOut", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    denominations: selectedValue,
+                }),
+            })
+                .then((response) => response.json())
+                .then((order) => order.id);
+        },
+        onApprove(data) {
+            let selectedValue = currency;
+            console.log(data)
+            console.log(selectedValue)
+            return fetch("${pageContext.request.contextPath}/cart/CheckRecharge", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    balance: selectedValue,
+                    orderID: data.orderID
+                })
+            })
+                .then((response) => response.json())
+                .then((orderData) => {
+                    console.log(orderData)
+                    console.log(orderData.purchaseUnits[0].payments.captures[0])
+                    console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                    const transaction = orderData.purchaseUnits[0].payments.captures[0];
+                    Swal.fire({
+                        title: 'Thanh toán thành công',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        // location.reload();
+                        let paymentMethod = document.getElementById("paymentMethod-120771");
+                        paymentMethod.removeAttribute("required");
+                        let submitBtn = document.getElementById("submitBtn");
+                        submitBtn.click();
+                    });
+
+                });
+        }
+    }).render('#paypal-button-container')
+    function isFormValid() {
+        const email = document.getElementById('email').value;
+        const billingName = document.getElementById('billingName').value;
+        const billingPhone = document.getElementById('billingPhone').value;
+        const billingAddress = document.getElementById('billingAddress').value;
+        const billingProvince = document.getElementById('billingProvince').value;
+        const billingDistrict = document.getElementById('billingDistrict').value;
+        const billingWard = document.getElementById('billingWard').value;
+        if (
+            email === '' ||
+            billingName === '' ||
+            billingPhone === '' ||
+            billingAddress === '' ||
+            billingProvince === '' ||
+            billingDistrict === '' ||
+            billingWard === ''
+        ) {
+            return false;
+        }
+        return true;
+    }
+
 </script>
 </body>
 </html>

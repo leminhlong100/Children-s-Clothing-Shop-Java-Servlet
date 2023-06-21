@@ -41,6 +41,8 @@ dependencies {
     implementation 'javax.websocket:javax.websocket-api:1.1'
     implementation 'org.json:json:20211205'
     implementation 'com.google.cloud.sql:mysql-socket-factory:1.0.15'
+    implementation group: 'com.paypal.sdk', name: 'checkout-sdk', version: '1.0.2'
+    implementation group: 'com.paypal.sdk', name: 'paypal-core', version: '1.6.5'
 }
 
 group = 'org.example'
@@ -58,7 +60,7 @@ publishing {
 apply plugin: 'org.hidetake.ssh'
 remotes {
     host {
-        host = '35.240.198.38'
+        host = '34.142.255.5'
         user = 'g20130316'
         identity = file('C:/Users/Admin/.ssh/id_rsa')
     }
@@ -89,10 +91,10 @@ task docker_upload_file_to_server {
         println 'begin docker_upload_file_to_server'
         ssh.run {
             session(remotes.host) {
-                remove '/usr/deploy/KIDSHOP.war'
+                remove '/usr/deploy/.war'
 
                 put from: "${project.projectDir}/build/libs/Project_TTLTW_Nhom14-1.0-SNAPSHOT.war",
-                        into: "/usr/deploy/KIDSHOP.war"
+                        into: "/usr/deploy/.war"
             }
         }
     }

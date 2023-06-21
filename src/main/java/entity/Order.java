@@ -6,7 +6,7 @@ import java.util.List;
 public class Order implements Serializable {
 	private int id;
 	private String createAt; // ngay dat
-	private String deliveryDate; // ngay mua
+	private String deliveryAt; // ngay giao
 	private String statusPay; // Trinh trang thanh toan
 	private int idAccount;
 	private Account account;
@@ -50,7 +50,7 @@ public class Order implements Serializable {
 	public Order(int id, String createAt, String deliveryDate, String statusPay, Account account, double sale, String status, String address, String node, String updateAt, List<OrderDetail> orderDetails) {
 		this.id = id;
 		this.createAt = createAt;
-		this.deliveryDate = deliveryDate;
+		this.deliveryAt = deliveryDate;
 		this.statusPay = statusPay;
 		this.account = account;
 		this.sale = sale;
@@ -64,7 +64,7 @@ public class Order implements Serializable {
 	public Order(int id, String createAt, String deliveryDate, String statusPay, int idAccount, Account account, double sale, double totalPrice, String status, String address, String note, String updateAt, String wardId, String districtId, List<OrderDetail> orderDetails) {
 		this.id = id;
 		this.createAt = createAt;
-		this.deliveryDate = deliveryDate;
+		this.deliveryAt = deliveryDate;
 		this.statusPay = statusPay;
 		this.idAccount = idAccount;
 		this.account = account;
@@ -89,6 +89,15 @@ public class Order implements Serializable {
 		this.totalPrice = totalPrice;
 	}
 
+	public Order(int id, String createAt,String deliveryDate, String statusPay, String status, Account account, double totalPrice) {
+		this.id = id;
+		this.createAt = createAt;
+		this.deliveryAt = deliveryDate;
+		this.statusPay = statusPay;
+		this.status = status;
+		this.account = account;
+		this.totalPrice = totalPrice;
+	}
 	public Order(int id, String createAt, String statusPay, String status, Account account, double totalPrice) {
 		this.id = id;
 		this.createAt = createAt;
@@ -101,7 +110,7 @@ public class Order implements Serializable {
 	public Order(int id, String createAt, String deliveryDate, String statusPay, Account account, double sale, double totalPrice, String status, String address, String node, String updateAt, List<OrderDetail> orderDetails) {
 		this.id = id;
 		this.createAt = createAt;
-		this.deliveryDate = deliveryDate;
+		this.deliveryAt = deliveryDate;
 		this.statusPay = statusPay;
 		this.account = account;
 		this.sale = sale;
@@ -137,8 +146,8 @@ public class Order implements Serializable {
 		return createAt;
 	}
 
-	public String getDeliveryDate() {
-		return deliveryDate;
+	public String getDeliveryAt() {
+		return deliveryAt;
 	}
 
 	public String getStatusPay() {
@@ -181,8 +190,8 @@ public class Order implements Serializable {
 		this.createAt = createAt;
 	}
 
-	public void setDeliveryDate(String deliveryDate) {
-		this.deliveryDate = deliveryDate;
+	public void setDeliveryAt(String deliveryAt) {
+		this.deliveryAt = deliveryAt;
 	}
 
 	public void setStatusPay(String statusPay) {
@@ -222,7 +231,7 @@ public class Order implements Serializable {
 		return "Order{" +
 				"id=" + id +
 				", createAt='" + createAt + '\'' +
-				", deliveryDate='" + deliveryDate + '\'' +
+				", deliveryAt='" + deliveryAt + '\'' +
 				", statusPay='" + statusPay + '\'' +
 				", idAccount=" + idAccount +
 				", account=" + account +

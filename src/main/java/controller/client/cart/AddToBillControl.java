@@ -63,7 +63,14 @@ public class AddToBillControl extends HttpServlet {
                 order.setStatus("Đang xử lý");
                 int idOrder = OrderDAO.createOrder(order.getAccount().getId());
                 order.setId(idOrder);
-                order.setStatusPay("Chưa thanh toán");
+                String statusPay = (String) session.getAttribute("isPay");
+                if (statusPay == null) {
+                    order.setStatusPay("Chưa thanh toán");
+                } else {
+                    if (session.getAttribute("isPay").equals("Payed")) {
+                        order.setStatusPay("Đã thanh toán");
+                    }
+                }
                 String address = request.getParameter("billingAddress");
                 if (address != null || !address.isEmpty()) {
                     order.setAddress(address);
@@ -77,16 +84,16 @@ public class AddToBillControl extends HttpServlet {
                     for (OrderDetail orderDetail : orderDetails) {
                         orderDetail.setIdOrder(order.getId());// set bill id vao day
                         // cap nhat so luong cua tung san pham
-                         idProductSizeColor = OrderDAO.getIdSizeColor(orderDetail.getProduct().getId(), orderDetail.getProductSize(), orderDetail.getProductColor());
-                         quantitySizeColor = OrderDAO.getQuantitySizeColor(orderDetail.getProduct().getId(), idProductSizeColor);
-                         newQuantitySizeColor = quantitySizeColor - orderDetail.getQuantity();
-                        if(newQuantitySizeColor>=0){
+                        idProductSizeColor = OrderDAO.getIdSizeColor(orderDetail.getProduct().getId(), orderDetail.getProductSize(), orderDetail.getProductColor());
+                        quantitySizeColor = OrderDAO.getQuantitySizeColor(orderDetail.getProduct().getId(), idProductSizeColor);
+                        newQuantitySizeColor = quantitySizeColor - orderDetail.getQuantity();
+                        if (newQuantitySizeColor >= 0) {
                             // luu lai cac mat hang
                             OrderDAO.createOrderDetail(orderDetail);
                             OrderDAO.updateInventoryProduct(String.valueOf(orderDetail.getProduct().getId()), newQuantitySizeColor, idProductSizeColor);
-                        }else{
+                        } else {
                             OrderDAO.deleteOrder(idOrder);
-                            request.setAttribute("sorry","Xin lỗi chúng tôi không đủ số lượng sản phẩm này");
+                            request.setAttribute("sorry", "Xin lỗi chúng tôi không đủ số lượng sản phẩm này");
                             request.getRequestDispatcher("CartControl").forward(request, response);
                             return;
                         }
@@ -95,13 +102,13 @@ public class AddToBillControl extends HttpServlet {
                         totalQuantity += orderDetail.getQuantity();
                         //Thêm phieu giam vào
                         int discount = OrderDAO.checkDiscount(reductionCode);
-                        if (discount>0){
+                        if (discount > 0) {
                             total = total - (total * ((float) discount / 100));
                         }
                     }
                 }
                 /// cap nhat lai bill de co tong gia tien
-                if(ship!=null&&!ship.isEmpty()) {
+                if (ship != null && !ship.isEmpty()) {
                     order.setTotalPrice(total + Integer.parseInt(ship)); // vi du cua phi van chyen
                 }
                 order.setNote(request.getParameter("note"));
@@ -112,6 +119,7 @@ public class AddToBillControl extends HttpServlet {
                 request.setAttribute("ship", ship);
                 request.setAttribute("cart", obj);
                 session.removeAttribute("cart");
+                session.removeAttribute("isPay");
                 request.getRequestDispatcher("/client/CheckOut.jsp").forward(request, response);
             } else {
                 request.getRequestDispatcher("CartControl").forward(request, response);

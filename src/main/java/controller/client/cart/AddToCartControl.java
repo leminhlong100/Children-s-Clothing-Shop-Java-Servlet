@@ -90,7 +90,7 @@ public class AddToCartControl extends HttpServlet {
                         }
                         session.setAttribute("cart", map);// luu tam vao session
                     }
-                    request.getRequestDispatcher("CartControl").forward(request, response);
+                    response.sendRedirect(request.getContextPath()+"/cart/CartControl");
                 }
             }else {
                 request.getRequestDispatcher("CartControl").forward(request, response);

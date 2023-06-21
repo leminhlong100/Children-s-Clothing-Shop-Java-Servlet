@@ -40,6 +40,18 @@ public class Account {
         this.idOther = idOther;
     }
 
+    public Account(int id, String accountName, String password, String fullName, String address, String email, String phone, int idRoleMember, boolean isActive) {
+        this.id = id;
+        this.accountName = accountName;
+        this.password = password;
+        this.fullName = fullName;
+        this.address = address;
+        this.email = email;
+        this.phone = phone;
+        this.idRoleMember = idRoleMember;
+        this.isActive = isActive;
+    }
+
     public Account(int id, String accountName, int numberloginfail) {
         this.id = id;
         this.accountName = accountName;

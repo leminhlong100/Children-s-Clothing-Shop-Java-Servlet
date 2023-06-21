@@ -4,8 +4,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page isELIgnored="false" %>
-<link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.css"/>
 <script>
     const socket = new WebSocket("ws://localhost:8080/haloshop/observer");
     socket.addEventListener("message", (event) => {
@@ -18,9 +18,14 @@
                 type : "post",
                 data : {
                     idUser : idUser,
+                    typeAction : 'delete',
                 },
                 success : function(data) {
-                    Swal.fire('Tài khoản của bạn đã bị xóa vui lòng liên hệ quản trị viên để biết thêm chi tiết', '', 'success').then(()=>{
+                    Swal.fire({
+                        title: 'Tài khoản của bạn đã bị khóa!',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then(()=>{
                         window.location.href = "${pageContext.request.contextPath}/IndexControl";
                     });
                 },
@@ -35,11 +40,10 @@
                 type : "post",
                 data : {
                     idUser : idUser,
+                    typeAction : 'edit',
                 },
                 success : function(data) {
-                    Swal.fire('Tài khoản của bạn có một số thay đổi vui lòng đăng nhập lại ', '', 'success').then(()=>{
-                        window.location.href = "${pageContext.request.contextPath}/IndexControl";
-                    });
+                    Swal.fire('Tài khoản của bạn có một số thay đổi ', '', 'success')
                 },
                 error : function(data) {
                     console.log("error")

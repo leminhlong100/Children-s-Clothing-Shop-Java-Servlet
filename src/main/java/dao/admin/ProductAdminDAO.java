@@ -35,9 +35,22 @@ public class ProductAdminDAO {
 
         return 0;
     }
+    public static int getTotalProductOuOtOfStock() {
+        String query = "select count(p.nameProduct) from products p join product_prices pp on p.id = pp.idProduct where p.id = (SELECT idProduct FROM inventorys where idProduct = p.id having  SUM(quantity) < 20)";
+        try (Connection conn = DBContext.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query);
+             ResultSet rs = ps.executeQuery();) {
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        return 0;
+    }
     public static int getTotalActiveProduct() {
-        String query = "select count(id) from products where status = 'active'";
+        String query = "select count(id) from products where isActive = '1'";
         try (Handle handle = DBContext.me().open()) {
             return handle.createQuery(query)
                     .mapTo(Integer.class)
@@ -235,7 +248,7 @@ public class ProductAdminDAO {
     }
 
     public static void main(String[] args) {
-//        System.out.println(findsizebyid(1));
+        System.out.println(getTotalActiveProduct());
 
 
     }

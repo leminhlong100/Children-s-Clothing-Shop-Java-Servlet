@@ -302,6 +302,9 @@ MODAL
         });
     }
 </script>
+<script>
+    document.getElementById("admin-products").classList.add("active");
+</script>
 </body>
 
 </html>

@@ -38,8 +38,8 @@ public class UtilDAO {
 
     public static Account findAccountById(int idAccount) {
         Jdbi me = DBContext.me();
-        String query = "select id,accountName,password,fullName,address,email,phone,idRoleMember  from accounts where id =?";
-        return me.withHandle(handle -> handle.createQuery(query).bind(0, idAccount).mapToBean(Account.class).findFirst().orElse(null));
+        String query = "select id,accountName,password,fullName,address,email,phone,idRoleMember,isActive  from accounts where id =?";
+        return me.withHandle(handle -> handle.createQuery(query).bind(0, idAccount).map((rs, ctx) -> new Account(rs.getInt("id"),rs.getString("accountName"),rs.getString("password"),rs.getString("fullName"),rs.getString("address"),rs.getString("email"),rs.getString("phone"),rs.getInt("idRoleMember"),rs.getBoolean("isActive"))).findFirst().orElse(null));
 
     }
     public static Product findProduct(int idProduct) {
@@ -52,7 +52,7 @@ public class UtilDAO {
     }
 
     public static void main(String[] args) {
-        System.out.println(findProductById(1));
+        System.out.println(findAccountById(1));
     }
 
 }

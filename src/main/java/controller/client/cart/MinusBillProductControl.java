@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.gson.JsonObject;
 import dao.client.OrderDAO;
 import entity.OrderDetail;
 
@@ -23,6 +24,7 @@ public class MinusBillProductControl extends HttpServlet {
         String key = request.getParameter("key");
         String size = request.getParameter("size");
         String color = request.getParameter("color");
+        int quantity = 1;
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
@@ -48,20 +50,38 @@ public class MinusBillProductControl extends HttpServlet {
                                     } else {
                                         if (quantitySizeColor < o.getQuantity()) {
                                             o.setQuantity(quantitySizeColor);
+                                            quantity = o.getQuantity();
                                         } else {
                                             o.setQuantity(o.getQuantity() - 1);
+                                            quantity = o.getQuantity();
                                         }
                                     }
+                                    quantity = o.getQuantity();
                                 }
                             }
                         }
                     }
+
                 }
             }
             session.setAttribute("cart", map); // update lại vào session
         }
-
-        request.getRequestDispatcher("CartControl").forward(request, response);
+        int totalQuantity = 0;
+        double total = 0;
+        Map<String, List<OrderDetail>> cartTemp = (Map<String, List<OrderDetail>>) obj;
+        for (Map.Entry<String, List<OrderDetail>> entry : cartTemp.entrySet()) {
+            List<OrderDetail> orderDetails = entry.getValue();
+            for (OrderDetail orderDetail : orderDetails) {
+                total += orderDetail.getQuantity() * orderDetail.getPrice();
+                totalQuantity += orderDetail.getQuantity();
+            }
+        }
+        session.setAttribute("cartTotalQuantity", totalQuantity);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("quantity", quantity);
+        jsonObject.addProperty("total", total);
+        jsonObject.addProperty("totalQuantity", totalQuantity);
+        response.getWriter().println(jsonObject);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

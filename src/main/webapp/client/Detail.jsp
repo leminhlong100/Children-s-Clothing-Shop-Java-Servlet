@@ -121,29 +121,35 @@
                                             <select id="product-select" name="variantId" class="single-option-selector">
                                                 <c:forEach var="o" items="${requestScope.detail.colorSizes}">
                                                     <c:if test="${o.quantity==0}">
-                                                        <option disabled value="${o.size}/${o.color}" data-quantity="0">HẾT HÀNG - ${o.size}/${o.color}</option>
+                                                        <option disabled value="${o.size}/${o.color}" data-quantity="0">
+                                                            HẾT HÀNG - ${o.size}/${o.color}</option>
                                                     </c:if>
                                                     <c:if test="${o.quantity!=0}">
-                                                        <option value="${o.size}/${o.color}" data-quantity="${o.quantity}">${o.size}/${o.color} - Còn ${o.quantity} sản phẩm</option>
+                                                        <option value="${o.size}/${o.color}"
+                                                                data-quantity="${o.quantity}">${o.size}/${o.color} -
+                                                            Còn ${o.quantity} sản phẩm
+                                                        </option>
                                                     </c:if>
                                                 </c:forEach>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="pd-form-bottom clearfix">
-                                        <c:set var="found" value="false" />
+                                        <c:set var="found" value="false"/>
                                         <c:forEach var="o" items="${requestScope.detail.colorSizes}" varStatus="loop">
                                             <c:if test="${!found && o.quantity!=0}">
-                                                <c:set var="quantity" value="${o.quantity}" />
-                                                <c:set var="found" value="true" />
+                                                <c:set var="quantity" value="${o.quantity}"/>
+                                                <c:set var="found" value="true"/>
                                             </c:if>
                                             <c:if test="${found}">
-                                                <c:set var="loop.break" value="true" />
+                                                <c:set var="loop.break" value="true"/>
                                             </c:if>
                                         </c:forEach>
 
-                                        <input type="number" class="single-input-selector" value="1" min="1" max="${quantity}" name="quantity">
-                                        <button style="padding: 10px 23px; border: 0; background-color: #79bd9a; text-transform: uppercase; font-weight: 700; color: #fff" type="submit" class="button" title="Đặt hàng" type="submit">
+                                        <input type="number" class="single-input-selector" value="1" min="1"
+                                               max="${quantity}" name="quantity">
+                                        <button style="padding: 10px 23px; border: 0; background-color: #79bd9a; text-transform: uppercase; font-weight: 700; color: #fff"
+                                                type="submit" class="button" title="Đặt hàng" type="submit">
                                             <span><fmt:message key="ORDER" bundle="${lang}"></fmt:message></span>
                                         </button>
                                     </div>
@@ -153,7 +159,7 @@
                                 const input = document.querySelector("input[name=quantity]");
 
                                 // Lắng nghe sự kiện onchange trên select
-                                select.addEventListener("change", function(event) {
+                                select.addEventListener("change", function (event) {
                                     const selectedOption = event.target.selectedOptions[0];
                                     input.max = selectedOption.getAttribute("data-quantity");
                                     input.value = 1; // reset giá trị của input khi select thay đổi
@@ -170,8 +176,8 @@
                                 </div>
                                 <div class="clearfix"></div>
                                 <div class="sk-shipping">
-                                    <img
-                                            src="//bizweb.dktcdn.net/100/117/632/themes/157694/assets/icon-dt.jpg?1564585558451"/>
+                                    <img style="  max-width: 100%; max-height: 100%;"
+                                         src="//bizweb.dktcdn.net/100/117/632/themes/157694/assets/icon-dt.jpg?1564585558451"/>
                                 </div>
                             </div>
                         </div>
@@ -210,13 +216,15 @@
                                 <form id="formcomment">
                                     <c:if test="${sessionScope.acc.fullName !=null}">
 
-                                        <div><textarea name="comment" id="comment"
+                                        <div style="  max-width: 100%;
+    max-height: 100%;"><textarea name="comment" id="comment"
                                                        placeholder="Nhập nội dung bạn muốn bình luận: " cols="30"
                                                        rows="10" required
-                                                       style="width: 698px; height: 111px; resize: none"
+                                                       style="width: 100%; height: 111px; resize: none"
                                         ></textarea></div>
                                         <div>
-                                            <button type="submit" id="btn-comment" style="width: 6% ;height: 31px">Gửi
+                                            <button style="padding: 10px 23px; border: 0; background-color: #79bd9a; text-transform: uppercase; font-weight: 700; color: #fff"
+                                                    type="submit" id="btn-comment" style="width: 6% ;height: 31px">Gửi
                                             </button>
                                         </div>
                                     </c:if>
@@ -225,12 +233,13 @@
                                     <div id="mycmt">
 
                                         <c:forEach items="${list}" var="lists" varStatus="status">
-                                            <div class="product-length" id="cmt-box" >
+                                            <div class="product-length" id="cmt-box">
                                                 <div>${lists.nameAccount}</div>
                                                 <div style="margin-top: 1%;">${lists.gettimeover()}</div>
                                                 <div class="cmts"><h5 style="color: #1d2124">Đánh giá sản
                                                     phẩm:</h5>  ${lists.content}</div>
-                                                <button type="button" class="reply_btn" style="margin-top: 2%"
+                                                <button style="padding: 10px 23px; border: 0; background-color: #79bd9a; text-transform: uppercase; font-weight: 700; color: #fff"
+                                                        type="button" class="reply_btn" style="margin-top: 2%"
                                                         onclick="formContext(this,`show`)">
                                                     Trả lời
                                                 </button>
@@ -239,7 +248,7 @@
                                                         <form id="form-reply">
                                                             <div id="cmt-reply-box" class="cssformcomment">
                                                                 <div class="rep">${listrep.nameAccount}</div>
-                                                                <div style=" margin-left: 6%; margin-top: 1%;" >${listrep.differencetime}</div>
+                                                                <div style=" margin-left: 6%; margin-top: 1%;">${listrep.differencetime}</div>
                                                                 <div class="cmtr" style="padding-left: 6%"><h5
                                                                         style="color: #1d2124">Đã bình luận phản
                                                                     hồi:</h5>  ${listrep.content}</div>
@@ -266,7 +275,8 @@
                                                         <div>
                                                             <button type="button" id="admin-btn-comment"
                                                                     onclick="formContext(this,`submit`)"
-                                                                    style="width: 6% ;height: 31px" value="${lists.id}">Gửi
+                                                                    style="padding: 10px 23px; border: 0; background-color: #79bd9a; text-transform: uppercase; font-weight: 700; color: #fff"
+                                                                    value="${lists.id}">Gửi
                                                             </button>
                                                         </div>
                                                     </form>
@@ -276,7 +286,10 @@
                                         </c:forEach>
 
                                     </div>
-                                    <button type="button" class="btn-load" id="load" onclick="showmorerep()">Load more</button>
+                                    <button type="button"
+                                            style="padding: 10px 23px; border: 0; background-color: #79bd9a; text-transform: uppercase; font-weight: 700; color: #fff;margin-top: 10px"
+                                            class="btn-load" id="load" onclick="showmorerep()">Hiển thị thêm
+                                    </button>
                                 </div>
                             </div>
                             <script>
@@ -289,7 +302,7 @@
                                     $.ajax({
                                         url: "Commentcontrol",
                                         type: 'POST',
-                                        data:{
+                                        data: {
                                             content: $(content_comment).val(),
                                             pid:${detail.id},
                                         },
@@ -298,7 +311,7 @@
                                             let dataafter = JSON.parse(datarespone.comment_user);
                                             var commentHtml = '<div  id="cmt-box" style="border-bottom: 1px #b3b7bb solid; padding-top: 5% ;margin-bottom: 5%">' +
                                                 '<div>' + dataafter.nameAccount + '</div>' +
-                                                '<div>'+dataafter.differencetime +'</div>' +
+                                                '<div>' + dataafter.differencetime + '</div>' +
                                                 '<div class="cmts"><h5 style="color: #1d2124">Đánh giá sản phẩm:</h5> ' + dataafter.content + '</div>'
                                             '</div>';
                                             console.log(dataafter);
@@ -335,7 +348,7 @@
                                                 let afterresponereply = JSON.parse(responereply.comment_reply);
                                                 let varreply = '<div class ="cssformcomment">' +
                                                     '<div id="cmt-reply-box" class="rep">' + afterresponereply.nameAccount + '</div>'
-                                                    +'<div style=" margin-left: 6%;margin-top: 1%;">'+afterresponereply.differencetime+ '</div>'+
+                                                    + '<div style=" margin-left: 6%;margin-top: 1%;">' + afterresponereply.differencetime + '</div>' +
                                                     '<div class="cmtr" style="padding-left: 6%"><h5 style="color: #1d2124">Đã phản hồi bình luận:</h5> ' + afterresponereply.content + '</div>'
                                                 '</div>'
                                                 $(formreplynguoidung).append(varreply);
@@ -349,6 +362,7 @@
                                         });
                                     }
                                 }
+
                                 function showmorerep() {
                                     var numincrease = document.getElementsByClassName("product-length").length;
 
@@ -363,13 +377,13 @@
                                             let respone = JSON.parse(data);
                                             let show = JSON.parse(respone.show);
                                             let test = "";
-                                            let reply ="";
+                                            let reply = "";
                                             let comt = "";
-                                            let formrep="";
+                                            let formrep = "";
                                             for (let i = 0; i < show.length; i++) {
-                                                comt =show[i].listreply;
-                                                reply="";
-                                                formrep="";
+                                                comt = show[i].listreply;
+                                                reply = "";
+                                                formrep = "";
                                                 for (let j = 0; j < comt.length; j++) {
                                                     reply += ` <div class="repuser" id="repcmt">
                                                               <form id="form-reply">
@@ -386,7 +400,7 @@
 
                                                 }
                                                 // if(ahihi!=null){
-                                                formrep+=` <form class="reply formReply hiddenForm" id="form-reply">
+                                                formrep += ` <form class="reply formReply hiddenForm" id="form-reply">
                                                     <div><textarea name="comment-rep" id="admin-comment"
                                                                    placeholder="Nhập nội dung bạn muốn phản hồi: "
                                                                    cols="30" rows="10" required
@@ -395,7 +409,7 @@
                                                     <div>
                                                         <button type="button" id="admin-btn-comment"
                                                                  onclick="formContext(this,\`submit\`)"
-                                                                style="width: 6% ;height: 31px" value="`+show[i].id+`">Gửi
+                                                                style="width: 6% ;height: 31px" value="` + show[i].id + `">Gửi
                                                         </button>
                                                     </div>
                                                 </form>`
@@ -406,14 +420,14 @@
                                                     '<div>' + show[i].differencetime + '</div>' +
                                                     '<div class="cmts"><h5 style="color: #1d2124">Đánh giá sản phẩm:</h5> ' + show[i].content + '</div>' +
                                                     ' <button type="button" class="reply_btn" style="margin-top: 2%" onclick="formContext(this,`show`)">' + "Trả lời" +
-                                                    '</button>'  +reply+formrep+
+                                                    '</button>' + reply + formrep +
                                                     '</div>';
 
                                             }
-                                            if (show.length>0){
+                                            if (show.length > 0) {
                                                 $('#mycmt').append(test);
 
-                                            }else {
+                                            } else {
                                                 let buttonshow = document.getElementById("load")
                                                 buttonshow.style.display = "none";
                                             }

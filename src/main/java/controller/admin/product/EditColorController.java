@@ -59,7 +59,6 @@ public class EditColorController extends HttpServlet {
             HttpSession session = request.getSession();
             SizeColorProduct s = new SizeColorProduct(Integer.parseInt(idsize),Integer.parseInt(idproduct),color);
             Inventory i = new Inventory(Integer.parseInt(idproduct),Integer.parseInt(idsize),Integer.parseInt(quantity));
-
             Product p = new Product(Integer.parseInt(idproduct),name);
             ProductAdminDAO.updatecolor(s);
             ProductAdminDAO.updatenumber(i);

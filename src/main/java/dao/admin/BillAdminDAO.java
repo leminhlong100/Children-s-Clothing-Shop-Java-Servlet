@@ -14,10 +14,15 @@ import org.jdbi.v3.core.Jdbi;
 public class BillAdminDAO {
 	public static List<Order> getListOrder() {
 		Jdbi me = DBContext.me();
-		String query = "SELECT od.id,od.createAt,statusPay,od.status,od.idAccount,acc.accountName,od.totalPrice  FROM orders od join accounts acc on od.idAccount = acc.id";
-		return me.withHandle(handle -> handle.createQuery(query).map((rs, ctx) -> new Order(rs.getInt("id"), rs.getString("createAt"), rs.getString("statusPay"), rs.getString("status"), new Account(rs.getInt("idAccount"), rs.getString("accountName")),rs.getDouble("totalPrice"))).list());
+		String query = "SELECT od.id,od.createAt,deliveryAt,statusPay,od.status,od.idAccount,acc.accountName,od.totalPrice  FROM orders od join accounts acc on od.idAccount = acc.id";
+		return me.withHandle(handle -> handle.createQuery(query).map((rs, ctx) -> new Order(rs.getInt("id"), rs.getString("createAt"),rs.getString("deliveryAt"), rs.getString("statusPay"), rs.getString("status"), new Account(rs.getInt("idAccount"), rs.getString("accountName")),rs.getDouble("totalPrice"))).list());
 	}
-	public static Order getOrderById(int idOrder) {
+	public static List<Order> getListOrderLimit() {
+		Jdbi me = DBContext.me();
+		String query = "SELECT od.id,od.createAt,deliveryAt,statusPay,od.status,od.idAccount,acc.accountName,od.totalPrice  FROM orders od join accounts acc on od.idAccount = acc.id order by id desc limit 4";
+		return me.withHandle(handle -> handle.createQuery(query).map((rs, ctx) -> new Order(rs.getInt("id"), rs.getString("createAt"),rs.getString("deliveryAt"), rs.getString("statusPay"), rs.getString("status"), new Account(rs.getInt("idAccount"), rs.getString("accountName")),rs.getDouble("totalPrice"))).list());
+	}
+	public static Order getOrderById(String idOrder) {
 		Jdbi me = DBContext.me();
 		String query = "SELECT id,createAt,deliveryAt,statusPay,idAccount,feeship,totalPrice,status,address,wardId,districtId,note FROM kidstore.orders where id = ?";
 		return me.withHandle(handle -> handle.createQuery(query).bind(0,idOrder).mapToBean(Order.class).findFirst().orElse(null));
@@ -38,6 +43,16 @@ public class BillAdminDAO {
 		String query = "update orders set status = ? where id =?;";
 		Jdbi me = DBContext.me();
 		return me.withHandle(handle -> handle.createUpdate(query).bind(0,status).bind(1,bid).execute())==1;
+	}
+	public static boolean updateBillDeliveryAt(String bid) {
+		String query = "update orders set deliveryAt =NOW() where id =?;";
+		Jdbi me = DBContext.me();
+		return me.withHandle(handle -> handle.createUpdate(query).bind(0,bid).execute())==1;
+	}
+	public static boolean updateBillStatusPay(String statusPay, String bid) {
+		String query = "update orders set statusPay = ? where id =?;";
+		Jdbi me = DBContext.me();
+		return me.withHandle(handle -> handle.createUpdate(query).bind(0,statusPay).bind(1,bid).execute())==1;
 	}
 
 	public static int getTotalAcceptProduct() {
@@ -96,6 +111,15 @@ public class BillAdminDAO {
 		}
 		return 0;
 	}
+	public static int sumAllBillInMonth(int month) {
+		String query = "select sum(od.quantity) from order_details od join orders o on od.idOrder = o.id where year(o.createAt) = year(current_date()) and month(o.createAt) = ?";
+		try (Handle handle = DBContext.me().open()) {
+			return handle.createQuery(query).bind(0, month).mapTo(Integer.class).findOne().orElse(0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
 
 	public static int SumMoneyInMonth(int month) {
 		String query = "select sum(o.totalPrice) from order_details od join orders o on od.idOrder = o.id where year(o.createAt) = year(current_date()) and month(o.createAt) = ? and o.status = 'Hoàn thành'";
@@ -108,7 +132,7 @@ public class BillAdminDAO {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(getOrderById(39));
+		System.out.println(sumBillInMonth(5));
 	}
 
 }

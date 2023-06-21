@@ -35,12 +35,7 @@
             <div class="tile">
                 <div class="tile-body">
                     <div class="row element-button">
-                        <div class="col-sm-2">
 
-                            <a class="btn btn-add btn-sm" href="form-add-don-hang.html" title="Thêm"><i
-                                    class="fas fa-plus"></i>
-                                Tạo mới đơn hàng</a>
-                        </div>
                         <div class="col-sm-2">
                             <a class="btn btn-delete btn-sm nhap-tu-file" type="button" title="Nhập"
                                onclick="myFunction(this)"><i
@@ -80,6 +75,7 @@
                             <th>Khách hàng</th>
                             <th>Đơn hàng</th>
                             <th>Ngày đặt</th>
+                            <th>Ngày giao</th>
                             <th>Số lượng</th>
                             <th>Tổng tiền</th>
                             <th>Trạng thái thanh toán</th>
@@ -107,12 +103,19 @@
                                     </c:forEach>
                                 </td>
                                 <td>${o.createAt}</td>
+                                <c:if test="${o.deliveryAt == null}">
+                                    <td>Chưa giao</td>
+                                </c:if>
+                                <c:if test="${o.deliveryAt != null}">
+                                    <td>${o.deliveryAt}</td>
+                                </c:if>
                                 <td>${count}</td>
                                 <td style="text-align: right;">${o.totalPrice}</td>
-                                <td>${o.statusPay}</td>
+                                <c:if test="${o.statusPay=='Đã thanh toán'}"><td style="color: green">${o.statusPay}</td></c:if>
+                                <c:if test="${o.statusPay=='Chưa thanh toán'}"><td style="color: red">${o.statusPay}</td></c:if>
                                 <td>
                                     <c:if test="${o.status=='Đang xử lý'}">
-                                    <span class="badge bg-warning">${o.status}</span>
+                                        <span class="badge bg-warning">${o.status}</span>
                                     </c:if>
                                     <c:if test="${o.status=='Đã xác nhận'}">
                                         <span class="badge bg-primary">${o.status}</span>
@@ -147,7 +150,8 @@
                                         <c:if test="${o.status=='Đang vận chuyển'}">
                                             <button class="btn btn-primary btn-sm cancel" type="button"
                                                     onclick="success(${o.id},this)"
-                                                    title="Hoàn thành đơn hàng"><i class="fas fa-check-double"></i></button>
+                                                    title="Hoàn thành đơn hàng"><i class="fas fa-check-double"></i>
+                                            </button>
                                         </c:if>
                                         <c:if test="${o.status!='Hoàn thành'&& o.status!='Đã hủy'}">
                                             <button class="btn btn-primary btn-sm cancel" type="button"
@@ -198,7 +202,7 @@
                     success: function (data) {
                         let isSuc = JSON.parse(data).isSuc;
                         if (isSuc) {
-                            $(tdArray[8 ]).html('<span class="badge bg-primary"">Đã xác nhận</span>');
+                            $(tdArray[9]).html('<span class="badge bg-primary"">Đã xác nhận</span>');
                             $(parent).html('<button class="btn btn-primary btn-sm register" type="button"  onclick="transport(' + orderId + ',this)" title="Đăng ký vận chuyển"><i class="fa fa-truck"></i></button>' +
                                 ' <button class="btn btn-primary btn-sm cancel" onclick="deny(' + orderId + ',this)" type="button" title="Hủy đơn hàng"><i class="fas fa-times"></i></button>')
                         }
@@ -241,9 +245,9 @@
                         console.log(data)
                         let isSuc = JSON.parse(data).isSuc;
                         if (isSuc) {
-                            $(tdArray[8]).html('<span class="badge bg-info"">Đang vận chuyển</span>');
-                            $(parent).html( ' <button class="btn btn-primary btn-sm cancel" type="button" onclick="success(' + orderId + ',this)" title="Hoàn thành đơn hàng"><i class="fas fa-check-double"></i></button>'+' <button class="btn btn-primary btn-sm cancel" onclick="deny(' + orderId + ',this)" type="button" title="Hủy đơn hàng"><i class="fas fa-times"></i></button>'
-                           )
+                            $(tdArray[9]).html('<span class="badge bg-info"">Đang vận chuyển</span>');
+                            $(parent).html(' <button class="btn btn-primary btn-sm cancel" type="button" onclick="success(' + orderId + ',this)" title="Hoàn thành đơn hàng"><i class="fas fa-check-double"></i></button>' + ' <button class="btn btn-primary btn-sm cancel" onclick="deny(' + orderId + ',this)" type="button" title="Hủy đơn hàng"><i class="fas fa-times"></i></button>'
+                            )
                         }
                         Swal.fire('Đăng ký vận chuyển đơn hàng thành công', '', 'success');
                     },
@@ -283,7 +287,7 @@
                     success: function (data) {
                         let isSuc = JSON.parse(data).isSuc;
                         if (isSuc) {
-                            $(tdArray[8]).html('<span class="badge bg-danger"">Đã hủy</span>');
+                            $(tdArray[9]).html('<span class="badge bg-danger"">Đã hủy</span>');
                             $(parent).html('<button class="btn btn-primary btn-sm cancel" type="button" onclick="back(' + orderId + ',this)" title="Khôi phục đơn hàng"><i class="fa fa-repeat"></i></button>');
                         }
                         Swal.fire('Hủy đơn hàng thành công', '', 'success');
@@ -301,6 +305,7 @@
             }
         })
     }
+
     function back(orderId, button) {
         let tr = $(button).closest("tr");
         let tdArray = $(tr).find("td");
@@ -323,7 +328,7 @@
                     success: function (data) {
                         let isSuc = JSON.parse(data).isSuc;
                         if (isSuc) {
-                            $(tdArray[8]).html('<span class="badge bg-primary"">Đã xác nhận</span>');
+                            $(tdArray[9]).html('<span class="badge bg-primary"">Đã xác nhận</span>');
                             $(parent).html('<button class="btn btn-primary btn-sm register" type="button"  onclick="transport(' + orderId + ',this)" title="Đăng ký vận chuyển"><i class="fa fa-truck"></i></button>' +
                                 ' <button class="btn btn-primary btn-sm cancel" onclick="deny(' + orderId + ',this)" type="button" title="Hủy đơn hàng"><i class="fas fa-times"></i></button>')
                         }
@@ -342,6 +347,7 @@
             }
         })
     }
+
     function success(orderId, button) {
         let tr = $(button).closest("tr");
         let tdArray = $(tr).find("td");
@@ -363,8 +369,12 @@
                     },
                     success: function (data) {
                         let isSuc = JSON.parse(data).isSuc;
+                        let order = JSON.parse(data).order;
+                        let deliveryAt = JSON.parse(order).deliveryAt
                         if (isSuc) {
-                            $(tdArray[8]).html('<span class="badge bg-success"">Hoàn thành</span>');
+                            $(tdArray[9]).html('<span class="badge bg-success"">Hoàn thành</span>');
+                            $(tdArray[8]).html('Đã thanh toán').css('color', 'green');
+                            $(tdArray[5]).html(deliveryAt);
                             $(parent).html('')
                         }
                         Swal.fire('Hoàn thành đơn hàng thành công', '', 'success');
@@ -383,7 +393,7 @@
         })
     }
 
-    function deleteOrder(id,button) {
+    function deleteOrder(id, button) {
         let row = $(button).closest('tr');
         let re = "";
         Swal.fire({
@@ -481,27 +491,13 @@
             win.print();
         }
     }
-    //Sao chép dữ liệu
-    // let copyTextareaBtn = document.getElementById('textareacopybtn');
-    // copyTextareaBtn.addEventListener('click', function (event) {
-    //     var copyTextarea = document.querySelector('.js-copytextarea');
-    //     copyTextarea.focus();
-    //     copyTextarea.select();
-    //
-    //     try {
-    //         var successful = document.execCommand('copy');
-    //         var msg = successful ? 'successful' : 'unsuccessful';
-    //         console.log('Copying text command was ' + msg);
-    //     } catch (err) {
-    //         console.log('Oops, unable to copy');
-    //     }
-    // });
-
-
     //Modal
     $("#show-emp").on("click", function () {
         $("#ModalUP").modal({backdrop: false, keyboard: false})
     });
+</script>
+<script>
+    document.getElementById("admin-bill").classList.add("active");
 </script>
 </body>
 

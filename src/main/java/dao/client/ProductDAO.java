@@ -14,22 +14,22 @@ public class ProductDAO {
 		String query = "";
 		switch (cid) {
 			case 0: //tất cả sản phẩm
-				query = "select count(p.nameProduct) from products p join product_prices pp on p.id = pp.idProduct";
+				query = "select count(p.nameProduct) from products p join product_prices pp on p.id = pp.idProduct where p.isActive ='1'";
 				break;
 			case 1: //góc bé trai
-				query = "select count(p.nameProduct) from products p join categories C on p.idCategorie = c.id where c.id in(1,2,5,7,9,13)";
+				query = "select count(p.nameProduct) from products p join categories C on p.idCategorie = c.id where p.isActive ='1' and  c.id in(1,2,5,7,9,13)";
 				break;
 			case 2: //góc bé gái
-				query = "select count(p.nameProduct) from products p join categories C on p.idCategorie = c.id  where idCategorie in(3,4,6,8,10,11,13)";
+				query = "select count(p.nameProduct) from products p join categories C on p.idCategorie = c.id  where p.isActive ='1' and  idCategorie in(3,4,6,8,10,11,13)";
 				break;
 			case 3: //phụ kiện
-				query = "select count(p.nameProduct) from products p join categories C on p.idCategorie = c.id  where idCategorie in(14,15)";
+				query = "select count(p.nameProduct) from products p join categories C on p.idCategorie = c.id  where p.isActive ='1' and  idCategorie in(14,15)";
 				break;
 			case 4: //khuyến mãi
-				query = "select count(p.nameProduct) from products p join categories C on p.idCategorie = c.id join product_prices pp on pp.idProduct = p.id where pp.listPrice > pp.discountPrice";
+				query = "select count(p.nameProduct) from products p join categories C on p.idCategorie = c.id join product_prices pp on pp.idProduct = p.id where p.isActive ='1' and  pp.listPrice > pp.discountPrice";
 				break;
 			case 5: //đồ chơi
-				query = "select count(p.nameProduct) from products p join categories C on p.idCategorie = c.id  where idCategorie in(12)";
+				query = "select count(p.nameProduct) from products p join categories C on p.idCategorie = c.id  where p.isActive ='1' and  idCategorie in(12)";
 				break;
 			default:
 				break;
@@ -54,27 +54,27 @@ public class ProductDAO {
 		String query = "";
 		switch (cid) {
 			case 0:
-				query = "select p.id, p.nameProduct, pp.listPrice, pp.discountPrice, pp.discount  from products p join product_prices pp on p.id = pp.idProduct order by " + sort + " " + type
+				query = "select p.id, p.nameProduct, pp.listPrice, pp.discountPrice, pp.discount  from products p join product_prices pp on p.id = pp.idProduct where p.isActive ='1' order by " + sort + " " + type
 						+ "  limit ?,12";
 				break;
 			case 1:
-				query = "select p.id, p.nameProduct, pp.listPrice, pp.discountPrice, pp.discount from products p join categories c on p.idCategorie = c.id join product_prices pp on p.id = pp.idProduct where idCategorie in(1,2,5,7,9,13) order by "
+				query = "select p.id, p.nameProduct, pp.listPrice, pp.discountPrice, pp.discount from products p join categories c on p.idCategorie = c.id join product_prices pp on p.id = pp.idProduct where p.isActive ='1' and  idCategorie in(1,2,5,7,9,13) order by "
 						+ sort + " " + type + "  limit ?,12";
 				break;
 			case 2:
-				query = "select p.id, p.nameProduct, pp.listPrice, pp.discountPrice, pp.discount from products p join categories c on p.idCategorie = c.id join product_prices pp on p.id = pp.idProduct where idCategorie in(3,4,6,8,10,11,13) order by "
+				query = "select p.id, p.nameProduct, pp.listPrice, pp.discountPrice, pp.discount from products p join categories c on p.idCategorie = c.id join product_prices pp on p.id = pp.idProduct where p.isActive ='1' and  idCategorie in(3,4,6,8,10,11,13) order by "
 						+ sort + " " + type + "  limit ?,12";
 				break;
 			case 3:
-				query = "select p.id, p.nameProduct, pp.listPrice, pp.discountPrice, pp.discount from products p join categories c on p.idCategorie = c.id join product_prices pp on p.id = pp.idProduct where idCategorie in(14,15) order by "
+				query = "select p.id, p.nameProduct, pp.listPrice, pp.discountPrice, pp.discount from products p join categories c on p.idCategorie = c.id join product_prices pp on p.id = pp.idProduct where p.isActive ='1' and  idCategorie in(14,15) order by "
 						+ sort + " " + type + "  limit ?,12";
 				break;
 			case 4:
-				query = "select p.id, p.nameProduct, pp.listPrice, pp.discountPrice, pp.discount from products p join categories c on p.idCategorie = c.id join product_prices pp on p.id = pp.idProduct where pp.listPrice > pp.discountPrice order by "
+				query = "select p.id, p.nameProduct, pp.listPrice, pp.discountPrice, pp.discount from products p join categories c on p.idCategorie = c.id join product_prices pp on p.id = pp.idProduct where p.isActive ='1' and  pp.listPrice > pp.discountPrice order by "
 						+ sort + " " + type + "  limit ?,12";
 				break;
 			case 5:
-				query = "select p.id, p.nameProduct, pp.listPrice, pp.discountPrice, pp.discount from products p join categories c on p.idCategorie = c.id join product_prices pp on p.id = pp.idProduct where idCategorie in(12) order by "
+				query = "select p.id, p.nameProduct, pp.listPrice, pp.discountPrice, pp.discount from products p join categories c on p.idCategorie = c.id join product_prices pp on p.id = pp.idProduct where p.isActive ='1' and  idCategorie in(12) order by "
 						+ sort + " " + type + "  limit ?,12";
 				break;
 			default:
@@ -116,13 +116,13 @@ public class ProductDAO {
 
 			listcoment = me.withHandle(handle->{
 				return handle.createQuery(query).bind(0,idproduct)
-						.mapToBean(Comment.class).stream().toList();
+						.mapToBean(Comment.class).list();
 			});
 		} else {
 			query = "select  id,content,idCustomer,idProduct ,nameaccount,createAt  from comments  where idProduct = ? and idParent =? order by createAt desc limit 2 ";
 			listcoment = me.withHandle(handle -> {
 				return handle.createQuery(query).bind(0,idproduct).bind(1,idparent)
-						.mapToBean(Comment.class).stream().toList();
+						.mapToBean(Comment.class).list();
 			});
 		}
 		for (Comment cmts:listcoment){
