@@ -35,8 +35,7 @@
 					<div class="col-lg-12">
 						<ol class="breadcrumb">
 							<li><a href="#"><fmt:message key="Home" bundle="${lang}"></fmt:message></a></li>
-							<li class="active"><fmt:message key="log.in"
-									bundle="${lang}"></fmt:message></li>
+							<li class="active">Các hình thức thanh toán</li>
 						</ol>
 					</div>
 				</div>

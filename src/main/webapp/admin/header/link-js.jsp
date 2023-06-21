@@ -20,3 +20,23 @@
 <script type="text/javascript" src="${url}/js/plugins/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="${url}/js/plugins/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript" src="${url}/js/plugins/chart.js"></script>
+<script>
+    function checkFormNotEmpty(formId) {
+        let form = document.getElementById(formId); // Lấy element form dựa trên id
+
+        if (!form) {
+            console.error("Form not found!");
+            return false;
+        }
+        let inputs = form.querySelectorAll('input'); // Chọn tất cả các trường input trong form chỉ định
+        for (let i = 0; i < inputs.length; i++) {
+            if (inputs[i].value === '') {
+                Swal.fire('Không được để trống', '', 'warning');
+                return false; // Nếu có một trường rỗng, trả về false
+            }
+        }
+        return true; // Nếu tất cả các trường không rỗng, trả về true
+    }
+</script>
+<jsp:include page="/admin/websocket.jsp"></jsp:include>
+

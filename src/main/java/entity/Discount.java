@@ -4,42 +4,53 @@ import java.sql.Date;
 import java.util.List;
 
 public class Discount {
-	private int idDiscount;
+	private int id;
 	private String nameDiscount;
 	private String description;
 	private String codeDiscount;
 	private double percentage;
-	private int minimum_product_quantity;
-	private Date start_time;
-	private Date end_time;
-	private List<Product> products;
-	private String Status;
+	private int quantity;
+	private String startTime;
+	private String endTime;
+	private String status;
+	private String createAt;
 
-	public Discount(int idDiscount, String nameDiscount, String description, String codeDiscount, double percentage,
-			int minimum_product_quantity, Date start_time, Date end_time, List<Product> products, String status) {
-		super();
-		this.idDiscount = idDiscount;
+	private String updateAt;
+	public Discount() {
+	}
+
+	public Discount(int id, String nameDiscount, String description, String codeDiscount, double percentage, int quantity, String startTime, String endTime, String status, String createAt, String updateAt) {
+		this.id = id;
 		this.nameDiscount = nameDiscount;
 		this.description = description;
 		this.codeDiscount = codeDiscount;
 		this.percentage = percentage;
-		this.minimum_product_quantity = minimum_product_quantity;
-		this.start_time = start_time;
-		this.end_time = end_time;
-		this.products = products;
-		Status = status;
+		this.quantity = quantity;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.status = status;
+		this.createAt = createAt;
+		this.updateAt = updateAt;
 	}
 
-	public Discount() {
-		super();
+	public Discount(int id, String nameDiscount, String description, String codeDiscount, double percentage, int quantity, String startTime, String endTime, String status) {
+		this.id = id;
+		this.nameDiscount = nameDiscount;
+		this.description = description;
+		this.codeDiscount = codeDiscount;
+		this.percentage = percentage;
+		this.quantity = quantity;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.status = status;
 	}
 
-	public int getIdDiscount() {
-		return idDiscount;
+	public int getId() {
+		return id;
 	}
 
-	public void setIdDiscount(int idDiscount) {
-		this.idDiscount = idDiscount;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getNameDiscount() {
@@ -74,52 +85,68 @@ public class Discount {
 		this.percentage = percentage;
 	}
 
-	public int getMinimum_product_quantity() {
-		return minimum_product_quantity;
+	public int getQuantity() {
+		return quantity;
 	}
 
-	public void setMinimum_product_quantity(int minimum_product_quantity) {
-		this.minimum_product_quantity = minimum_product_quantity;
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 
-	public Date getStart_time() {
-		return start_time;
+	public String getStartTime() {
+		return startTime;
 	}
 
-	public void setStart_time(Date start_time) {
-		this.start_time = start_time;
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
 	}
 
-	public Date getEnd_time() {
-		return end_time;
+	public String getEndTime() {
+		return endTime;
 	}
 
-	public void setEnd_time(Date end_time) {
-		this.end_time = end_time;
-	}
-
-	public List<Product> getProducts() {
-		return products;
-	}
-
-	public void setProducts(List<Product> products) {
-		this.products = products;
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
 	}
 
 	public String getStatus() {
-		return Status;
+		return status;
 	}
 
 	public void setStatus(String status) {
-		Status = status;
+		this.status = status;
+	}
+
+	public String getCreateAt() {
+		return createAt;
+	}
+
+	public void setCreateAt(String createAt) {
+		this.createAt = createAt;
+	}
+
+	public String getUpdateAt() {
+		return updateAt;
+	}
+
+	public void setUpdateAt(String updateAt) {
+		this.updateAt = updateAt;
 	}
 
 	@Override
 	public String toString() {
-		return "Discount [idDiscount=" + idDiscount + ", nameDiscount=" + nameDiscount + ", description=" + description
-				+ ", codeDiscount=" + codeDiscount + ", percentage=" + percentage + ", minimum_product_quantity="
-				+ minimum_product_quantity + ", start_time=" + start_time + ", end_time=" + end_time + ", products="
-				+ products + ", Status=" + Status + "]";
+		return "Discount{" +
+				"id=" + id +
+				", nameDiscount='" + nameDiscount + '\'' +
+				", description='" + description + '\'' +
+				", codeDiscount='" + codeDiscount + '\'' +
+				", percentage=" + percentage +
+				", quantity=" + quantity +
+				", startTime='" + startTime + '\'' +
+				", endTime='" + endTime + '\'' +
+				", status='" + status + '\'' +
+				", createAt='" + createAt + '\'' +
+				", updateAt='" + updateAt + '\'' +
+				'}';
 	}
-
 }

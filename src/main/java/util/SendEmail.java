@@ -70,7 +70,7 @@ public class SendEmail {
 			msg.setSentDate(new Date());
 			// Nội dung
 
-			msg.setText("Mật khẩu mới của bạn là: " + MessagePassword, "UTF-8");
+			msg.setText("Mật khẩu OTP của bạn là: " + MessagePassword + "\n Mật khẩu này chỉ có tác dụng trong 5 phút vui lòng sửa mật khẩu sao khi đăng nhập thành công", "UTF-8");
 			// Gửi mail
 			Transport.send(msg);
 		} catch (Exception e) {

@@ -4,6 +4,7 @@ import java.io.IOException;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @WebFilter("/*")
 public class TranslateFilter  implements Filter {
@@ -20,17 +21,21 @@ public class TranslateFilter  implements Filter {
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+		HttpServletRequest req = (HttpServletRequest) request;
+		HttpServletResponse res = (HttpServletResponse) response;
 		request.setCharacterEncoding("UTF-8");
-		HttpServletRequest rep = (HttpServletRequest) request;
+
 		String lang = request.getParameter("lang");
-		if(lang==null) {
-			lang = "vi_VN";
-		}
-		if(lang!=null) {
-			rep.getSession().setAttribute("LANG", lang);	
+		String url = req.getRequestURL().toString();
+
+		if (lang != null) {
+			req.getSession().setAttribute("LANG", lang);
+		} else {
+			req.getSession().setAttribute("LANG", "vi");
 		}
 		chain.doFilter(request, response);
 	}
+
 
 	@Override
 	public void destroy() {

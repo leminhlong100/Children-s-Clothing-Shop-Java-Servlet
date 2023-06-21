@@ -135,9 +135,9 @@
                                             </a>
 
                                             <div class="price-box">
-                                                <span class="price"> ${o.listPrice} VNĐ </span>
+                                                <span class="price"> ${o.discountPrice} VNĐ </span>
                                                 <c:if test="${o.discount!=0}"><span
-                                                        class="price-compare"> ${o.discountPrice} VNĐ </span></c:if>
+                                                        class="price-compare"> ${o.listPrice} VNĐ </span></c:if>
                                             </div>
 
                                         </div>

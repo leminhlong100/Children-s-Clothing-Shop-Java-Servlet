@@ -1,8 +1,8 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<c:url value="/admin/assets" var="url" />
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:url value="/admin/assets" var="url"/>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <fmt:setLocale value="${sessionScope.LANG}"/>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,12 +12,12 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <jsp:include page="header/link-css.jsp" flush="true" />
+    <jsp:include page="header/link-css.jsp" flush="true"/>
 </head>
 
 <body onload="time()" class="app sidebar-mini rtl">
 <!-- Navbar-->
-<jsp:include page="./header/admin-left-sidebar.jsp" flush="true" />
+<jsp:include page="./header/admin-left-sidebar.jsp" flush="true"/>
 <main class="app-content">
     <div class="row">
         <div class="col-md-12">
@@ -58,7 +58,7 @@
                     <div class="widget-small warning coloured-icon"><i class='icon bx bxs-shopping-bags fa-3x'></i>
                         <div class="info">
                             <h4>Tổng đơn hàng</h4>
-                            <p><b>247 đơn hàng</b></p>
+                            <p><b>${requestScope.sumBill} đơn hàng</b></p>
                             <p class="info-tong">Tổng số hóa đơn bán hàng trong tháng.</p>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
                     <div class="widget-small danger coloured-icon"><i class='icon bx bxs-error-alt fa-3x'></i>
                         <div class="info">
                             <h4>Sắp hết hàng</h4>
-                            <p><b>4 sản phẩm</b></p>
+                            <p><b>${requestScope.productOuOtOfStock} sản phẩm</b></p>
                             <p class="info-tong">Số sản phẩm cảnh báo hết cần nhập thêm.</p>
                         </div>
                     </div>
@@ -88,38 +88,30 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>AL3947</td>
-                                    <td>Phạm Thị Ngọc</td>
-                                    <td>
-                                        19.770.000 đ
-                                    </td>
-                                    <td><span class="badge bg-info">Chờ xử lý</span></td>
-                                </tr>
-                                <tr>
-                                    <td>ER3835</td>
-                                    <td>Nguyễn Thị Mỹ Yến</td>
-                                    <td>
-                                        16.770.000 đ
-                                    </td>
-                                    <td><span class="badge bg-warning">Đang vận chuyển</span></td>
-                                </tr>
-                                <tr>
-                                    <td>MD0837</td>
-                                    <td>Triệu Thanh Phú</td>
-                                    <td>
-                                        9.400.000 đ
-                                    </td>
-                                    <td><span class="badge bg-success">Đã hoàn thành</span></td>
-                                </tr>
-                                <tr>
-                                    <td>MT9835</td>
-                                    <td>Đặng Hoàng Phúc	</td>
-                                    <td>
-                                        40.650.000 đ
-                                    </td>
-                                    <td><span class="badge bg-danger">Đã hủy	</span></td>
-                                </tr>
+                                <c:forEach items="${requestScope.orders}" var="o">
+                                    <tr>
+                                        <td> #${o.id}</td>
+                                        <td> ${o.account.accountName}</td>
+                                        <td>
+                                                ${o.totalPrice} đ
+                                        </td>
+                                        <td><c:if test="${o.status=='Đang xử lý'}">
+                                            <span class="badge bg-warning">${o.status}</span>
+                                        </c:if>
+                                            <c:if test="${o.status=='Đã xác nhận'}">
+                                                <span class="badge bg-primary">${o.status}</span>
+                                            </c:if>
+                                            <c:if test="${o.status=='Đang vận chuyển'}">
+                                                <span class="badge bg-info">${o.status}</span>
+                                            </c:if>
+                                            <c:if test="${o.status=='Đã hủy'}">
+                                                <span class="badge bg-danger">${o.status}</span>
+                                            </c:if>
+                                            <c:if test="${o.status=='Hoàn thành'}">
+                                                <span class="badge bg-success">${o.status}</span>
+                                            </c:if></td>
+                                    </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                         </div>
@@ -137,35 +129,19 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Tên khách hàng</th>
-                                    <th>Ngày sinh</th>
+                                    <th>Email</th>
                                     <th>Số điện thoại</th>
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <c:forEach items="${requestScope.accounts}" var="o">
                                 <tr>
-                                    <td>#183</td>
-                                    <td>Hột vịt muối</td>
-                                    <td>21/7/1992</td>
-                                    <td><span class="tag tag-success">0921387221</span></td>
+                                    <td>#${o.id}</td>
+                                    <td>${o.fullName}</td>
+                                    <td>${o.email}</td>
+                                    <td><span class="tag tag-danger">${o.phone}</span></td>
                                 </tr>
-                                <tr>
-                                    <td>#219</td>
-                                    <td>Bánh tráng trộn</td>
-                                    <td>30/4/1975</td>
-                                    <td><span class="tag tag-warning">0912376352</span></td>
-                                </tr>
-                                <tr>
-                                    <td>#627</td>
-                                    <td>Cút rang bơ</td>
-                                    <td>12/3/1999</td>
-                                    <td><span class="tag tag-primary">01287326654</span></td>
-                                </tr>
-                                <tr>
-                                    <td>#175</td>
-                                    <td>Hủ tiếu nam vang</td>
-                                    <td>4/12/20000</td>
-                                    <td><span class="tag tag-danger">0912376763</span></td>
-                                </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                         </div>
@@ -181,7 +157,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="tile">
-                        <h3 class="tile-title">Dữ liệu 6 tháng đầu vào</h3>
+                        <h3 class="tile-title">Dữ liệu đơn tổng đơn hàng và số đơn hàng thành công 6 tháng</h3>
                         <div class="embed-responsive embed-responsive-16by9">
                             <canvas class="embed-responsive-item" id="lineChartDemo"></canvas>
                         </div>
@@ -189,7 +165,7 @@
                 </div>
                 <div class="col-md-12">
                     <div class="tile">
-                        <h3 class="tile-title">Thống kê 6 tháng doanh thu</h3>
+                        <h3 class="tile-title">Dữ liệu đơn tổng đơn hàng và số đơn hàng thành công 6 tháng</h3>
                         <div class="embed-responsive embed-responsive-16by9">
                             <canvas class="embed-responsive-item" id="barChartDemo"></canvas>
                         </div>
@@ -206,12 +182,15 @@
         <p><b>Copyright
             <script type="text/javascript">
                 document.write(new Date().getFullYear());
-            </script> Phần mềm quản lý bán hàng | Dev By Long
+            </script>
+            Phần mềm quản lý bán hàng | Dev By Long
         </b></p>
     </div>
 </main>
-<jsp:include page="header/link-js.jsp" flush="true" />
+<jsp:include page="header/link-js.jsp" flush="true"/>
 <script type="text/javascript">
+    let listSumOrderByMonth = ${requestScope.sumOrdersMonth};
+    let listSumAllOrdersMonth = ${requestScope.allOrdersMonth};
     var data = {
         labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6"],
         datasets: [{
@@ -222,7 +201,7 @@
             pointStrokeColor: "rgb(255, 212, 59)",
             pointHighlightFill: "rgb(255, 212, 59)",
             pointHighlightStroke: "rgb(255, 212, 59)",
-            data: [20, 59, 90, 51, 56, 100]
+            data: listSumAllOrdersMonth
         },
             {
                 label: "Dữ liệu kế tiếp",
@@ -232,7 +211,7 @@
                 pointStrokeColor: "rgb(9, 109, 239)",
                 pointHighlightFill: "rgb(9, 109, 239)",
                 pointHighlightStroke: "rgb(9, 109, 239)",
-                data: [48, 48, 49, 39, 86, 10]
+                data: listSumOrderByMonth
             }
         ]
     };
@@ -283,6 +262,9 @@
             return i;
         }
     }
+</script>
+<script>
+    document.getElementById("admin-index").classList.add("active");
 </script>
 </body>
 

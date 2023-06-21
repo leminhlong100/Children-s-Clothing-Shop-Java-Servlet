@@ -6,6 +6,7 @@ import java.util.*;
 import context.*;
 import dao.client.UtilDAO;
 import entity.*;
+import jnr.a64asm.SIZE;
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.Jdbi;
 
@@ -34,9 +35,22 @@ public class ProductAdminDAO {
 
         return 0;
     }
+    public static int getTotalProductOuOtOfStock() {
+        String query = "select count(p.nameProduct) from products p join product_prices pp on p.id = pp.idProduct where p.id = (SELECT idProduct FROM inventorys where idProduct = p.id having  SUM(quantity) < 20)";
+        try (Connection conn = DBContext.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query);
+             ResultSet rs = ps.executeQuery();) {
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        return 0;
+    }
     public static int getTotalActiveProduct() {
-        String query = "select count(id) from products where isActive = 1";
+        String query = "select count(id) from products where isActive = '1'";
         try (Handle handle = DBContext.me().open()) {
             return handle.createQuery(query)
                     .mapTo(Integer.class)
@@ -99,7 +113,7 @@ public class ProductAdminDAO {
 
 
     public static int getTotalOutOfStock() {
-        String query = "SELECT count(quantity) FROM inventorys i join products p on i.idProduct = p.id where i.quantity = 0 and p.isActive = 1";
+        String query = "SELECT count(quantity) FROM inventorys where quantity = 0";
         try (Handle handle = DBContext.me().open()) {
             return handle.createQuery(query)
                     .mapTo(Integer.class)
@@ -123,15 +137,15 @@ public class ProductAdminDAO {
     }
 
     public static List<Product> getProductOOS() {
-        List<Product> list;
-        String query = "select distinct p.id, p.nameProduct, pp.listPrice, pp.discount, c.nameCategorie, sc.size, sc.color from inventorys i join products p on i.idProduct = p.id join size_color_products sc on sc.idProduct = p.id join product_prices pp on pp.idProduct = p.id join categories c on p.idCategorie = c.id where sc.id in (select sc1.id from producers p1 join inventorys i1 on p1.id = i1.idProduct join size_color_products sc1 on i1.id_size_color = sc1.id where quantity = 0) and p.isActive = 1";
-        Jdbi me = DBContext.me();
-        return me.withHandle(handle -> handle.createQuery(query).map((rs, ctx) -> new Product(rs.getInt("id"), rs.getString("nameProduct")+rs.getString("size") + "/" + rs.getString("color"), rs.getDouble("listPrice"), new Category(rs.getString("nameCategorie")))).list());
+        String query = "SELECT p.id, p.nameProduct, pp.listPrice, pp.discount, ct.nameCategorie, sp.size, sp.color FROM products p join product_prices pp on p.id = pp.idProduct join inventorys invent on invent.idProduct = p.id join categories ct on p.idCategorie = ct.id join size_color_products sp on invent.id_size_color = sp.id where p.id IN (select p1.id  from products p1 join inventorys i on p1.id = i.idProduct WHERE i.quantity = 0) GROUP BY p.id, sp.size, sp.color";
+        try (Handle handle = DBContext.me().open()) {
+            return handle.createQuery(query)
+                    .map((rs, ctx) -> new Product(rs.getInt("id"), rs.getString("nameProduct")+"_"+rs.getString("size")+"/"+rs.getString("color"), rs.getDouble("listPrice"), new Category(rs.getString("nameCategorie")))).list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
-    public static void main(String[] args) {
-        System.out.println(getProductOOS());
-    }
-
     public static List<Product> showlistproduct(){
         List<Product> list;
         Jdbi me = DBContext.me();
@@ -234,9 +248,7 @@ public class ProductAdminDAO {
     }
     public static SizeColorProduct colorsize(SizeColorProduct s ){
         Jdbi me = DBContext.me();
-    String query="select s.id,s.idProduct,s.color,i.quantity from size_color_products s join inventorys i " +
-            "on i.idProduct =s.idProduct" +
-            "  where s.id =? and s.idProduct =?";
+    String query="select s.id,s.idProduct,s.color,i.quantity from size_color_products s join inventorys i on s.id =i.id_size_color where s.id =? and s.idProduct =?";
     return me.withHandle(handle -> handle.createQuery(query).bind(0,s.getId()).bind(1,s.getIdProduct()).map((rs, ctx) -> new SizeColorProduct(rs.getInt("id"),rs.getInt("idProduct"),rs.getString("color"),rs.getInt("quantity"))).findFirst().orElse(null));
     }
 

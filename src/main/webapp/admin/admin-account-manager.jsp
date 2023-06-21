@@ -14,9 +14,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <jsp:include page="./header/link-css.jsp" flush="true"/>
-    <style>select[name="role"] option:checked {
-        background-color: yellow; /* Thay đổi màu sắc tại đây */
-    }</style>
+    <style>
+        select[name="role"] option:checked {
+            background-color: yellow; /* Thay đổi màu sắc tại đây */
+        }</style>
 </head>
 
 <body onload="time()" class="app sidebar-mini rtl">
@@ -81,9 +82,10 @@
                             <th>Họ và tên</th>
                             <th>Ảnh đại diện</th>
                             <th>SĐT</th>
-                            <th>Loại tài khoản</th>
+                            <th>Vai trò</th>
                             <th>Địa chỉ</th>
                             <th>Email</th>
+                            <th>Trang thái</th>
                             <th width="80">Tính năng</th>
                         </tr>
                         </thead>
@@ -103,6 +105,12 @@
                                 </td>
                                 <td>${o.address }</td>
                                 <td>${o.email}</td>
+                                <c:if test="${o.active==true}">
+                                    <td>Đang hoạt động</td>
+                                </c:if>
+                                <c:if test="${o.active==false}">
+                                    <td>Bị khóa</td>
+                                </c:if>
                                 <td class="table-td-center">
                                     <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"
                                             onclick="deleteUser(${o.id},${stt.index})"><i class="fas fa-trash-alt"></i>
@@ -213,6 +221,7 @@ MODAL
         let form_data = $(form).serialize(); // lấy thông tin dữ liệu từ form
         let url = "${pageContext.request.contextPath}/admin-user/UserUpdate"; // đường dẫn đến file xử lý
         let reRoles;
+        let isaccountActive;
         Swal.fire({
             title: 'Bạn có chắc chắn muốn sửa thông tin tài khoản này không?',
             icon: 'warning',
@@ -230,6 +239,12 @@ MODAL
                             let isAdmin = JSON.parse(data).isAdmin;
                             for (let i = 0; i < listAcc.length; i++) {
                                 reRoles = "";
+                                isaccountActive = "";
+                                if (listAcc[i].isActive === true) {
+                                    isaccountActive = `Đang hoạt động`;
+                                } else {
+                                    isaccountActive = `Bị khóa`;
+                                }
                                 for (let j = 0; j < listAcc[i].roles.length; j++) {
                                     reRoles += listAcc[i].roles[j].name;
                                     if (j < listAcc[i].roles.length - 1) {
@@ -248,6 +263,7 @@ MODAL
                                 </td>
                                 <td>` + listAcc[i].address + `</td>
                                 <td>` + listAcc[i].email + `</td>
+                                <td>` + isaccountActive + `</td>
                                 <td class="table-td-center">
                                     <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"
                                             onclick="deleteUser(` + listAcc[i].id + `)"><i class="fas fa-trash-alt"></i>
@@ -260,6 +276,7 @@ MODAL
                             </tr>`
                             }
                             document.getElementById("renderListAccount").innerHTML = re;
+                            closeModal();
                             Swal.fire('Sửa tài khoản thành công', '', 'success');
                         }
                         ,
@@ -268,6 +285,7 @@ MODAL
                         }
                     });
                 } else if (result.isDenied) {
+                    closeModal();
                     Swal.fire('Hủy sửa tài khoản', '', 'info');
                 }
             }
@@ -279,6 +297,7 @@ MODAL
         let uid = id;
         let re = "";
         let roleRe = "";
+        let activeSta = "";
         $.ajax({
             url: "${pageContext.request.contextPath}/admin-user/UserUpdate",
             type: "GET",
@@ -288,14 +307,24 @@ MODAL
             success: function (data) {
                 let acc = JSON.parse(data).account;
                 let roles = JSON.parse(data).roles;
-                roleRe = `
-  <label class="control-label">Loại tài khoản</label>
-  <select class="form-control" style="height: 70px" name="role" multiple>
-    <option value="1">Khách hàng</option>
-    <option value="2">Nhân viên</option>
-    <option value="3">Quản lý</option>
-  </select>
-`
+                let allRoles = JSON.parse(data).allRoles;
+
+                if (acc.isActive == true) {
+                    activeSta = `<label class="control-label">Tình trạng</label>
+                                    <select class="form-control" name="activeStatus">
+                                     <option selected value="1">Tài khoản hoạt động</option>
+                                     <option value="0">Tài khoản bị khóa</option>
+                                   </select>`
+                } else {
+                    activeSta = ` <label class="control-label">Tình trạng</label>
+                                    <select class="form-control" name="activeStatus">
+                                     <option  value="1">Tài khoản hoạt động</option>
+                                     <option selected value="0">Tài khoản bị khóa</option>
+                                   </select>`
+                }
+                for (let i = 0; i < allRoles.length; i++) {
+                    roleRe += `<option value="` + allRoles[i].id + `">` + allRoles[i].name + `</option>`
+                }
                 re = `<div class="modal fade show" id="ModalUP" style="display: block">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -338,7 +367,13 @@ MODAL
                         <input class="form-control" name="user-address" type="text" value="` + acc.address + `">
                     </div>
                     <div class="form-group col-md-6">
+                       <label class="control-label">Loại tài khoản</label>
+                        <select class="form-control" style="height: 70px" name="role" multiple>
                         ` + roleRe + `
+                        </select>
+                    </div>
+                     <div class="form-group col-md-6">
+                        ` + activeSta + `
                     </div>
                 </div>
                 <BR>
@@ -394,6 +429,7 @@ MODAL
         let uid = id;
         let re = "";
         let reRoles;
+        let isaccountActive;
         Swal.fire({
             title: 'Bạn có chắc chắn muốn xóa tài khoản này không?',
             icon: 'warning',
@@ -416,6 +452,12 @@ MODAL
                         let isAdmin = JSON.parse(data).isAdmin;
                         for (let i = 0; i < listAcc.length; i++) {
                             reRoles = "";
+                            isaccountActive = "";
+                            if (listAcc[i].isActive === true) {
+                                isaccountActive = `Đang hoạt động`;
+                            } else {
+                                isaccountActive = `Bị khóa`;
+                            }
                             for (let j = 0; j < listAcc[i].roles.length; j++) {
                                 reRoles += listAcc[i].roles[j].name;
                                 if (j < listAcc[i].roles.length - 1) {
@@ -432,6 +474,7 @@ MODAL
                                 <td>` + reRoles + `</td>
                                 <td>` + listAcc[i].address + `</td>
                                 <td>` + listAcc[i].email + `</td>
+                                <td>` + isaccountActive + `</td>
                                 <td class="table-td-center">
                                     <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"
                                             onclick="deleteUser(` + listAcc[i].id + `)"><i class="fas fa-trash-alt"></i>
@@ -444,6 +487,7 @@ MODAL
                             </tr>`
                         }
                         document.getElementById("renderListAccount").innerHTML = re;
+                        closeModal();
                         // console.log(result)
                         Swal.fire('Xóa user thành công', '', 'success');
                     },
@@ -460,6 +504,9 @@ MODAL
             }
         })
     }
+</script>
+<script>
+    document.getElementById("admin-user").classList.add("active");
 </script>
 </body>
 

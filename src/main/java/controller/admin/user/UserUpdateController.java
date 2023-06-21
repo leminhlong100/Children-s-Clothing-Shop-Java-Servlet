@@ -1,6 +1,7 @@
 package controller.admin.user;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -39,10 +40,12 @@ public class UserUpdateController extends HttpServlet {
             String user_id = request.getParameter("uid");
             Account account = UtilDAO.findAccountById(Integer.parseInt(user_id));
             Set<Role> roles = AuthDAO.getRoles(Integer.parseInt(user_id));
+            List<Role> allRoles = AccountDAO.getAllRoles();
             request.setAttribute("account", account);
             Gson gson = new Gson();
             JsonObject jsonObject = new JsonObject();
             jsonObject.add("roles", gson.toJsonTree(roles));
+            jsonObject.add("allRoles", gson.toJsonTree(allRoles));
             jsonObject.add("account", gson.toJsonTree(account));
             response.getWriter().println(jsonObject);
         } catch (Exception e) {
@@ -62,15 +65,16 @@ public class UserUpdateController extends HttpServlet {
             String user_phone = request.getParameter("user-phone");
             String user_password = request.getParameter("user-password");
             String user_address = request.getParameter("user-address");
+            String activeStatus = request.getParameter("activeStatus");
             String[] roles = request.getParameterValues("role");
             Account a = new Account(Integer.parseInt(user_id), user_name, user_password, full_name, user_address, user_email,
                     user_phone);
             Account account = AccountDAO.findAccountById(Integer.parseInt(user_id));
             if (a.getPassword().equals(account.getPassword()) || a.getPassword() == null) {
-                AccountDAO.updateAccountNoPass(a);
+                AccountDAO.updateAccountNoPass(a,activeStatus);
                 AccountDAO.updateRoleAccount(user_id,roles);
             } else {
-                AccountDAO.updateAccount(a);
+                AccountDAO.updateAccount(a,activeStatus);
                 AccountDAO.updateRoleAccount(user_id,roles);
             }
             Gson gson = new Gson();

@@ -35,7 +35,7 @@ public class BillManagerController extends HttpServlet {
         }
         if (type.equals("transport")) {
             isSuc =  BillAdminDAO.updateBill("Đang vận chuyển", id);
-            Order od = BillAdminDAO.getOrderById(Integer.parseInt(id));
+            Order od = BillAdminDAO.getOrderById(id);
             API.registerTransport("1540", "440505", od.getDistrictId(), od.getWardId(), "20", "20", "20", "100");
         }
         if (type.equals("deny")) {
@@ -46,8 +46,13 @@ public class BillManagerController extends HttpServlet {
         }
         if (type.equals("success")) {
             isSuc = BillAdminDAO.updateBill("Hoàn thành", id);
+                    BillAdminDAO.updateBillStatusPay("Đã thanh toán",id);
+                    BillAdminDAO.updateBillDeliveryAt(id);
         }
+        Order order = BillAdminDAO.getOrderById(id);
         JsonObject jsonObject = new JsonObject();
+        Gson gson = new Gson();
+        jsonObject.addProperty("order",gson.toJson(order));
         jsonObject.addProperty("isSuc", isSuc);
         response.getWriter().println(jsonObject);
     }

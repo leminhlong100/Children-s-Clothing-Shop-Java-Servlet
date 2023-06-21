@@ -300,6 +300,9 @@
     ga('send', 'pageview');
   }
 </script>
+<script>
+  document.getElementById("admin-revenue").classList.add("active");
+</script>
 </body>
 
 </html>

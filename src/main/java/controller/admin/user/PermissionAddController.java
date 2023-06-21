@@ -2,6 +2,7 @@ package controller.admin.user;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import controller.admin.webSocket.UpdateAccountEndPoint;
 import dao.admin.AccountDAO;
 import dao.client.AuthDAO;
 import dao.client.UtilDAO;
@@ -37,9 +38,12 @@ public class PermissionAddController extends HttpServlet {
         try {
             String[] accessAdd = request.getParameterValues("accessAdd[]");
             String resource = request.getParameter("resource");
-            String type = request.getParameter("type");
-            AccountDAO.insertRoleRessource(type,resource);
-        }catch (Exception e){
+            String idRole = request.getParameter("idRole");
+            AccountDAO.insertRoleRessource(idRole, resource);
+            for (String s : AccountDAO.getListIdByIdRole(idRole)) {
+                UpdateAccountEndPoint.notifyUserUpdate(Integer.parseInt(s), "update");
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

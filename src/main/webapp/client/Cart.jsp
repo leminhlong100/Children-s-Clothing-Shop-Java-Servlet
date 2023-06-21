@@ -81,22 +81,20 @@
                                                     <fmt:message key="$" bundle="${lang}"></fmt:message>
                                                 </p>
                                             </td>
-                                            <td class="text-center"><a
-                                                    href="${pageContext.request.contextPath}/cart/MinusBillProductControl?key=${entry.key}&size=${o.productSize}&color=${o.productColor}">
-                                                <button style="border-radius: 50%;background-color: white" name="minus"
+                                            <td class="text-center">
+                                                <button onclick="minusProduct('${entry.key}', '${o.productSize}', '${o.productColor}','${o.price}')" style="border-radius: 50%;background-color: white" name="minus"
                                                         value="minus" type="button">-
                                                 </button>
-                                            </a><input style="margin-left: 5px" type="text"
+                                            <input style="margin-left: 5px"  type="text"
                                                        class="item-quantity" value="${o.quantity} "
-                                                       name="Lines" id="updates_6383545" min="1" readonly>
-                                                <a
-                                                        href="${pageContext.request.contextPath}/cart/AddBillProductControl?key=${entry.key}&size=${o.productSize}&color=${o.productColor}">
-                                                    <button style="border-radius: 50%;background-color: white"
-                                                            name="add"
-                                                            value="add" type="button">+
-                                                    </button>
-                                                </a></td>
-                                            <td class="text-center"><p class="l">
+                                                       name="Lines" id="quantity_${entry.key}_${o.productSize}_${o.productColor}" min="1" readonly>
+                                                <button onclick="addProduct('${entry.key}', '${o.productSize}', '${o.productColor}','${o.price}')"
+                                                        style="border-radius: 50%;background-color: white"
+                                                        name="add"
+                                                        value="add" type="button">+
+                                                </button>
+                                            </td>
+                                            <td class="text-center"><p id="totalPrice_${entry.key}_${o.productSize}_${o.productColor}" class="l">
                                                 <c:set var="sumALl"
                                                        value="	${o.quantity * o.price}"></c:set>
                                                     ${o.quantity * o.price}
@@ -125,12 +123,10 @@
                             <tr>
                                 <td class="text-right"><fmt:message key="Total.amount"
                                                                     bundle="${lang}"></fmt:message></td>
-                                <td class="text-right">${total}<fmt:message key="$"
-                                                                            bundle="${lang}"></fmt:message></td>
+                                <td id="totalAmount" class="text-right">${total}</td>
                             </tr>
                         </table>
-                        <c:url var="payment" value="Payment.jsp"></c:url>
-                        <a href="${pageContext.request.contextPath}/${payment}"
+                        <a href="${pageContext.request.contextPath}/client/Payment.jsp"
                            class="btn-cart pull-right"><fmt:message
                                 key="payment.methods" bundle="${lang}"></fmt:message></a>
                         <c:url var="order" value="cart/OrderBillControl"></c:url>
@@ -149,7 +145,7 @@
                     <fmt:message key="Purchase.history" bundle="${lang}"></fmt:message>
                 </h4>
                 <div class="col-md-12" style="border: 1px solid #ddd;">
-                    <c:if test="${empty listOrders}"><p>Lịch sử rổng </p></c:if>
+                    <c:if test="${empty listOrders}"><p>Lịch sử rỗng </p></c:if>
                     <div class="table-responsive" style=" margin-top: 20px;">
                         <c:if test="${!empty listOrders}">
                             <table class="table table-hover table-bordered js-copytextarea" cellpadding="0"
@@ -186,22 +182,23 @@
                                         </td>
                                         <td>${count}</td>
                                         <td style="text-align: right;">${o.totalPrice}</td>
-                                        <td>${o.statusPay}</td>
+                                        <c:if test="${o.statusPay=='Đã thanh toán'}"><td style="color: #0aa60f">${o.statusPay}</td></c:if>
+                                        <c:if test="${o.statusPay=='Chưa thanh toán'}"><td style="color: #0f2094">${o.statusPay}</td></c:if>
                                         <td>
                                             <c:if test="${o.status=='Đang xử lý'}">
-                                                <span class="badge bg-warning">${o.status}</span>
+                                                <span class="badge bg-warning" style="background-color: yellow">${o.status}</span>
                                             </c:if>
                                             <c:if test="${o.status=='Đã xác nhận'}">
-                                                <span class="badge bg-primary">${o.status}</span>
+                                                <span class="badge bg-primary" style="background-color: #0f2094">${o.status}</span>
                                             </c:if>
                                             <c:if test="${o.status=='Đang vận chuyển'}">
-                                                <span class="badge bg-info">${o.status}</span>
+                                                <span class="badge bg-info" style="background-color: #0e95d2">${o.status}</span>
                                             </c:if>
                                             <c:if test="${o.status=='Đã hủy'}">
-                                                <span class="badge bg-danger">${o.status}</span>
+                                                <span class="badge bg-danger" style="background-color: red">${o.status}</span>
                                             </c:if>
                                             <c:if test="${o.status=='Hoàn thành'}">
-                                                <span class="badge bg-success">${o.status}</span>
+                                                <span class="badge bg-success" style="background-color: #0aa60f">${o.status}</span>
                                             </c:if>
                                         </td>
                                         <td class="text-center" valign="middle"><a
@@ -226,7 +223,7 @@
         $('#sampleTable').DataTable({
             order: [[0, 'desc']],
         });
-        let error =`${requestScope.sorry}`;
+        let error = `${requestScope.sorry}`;
         console.log(error);
         if (error !== ``) {
             Swal.fire({
@@ -235,8 +232,81 @@
                 text: error,
             });
         }
-    </script>
 
+        function addProduct(key, size, color, price) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/cart/AddBillProductControl",
+                type: "POST",
+                data: {
+                    key: key,
+                    size: size,
+                    color: color,
+                },
+                success: function (data) {
+                    let quantity = JSON.parse(data).quantity;
+                    let total= JSON.parse(data).total;
+                    let totalQuantity= JSON.parse(data).totalQuantity;
+                    // Thay đổi số lượng
+                    let elementId = "quantity_" + key + "_" + size + "_" + color;
+                    let quantityInput = document.getElementById(elementId);
+                    quantityInput.removeAttribute("readonly");
+                    quantityInput.value = quantity;
+                    console.log(elementId)
+                    console.log(quantity)
+                    quantityInput.setAttribute("readonly", "true");
+                    // Thay đổi tổng giá của sản phẩm
+                    let elementIdtotal = "totalPrice_" + key + "_" + size + "_" + color;
+                    let totalPriceElement = document.getElementById(elementIdtotal);
+                    totalPriceElement.textContent =parseFloat(quantity*price).toFixed(1) ;
+                    // Thay đổi tổng giá
+                    let totalAmountElement = document.getElementById("totalAmount");
+                    totalAmountElement.textContent = parseFloat(total).toFixed(1);
+                    // Cập số lượng trên
+                    let cartTotalQuantity = document.getElementById("cartTotalQuantity");
+                    cartTotalQuantity.textContent = totalQuantity;
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        }
+        function minusProduct(key, size, color, price) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/cart/MinusBillProductControl",
+                type: "POST",
+                data: {
+                    key: key,
+                    size: size,
+                    color: color,
+                },
+
+                success: function (data) {
+                    let quantity = JSON.parse(data).quantity;
+                    let total= JSON.parse(data).total;
+                    let totalQuantity= JSON.parse(data).totalQuantity;
+                    // Thay đổi số lượng
+                    let elementId = "quantity_" + key + "_" + size + "_" + color;
+                    let quantityInput = document.getElementById(elementId);
+                    quantityInput.removeAttribute("readonly");
+                    quantityInput.value = quantity;
+                    quantityInput.setAttribute("readonly", "true");
+                    // Thay đổi tổng giá của sản phẩm
+                    let elementIdtotal = "totalPrice_" + key + "_" + size + "_" + color;
+                    let totalPriceElement = document.getElementById(elementIdtotal);
+                    totalPriceElement.textContent =parseFloat(quantity*price).toFixed(1) ;
+                    // Thay đổi tổng giá
+                    let totalAmountElement = document.getElementById("totalAmount");
+                    totalAmountElement.textContent = parseFloat(total).toFixed(1);
+                    // Cập số lượng trên
+                    let cartTotalQuantity = document.getElementById("cartTotalQuantity");
+                    cartTotalQuantity.textContent = totalQuantity;
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        }
+    </script>
 </div>
 </body>
 

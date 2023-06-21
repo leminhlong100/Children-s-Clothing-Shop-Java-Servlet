@@ -29,247 +29,238 @@
         </ul>
         <div id="clock"></div>
     </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            <div class="tile">
-                <div>
-                    <h3 class="tile-title">Quyền khách hàng</h3>
-                </div>
-                <div class="tile-body">
-                    <div class="row element-button">
-                        <div class="col-sm-2">
-                            <button class="btn btn-add btn-sm" onclick="editAccount('1')"><i
-                                    class="fas fa-plus"></i>
-                                Thêm trang truy cập
-                            </button>
-                        </div>
+    <button style="margin-bottom: 10px" class="btn btn-add btn-sm" onclick="addRole()"><i
+            class="fas fa-plus"></i>
+        Thêm vai trò
+    </button>
+    <jsp:useBean id="accountDAO" class="dao.admin.AccountDAO"></jsp:useBean>
+    <c:forEach items="${requestScope.roles}" var="role">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tile">
+                    <div>
+                        <h3 class="tile-title">Vai trò ${role.name}</h3>
                     </div>
-                    <table class="table table-hover table-bordered" id="sampleTable">
-                        <thead>
-                        <tr>
-                            <th>Trang</th>
-                            <th>URL</th>
-                            <th>Mô tả</th>
-                            <th>Quyền truy cập</th>
-                            <th width="40px">Tính năng</th>
-                        </tr>
-                        </thead>
-                        <tbody id="renderRolesAccountCustomer">
-                        <c:forEach items="${requestScope.resourcesCustomer}" var="o">
-                            <tr>
-                                <td>${o.name}</td>
-                                <td>${o.url}</td>
-                                <td>${o.description}</td>
-                                <td>
-                                    <c:set var="readChecked" value="false" scope="request"/>
-                                    <c:set var="writeChecked" value="false" scope="request"/>
-                                    <c:set var="removeChecked" value="false" scope="request"/>
-
-                                    <c:forEach items="${requestScope.permissionCustomer}" var="p">
-                                        <c:choose>
-                                            <c:when test="${p.resource.id == o.id && p.action == 'read'}">
-                                                <c:set var="readChecked" value="true" scope="request"/>
-                                            </c:when>
-                                            <c:when test="${p.resource.id == o.id && p.action == 'write'}">
-                                                <c:set var="writeChecked" value="true" scope="request"/>
-                                            </c:when>
-                                            <c:when test="${p.resource.id == o.id && p.action == 'remove'}">
-                                                <c:set var="removeChecked" value="true" scope="request"/>
-                                            </c:when>
-                                        </c:choose>
-                                    </c:forEach>
-
-                                    <input type="checkbox" name="access[]" value="read" id="readChecked_${o.id}"
-                                           <c:if test="${readChecked}">checked</c:if>
-                                           onchange="handleCheckboxChange('read', this.checked, '${o.id}')"> Đọc
-                                    (read)<br>
-                                    <input type="checkbox" name="access[]" value="write" id="writeChecked_${o.id}"
-                                           <c:if test="${writeChecked}">checked</c:if>
-                                           onchange="handleCheckboxChange('write', this.checked, '${o.id}')"> Ghi
-                                    (write)<br>
-                                    <input type="checkbox" name="access[]" value="remove" id="removeChecked_${o.id}"
-                                           <c:if test="${removeChecked}">checked</c:if>
-                                           onchange="handleCheckboxChange('remove', this.checked, '${o.id}')"> Xóa
-                                    (remove)<br>
-                                </td>
-                                <td class="table-td-center">
-                                    <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"
-                                            onclick="deleteResource('1',${o.id},this)"><i class="fas fa-trash-alt"></i>
+                    <div class="tile-body">
+                        <div class="row element-button">
+                            <div class="col-sm-2">
+                                <button class="btn btn-add btn-sm" onclick="editAccount('${role.id}')"><i
+                                        class="fas fa-plus"></i>
+                                    Thêm trang truy cập
+                                </button>
+                                <c:if test="${role.id>4}">
+                                    <button class="btn btn-danger btn-sm" onclick="removeRole('${role.id}')"><i
+                                            class="fas fa-plus"></i>
+                                        Xóa vai trò
                                     </button>
-                                </td>
+                                </c:if>
+                            </div>
+                        </div>
+                        <table class="table table-hover table-bordered" id="sampleTable">
+                            <thead>
+                            <tr>
+                                <th>Trang</th>
+                                <th>URL</th>
+                                <th>Mô tả</th>
+                                <th>Quyền truy cập</th>
+                                <th width="40px">Tính năng</th>
                             </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody id="renderRolesAccountCustomer">
+                            <c:forEach items="${accountDAO.getResourceForRoles(role.id)}" var="o">
+                                <tr>
+                                    <td>${o.name}</td>
+                                    <td>${o.url}</td>
+                                    <td>${o.description}</td>
+                                    <td>
+                                        <c:set var="readChecked" value="false" scope="request"/>
+                                        <c:set var="writeChecked" value="false" scope="request"/>
+                                        <c:set var="removeChecked" value="false" scope="request"/>
+
+                                        <c:forEach items="${accountDAO.getPermissionForRole(o.id)}" var="p">
+                                            <c:choose>
+                                                <c:when test="${p.resource.id == o.id && p.idRole == role.id  && p.action == 'read'}">
+                                                    <c:set var="readChecked" value="true" scope="request"/>
+                                                </c:when>
+                                                <c:when test="${p.resource.id == o.id && p.idRole == role.id && p.action == 'write'}">
+                                                    <c:set var="writeChecked" value="true" scope="request"/>
+                                                </c:when>
+                                                <c:when test="${p.resource.id == o.id && p.idRole == role.id && p.action == 'remove'}">
+                                                    <c:set var="removeChecked" value="true" scope="request"/>
+                                                </c:when>
+                                            </c:choose>
+                                        </c:forEach>
+
+                                        <input type="checkbox" name="access[]" value="read" id="readChecked_${o.id}"
+                                               <c:if test="${readChecked}">checked</c:if>
+                                               onchange="handleCheckboxChange('read', this.checked, '${o.id}','${role.id}')">
+                                        Đọc
+                                        (read)<br>
+                                        <input type="checkbox" name="access[]" value="write" id="writeChecked_${o.id}"
+                                               <c:if test="${writeChecked}">checked</c:if>
+                                               onchange="handleCheckboxChange('write', this.checked, '${o.id}','${role.id}')">
+                                        Ghi
+                                        (write)<br>
+                                        <input type="checkbox" name="access[]" value="remove" id="removeChecked_${o.id}"
+                                               <c:if test="${removeChecked}">checked</c:if>
+                                               onchange="handleCheckboxChange('remove', this.checked, '${o.id}','${role.id}')">
+                                        Xóa
+                                        (remove)<br>
+                                    </td>
+                                    <td class="table-td-center">
+                                        <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"
+                                                onclick="deleteResource('${role.id}',${o.id},this)"><i
+                                                class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="tile">
-                <div>
-                    <h3 class="tile-title">Quyền nhân viên</h3>
-                </div>
-                <div class="tile-body">
-                    <div class="row element-button">
-                        <div class="col-sm-2">
-                            <button class="btn btn-add btn-sm" onclick="editAccount('2')"><i
-                                    class="fas fa-plus"></i>
-                                Thêm trang truy cập
-                            </button>
-                        </div>
-                    </div>
-                    <table class="table table-hover table-bordered" id="sampleTable1">
-                        <thead>
-                        <tr>
-                            <th>Trang</th>
-                            <th>URL</th>
-                            <th>Mô tả</th>
-                            <th>Quyền truy cập</th>
-                            <th width="40px">Tính năng</th>
-                        </tr>
-                        </thead>
-                        <tbody id="renderRolesAccountEmployee">
-                        <c:forEach items="${requestScope.resourcesEmployee}" var="o">
-                            <tr>
-                                <td>${o.name}</td>
-                                <td>${o.url}</td>
-                                <td>${o.description}</td>
-                                <td>
-                                    <c:set var="readCheckedEmployee" value="false" scope="request"/>
-                                    <c:set var="writeCheckedEmployee" value="false" scope="request"/>
-                                    <c:set var="removeCheckedEmployee" value="false" scope="request"/>
-
-                                    <c:forEach items="${requestScope.permissionEmployee}" var="p">
-                                        <c:choose>
-                                            <c:when test="${p.resource.id == o.id && p.action == 'read'}">
-                                                <c:set var="readCheckedEmployee" value="true" scope="request"/>
-                                            </c:when>
-                                            <c:when test="${p.resource.id == o.id && p.action == 'write'}">
-                                                <c:set var="writeCheckedEmployee" value="true" scope="request"/>
-                                            </c:when>
-                                            <c:when test="${p.resource.id == o.id && p.action == 'remove'}">
-                                                <c:set var="removeCheckedEmployee" value="true" scope="request"/>
-                                            </c:when>
-                                        </c:choose>
-                                    </c:forEach>
-                                    <input type="checkbox" name="access[]" value="read" id="readCheckedEmployee_${o.id}"
-                                           <c:if test="${readCheckedEmployee}">checked</c:if>
-                                           onchange="handleCheckboxChange('read', this.checked, '${o.id}')"> Đọc
-                                    (read)<br>
-                                    <input type="checkbox" name="access[]" value="write"
-                                           id="writeCheckedEmployee_${o.id}"
-                                           <c:if test="${writeCheckedEmployee}">checked</c:if>
-                                           onchange="handleCheckboxChange('write', this.checked, '${o.id}')"> Ghi
-                                    (write)<br>
-                                    <input type="checkbox" name="access[]" value="remove"
-                                           id="removeCheckedEmployee_${o.id}"
-                                           <c:if test="${removeCheckedEmployee}">checked</c:if>
-                                           onchange="handleCheckboxChange('remove', this.checked, '${o.id}')"> Xóa
-                                    (remove)<br>
-                                </td>
-                                <td class="table-td-center">
-                                    <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"
-                                            onclick="deleteResource('2',${o.id},this)"><i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="tile">
-                <div>
-                    <h3 class="tile-title">Quyền Quản lý</h3>
-                </div>
-                <div class="tile-body">
-                    <div class="row element-button">
-                        <div class="col-sm-2">
-                            <button class="btn btn-add btn-sm" onclick="editAccount('3')"><i
-                                    class="fas fa-plus"></i>
-                                Thêm trang truy cập
-                            </button>
-                        </div>
-                    </div>
-                    <table class="table table-hover table-bordered" id="sampleTable2">
-                        <thead>
-                        <tr>
-                            <th>Trang</th>
-                            <th>URL</th>
-                            <th>Mô tả</th>
-                            <th>Quyền truy cập</th>
-                            <th width="40px">Tính năng</th>
-                        </tr>
-                        </thead>
-                        <tbody id="renderRolesAccountMod">
-                        <c:forEach items="${requestScope.resourcesMod}" var="o">
-                            <tr>
-                                <td>${o.name}</td>
-                                <td>${o.url}</td>
-                                <td>${o.description}</td>
-                                <td>
-                                    <c:set var="readCheckedMod" value="false" scope="request"/>
-                                    <c:set var="writeCheckedMod" value="false" scope="request"/>
-                                    <c:set var="removeCheckedMod" value="false" scope="request"/>
-
-                                    <c:forEach items="${requestScope.permissionMod}" var="p">
-                                        <c:choose>
-                                            <c:when test="${p.resource.id == o.id && p.action == 'read'}">
-                                                <c:set var="readCheckedMod" value="true" scope="request"/>
-                                            </c:when>
-                                            <c:when test="${p.resource.id == o.id && p.action == 'write'}">
-                                                <c:set var="writeCheckedMod" value="true" scope="request"/>
-                                            </c:when>
-                                            <c:when test="${p.resource.id == o.id && p.action == 'remove'}">
-                                                <c:set var="removeCheckedMod" value="true" scope="request"/>
-                                            </c:when>
-                                        </c:choose>
-                                    </c:forEach>
-                                    <input type="checkbox" name="access[]" value="read" id="readCheckboxMod_${o.id}"
-                                           <c:if test="${readCheckedMod}">checked</c:if>
-                                           onchange="handleCheckboxChange('read', this.checked, '${o.id}')"> Đọc
-                                    (read)<br>
-                                    <input type="checkbox" name="access[]" value="write" id="writeCheckboxMod_${o.id}"
-                                           <c:if test="${writeCheckedMod}">checked</c:if>
-                                           onchange="handleCheckboxChange('write', this.checked, '${o.id}')"> Ghi
-                                    (write)<br>
-                                    <input type="checkbox" name="access[]" value="remove" id="removeCheckboxMod_${o.id}"
-                                           <c:if test="${removeCheckedMod}">checked</c:if>
-                                           onchange="handleCheckboxChange('remove', this.checked, '${o.id}')"> Xóa
-                                    (remove)<br>
-                                </td>
-                                <td class="table-td-center">
-                                    <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"
-                                            onclick="deleteResource('3',${o.id},this)"><i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+    </c:forEach>
 </main>
 <div id="showEdit"></div>
+<div id="addRole"></div>
+
 <!-- Essential javascripts for application to work-->
 <jsp:include page="./header/link-js.jsp" flush="true"/>
 <script type="text/javascript">$('#sampleTable').DataTable();</script>
 <script type="text/javascript">$('#sampleTable1').DataTable();</script>
 <script type="text/javascript">$('#sampleTable2').DataTable();</script>
 <script>
-    function editAccount(type) {
+
+    function removeRole(idRole) {
+        Swal.fire({
+            title: 'Bạn có chắc chắn muốn xóa vai trò này ( Lưu ý nếu bạn chọn xóa thì sẽ xóa tất các các vai trò này trong danh sách tài khoản)?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/admin-user/role-delete",
+                    type: "POST",
+                    data: {
+                        idRole: idRole
+                    },
+                    success: function (data) {
+                        let isSuc = JSON.parse(data).isSuc;
+                        if (isSuc) {
+                            Swal.fire({
+                                title: 'Xóa thành công',
+                                icon: 'success',
+                                showCancelButton: false,
+                                confirmButtonText: 'OK'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload(); // Load lại trang
+                                }
+                            });
+                        }
+                    },
+                    error: function (data) {
+                        console.log(data)
+                    }
+                });
+
+
+            } else if (result.isDenied) {
+                // Nếu người dùng chọn "No"
+                // Hiển thị thông báo không xóa user bằng SweetAlert2
+                Swal.fire('Không xóa', '', 'info');
+            }
+        })
+    }
+
+    function addRole() {
+        let re = "";
+        re = `<div class="modal fade show" id="ModalUP" style="display: block">
+<form id ="addRole" >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group  col-md-12">
+              <span class="thong-tin-thanh-toan">
+                <h5>Thêm vai trò mới </h5>
+              </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Nhập tên vai trò</label>
+                           <input class="form-control" name="nameRole" id="nameRole" type="text" required value="">
+                    </div>
+                </div>
+                <BR>
+                <BR>
+                <button class="btn btn-save" type="button" onclick="submitFormAddRole(this,)">Lưu lại</button>
+                <a class="btn btn-cancel" onclick="closeModalAddRole()" href="#">Thoát</a>
+                <BR>
+            </div>
+            <div class="modal-footer">
+            </div>
+</form>
+        </div>
+    </div>
+</div>`
+        document.getElementById("addRole").innerHTML = re;
+    }
+
+    function submitFormAddRole(button) {
+        if (!checkFormNotEmpty("addRole")) return;
+        let re = "";
+        let form = $(button).closest("form");
+        let nameRole = ""
+        let form_data = $(form).serialize(); // lấy thông tin dữ liệu từ form
+        let url = "${pageContext.request.contextPath}/admin-user/role-add"; // đường dẫn đến file xử lý
+        let reRoles;
+        nameRole = document.getElementById('nameRole').value;
+        console.log(nameRole)
+        Swal.fire({
+            title: 'Bạn có chắc chắn muốn thêm trang truy cập không?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No'
+        }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: url,
+                        type: "POST",
+                        data: {nameRole: nameRole},
+                        success: function (data) {
+                            Swal.fire({
+                                title: 'Thêm vai trò thành công',
+                                icon: 'success',
+                                showCancelButton: false,
+                                confirmButtonText: 'OK'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload(); // Load lại trang
+                                }
+                            });
+                        }
+                        ,
+                        error: function (xhr) {
+                            console.log(xhr.statusText);
+                        }
+                    });
+                } else if (result.isDenied) {
+                    Swal.fire('Hủy thêm trang truy cập', '', 'info');
+                }
+            }
+        )
+    }
+
+    function editAccount(idRole) {
         let re = "";
         let resource = "";
-        let typeString = "";
         $.ajax({
             url: "${pageContext.request.contextPath}/admin-user/PermissionAddController",
             type: "GET",
@@ -279,30 +270,20 @@
                 for (let i = 0; i < resources.length; i++) {
                     resource += ` <option value="` + resources[i].id + `">` + resources[i].url + ` (` + resources[i].name + `)</option>`;
                 }
-                if (type === '1') {
-                    typeString = 'Khách hàng'
-                }
-                if (type === '2') {
-                    typeString = 'Nhân viên'
-                }
-                if (type === '3') {
-                    typeString = 'Quản lý'
-                }
-
                 re = `<div class="modal fade show" id="ModalUP" style="display: block">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-       <form id"edit" action="${pageContext.request.contextPath}/admin-user/UserUpdate" method="post" >
+       <form id="addResource">
             <div class="modal-body">
                 <div class="row">
                     <div class="form-group  col-md-12">
               <span class="thong-tin-thanh-toan">
-                <h5>Thêm trang truy cập cho `+typeString+` </h5>
+                <h5>Thêm trang truy cập</h5>
               </span>
                     </div>
                 </div>
                 <div class="row">
-                    <input style="display: none" type="text" name="type" value="` + type + `">
+                <input style="display: none" class="form-control" name="idRole" type="text" required value="` + idRole + `">
                     <div class="form-group col-md-6">
                         <label class="control-label">Chọn trang truy cập</label>
                             <select class="form-control" name="resource">
@@ -312,7 +293,7 @@
                 </div>
                 <BR>
                 <BR>
-                <button class="btn btn-save" type="button" onclick="submitForm(this)">Lưu lại</button>
+                <button class="btn btn-save" type="button" onclick="submitForm(this,` + idRole + `)">Lưu lại</button>
                 <a class="btn btn-cancel" onclick="closeModal()" href="#">Thoát</a>
                 <BR>
             </div>
@@ -331,7 +312,8 @@
         });
     }
 
-    function submitForm(button) {
+    function submitForm(button, idRole) {
+        if (!checkFormNotEmpty('addResource')) return;
         let re = "";
         let form = $(button).closest("form");
         let form_data = $(form).serialize(); // lấy thông tin dữ liệu từ form
@@ -372,7 +354,8 @@
             }
         )
     }
-    function deleteResource(idRole,id,button) {
+
+    function deleteResource(idRole, id, button) {
         let row = $(button).closest('tr');
         let re = "";
         Swal.fire({
@@ -388,7 +371,7 @@
                     type: "GET",
                     data: {
                         id: id,
-                        idRole:idRole
+                        idRole: idRole
                     },
                     success: function (data) {
                         let isSuc = JSON.parse(data).isSuc;
@@ -418,19 +401,26 @@
             }
         })
     }
+
     function closeModal() {
         let modal = document.getElementById("showEdit");
         modal.innerHTML = '';
     }
 
-    function handleCheckboxChange(action, isChecked, resourceId) {
+    function closeModalAddRole() {
+        let modal = document.getElementById("addRole");
+        modal.innerHTML = '';
+    }
+
+    function handleCheckboxChange(action, isChecked, resourceId, idRole) {
         $.ajax({
             url: "${pageContext.request.contextPath}/admin-user/permission",
             type: "POST",
             data: {
                 action: action,
                 isChecked: isChecked,
-                resourceId: resourceId
+                resourceId: resourceId,
+                idRole: idRole
             },
             success: function (response) {
                 Swal.fire({
@@ -532,6 +522,9 @@
             filename: "example.xlsx" // Tên file Excel xuất ra
         });
     });
+</script>
+<script>
+    document.getElementById("admin-user").classList.add("active");
 </script>
 </body>
 
