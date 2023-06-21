@@ -1,5 +1,4 @@
-
-        package entity;
+package entity;
 
 public class SizeColorProduct {
     private int id;
@@ -9,6 +8,10 @@ public class SizeColorProduct {
     private int  quantity;
 
     public SizeColorProduct() {
+    }
+
+    public boolean isComplete() {
+        return size != null && color != null && quantity != 0;
     }
 
     public SizeColorProduct(int id, int idProduct, String size, String color, int quantity) {
@@ -33,9 +36,9 @@ public class SizeColorProduct {
     }
     public SizeColorProduct(int id, String color) {
         this.id = id;
-
         this.color = color;
     }
+
     public SizeColorProduct(int id, int idProduct, String color,int quantity) {
         this.id = id;
         this.idProduct = idProduct;

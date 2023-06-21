@@ -7,46 +7,71 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setLocale value="${sessionScope.LANG}"/>
 <fmt:setBundle basename="app" var="lang"/>
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+        var lang = getCookie("selectedLanguage");
+        if (lang) {
+            new google.translate.TranslateElement({
+                pageLanguage: 'vi',
+                includedLanguages: 'en,vi',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: true
+            }, 'google_translate_element');
+            // Đặt ngôn ngữ đã lưu trữ
+            googleTranslateElement.setSelectedLanguage(lang);
+        } else {
+            // Nếu không có cookie, sử dụng ngôn ngữ mặc định là tiếng Anh
+            new google.translate.TranslateElement({
+                pageLanguage: 'vi',
+                includedLanguages: 'en,vi',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: true
+            }, 'google_translate_element');
+        }
+    }
+
+    // Hàm lấy giá trị của cookie
+    function getCookie(name) {
+        var cookieArr = document.cookie.split(";");
+        for (var i = 0; i < cookieArr.length; i++) {
+            var cookiePair = cookieArr[i].split("=");
+            if (name === cookiePair[0].trim()) {
+                return decodeURIComponent(cookiePair[1]);
+            }
+        }
+        return null;
+    }
+
+    // Hàm đặt giá trị của cookie
+    function setCookie(name, value, days) {
+        var expires = "";
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + encodeURIComponent(value) + expires + "; path=/";
+    }
+
+    // Hàm lưu trạng thái ngôn ngữ vào cookie khi người dùng thay đổi
+    function saveSelectedLanguage(lang) {
+        setCookie("selectedLanguage", lang, 365); // Lưu trong 1 năm
+    }
+
+</script>
+<script type="text/javascript"
+        src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <!-- Header -->
-<!-- Messenger Plugin chat Code -->
-<div id="fb-root"></div>
-
-<!-- Your Plugin chat code -->
-<div id="fb-customer-chat" class="fb-customerchat">
-</div>
-
-<script>
-    var chatbox = document.getElementById('fb-customer-chat');
-    chatbox.setAttribute("page_id", "102999359507848");
-    chatbox.setAttribute("attribution", "biz_inbox");
-</script>
-
-<!-- Your SDK code -->
-<script>
-    window.fbAsyncInit = function() {
-        FB.init({
-            xfbml            : true,
-            version          : 'v17.0'
-        });
-    };
-
-    (function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-</script>
 <header class="header">
     <div class="navbar navbar-default sk-top-menu" role="navigation">
         <div class="container">
             <div class="row">
                 <ul class="nav navbar-nav navbar-left sk-top-nav-left"
                     style="position: relative; z-index: 9;">
+                    <c:url var="edit" value="/account/EditControl"></c:url>
                     <c:url var="logout" value="/LogoutControl"></c:url>
                     <c:if test="${sessionScope.acc != null}">
-                        <li><a href="${pageContext.request.contextPath}/client/Account.jsp"><i
+                        <li><a href="${pageContext.request.contextPath}/${edit}"><i
                                 class="fa fa-user"></i> <fmt:message key="Hello"
                                                                      bundle="${lang}"></fmt:message>: ${sessionScope.acc.fullName}
                         </a></li>
@@ -66,6 +91,22 @@
                 <ul class="nav navbar-nav navbar-right sk-top-nav-desktop"
                     style="position: relative; z-index: 9;">
                     <li>
+                        <%--                        <c:set var="query" value="${pageContext.request.queryString}"></c:set>--%>
+                        <%--                        <c:if test="${param.lang==null}">--%>
+                        <%--                            <c:if test="${sessionScope.LANG == 'en_US' || sessionScope.LANG == null}"><a--%>
+                        <%--                                    href="?${query}&&lang=vi_VN">Tiếng Việt</a></c:if>--%>
+                        <%--                            <c:if test="${sessionScope.LANG == 'vi_VN' }"><a--%>
+                        <%--                                    href="?${query}&&lang=en_US">English</a></c:if>--%>
+                        <%--                        </c:if>--%>
+                        <%--                        <c:if test="${param.lang!=null}">--%>
+                        <%--                            <c:if test="${sessionScope.LANG == 'en_US' }"><a--%>
+                        <%--                                    href="?${fn:substring(query, 0, query.length()-12)}&&lang=vi_VN">Tiếng--%>
+                        <%--                                Việt</a></c:if>--%>
+                        <%--                            <c:if test="${sessionScope.LANG == 'vi_VN' }"><a--%>
+                        <%--                                    href="?${fn:substring(query, 0, query.length()-12)}&&lang=en_US">English</a></c:if>--%>
+                        <%--                        </c:if>--%>
+                        <div id="google_translate_element"></div>
+                    </li>
                     <li><c:url var="searchct" value="SearchControl"></c:url>
                         <form action="${pageContext.request.contextPath}/${searchct}" method="get"
                               class="form-inline sk-search-in-nav">
@@ -82,7 +123,7 @@
                     </li>
                     <c:url var="cart" value="cart/CartControl"></c:url>
                     <li><a href="${pageContext.request.contextPath}/${cart}"><i
-                            class="fa fa-shopping-cart"></i> <span id="cartTotalQuantity" class="cart-icon"><c:if
+                            class="fa fa-shopping-cart"></i> <span class="cart-icon"><c:if
                             test="${!empty sessionScope.cart }">${sessionScope.cartTotalQuantity}</c:if>
 								<c:if test="${empty sessionScope.cart }">0</c:if></span></a></li>
                 </ul>

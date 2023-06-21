@@ -22,6 +22,18 @@
   <jsp:include page="./header/link-css.jsp" flush="true"/>
   <script src="http://code.jquery.com/jquery.min.js" type="text/javascript"></script>
   <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+    .add-button {
+      margin-top: 10px;
+    }
     #uploadFile,
     #uploadFileMain {
       display: none; /* Ẩn phần input file mặc định */
@@ -139,45 +151,90 @@
                 action="${pageContext.request.contextPath}/admin-products/ProductAddController">
             <div class="form-group col-md-3">
               <label class="control-label">Tên sản phẩm</label>
-              <input class="form-control" type="text">
-            </div>
-            <div class="form-group  col-md-3">
-              <label class="control-label">Số lượng</label>
-              <input class="form-control" type="number">
+              <input class="form-control" type="text" name="nameProduct" required>
             </div>
             <div class="form-group col-md-3">
               <label for="exampleSelect2" class="control-label">Danh mục</label>
-              <select class="form-control" id="exampleSelect2">
+              <select class="form-control" id="exampleSelect2" name="category" required>
                 <option>-- Chọn danh mục --</option>
-                <option>Bàn ăn</option>
-                <option>Bàn thông minh</option>
-                <option>Tủ</option>
-                <option>Ghế gỗ</option>
-                <option>Ghế sắt</option>
-                <option>Giường người lớn</option>
-                <option>Giường trẻ em</option>
-                <option>Bàn trang điểm</option>
-                <option>Giá đỡ</option>
+                <c:forEach items="${requestScope.listCategory}" var="o">
+                  <option>${o.nameCategory}</option>
+                </c:forEach>
               </select>
             </div>
             <div class="form-group col-md-3 ">
               <label for="exampleSelect3" class="control-label">Nhà cung cấp</label>
-              <select class="form-control" id="exampleSelect3">
+              <select class="form-control" id="exampleSelect3" name="supplier" required>
                 <option>-- Chọn nhà cung cấp --</option>
-                <option>Phong vũ</option>
-                <option>Thế giới di động</option>
-                <option>FPT</option>
-                <option>Võ Trường</option>
+                <c:forEach items="${requestScope.listSupplier}" var="o">
+                  <option>${o.nameSupplier}</option>
+                </c:forEach>
+              </select>
+            </div>
+            <div class="form-group col-md-3 ">
+              <label for="exampleSelect4" class="control-label">Nhà sản xuất</label>
+              <select class="form-control" id="exampleSelect4" name="producer" required>
+                <option>-- Chọn nhà sản xuất --</option>
+                <c:forEach items="${requestScope.listProducer}" var="o">
+                  <option>${o.nameProducer}</option>
+                </c:forEach>
               </select>
             </div>
             <div class="form-group col-md-3">
               <label class="control-label">Giá bán</label>
-              <input class="form-control" type="text">
+              <input class="form-control" type="text" name="price" style="width: 70%" required>
             </div>
             <div class="form-group col-md-3">
-              <label class="control-label">Giá vốn</label>
-              <input class="form-control" type="text">
+              <label class="control-label">% Khuyến mãi</label>
+              <input class="form-control" type="text" name="sell" style="width: 70%" required>
             </div>
+            <table id="product-table">
+              <tr>
+                <th>Kích thước</th>
+                <th>Màu sắc</th>
+                <th>Số lượng</th>
+                <th>Xóa</th>
+              </tr>
+              <tr>
+                <td><input type="text" name="size-1"></td>
+                <td><input type="text" name="color-1"></td>
+                <td><input type="text" name="quantity-1"></td>
+                <td><button onclick="deleteRow(this)">Xóa</button></td>
+              </tr>
+            </table>
+            <button class="btn btn-add" type="button" onclick="addRow()">Thêm hàng mới</button>
+            <script>
+              let rowCount = 1;
+
+              function addRow() {
+                rowCount++;
+
+                let table = document.getElementById("product-table");
+                let row = table.insertRow(-1);
+
+                let sizeCell = row.insertCell(0);
+                sizeCell.innerHTML = '<input type="text" name="size-' + rowCount + '">';
+
+                let colorCell = row.insertCell(1);
+                colorCell.innerHTML = '<input type="text" name="color-' + rowCount + '">';
+
+                let quantityCell = row.insertCell(2);
+                quantityCell.innerHTML = '<input type="text" name="quantity-' + rowCount + '">';
+
+                let deleteCell = row.insertCell(3);
+                deleteCell.innerHTML = '<button onclick="deleteRow(this)">Xóa</button>';
+              }
+
+              function deleteRow(button) {
+                let table = document.getElementById("product-table");
+                let rowCount = table.rows.length;
+
+                if (rowCount > 2) { // Chỉ xóa dòng dưới cùng nếu có nhiều hơn 1 dòng
+                  let row = button.parentNode.parentNode;
+                  table.deleteRow(row.rowIndex);
+                }
+              }
+            </script>
             <div class="form-group col-md-12">
               <label class="control-label">Ảnh đại diện sản phẩm</label> <br>
               <label for="uploadFileMain" class="custom-upload-main">
@@ -195,7 +252,7 @@
             </div>
             <div class="form-group col-md-12">
               <label class="control-label">Mô tả sản phẩm</label>
-              <textarea class="form-control" name="mota" id="mota"></textarea>
+              <textarea class="form-control" name="description" id="mota"></textarea>
             </div>
             <div class="form-group col-md-12">
               <button class="btn btn-save" type="submit">Lưu lại</button>

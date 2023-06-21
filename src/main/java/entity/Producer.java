@@ -19,14 +19,23 @@ public class Producer { // nha san suat
 		this.nameProducer = nameProducer;
 	}
 
+	public Producer(String nameProducer,int idProducer) {
+		this.nameProducer = nameProducer;
+		this.idProducer = idProducer;
+	}
 	public Producer() {
 		super();
 	}
 
 	@Override
 	public String toString() {
-		return  nameProducer ;
-
+		return "Producer{" +
+				"idProducer=" + idProducer +
+				", nameProducer='" + nameProducer + '\'' +
+				", information='" + information + '\'' +
+				", logo='" + logo + '\'' +
+				", isActive='" + isActive + '\'' +
+				'}';
 	}
 
 	public int getIdProducer() {

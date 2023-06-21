@@ -22,7 +22,10 @@ public class Category {
 
 	@Override
 	public String toString() {
-		return nameCategory ;
+		return "Category{" +
+				"id=" + id +
+				", nameCategory='" + nameCategory + '\'' +
+				'}';
 	}
 
 	public int getId() {

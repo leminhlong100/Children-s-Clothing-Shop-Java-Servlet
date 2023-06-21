@@ -1,15 +1,7 @@
 package context;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-
-import entity.Product;
+import java.sql.*;
 import org.jdbi.v3.core.Jdbi;
-
 import com.zaxxer.hikari.HikariDataSource;
 
 //import entity.Product;
@@ -20,7 +12,7 @@ public class DBContext {
 	private static final String portNumber = "3306";
 	private static final String instance = "";
 	private static final String userID = "root";
-	private static final String password = "loc123456789";
+	private static final String password = "thuyhao15062002";
 	private static final HikariDataSource dataSource;
 	static Jdbi jdbi;
 
@@ -51,15 +43,4 @@ public class DBContext {
 	public static Connection getConnection() throws SQLException {
 		return dataSource.getConnection();
 	}
-
-	public static void main(String[] args) throws Exception {
-		System.out.println(getConnection());
-		Jdbi me = DBContext.me();
-		List<Product> list = me.withHandle(handle -> {
-			return handle.createQuery("select  * from products").mapToBean(Product.class).stream()
-					.collect(Collectors.toList());
-		});
-		System.out.println(list);
-	}
-
 }

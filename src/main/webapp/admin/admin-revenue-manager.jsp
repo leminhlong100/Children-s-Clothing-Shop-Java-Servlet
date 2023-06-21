@@ -135,7 +135,7 @@
     <div class="col-md-12">
       <div class="tile">
         <div>
-          <h3 class="tile-title">TỔNG ĐƠN HÀNG GIAO THÀNH CÔNG</h3>
+          <h3 class="tile-title">ĐƠN HÀNG GIAO THÀNH CÔNG</h3>
         </div>
         <div class="tile-body">
           <table class="table table-hover table-bordered" id="sampleTable2">
