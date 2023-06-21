@@ -31,6 +31,7 @@ public class AddToBillControl extends HttpServlet {
         String districtId = request.getParameter("districtId");
         String wardId = request.getParameter("wardId");
         String feeShip = API.feeShip("1540", "440505", districtId, wardId, "20", "20", "20", "100");
+        System.out.println(feeShip);
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("ship", feeShip);
         response.getWriter().println(jsonObject);

@@ -160,13 +160,31 @@ public class ProductDAO {
 
 		return findcommentbyid(id);
 	}
+	public static int numberofcomment() {
+		Jdbi me = DBContext.me();
+		String query = "SELECT COUNT(id) FROM comments WHERE idParent IS NULL";
+		return me.withHandle(handle -> handle.createQuery(query)
+				.mapTo(Integer.class)
+				.findFirst()
+				.orElse(0));
+	}
+	public static int Admin() {
+		Jdbi me = DBContext.me();
+		String query = "select idRole from account_roles ";
+		return me.withHandle(handle -> handle.createQuery(query)
+				.mapTo(Integer.class)
+				.findFirst()
+				.orElse(0));
+	}
+
 
 	public static void main(String[] args) {
 
 //		System.out.println(pagingProduct(1, 0, "idProduct", "asc"));
-		System.out.println(commentproduct("Hàng này thật đẹp",3,1,"Lê Minh Long"));
+//		System.out.println(commentproduct("Hàng này thật đẹp",3,1,"Lê Minh Long"));
 //		System.out.println(displayfiveproduct(1,"3",true));
 //		System.out.println(replycommentproduct("tôi đồng ý",1,1,"Lê Minh Long","1"));
+		System.out.println(Admin());
 
 	}
 }

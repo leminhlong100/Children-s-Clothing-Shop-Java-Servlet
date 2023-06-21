@@ -31,7 +31,11 @@ public class DetailControl extends HttpServlet {
 				Product p = UtilDAO.findProductById(Integer.parseInt(id));
 				String pid = request.getParameter("pid");
 				List<Comment> listcmt = ProductDAO.displayfiveproduct(p.getId(),null,true);
+				int num = ProductDAO.numberofcomment();
+
 				request.setAttribute("list",listcmt);
+				request.setAttribute("Checknumber",num);
+
 				response.getWriter().println(listcmt);
 				request.setAttribute("detail", p);
 				request.getRequestDispatcher("/client/Detail.jsp").forward(request, response);

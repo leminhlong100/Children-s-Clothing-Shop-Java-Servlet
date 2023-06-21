@@ -33,7 +33,6 @@ public class CommentControl extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-
         try {
             request.setCharacterEncoding("UTF-8");
             response.setCharacterEncoding("UTF-8");
@@ -42,11 +41,11 @@ public class CommentControl extends HttpServlet {
             String pid = request.getParameter("pid");
             String text = request.getParameter("content");
             Comment cmt=   ProductDAO.commentproduct(text,account.getId(),Integer.parseInt(pid),account.getFullName());
-             String time= cmt.gettimeover();
+            String time= cmt.gettimeover();
             Gson gson = new Gson();
             JsonObject jsonobj = new JsonObject();
             jsonobj.addProperty("comment_user",gson.toJson(cmt));
-            jsonobj.addProperty("timecmt",gson.toJson(time));
+
             response.getWriter().println(gson.toJson(jsonobj));
 
         }catch (Exception e ){

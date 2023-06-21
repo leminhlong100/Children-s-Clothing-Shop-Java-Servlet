@@ -315,8 +315,8 @@ public class API {
 //        System.out.println(getDistricts("269"));
 //        System.out.println(getWards("2264"));
 //        System.out.println(leadTime("2264", "90816", "2270", "231013", "100", "100", "50", "100"));
-//        System.out.println(feeShip("2264", "90816", "2270", "231013", "20", "20", "20", "100"));
-        System.out.println(getAllTransports());
+        System.out.println(feeShip("2264", "90816", "2270", "231013", "20", "20", "20", "100"));
+//        System.out.println(getAllTransports());
 //        System.out.println(getTransportByID("0acf5c34e5c24a87b36c80491f04a7f3"));
     }
 }

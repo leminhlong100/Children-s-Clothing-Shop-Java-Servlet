@@ -35,7 +35,7 @@ public class ShowmoreControl extends HttpServlet {
             request.setCharacterEncoding("UTF-8");
             response.setCharacterEncoding("UTF-8");
             String number = request.getParameter("num");
-           HttpSession session = request.getSession();
+            HttpSession session = request.getSession();
             String pid = request.getParameter("pid");
             String text = request.getParameter("content");
             List<Comment> show=  ProductDAO.showmore(Integer.parseInt(pid),Integer.parseInt(number));
