@@ -11,17 +11,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import context.DB;
 import dao.admin.BillAdminDAO;
 import dao.client.OrderDAO;
+import entity.Account;
 import entity.Order;
 import entity.OrderDetail;
-
+import bean.Log;
 @WebServlet("/admin-bill/BillProductListController")
 public class BillProductListController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+
 		try {
 			List<Order> listOrders = BillAdminDAO.getListOrder();
 			Map<Integer, List<OrderDetail>> map = new HashMap<>();

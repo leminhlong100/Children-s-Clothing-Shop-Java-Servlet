@@ -1,5 +1,6 @@
 package controller.admin.user;
 
+import context.DB;
 import controller.admin.webSocket.UpdateAccountEndPoint;
 import dao.AuthDAO.SecurityDAO;
 import dao.admin.AccountDAO;
@@ -14,9 +15,11 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import bean.Log;
 
 @WebServlet("/admin-user/permission")
 public class PermissionListController extends HttpServlet {
+    String namelog="List-permission";
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
@@ -37,11 +40,21 @@ public class PermissionListController extends HttpServlet {
         String isChecked = request.getParameter("isChecked");
         String resourceId = request.getParameter("resourceId");
         String idRole = request.getParameter("idRole");
-
         boolean isCheck = Boolean.parseBoolean(isChecked);
+        String ipAddress =request.getRemoteAddr();
+        Log log = new Log(Log.WARNING,ipAddress,-1,this.namelog,"",0);
+        Account account = (Account) request.getSession().getAttribute("admin");
         if (!isCheck) {
             AccountDAO.removePermission(resourceId,idRole, action);
+            log.setSrc(namelog + " DELETE ");
+            log.setContent("DELETE PERMISSION SUCCESS BY USER: "+ account.getAccountName());
+            log.setUserId(account.getId());
+            DB.me().insert(log);
         } else {
+            log.setSrc(namelog + " ADD ");
+            log.setContent("ADD PERMISSION SUCCESS BY USER: "+ account.getAccountName());
+            log.setUserId(account.getId());
+            DB.me().insert(log);
             AccountDAO.insertPermission(resourceId,idRole, action);
         }
         for (String s : AccountDAO.getListIdByIdRole(idRole)) {

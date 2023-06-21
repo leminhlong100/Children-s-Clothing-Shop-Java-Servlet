@@ -3,6 +3,7 @@ package controller.admin.discount;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import context.DB;
 import controller.admin.webSocket.UpdateAccountEndPoint;
 import dao.admin.AccountDAO;
 import dao.admin.DiscountDAO;
@@ -19,9 +20,11 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
+import bean.Log;
 
 @WebServlet("/admin-discount/update")
 public class UpdateDiscountController extends HttpServlet {
+    String namelog ="Update";
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -55,6 +58,9 @@ public class UpdateDiscountController extends HttpServlet {
         String startTime = request.getParameter("startTime");
         String endTime = request.getParameter("endTime");
         String status = request.getParameter("status");
+        String ipAddress =request.getRemoteAddr();
+        Log log = new Log(Log.WARNING,ipAddress,-1,this.namelog,"",0);
+        Account account = (Account) request.getSession().getAttribute("admin");
         Discount discount = new Discount(Integer.parseInt(id),nameDiscount,description,codeDiscount,Double.parseDouble(percentage),Integer.parseInt(quantity),startTime,endTime,status);
         DiscountDAO.updateDiscount(discount);
         Discount discountNew = DiscountDAO.getDiscountById(id);
@@ -69,6 +75,10 @@ public class UpdateDiscountController extends HttpServlet {
         Gson gson = new Gson();
         JsonObject jsonObject = new JsonObject();
         jsonObject.add("discount", gson.toJsonTree(discountNew));
+        log.setSrc(namelog + " UPDATE");
+        log.setContent("UPDATE DISCOUT SUCCESS BY USER: "+ account.getAccountName());
+        log.setUserId(account.getId());
+        DB.me().insert(log);
         response.getWriter().println(gson.toJson(jsonObject));
     }
 }

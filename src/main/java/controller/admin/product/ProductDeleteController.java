@@ -17,6 +17,7 @@ public class ProductDeleteController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String id = request.getParameter("id");
+
 		ProductAdminDAO.removeProduct(id);
 		HttpSession session = request.getSession();
 		String sessionID = ";jsessionid="+session.getId();

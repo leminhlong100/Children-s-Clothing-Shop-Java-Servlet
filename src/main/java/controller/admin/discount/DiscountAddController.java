@@ -1,7 +1,10 @@
 package controller.admin.discount;
 
+import bean.Log;
 import com.google.gson.JsonObject;
+import context.DB;
 import dao.admin.DiscountDAO;
+import entity.Account;
 import entity.Discount;
 
 import javax.servlet.*;
@@ -11,6 +14,7 @@ import java.io.IOException;
 
 @WebServlet("/admin-discount/add")
 public class DiscountAddController extends HttpServlet {
+    String namelog="Add-bill";
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -27,10 +31,17 @@ public class DiscountAddController extends HttpServlet {
         String startTime = request.getParameter("startTime");
         String endTime = request.getParameter("endTime");
         String status = request.getParameter("status");
+        String ipAddress =request.getRemoteAddr();
+        Log log = new Log(Log.WARNING,ipAddress,-1,this.namelog,"",0);
+        Account account = (Account) request.getSession().getAttribute("admin");
         Discount discount = new Discount(0,nameDiscount,description,codeDiscount,Double.parseDouble(percentage),Integer.parseInt(quantity),startTime,endTime,status);
         isSuc = DiscountDAO.insertDiscount(discount);
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("isSuc", isSuc);
+        log.setSrc(namelog + " ADD ");
+        log.setContent("ADD BILL SUCCESS BY USER: "+ account.getAccountName());
+        log.setUserId(account.getId());
+        DB.me().insert(log);
         response.getWriter().println(jsonObject);
     }
 }

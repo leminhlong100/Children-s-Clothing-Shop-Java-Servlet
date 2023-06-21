@@ -1,5 +1,6 @@
 package controller.client.cart;
 
+import context.DB;
 import dao.client.OrderDAO;
 import entity.Account;
 import entity.Order;
@@ -14,21 +15,31 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import bean.Log;
 
 @WebServlet("/cart/CartControl")
-public class  CartControl extends HttpServlet {
+public class CartControl extends HttpServlet {
     private static final long serialVersionUID = 1L;
+    String namelog ="Payer";
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
+        String ipAddress =request.getRemoteAddr();
+        Log log = new Log(Log.INFO,ipAddress,-1,this.namelog,"",0);
+
         try {
             HttpSession session = request.getSession();
             Account account = (Account) session.getAttribute("acc");
             if(account==null){
+
                 request.getRequestDispatcher("/client/Login.jsp").forward(request, response);
-            }else{
+
+            }
+            else{
+
+
             Object obj = session.getAttribute("cart");// luu tam vao session
             int totalQuantity = 0;
             double total = 0;
@@ -50,12 +61,21 @@ public class  CartControl extends HttpServlet {
                     }
                 }
             }
+              log.setSrc(namelog +" PAYER");
+                 log.setContent("PAYER SUCCESS: USER -" +account.getAccountName());
+                 log.setUserId(account.getId());
+
+                DB.me().insert(log);
+
             request.setAttribute("total", total);
             request.setAttribute("products", map);
             request.setAttribute("listOrders", listOrders);
             session.setAttribute("cartTotalQuantity", totalQuantity);
             request.getRequestDispatcher("/client/Cart.jsp").forward(request, response);
+
+
             }
+
         }catch (Exception e){
             e.printStackTrace();
         }
