@@ -32,12 +32,8 @@ public class AdminDAO {
 				return rs.getString(1);
 			}
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 		return null;
-	}
-
-	public static void main(String[] args) {
-		System.out.println(getSumBill());
 	}
 }

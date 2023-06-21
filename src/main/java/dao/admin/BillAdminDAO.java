@@ -56,7 +56,7 @@ public class BillAdminDAO {
 	}
 
 	public static int getTotalAcceptProduct() {
-		String query = "SELECT count(createAt) FROM orders where status = 'Hoàn thành'";
+		String query = "SELECT count(createAt) FROM orders where status = 'Hoàn thành'and month(createAt) = month(current_date())";
 		try (Handle handle = DBContext.me().open()) {
 			return handle.createQuery(query)
 					.mapTo(Integer.class)
@@ -69,7 +69,7 @@ public class BillAdminDAO {
 	}
 
 	public static int getTotalCancelProduct() {
-		String query = "SELECT count(createAt) FROM orders where status = 'Đã hủy'";
+		String query = "SELECT count(createAt) FROM orders where status = 'Đã hủy' and month(createAt) = month(current_date())";
 		try (Handle handle = DBContext.me().open()) {
 			return handle.createQuery(query)
 					.mapTo(Integer.class)
@@ -137,8 +137,9 @@ public class BillAdminDAO {
 		}
 		return 0;
 	}
-	public static int sumAllBillInMonth(int month) {
-		String query = "select sum(od.quantity) from order_details od join orders o on od.idOrder = o.id where year(o.createAt) = year(current_date()) and month(o.createAt) = ?";
+
+	public static int SumMoneyInMonth(int month) {
+		String query = "select sum(o.totalPrice) from order_details od join orders o on od.idOrder = o.id where year(o.createAt) = year(current_date()) and month(o.createAt) = ? and o.status = 'Hoàn thành'";
 		try (Handle handle = DBContext.me().open()) {
 			return handle.createQuery(query).bind(0, month).mapTo(Integer.class).findOne().orElse(0);
 		} catch (Exception e) {
@@ -147,8 +148,8 @@ public class BillAdminDAO {
 		return 0;
 	}
 
-	public static int SumMoneyInMonth(int month) {
-		String query = "select sum(o.totalPrice) from order_details od join orders o on od.idOrder = o.id where year(o.createAt) = year(current_date()) and month(o.createAt) = ? and o.status = 'Hoàn thành'";
+	public static int sumAllBillInMonth(int month) {
+		String query = "select sum(od.quantity) from order_details od join orders o on od.idOrder = o.id where year(o.createAt) = year(current_date()) and month(o.createAt) = ?";
 		try (Handle handle = DBContext.me().open()) {
 			return handle.createQuery(query).bind(0, month).mapTo(Integer.class).findOne().orElse(0);
 		} catch (Exception e) {
