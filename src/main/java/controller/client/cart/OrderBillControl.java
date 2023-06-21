@@ -1,5 +1,6 @@
 package controller.client.cart;
 
+import context.DB;
 import dao.client.OrderDAO;
 import entity.OrderDetail;
 import util.API;
@@ -8,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import bean.Log;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,11 +20,13 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/cart/OrderBillControl")
 public class OrderBillControl extends HttpServlet {
     private static final long serialVersionUID = 1L;
-
+    String namelog = "Pay";
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
+        String ipAddress = request.getRemoteAddr();
+        Log log= new Log(Log.INFO,ipAddress,-1,this.namelog,"",0);
         try {
             String total = request.getParameter("total");
             HttpSession session = request.getSession();
@@ -51,8 +55,16 @@ public class OrderBillControl extends HttpServlet {
                     }
                 }
                 if(!isSuc){
+                    log.setSrc(namelog +" PAY");
+                    log.setContent("ERROR");
+                    log.setLevel(Log.WARNING);
+                    DB.me().insert(log);
                     request.getRequestDispatcher("CartControl").forward(request, response);
                 }else {
+                    log.setSrc(namelog +"PAY");
+                    log.setContent("CONFIRM");
+                    DB.me().insert(log);
+
                     request.setAttribute("total", total);
                     request.setAttribute("totalQuantity", totalQuantity);
                     request.getRequestDispatcher("/client/Order.jsp").forward(request, response);
