@@ -12,12 +12,14 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import context.DB;
 import controller.admin.webSocket.UpdateAccountEndPoint;
 import dao.admin.AccountDAO;
 import dao.client.AuthDAO;
 import dao.client.UtilDAO;
 import entity.Account;
 import entity.Role;
+import bean.Log;
 
 /**
  * Servlet implementation class UserUpdateController
@@ -25,7 +27,7 @@ import entity.Role;
 @WebServlet("/admin-user/UserUpdate")
 public class UserUpdateController extends HttpServlet {
     private static final long serialVersionUID = 1L;
-
+    String namelog ="Update";
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -35,7 +37,9 @@ public class UserUpdateController extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+            response.setContentType("text/html;charset=UTF-8");
+            String ipAddress = request.getRemoteAddr();
+            Log log = new Log(Log.WARNING,ipAddress,-1,this.namelog,"",0);
         try {
             String user_id = request.getParameter("uid");
             Account account = UtilDAO.findAccountById(Integer.parseInt(user_id));
@@ -47,6 +51,10 @@ public class UserUpdateController extends HttpServlet {
             jsonObject.add("roles", gson.toJsonTree(roles));
             jsonObject.add("allRoles", gson.toJsonTree(allRoles));
             jsonObject.add("account", gson.toJsonTree(account));
+            log.setSrc(namelog + " UPDATE");
+            log.setContent("UPDATE USER SUCCESS BY USER: "+ account.getAccountName());
+            log.setUserId(account.getId());
+            DB.me().insert(log);
             response.getWriter().println(jsonObject);
         } catch (Exception e) {
             e.printStackTrace();

@@ -21,21 +21,26 @@ import javax.servlet.http.Part;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import context.DB;
 import dao.admin.ProductAdminDAO;
 import dao.client.AuthDAO;
 import dao.client.UtilDAO;
 import entity.*;
 import jnr.ffi.annotations.In;
+import bean.Log;
 
 @MultipartConfig
 @WebServlet("/admin-products/Editcolor")
 public class EditColorController extends HttpServlet {
     private static final long serialVersionUID = 1L;
+    String namelog = "Advanced-update";
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         response.setContentType("text/html;charset=UTF-8");
+        String ipAddress = request.getRemoteAddr();
+        Log log = new Log(Log.WARNING,ipAddress,-1,this.namelog,"",0);
         String idp = request.getParameter("idproduct");
         String idSize = request.getParameter("idsize");
         Gson gson = new Gson();
@@ -56,6 +61,9 @@ public class EditColorController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        String ipAddress =request.getRemoteAddr();
+        Log log = new Log(Log.WARNING,ipAddress,-1,this.namelog,"",0);
+
         try {
 
             String idproduct = request.getParameter("idProduct");
@@ -65,6 +73,8 @@ public class EditColorController extends HttpServlet {
             String color = request.getParameter("color");
             String quantity = request.getParameter("number");
             HttpSession session = request.getSession();
+            Account account = (Account) session.getAttribute("acc");
+
             SizeColorProduct s = new SizeColorProduct(Integer.parseInt(idsize),Integer.parseInt(idproduct),color);
             Inventory i = new Inventory(Integer.parseInt(idproduct),Integer.parseInt(idsize),Integer.parseInt(quantity));
             Product p = new Product(Integer.parseInt(idproduct),name);
@@ -77,7 +87,10 @@ public class EditColorController extends HttpServlet {
             obj.addProperty("idSizeColor",idsize);
             obj.addProperty("newcolor",color);
             obj.addProperty("newquantity",quantity);
-
+            log.setSrc(namelog +" UPDATE");
+            log.setContent("UPDATE SUCCESS BY USER: " +account.getAccountName());
+            log.setUserId(account.getId());
+            DB.me().insert(log);
             response.getWriter().println(gson.toJson(obj));
 
 

@@ -62,7 +62,7 @@ public class LoginControl extends HttpServlet {
                             session.setMaxInactiveInterval(1800);
                             log.setSrc(this.name + " LOGIN");
                             log.setUserId(account.getId());
-                            log.setContent("LOGIN SECCESS: USER - " + userName);
+                            log.setContent("LOGIN SUCCESS: USER - " + userName);
                             AuthDAO.resetlogin(userName);
                             for (Role r : account.getRoles()
                             ) {
@@ -83,6 +83,7 @@ public class LoginControl extends HttpServlet {
                 log.setSrc(this.name + " LOGIN FALSE");
                 log.setContent("LOGIN FALSE: USER - " + userName);
                 log.setLevel(Log.WARNING);
+                DB.me().insert(log);
                 request.setAttribute("error", "Tài khoản hoặc mật khẩu không hợp lệ");
                 request.getRequestDispatcher("/client/Login.jsp").forward(request, response);
             }
