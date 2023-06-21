@@ -3,29 +3,29 @@
 
 package controller.admin.product;
 
-        import java.io.IOException;
-        import java.nio.file.Files;
-        import java.nio.file.Path;
-        import java.util.HashMap;
-        import java.util.List;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.List;
 
-        import javax.json.Json;
-        import javax.servlet.ServletException;
-        import javax.servlet.annotation.MultipartConfig;
-        import javax.servlet.annotation.WebServlet;
-        import javax.servlet.http.HttpServlet;
-        import javax.servlet.http.HttpServletRequest;
-        import javax.servlet.http.HttpServletResponse;
-        import javax.servlet.http.HttpSession;
-        import javax.servlet.http.Part;
+import javax.json.Json;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
-        import com.google.gson.Gson;
-        import com.google.gson.JsonObject;
-        import dao.admin.ProductAdminDAO;
-        import dao.client.AuthDAO;
-        import dao.client.UtilDAO;
-        import entity.*;
-        import jnr.ffi.annotations.In;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import dao.admin.ProductAdminDAO;
+import dao.client.AuthDAO;
+import dao.client.UtilDAO;
+import entity.*;
+import jnr.ffi.annotations.In;
 
 @MultipartConfig
 @WebServlet("/admin-products/Editcolor")
@@ -35,13 +35,21 @@ public class EditColorController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
         String idp = request.getParameter("idproduct");
-        String idSize = request.getParameter("idSize");
+        String idSize = request.getParameter("idsize");
         Gson gson = new Gson();
+        SizeColorProduct scp = new SizeColorProduct(Integer.parseInt(idSize),Integer.parseInt(idp));
+
         Product products = UtilDAO.findProductById(Integer.parseInt(idp));
-        request.setAttribute("product", products);
+        SizeColorProduct size = ProductAdminDAO.colorsize(scp);
+
+        System.out.println(size);
         JsonObject obj = new JsonObject();
         obj.addProperty("products", gson.toJson(products));
+        obj.addProperty("colorSize", gson.toJson(size));
+
+
         response.getWriter().println(gson.toJson(obj));
     }
 

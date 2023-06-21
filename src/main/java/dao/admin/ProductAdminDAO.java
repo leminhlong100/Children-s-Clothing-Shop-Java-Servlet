@@ -248,9 +248,7 @@ public class ProductAdminDAO {
     }
     public static SizeColorProduct colorsize(SizeColorProduct s ){
         Jdbi me = DBContext.me();
-    String query="select s.id,s.idProduct,s.color,i.quantity from size_color_products s join inventorys i " +
-            "on i.idProduct =s.idProduct" +
-            "  where s.id =? and s.idProduct =?";
+    String query="select s.id,s.idProduct,s.color,i.quantity from size_color_products s join inventorys i on s.id =i.id_size_color where s.id =? and s.idProduct =?";
     return me.withHandle(handle -> handle.createQuery(query).bind(0,s.getId()).bind(1,s.getIdProduct()).map((rs, ctx) -> new SizeColorProduct(rs.getInt("id"),rs.getInt("idProduct"),rs.getString("color"),rs.getInt("quantity"))).findFirst().orElse(null));
     }
 
