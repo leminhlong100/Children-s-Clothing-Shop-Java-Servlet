@@ -267,7 +267,14 @@ public class AuthDAO {
 
     public static Account loginGG(String id) {
         String loginGGQuery = "select id, accountName, password, fullName, email, image, type, idOther from accounts where idOther= ? and type = 3";
-        return getAccount(id, loginGGQuery);
+        Account account;
+        account = getAccount(id, loginGGQuery);
+        if (account != null) {
+            account.setRoles(getRoles(account.getId()));
+            account.setResources(getResources(account.getId()));
+            account.setPermissions(getPermissions(account.getId()));
+        }
+        return account;
     }
 
     public static void signUpFacebook(String id, String name, String email, String pic) {
@@ -304,7 +311,14 @@ public class AuthDAO {
 
     public static Account loginFacebook(String id) {
         String loginFBQuery = "select id, accountName, password, fullName, email, image, type, idOther from accounts where idOther= ? and type = 2";
-        return getAccount(id, loginFBQuery);
+        Account account;
+        account = getAccount(id, loginFBQuery);
+        if (account != null) {
+            account.setRoles(getRoles(account.getId()));
+            account.setResources(getResources(account.getId()));
+            account.setPermissions(getPermissions(account.getId()));
+        }
+        return account;
     }
 
     public static void main(String[] args) {

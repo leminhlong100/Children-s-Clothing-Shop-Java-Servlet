@@ -197,14 +197,27 @@ MODAL
         modal.innerHTML = '';
     }
 
-    // xuất file excel
     $("#exportButton").click(function () {
-        $("#sampleTable").table2excel({
-            exclude: ".noExl", // Loại bỏ các phần tử có class "noExl" khỏi file Excel
-            name: "Sheet 1", // Tên sheet trong file Excel
-            filename: "example.xlsx" // Tên file Excel xuất ra
+        var table = $("#sampleTable").DataTable(); // Khởi tạo DataTable từ bảng có id là "sampleTable"
+        var data = table.rows().data().toArray(); // Trích xuất toàn bộ dữ liệu từ DataTable thành một mảng
+
+        var filteredData = data.map(function(row) {
+            return row.slice(1);
+        });
+
+        var workbook = new ExcelJS.Workbook();
+        var worksheet = workbook.addWorksheet("Sheet 1");
+
+        // Ghi dữ liệu từ mảng đã lọc vào worksheet
+        worksheet.addRows(filteredData);
+
+        // Xuất tệp Excel
+        workbook.xlsx.writeBuffer().then(function (buffer) {
+            var blob = new Blob([buffer], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+            saveAs(blob, "example.xlsx"); // Tải xuống tệp Excel
         });
     });
+
 
 </script>
 <script>

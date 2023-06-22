@@ -32,8 +32,6 @@ public class LoginControl extends HttpServlet {
             String gRecap = request.getParameter("g-recaptcha-response");
             String typeHeader = "customer";
             boolean verify = VerifyRecaptchas.verify(gRecap);
-            verify = true;
-
             HttpSession session = request.getSession();
             Account account = AuthDAO.login(userName, passWord,passWord);
             boolean accountCheck = AuthDAO.checkAccountExist(userName);

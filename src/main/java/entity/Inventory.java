@@ -13,6 +13,10 @@ public class Inventory {
 		super();
 	}
 
+	public Inventory(int quantity) {
+		this.quantity = quantity;
+	}
+
 	public Inventory(int idProduct, int id_size_color, int quantity, Date createdDate, Date lastUpdatedDate) {
 		this.idProduct = idProduct;
 		this.id_size_color = id_size_color;

@@ -10,8 +10,7 @@
 <head>
     <title>Đăng nhập quản trị | Website quản trị v2.0</title>
     <meta charset="UTF-8">
-    <link rel="icon" href="//bizweb.dktcdn.net/100/117/632/themes/157694/assets/favicon.png?1564585558451"
-          type="image/x-icon"/>
+    <link rel="icon" href="https://lh3.googleusercontent.com/pw/AJFCJaXoQYraxnJ5Xb69WqHM1VQGknKZhyfiZbMmB6wyAJiOeVD_C15MO0MebL6Y0uDb0qf16BnhswiDxBoU4CWiObfRtcFdAXDrKN651ub56WgeBV220MOgoxEsdKXwjLUSliRIWVTPaCWaLlX2w7m6lcRb2e8ENo07IehTwKsl2n2wSVICj1Hj7ZmpCko_yHw4eUdPlshXFwmPwVvQY2HQ11NQvVxKDOtL6hxMkaBaIG0QgE4swK5S0IEWyhPf3kUuXDjqo4RiNKVYjTdzi__SxIZ8TsIEcFoiW5V837ODrZmqArfVv--iUhpeOfG-32_GFelpygILotxWz4tPAi_9a5mrjqxKTomZuqtwZt2h9UooAD1nIbQyBs2mwm-qNswhYs_OXFnH6gtCFLm4t-B01KP5caG00vub-x2ulXeuYUCxFky5zuFB7oPhbkXnfwePfgl8Jm__5ENCtTnfAQXTWYWGIRtRmaRAHZFwfP0jERY_VDrjB9SV2SyeBgdjv6CiKQwf8ePaj_eiEvzuh1DSK8mRkX7c6XmDocSYoMMuqYG2v3Yv3BVfJE5npzwElwhimrriPZekxBi5GC4vS1NI-KVqxDBjFWwSA1F3BuOLGX92GfozvEBj1oN9K-G3usx7MsxpGOvGY3Ni0N-5QR3CBWp5xteKjftbQEaJk02glp-saVoih7IFQf6bFQnRkhmQMN7DFNzsObALswIITfB54QwHf0vdZJTemb8d01FFQFLeqZ0GSF86Pa3lbyvzJ2HaP569GLNLSgfzg-jvbNV5R1rqOwWgpW4sd5Q3KaxRd97_X1nD48xnNHqx4aJr4FOcshElIwzKzCRQkYumMnfqLqTDzRE83VDgQJz7KaxRzM2N1qP5GsVmpvFg0FDXGPaTOiC1IK3QnqykTDaJMz-1fXqa6fBP6kIwrytrUYfAdfydwykxC5piNeP9Xkb_LT1cIdnR_08jDI7-rFaIovldG3fCF2ECZg=w80-h80-s-no?authuser=0"
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="${url}/css/login.css">
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -67,7 +66,7 @@
                     action="${pageContext.request.contextPath}/admin/AdminLoginController"
                     method="post">
                     <span class="login100-form-title">
-                        <b>ĐĂNG NHẬP HỆ THỐNG POS</b>
+                        <b>ĐĂNG NHẬP HỆ THỐNG QUẢN LÝ</b>
                     </span>
                 <!--=====FORM INPUT TÀI KHOẢN VÀ PASSWORD======-->
                 <form action="">
@@ -105,7 +104,7 @@
                         Phần mềm quản lý bán hàng <i class="far fa-copyright" aria-hidden="true"></i>
                         <script type="text/javascript">document.write(new Date().getFullYear());</script>
                         <a
-                                class="txt2" href="https://www.facebook.com/truongvo.vd1503/"> Code bởi Long </a>
+                                class="txt2" href="https://www.facebook.com/leminh.long.9678"> Code bởi Nhóm 14 </a>
                     </div>
                 </form>
             </form>

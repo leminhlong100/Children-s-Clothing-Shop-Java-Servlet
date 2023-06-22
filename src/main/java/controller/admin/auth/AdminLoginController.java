@@ -25,7 +25,7 @@ public class AdminLoginController extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        getServletContext().getRequestDispatcher("/view/admin/login.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher("/admin/admin-login.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -40,7 +40,7 @@ public class AdminLoginController extends HttpServlet {
             HttpSession session = request.getSession();
             Account a = LoginAdminDAO.loginAdmin(username, password);
             if (a != null) {
-                if (SecurityDAO.hasPermission(SecurityDAO.getIdResource("/admin-index"), a.getAccountName(), "read")) {
+                if (SecurityDAO.hasPermission(SecurityDAO.getIdResource("/admin"), a.getAccountName(), "read")) {
                     session.setAttribute("admin", a);
                     Account acc = AuthDAO.login(username, password, password);
                     session.setAttribute("acc", acc);

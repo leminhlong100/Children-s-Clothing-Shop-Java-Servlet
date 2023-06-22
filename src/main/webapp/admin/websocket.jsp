@@ -7,7 +7,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.css"/>
 <script>
-    const socket = new WebSocket("ws://localhost:8080/haloshop/observer");
+    const socket = new WebSocket("ws://haloshop.site/observer");
     socket.addEventListener("message", (event) => {
         let data = JSON.parse(event.data);
         let idUser = data.idUser;

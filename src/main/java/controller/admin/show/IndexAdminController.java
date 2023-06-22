@@ -15,6 +15,7 @@ import dao.admin.BillAdminDAO;
 import dao.admin.ProductAdminDAO;
 import entity.Account;
 import entity.Order;
+import entity.Product;
 
 @WebServlet("/admin-index")
 public class IndexAdminController extends HttpServlet {
@@ -44,6 +45,13 @@ public class IndexAdminController extends HttpServlet {
 		// Danh sách khách hàng
 		List<Account> accounts = AccountDAO.getListNewAccount();
 		request.setAttribute("accounts", accounts);
+		// Danh sách san pham gan het
+		List<Product> listProductStock = ProductAdminDAO.getListProductOuOtOfStock();
+		request.setAttribute("listProductStock", listProductStock);
+
+		// Danh sách san pham tồn kho
+		List<Product> listProductInventory = ProductAdminDAO.getListProductInventory();
+		request.setAttribute("listProductInventory", listProductInventory);
 
 		//Take sum orders every month
 		List<Integer> ordersMonth = new ArrayList<>();

@@ -53,6 +53,10 @@ public class RevenueShowController extends HttpServlet {
         int sumOutOfStock = ProductAdminDAO.getTotalOutOfStock();
         request.setAttribute("sumOutOfStock", sumOutOfStock);
 
+        // Sum out of getTotalNoYetOrder
+        int getTotalNoYetOrder = BillAdminDAO.getTotalNoYetOrder();
+        request.setAttribute("getTotalNoYetOrder", getTotalNoYetOrder);
+
         //take detail orders
         List<Order> listOrder = BillAdminDAO.getListOrderSucess();
         for (int i = 0; i < listOrder.size(); i++){
@@ -61,6 +65,7 @@ public class RevenueShowController extends HttpServlet {
         }
         request.setAttribute("products", map);
         request.setAttribute("listOrders", listOrder);
+
 
         //take selling products
         List<Product> listProduct = ProductAdminDAO.getSellingProducts();

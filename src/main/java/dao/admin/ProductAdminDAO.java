@@ -49,6 +49,57 @@ public class ProductAdminDAO {
         return 0;
     }
 
+    public static List<Product> getListProductOuOtOfStock() {
+        List<Product> list = new ArrayList<>();
+        String query = "SELECT p.id, p.nameProduct, pp.listPrice, pp.discount, ct.nameCategorie, sp.size, sp.color,invent.quantity FROM products p join product_prices pp on p.id = pp.idProduct join inventorys invent on invent.idProduct = p.id join categories ct on p.idCategorie = ct.id join size_color_products sp on invent.id_size_color = sp.id where p.id IN (select p1.id  from products p1 join inventorys i on p1.id = i.idProduct WHERE i.quantity between 0 and 5 ) GROUP BY p.id, sp.size, sp.color,invent.quantity";
+        try (Connection conn = DBContext.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query);
+             ResultSet rs = ps.executeQuery();) {
+            while (rs.next()) {
+                Product product = new Product();
+                product.setId(rs.getInt("id"));
+                product.setNameProduct(rs.getString("nameProduct") + "_" + rs.getString("size") + "/" + rs.getString("color"));
+                product.setInventory(new Inventory(rs.getInt("quantity")));
+                product.setCategory(new Category(rs.getString("nameCategorie")));
+                if (product.getInventory().getQuantity() < 5 && product.getInventory().getQuantity() > 0) {
+                    list.add(product);
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    public static List<Product> getListProductInventory() {
+        List<Product> list = new ArrayList<>();
+        String query = "SELECT p.id, p.nameProduct, description,listPrice, nameCategorie, pp.discount, pp.discountPrice, i.totalQuantity AS quantity\n" +
+                "FROM products p\n" +
+                "JOIN product_prices pp ON p.id = pp.idProduct\n" +
+                "JOIN categories c ON p.idCategorie = c.id\n" +
+                "JOIN (SELECT idProduct, SUM(quantity) AS totalQuantity FROM inventorys GROUP BY idProduct HAVING SUM(quantity) > 100) i ON p.id = i.idProduct\n" +
+                "WHERE p.id = (SELECT idProduct FROM inventorys WHERE idProduct = p.id HAVING SUM(quantity) > 100) and p.id not in (SELECT p.id FROM products p join product_prices pp on p.id = pp.idProduct join inventorys  invent on invent.idProduct = p.id join categories ct on p.idCategorie = ct.id where p.id IN (SELECT orr.idProduct FROM order_details orr JOIN orders od ON orr.idOrder = od.id WHERE od.status = 'Hoàn thành' AND YEAR(od.createAt) = YEAR(CURRENT_DATE())) GROUP BY p.id ORDER BY SUM(invent.quantity))\n";
+        try (Connection conn = DBContext.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query);
+             ResultSet rs = ps.executeQuery();) {
+            while (rs.next()) {
+                Product product = new Product();
+                product.setId(rs.getInt("id"));
+                product.setNameProduct(rs.getString("nameProduct"));
+                product.setInventory(new Inventory(rs.getInt("quantity")));
+                product.setCategory(new Category(rs.getString("nameCategorie")));
+                list.add(product);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
     public static int getTotalActiveProduct() {
         String query = "select count(id) from products where isActive = '1'";
         try (Handle handle = DBContext.me().open()) {
@@ -116,14 +167,28 @@ public class ProductAdminDAO {
     }
 
     public static List<Product> getProductOOS() {
-        String query = "SELECT p.id, p.nameProduct, pp.listPrice, pp.discount, ct.nameCategorie, sp.size, sp.color FROM products p join product_prices pp on p.id = pp.idProduct join inventorys invent on invent.idProduct = p.id join categories ct on p.idCategorie = ct.id join size_color_products sp on invent.id_size_color = sp.id where p.id IN (select p1.id  from products p1 join inventorys i on p1.id = i.idProduct WHERE i.quantity = 0) GROUP BY p.id, sp.size, sp.color";
-        try (Handle handle = DBContext.me().open()) {
-            return handle.createQuery(query)
-                    .map((rs, ctx) -> new Product(rs.getInt("id"), rs.getString("nameProduct") + "_" + rs.getString("size") + "/" + rs.getString("color"), rs.getDouble("listPrice"), new Category(rs.getString("nameCategorie")))).list();
+        List<Product> list = new ArrayList<>();
+        String query = "SELECT p.id, p.nameProduct, pp.listPrice, pp.discount, ct.nameCategorie, sp.size, sp.color,invent.quantity FROM products p join product_prices pp on p.id = pp.idProduct join inventorys invent on invent.idProduct = p.id join categories ct on p.idCategorie = ct.id join size_color_products sp on invent.id_size_color = sp.id where p.id IN (select p1.id  from products p1 join inventorys i on p1.id = i.idProduct WHERE i.quantity =0) GROUP BY p.id, sp.size, sp.color,invent.quantity";
+        try (Connection conn = DBContext.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query);
+             ResultSet rs = ps.executeQuery();) {
+            while (rs.next()) {
+                Product product = new Product();
+                product.setId(rs.getInt("id"));
+                product.setNameProduct(rs.getString("nameProduct") + "_" + rs.getString("size") + "/" + rs.getString("color"));
+                product.setListPrice(rs.getDouble("listPrice"));
+                product.setCategory(new Category(rs.getString("nameCategorie")));
+                product.setInventory(new Inventory(rs.getInt("quantity")));
+                if (product.getInventory().getQuantity() == 0) {
+                    list.add(product);
+                }
+
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+
+        return list;
     }
 
     public static List<Product> showlistproduct() {
@@ -367,6 +432,7 @@ public class ProductAdminDAO {
         Jdbi me = DBContext.me();
         return me.withHandle(handle -> handle.createUpdate(query).bind(0, idProduct).bind(1, descriptionImageFileName).execute());
     }
+
     public static boolean checkNameProductEq(String nameProduct) {
         Jdbi jdbi = DBContext.me();
         String query = "SELECT COUNT(*) FROM products WHERE nameProduct = :nameProduct";
@@ -377,23 +443,27 @@ public class ProductAdminDAO {
                 .findFirst()
                 .orElse(0) > 0);
     }
+
     public static boolean addProducer(String nameProducer) {
         String query = "INSERT INTO producers (nameProducer,isActive) VALUES (?, 1)";
         Jdbi me = DBContext.me();
-        return me.withHandle(handle -> handle.createUpdate(query).bind(0, nameProducer).execute()==1);
+        return me.withHandle(handle -> handle.createUpdate(query).bind(0, nameProducer).execute() == 1);
     }
+
     public static boolean addSupplier(String nameSupplier) {
         String query = "INSERT INTO suppliers (nameSupplier,isActive) VALUES (?, 1)";
         Jdbi me = DBContext.me();
-        return me.withHandle(handle -> handle.createUpdate(query).bind(0, nameSupplier).execute()==1);
+        return me.withHandle(handle -> handle.createUpdate(query).bind(0, nameSupplier).execute() == 1);
     }
+
     public static boolean addCategorie(String nameCategorie) {
         String query = "INSERT INTO categories (nameCategorie) VALUES (?)";
         Jdbi me = DBContext.me();
-        return me.withHandle(handle -> handle.createUpdate(query).bind(0, nameCategorie).execute()==1);
+        return me.withHandle(handle -> handle.createUpdate(query).bind(0, nameCategorie).execute() == 1);
     }
+
     public static void main(String[] args) {
-        System.out.println(checkNameProductEq("Áo đẹsp"));
+        System.out.println(getListProductOuOtOfStock());
     }
 
 }

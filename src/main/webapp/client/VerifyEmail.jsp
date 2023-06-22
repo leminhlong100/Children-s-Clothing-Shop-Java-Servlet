@@ -94,7 +94,7 @@
                             </div>
 
                             <div class="g-recaptcha"
-                                 data-sitekey="6LcEOp4kAAAAAKd6WPwrePNY_OkIHz9GO7hDSmcb" data></div>
+                                 data-sitekey="6LeyzYwkAAAAAJKQMZkAtZWJ0zLVOnDuBDAavTNJ" data></div>
 
                             <div class="row">
                                 <p style="color: red;">${error}</p>

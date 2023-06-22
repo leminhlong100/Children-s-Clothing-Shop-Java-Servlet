@@ -54,17 +54,14 @@
                         </div>
 
                         <div class="col-sm-2">
-                            <a class="btn btn-excel btn-sm" href="" title="In"><i class="fas fa-file-excel"></i> Xuất
-                                Excel</a>
+                            <button class="btn btn-excel btn-sm" href="" title="In" id="exportButton"><i
+                                    class="fas fa-file-excel"></i> Xuất Excel
+                            </button>
                         </div>
                         <div class="col-sm-2">
                             <a class="btn btn-delete btn-sm pdf-file" type="button" title="In"
                                onclick="myFunction(this)"><i
                                     class="fas fa-file-pdf"></i> Xuất PDF</a>
-                        </div>
-                        <div class="col-sm-2">
-                            <a class="btn btn-delete btn-sm" type="button" title="Xóa" onclick="myFunction(this)"><i
-                                    class="fas fa-trash-alt"></i> Xóa tất cả </a>
                         </div>
                     </div>
                     <table class="table table-hover table-bordered" id="sampleTable">
@@ -110,9 +107,13 @@
                                     <td>${o.deliveryAt}</td>
                                 </c:if>
                                 <td>${count}</td>
-                                <td style="text-align: right;">${o.totalPrice}</td>
-                                <c:if test="${o.statusPay=='Đã thanh toán'}"><td style="color: green">${o.statusPay}</td></c:if>
-                                <c:if test="${o.statusPay=='Chưa thanh toán'}"><td style="color: red">${o.statusPay}</td></c:if>
+                                <td class="priceSystas" style="text-align: right;">${o.totalPrice}</td>
+                                <c:if test="${o.statusPay=='Đã thanh toán'}">
+                                    <td style="color: green">${o.statusPay}</td>
+                                </c:if>
+                                <c:if test="${o.statusPay=='Chưa thanh toán'}">
+                                    <td style="color: red">${o.statusPay}</td>
+                                </c:if>
                                 <td>
                                     <c:if test="${o.status=='Đang xử lý'}">
                                         <span class="badge bg-warning">${o.status}</span>
@@ -165,6 +166,9 @@
                                         <button class="btn btn-primary btn-sm trash"
                                                 onclick="deleteOrder(${o.id},this)" type="button" title="Xóa"><i
                                                 class="fas fa-trash-alt"></i></button>
+                                        <button class="btn btn-primary btn-sm edit" onclick="detailOrder(${o.id})"
+                                                type="button" title="Sửa"><i
+                                                class="fa fa-edit"></i></button>
                                     </div>
                                 </td>
                             </tr>
@@ -176,10 +180,76 @@
         </div>
     </div>
 </main>
+<div id="showEdit"></div>
 <!-- Essential javascripts for application to work-->
 <jsp:include page="./header/link-js.jsp" flush="true"/>
 <script type="text/javascript">$('#sampleTable').DataTable();</script>
 <script>
+    function closeModal() {
+        let modal = document.getElementById("showEdit");
+        modal.innerHTML = '';
+    }
+    function detailOrder(id) {
+        let re = "";
+        $.ajax({
+            url: "${pageContext.request.contextPath}/admin-bill/ShowOrderDetail",
+            type: "GET",
+            data: {
+                id: id,
+            },
+            success: function (data) {
+                console.log(data)
+                let order = JSON.parse(JSON.parse(data).order);
+                let account = JSON.parse(JSON.parse(data).account);
+                    re = `<div class="modal fade show" id="ModalUP" style="display: block">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group  col-md-12">
+              <span class="thong-tin-thanh-toan">
+                <h5>Chi tiết đơn đặt hàng</h5>
+              </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label class="control-label">ID Đơn hàng</label>
+                        <input class="form-control" name="id" type="text" required value="` + order.id + `" readonly>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Tên khách hàng</label>
+                        <input class="form-control" name="nameDiscount" id="name" type="text" readonly required value="` + account.fullName+ `">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Địa chỉ</label>
+                        <input class="form-control" name="description" type="text" readonly required value="` + order.address + `">
+                    </div>
+                    <div class="form-group  col-md-6">
+                        <label class="control-label">Số điện thoại</label>
+                        <input class="form-control" name="codeDiscount" type="text"  readonly required value="` + account.phone + `">
+                    </div>
+                </div>
+                <BR>
+                <BR>
+                <BR>
+                <a class="btn btn-cancel" onclick="closeModal()" href="#">Thoát</a>
+                <BR>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>`
+                    document.getElementById("showEdit").innerHTML = re;
+                    // Lấy thẻ select
+            },
+            error: function (data) {
+                console.log(data)
+            }
+        });
+    }
+
     function browse(orderId, button) {
         let tr = $(button).closest("tr");
         let tdArray = $(tr).find("td");
@@ -417,7 +487,7 @@
                             oTable.row(row).remove().draw();
                             oTable.page(currentPage).draw(false); // thiết lập lại trang hiện tại sau khi vẽ lại bảng dữ liệu
                             Swal.fire('Xóa đơn hàng thành công', '', 'success');
-                        }else {
+                        } else {
                             Swal.fire('Xóa đơn hàng không thành công do bạn không đủ quyền xóa', '', 'info');
                         }
 
@@ -501,6 +571,48 @@
 </script>
 <script>
     document.getElementById("admin-bill").classList.add("active");
+</script>
+<script>
+    function formatPriceElements() {
+        const priceElements = document.getElementsByClassName('priceSystas');
+
+        for (let i = 0; i < priceElements.length; i++) {
+            const priceString = priceElements[i].innerText;
+            const formattedPrice = formatNumberWithCommas(priceString).replace(/,/g, '.') + ' đ';
+            priceElements[i].innerText = formattedPrice;
+        }
+    }
+
+    function formatNumberWithCommas(numberString) {
+        const number = parseFloat(numberString);
+
+        if (isNaN(number)) {
+            return "Invalid number";
+        }
+
+        const formattedNumber = number.toLocaleString('en-US');
+        return formattedNumber;
+    }
+
+    // Gọi hàm để chuyển đổi các thành phần có lớp "price"
+    formatPriceElements();
+    // xuất file excel
+    $("#exportButton").click(function () {
+        var table = $("#sampleTable").DataTable(); // Khởi tạo DataTable từ bảng có id là "sampleTable"
+        var data = table.data().toArray(); // Trích xuất toàn bộ dữ liệu trong DataTable thành một mảng
+
+        var workbook = new ExcelJS.Workbook();
+        var worksheet = workbook.addWorksheet("Sheet 1");
+
+        // Ghi dữ liệu từ mảng vào worksheet
+        worksheet.addRows(data);
+
+        // Xuất tệp Excel
+        workbook.xlsx.writeBuffer().then(function (buffer) {
+            var blob = new Blob([buffer], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+            saveAs(blob, "example.xlsx"); // Tải xuống tệp Excel
+        });
+    });
 </script>
 </body>
 

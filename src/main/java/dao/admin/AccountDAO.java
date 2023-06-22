@@ -133,7 +133,7 @@ public class AccountDAO {
 
 
     public static boolean removeAccount(String uid) {
-        String query = "update accounts set isDelete = 1 where id = ?";
+        String query = "update accounts set isDelete = 1,isActive =0 where id = ?";
         Jdbi me = DBContext.me();
         return me.withHandle(handle -> handle.createUpdate(query).bind(0, uid).execute()==1);
     }

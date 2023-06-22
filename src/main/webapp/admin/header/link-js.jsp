@@ -20,6 +20,8 @@
 <script type="text/javascript" src="${url}/js/plugins/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="${url}/js/plugins/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript" src="${url}/js/plugins/chart.js"></script>
+<script src="https://unpkg.com/exceljs/dist/exceljs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 <script>
     function checkFormNotEmpty(formId) {
         let form = document.getElementById(formId); // Lấy element form dựa trên id

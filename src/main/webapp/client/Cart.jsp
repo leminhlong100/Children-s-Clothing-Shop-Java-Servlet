@@ -77,7 +77,7 @@
                                             </td>
                                             <td class="text-center">
 
-                                                <p class="">${o.price }
+                                                <p class="priceSystas">${o.price }
                                                     <fmt:message key="$" bundle="${lang}"></fmt:message>
                                                 </p>
                                             </td>
@@ -94,7 +94,7 @@
                                                         value="add" type="button">+
                                                 </button>
                                             </td>
-                                            <td class="text-center"><p id="totalPrice_${entry.key}_${o.productSize}_${o.productColor}" class="l">
+                                            <td class="text-center"><p id="totalPrice_${entry.key}_${o.productSize}_${o.productColor}" class="l priceSystas">
                                                 <c:set var="sumALl"
                                                        value="	${o.quantity * o.price}"></c:set>
                                                     ${o.quantity * o.price}
@@ -123,12 +123,9 @@
                             <tr>
                                 <td class="text-right"><fmt:message key="Total.amount"
                                                                     bundle="${lang}"></fmt:message></td>
-                                <td id="totalAmount" class="text-right">${total}</td>
+                                <td id="totalAmount" class="text-right priceSystas">${total}</td>
                             </tr>
                         </table>
-                        <a href="${pageContext.request.contextPath}/client/Payment.jsp"
-                           class="btn-cart pull-right"><fmt:message
-                                key="payment.methods" bundle="${lang}"></fmt:message></a>
                         <c:url var="order" value="cart/OrderBillControl"></c:url>
                         <a href="${pageContext.request.contextPath}/${order}?total=${total}"
                            class="btn-cart pull-right"><fmt:message
@@ -181,7 +178,7 @@
                                             </c:forEach>
                                         </td>
                                         <td>${count}</td>
-                                        <td style="text-align: right;">${o.totalPrice}</td>
+                                        <td width="70" class="priceSystas" style="text-align: right;">${o.totalPrice}</td>
                                         <c:if test="${o.statusPay=='Đã thanh toán'}"><td style="color: #0aa60f">${o.statusPay}</td></c:if>
                                         <c:if test="${o.statusPay=='Chưa thanh toán'}"><td style="color: #0f2094">${o.statusPay}</td></c:if>
                                         <td>
@@ -257,10 +254,10 @@
                     // Thay đổi tổng giá của sản phẩm
                     let elementIdtotal = "totalPrice_" + key + "_" + size + "_" + color;
                     let totalPriceElement = document.getElementById(elementIdtotal);
-                    totalPriceElement.textContent =parseFloat(quantity*price).toFixed(1) ;
+                    totalPriceElement.textContent =formatNumberWithCommas(quantity*price)+ ' đ';
                     // Thay đổi tổng giá
                     let totalAmountElement = document.getElementById("totalAmount");
-                    totalAmountElement.textContent = parseFloat(total).toFixed(1);
+                    totalAmountElement.textContent = formatNumberWithCommas(total) + ' đ';
                     // Cập số lượng trên
                     let cartTotalQuantity = document.getElementById("cartTotalQuantity");
                     cartTotalQuantity.textContent = totalQuantity;
@@ -293,10 +290,10 @@
                     // Thay đổi tổng giá của sản phẩm
                     let elementIdtotal = "totalPrice_" + key + "_" + size + "_" + color;
                     let totalPriceElement = document.getElementById(elementIdtotal);
-                    totalPriceElement.textContent =parseFloat(quantity*price).toFixed(1) ;
+                    totalPriceElement.textContent =formatNumberWithCommas(quantity*price)+ ' đ';
                     // Thay đổi tổng giá
                     let totalAmountElement = document.getElementById("totalAmount");
-                    totalAmountElement.textContent = parseFloat(total).toFixed(1);
+                    totalAmountElement.textContent = formatNumberWithCommas(total) + ' đ';
                     // Cập số lượng trên
                     let cartTotalQuantity = document.getElementById("cartTotalQuantity");
                     cartTotalQuantity.textContent = totalQuantity;
