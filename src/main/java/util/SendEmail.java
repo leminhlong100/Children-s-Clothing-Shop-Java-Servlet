@@ -64,13 +64,13 @@ public class SendEmail {
 		MimeMessage msg = new MimeMessage(session);
 		try {
 			msg.addHeader("Content-type", "text/HTML; charset=UTF-8");
-			msg.setFrom(new InternetAddress(from, "Kid Store"));
+			msg.setFrom(new InternetAddress(from, "HaLo's Shop"));
 			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(addressTo, false));
 			msg.setSubject("HaLo's Shop");
 			msg.setSentDate(new Date());
 			// Nội dung
 
-			msg.setText("Mật khẩu OTP của bạn là: " + MessagePassword + "\n Mật khẩu này chỉ có tác dụng trong 5 phút vui lòng sửa mật khẩu sao khi đăng nhập thành công", "UTF-8");
+			msg.setText("Mật khẩu OTP của bạn là: " + MessagePassword + "\nMật khẩu này chỉ có tác dụng trong 5 phút vui lòng sửa mật khẩu sau khi đăng nhập thành công.", "UTF-8");
 			// Gửi mail
 			Transport.send(msg);
 		} catch (Exception e) {

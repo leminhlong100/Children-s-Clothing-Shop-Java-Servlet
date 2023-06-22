@@ -54,17 +54,14 @@
                             </div>
 
                             <div class="col-sm-2">
-                                <a class="btn btn-excel btn-sm" href="" title="In"><i class="fas fa-file-excel"></i> Xuất
-                                    Excel</a>
+                                <button class="btn btn-excel btn-sm" href="" title="In" id="exportButton"><i
+                                        class="fas fa-file-excel"></i> Xuất Excel
+                                </button>
                             </div>
                             <div class="col-sm-2">
                                 <a class="btn btn-delete btn-sm pdf-file" type="button" title="In"
                                    onclick="myFunction(this)"><i
                                         class="fas fa-file-pdf"></i> Xuất PDF</a>
-                            </div>
-                            <div class="col-sm-2">
-                                <a class="btn btn-delete btn-sm" type="button" title="Xóa" onclick="myFunction(this)"><i
-                                        class="fas fa-trash-alt"></i> Xóa tất cả </a>
                             </div>
                         </div>
                         <table class="table table-hover table-bordered" id="sampleTable">
@@ -72,7 +69,7 @@
                             <tr>
                                 <th width="10"><input type="checkbox" id="all"></th>
                                 <th>Mã sản phẩm</th>
-                                <th>Tên sản phẩm</th>
+                                <th width="270">Tên sản phẩm</th>
                                 <th>Ảnh</th>
                                 <th>Tình trạng</th>
                                 <th>Nhà sản xuất</th>
@@ -106,7 +103,7 @@
                                         <td><span class="badge bg-warning">${list.status}</span></td>
                                     </c:if>
                                     <td>${list.producer.nameProducer}</td>
-                                    <td>${list.listPrice}</td>
+                                    <td class="priceSystas">${list.listPrice}</td>
                                     <td>${list.discount}</td>
                                     <td>${list.category.nameCategory}</td>
                                     <td>
@@ -381,7 +378,7 @@
 
                                 <td>` + product.producer.nameProducer + `</td>
 
-                                 <td>` + product.listPrice + `</td>
+                                 <td class="priceSystas">` + product.listPrice + `</td>
                                   <td>` + product.discount + `</td>
                                 <td>` +selectedText+`</td>
                                 <td>
@@ -410,6 +407,53 @@
     </script>
     <script>
         document.getElementById("admin-products").classList.add("active");
+    </script>
+    <script>
+        function formatPriceElements() {
+            const priceElements = document.getElementsByClassName('priceSystas');
+
+            for (let i = 0; i < priceElements.length; i++) {
+                const priceString = priceElements[i].innerText;
+                const formattedPrice = formatNumberWithCommas(priceString).replace(/,/g, '.') + ' đ';
+                priceElements[i].innerText = formattedPrice;
+            }
+        }
+
+        function formatNumberWithCommas(numberString) {
+            const number = parseFloat(numberString);
+
+            if (isNaN(number)) {
+                return "Invalid number";
+            }
+
+            const formattedNumber = number.toLocaleString('en-US');
+            return formattedNumber;
+        }
+
+        // Gọi hàm để chuyển đổi các thành phần có lớp "price"
+        formatPriceElements();
+        // xuất file excel
+        $("#exportButton").click(function () {
+            var table = $("#sampleTable").DataTable(); // Khởi tạo DataTable từ bảng có id là "sampleTable"
+            var data = table.rows().data().toArray(); // Trích xuất toàn bộ dữ liệu từ DataTable thành một mảng
+
+            var filteredData = data.map(function(row) {
+                return row.slice(1, -1); // Loại bỏ cột đầu tiên và hai cột cuối cùng
+            });
+
+            var workbook = new ExcelJS.Workbook();
+            var worksheet = workbook.addWorksheet("Sheet 1");
+
+            // Ghi dữ liệu từ mảng đã lọc vào worksheet
+            worksheet.addRows(filteredData);
+
+            // Xuất tệp Excel
+            workbook.xlsx.writeBuffer().then(function (buffer) {
+                var blob = new Blob([buffer], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+                saveAs(blob, "example.xlsx"); // Tải xuống tệp Excel
+            });
+        });
+
     </script>
     </body>
 

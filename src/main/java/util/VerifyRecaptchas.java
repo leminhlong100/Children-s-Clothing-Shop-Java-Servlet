@@ -13,7 +13,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class VerifyRecaptchas  {
      public static final String url = "https://www.google.com/recaptcha/api/siteverify";
-     public static final String secret = "6LcEOp4kAAAAAJgeGXWpQmi5siBYelxt2K0Qx8OK\r\n"
+     public static final String secret = "6LeyzYwkAAAAAEgRuoOhcSPt5S6qOmSwzCDulpYM"
      		+ "";
      private final static String USER_AGENT ="Mozilla/5.0";    
    

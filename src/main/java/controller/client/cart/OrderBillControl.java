@@ -28,7 +28,6 @@ public class OrderBillControl extends HttpServlet {
         String ipAddress = request.getRemoteAddr();
         Log log= new Log(Log.INFO,ipAddress,-1,this.namelog,"",0);
         try {
-            String total = request.getParameter("total");
             HttpSession session = request.getSession();
             Object obj = session.getAttribute("cart");// luu tam vao session
             int idProductSizeColor;
@@ -37,7 +36,14 @@ public class OrderBillControl extends HttpServlet {
             boolean isSuc = false;
             int totalQuantity = 0;
             if (obj != null) {
+                double total = 0;
                 Map<String, List<OrderDetail>> cartTemp = (Map<String, List<OrderDetail>>) obj;
+                for (Map.Entry<String, List<OrderDetail>> entry : cartTemp.entrySet()) {
+                    List<OrderDetail> orderDetails = entry.getValue();
+                    for (OrderDetail orderDetail : orderDetails) {
+                        total += orderDetail.getQuantity() * orderDetail.getPrice();
+                    }
+                }
                 for (Map.Entry<String, List<OrderDetail>> entry : cartTemp.entrySet()) {
                     List<OrderDetail> orderDetails = entry.getValue();
                     for (OrderDetail orderDetail : orderDetails) {
@@ -70,7 +76,6 @@ public class OrderBillControl extends HttpServlet {
                     request.getRequestDispatcher("/client/Order.jsp").forward(request, response);
                 }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }

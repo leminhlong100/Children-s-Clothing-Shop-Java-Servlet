@@ -35,7 +35,6 @@ public class SubmitEmail extends HttpServlet {
 		LocalDateTime lastTime = (LocalDateTime) session.getAttribute("timeNow");
 		LocalDateTime currentTime = LocalDateTime.now();
 		String gRecap = request.getParameter("g-recaptcha-response");
-		System.out.println(gRecap);
 		boolean verify = VerifyRecaptchas.verify(gRecap);
 		Duration duration = Duration.between(lastTime, currentTime); // thoi gian gia 2 thoi diem
 		if (!verify) {

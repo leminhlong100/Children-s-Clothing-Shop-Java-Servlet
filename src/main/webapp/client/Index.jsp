@@ -37,11 +37,10 @@
 
     <div class="sk-home-slider">
         <div id="sk-home-slider" class="owl-carousel">
-
             <div class="item">
                 <a href="#" title="Kidshop">
                     <figure class="banner"
-                            style="background-image: url('//bizweb.dktcdn.net/100/117/632/themes/157694/assets/slideshow_image_1.jpg?1564585558451');"></figure>
+                            style="background-image: url('//bizweb.dktcdn.net/100/117/632/themes/157694/assets/slideshow_image_2.jpg?1564585558451');"></figure>
                 </a>
             </div>
 
@@ -49,7 +48,7 @@
             <div class="item">
                 <a href="#" title="Kidshop">
                     <figure class="banner"
-                            style="background-image: url('//bizweb.dktcdn.net/100/117/632/themes/157694/assets/slideshow_image_2.jpg?1564585558451');"></figure>
+                            style="background-image: url('//bizweb.dktcdn.net/100/117/632/themes/157694/assets/slideshow_image_1.jpg?1564585558451');"></figure>
                 </a>
             </div>
 
@@ -132,8 +131,8 @@
                                                         <a href="${detail}?pid=${o.id}">${o.nameProduct}</a>
                                                     </h3>
                                                     <div class="price-box">
-															<span class="price">${o.discountPrice}
-																VNĐ</span> <span class="price-compare">
+															<span class="price priceSystas">${o.discountPrice}
+																VNĐ</span> <span class="price-compare priceSystas">
 															${o.listPrice} VNĐ</span>
                                                     </div>
                                                 </div>
@@ -159,8 +158,8 @@
                                                         <a href="${detail}?pid=${o.id}">${o.nameProduct}</a>
                                                     </h3>
                                                     <div class="price-box">
-															<span class="price">${o.discountPrice}
-																VNĐ</span> <span class="price-compare">
+															<span class="price priceSystas">${o.discountPrice}
+																VNĐ</span> <span class="price-compare priceSystas">
 															${o.listPrice} VNĐ</span>
                                                     </div>
                                                 </div>
@@ -209,9 +208,9 @@
                                                 </div>
                                                 <div class="discounts-product-info text-center">
                                                     <div class="price-box">
-                                                        <span class="price"> ${o.discountPrice} VNĐ </span>
+                                                        <span class="price priceSystas"> ${o.discountPrice} VNĐ </span>
                                                         <c:if test="${o.discount!=0}"><span
-                                                                class="price-compare"> ${o.listPrice} VNĐ </span></c:if>
+                                                                class="price-compare priceSystas"> ${o.listPrice} VNĐ </span></c:if>
                                                     </div>
 
                                                     <h3 class="item-title">
@@ -257,9 +256,9 @@
                                                     </a>
 
                                                     <div class="price-box">
-                                                        <span class="price"> ${o.discountPrice} VNĐ </span>
+                                                        <span class="price priceSystas"> ${o.discountPrice} VNĐ </span>
                                                         <c:if test="${o.discount!=0}"><span
-                                                                class="price-compare"> ${o.listPrice} VNĐ </span></c:if>
+                                                                class="price-compare priceSystas"> ${o.listPrice} VNĐ </span></c:if>
                                                     </div>
 
                                                 </div>
@@ -339,9 +338,9 @@
                                                             class="img-responsive">
                                                     </a>
                                                     <div class="price-box">
-                                                        <span class="price"> ${o.discountPrice} VNĐ </span>
+                                                        <span class="price priceSystas"> ${o.discountPrice} VNĐ </span>
                                                         <c:if test="${o.discount!=0}"><span
-                                                                class="price-compare"> ${o.listPrice} VNĐ </span></c:if>
+                                                                class="price-compare priceSystas"> ${o.listPrice} VNĐ </span></c:if>
                                                     </div>
                                                 </div>
                                                 <div class="discounts-product-info">
@@ -389,9 +388,9 @@
                                                     </a>
 
                                                     <div class="price-box">
-                                                        <span class="price"> ${o.discountPrice} VNĐ </span>
+                                                        <span class="price priceSystas"> ${o.discountPrice} VNĐ </span>
                                                         <c:if test="${o.discount!=0}"><span
-                                                                class="price-compare"> ${o.listPrice} VNĐ </span></c:if>
+                                                                class="price-compare priceSystas"> ${o.listPrice} VNĐ </span></c:if>
                                                     </div>
                                                 </div>
                                                 <div class="discounts-product-info">
@@ -439,9 +438,9 @@
                                                     </a>
 
                                                     <div class="price-box">
-                                                        <span class="price"> ${o.discountPrice} VNĐ </span>
+                                                        <span class="price priceSystas"> ${o.discountPrice} VNĐ </span>
                                                         <c:if test="${o.discount!=0}"><span
-                                                                class="price-compare"> ${o.listPrice} VNĐ </span></c:if>
+                                                                class="price-compare priceSystas"> ${o.listPrice} VNĐ </span></c:if>
                                                     </div>
 
                                                 </div>
@@ -575,9 +574,9 @@
                                     </a>
 
                                     <div class="price-box">
-                                        <span class="price"> ${o.discountPrice} VNĐ </span>
+                                        <span class="price priceSystas"> ${o.discountPrice} VNĐ </span>
                                         <c:if test="${o.discount!=0}"><span
-                                                class="price-compare"> ${o.listPrice} VNĐ </span></c:if>
+                                                class="price-compare priceSystas"> ${o.listPrice} VNĐ </span></c:if>
                                     </div>
 
                                 </div>
@@ -605,7 +604,6 @@
                                 </div>
                             </div>
                         </c:forEach>
-
                     </div>
                     <!-- #product-care -->
                 </div>

@@ -76,7 +76,7 @@
 							<div class="row">
 								<div class="col-md-2">
 									<p>
-										<fmt:message key="email" bundle="${lang}"></fmt:message>
+										Tài khoản
 									</p>
 								</div>
 								<div class="col-md-10">
@@ -92,7 +92,7 @@
 								<div class="col-md-10">
 									<input id="password" type="password" value="" name="password" required/>
 									<i class="fas fa-eye" id="toggle-password"
-									   style="position: absolute; width: 20%; height: 33%; float: right; left: 80%; top: 21%;"></i>
+									   style="position: absolute; width: 20%; height: 33%; float: right; left: 80%; top: 20%;  margin-left: 7%;"></i>
 
 
 								</div>
@@ -119,7 +119,7 @@
 												});
 							</script>
 							<div class="g-recaptcha"
-								 data-sitekey="6LcEOp4kAAAAAKd6WPwrePNY_OkIHz9GO7hDSmcb" data></div>
+								 data-sitekey="6LeyzYwkAAAAAJKQMZkAtZWJ0zLVOnDuBDAavTNJ" data></div>
 
 							<div class="row">
 								<p style="color: red;">${error}</p>
@@ -140,7 +140,7 @@
 						<fb:login-button scope="public_profile,email"
 										 onlogin="checkLoginState();"></fb:login-button>
 						<a
-								href="https://accounts.google.com/o/oauth2/auth?scope=email%20profile%20openid&redirect_uri=http://localhost:8080/haloshop/LoginGoogle&response_type=code&client_id=179083726954-c2jcc0955730he68g9vk8s8f2bgi6l3k.apps.googleusercontent.com&approval_prompt=force"
+								href="https://accounts.google.com/o/oauth2/auth?scope=email%20profile%20openid&redirect_uri=http://haloshop.site/LoginGoogle&response_type=code&client_id=179083726954-c2jcc0955730he68g9vk8s8f2bgi6l3k.apps.googleusercontent.com&approval_prompt=force"
 								class="social-login--google"><img width="129px"
 																  height="37px" alt="google-login-button"
 																  src="//bizweb.dktcdn.net/assets/admin/images/login/gp-btn.svg"></a>

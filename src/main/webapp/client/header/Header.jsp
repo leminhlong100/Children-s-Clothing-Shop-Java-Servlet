@@ -13,13 +13,14 @@
         if (lang) {
             new google.translate.TranslateElement({
                 pageLanguage: 'vi',
-                includedLanguages: 'en,vi',
+                includedLanguages: 'en,vi,ko,kor,ja',
                 layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
                 autoDisplay: true
             }, 'google_translate_element');
             // Đặt ngôn ngữ đã lưu trữ
             googleTranslateElement.setSelectedLanguage(lang);
-        } else {
+        }
+        else {
             // Nếu không có cookie, sử dụng ngôn ngữ mặc định là tiếng Anh
             new google.translate.TranslateElement({
                 pageLanguage: 'vi',

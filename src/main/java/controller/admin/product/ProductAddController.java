@@ -37,7 +37,7 @@ public class ProductAddController extends HttpServlet {
             throws ServletException, IOException {
         try {
             Account account = (Account) request.getSession().getAttribute("admin");
-            if (account==null){
+            if (account == null) {
                 RequestDispatcher rd = request.getRequestDispatcher("/admin/admin-login.jsp");
                 return;
             }
@@ -85,8 +85,8 @@ public class ProductAddController extends HttpServlet {
                 int addPriceAndSell = ProductAdminDAO.insertPriceAndSell(idProduct, nameProduct, price, sell);
 
                 //Save images
-//                String uploadPath = getServletContext().getRealPath("/images");
-                String uploadPath = "C:\\Users\\Admin\\OneDrive\\Documents\\GitHub\\TTLTW\\src\\main\\webapp\\images";
+                String uploadPath = getServletContext().getRealPath("/images");
+//                String uploadPath = "C:\\Users\\Admin\\OneDrive\\Documents\\GitHub\\TTLTW\\src\\main\\webapp\\images";
                 System.out.println(uploadPath);
                 File uploadDir = new File(uploadPath);
                 if (!uploadDir.exists()) {

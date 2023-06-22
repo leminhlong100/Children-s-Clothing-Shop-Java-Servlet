@@ -89,7 +89,7 @@ public class OrderDAO {
 
 
     public static void main(String[] args) {
-        System.out.println(checkDiscount("SUMMERSALE2023"));
+        System.out.println(getOrderDetailByBid("135"));
     }
 
 }

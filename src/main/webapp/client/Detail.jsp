@@ -187,12 +187,12 @@
                                 <div class="pull-left">
                                     <div class="sale">
                                         <span>Giá gốc:</span>
-                                        <del class="old-price">
+                                        <del class="old-price priceSystas">
                                             ${detail.listPrice}
                                         </del>
                                     </div>
                                     <span><fmt:message key="price" bundle="${lang}"></fmt:message>:</span>
-                                    <span class="price">${detail.discountPrice} VNĐ</span>
+                                    <span class="price priceSystas">${detail.discountPrice} VNĐ</span>
                                 </div>
                                 <div class="stock pull-left">
                                     <c:if test="${detail.inventory.quantity == 0}">

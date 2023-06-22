@@ -37,7 +37,7 @@
       <div class="widget-small primary coloured-icon"><i class='icon  bx bxs-user fa-3x'></i>
         <div class="info">
           <h4>Số khách hàng</h4>
-          <p><b>${requestScope.sumAccount} Khách hàng</b></p>
+          <p><b>${requestScope.sumAccount} khách hàng</b></p>
         </div>
       </div>
     </div>
@@ -60,8 +60,8 @@
     <div class="col-md-6 col-lg-3">
       <div class="widget-small danger coloured-icon"><i class='icon fa-3x bx bxs-info-circle' ></i>
         <div class="info">
-          <h4>Bị cấm</h4>
-          <p><b>4 nhân viên</b></p>
+          <h4>Sản phẩm chưa bán dươc</h4>
+          <p><b>${requestScope.getTotalNoYetOrder} sản phẩm</b></p>
         </div>
       </div>
     </div>
@@ -71,7 +71,7 @@
       <div class="widget-small primary coloured-icon"><i class='icon fa-3x bx bxs-chart' ></i>
         <div class="info">
           <h4>Tổng thu nhập</h4>
-          <p><b>${requestScope.sumPrice} VNĐ</b></p>
+          <p><b class="priceSystas">${requestScope.sumPrice} VNĐ</b></p>
         </div>
       </div>
     </div>
@@ -121,7 +121,7 @@
               <tr>
                 <td>${o.id}</td>
                 <td>${o.nameProduct}</td>
-                <td>${o.listPrice} VNĐ</td>
+                <td class="priceSystas">${o.listPrice} VNĐ</td>
                 <td>${o.category.nameCategory}</td>
               </tr>
             </c:forEach>
@@ -166,13 +166,13 @@
                   </c:forEach>
                 </td>
                 <td>${count}</td>
-                <td style="text-align: right;">${o.totalPrice} VNĐ</td>
+                <td class="priceSystas" style="text-align: right;">${o.totalPrice} VNĐ</td>
               </tr>
             </c:forEach>
             </tbody>
             <tr>
               <th colspan="4">Tổng cộng:</th>
-              <td style="text-align: right;">${requestScope.sumPrice} VNĐ</td>
+              <td class="priceSystas" style="text-align: right;">${requestScope.sumPrice} VNĐ</td>
             </tr>
           </table>
         </div>
@@ -200,7 +200,7 @@
               <tr>
                 <td>${o.id}</td>
                 <td>${o.nameProduct}</td>
-                <td>${o.listPrice} VNĐ</td>
+                <td class="priceSystas">${o.listPrice} VNĐ</td>
                 <td>${o.category.nameCategory}</td>
               </tr>
             </c:forEach>
@@ -214,6 +214,9 @@
     <div class="col-md-6">
       <div class="tile">
         <h3 class="tile-title">SẢN PHẨM BÁN RA HÀNG THÁNG</h3>
+        <div>
+        <i class="fas fa-square" style="color: rgb(2,50,130,0.65);"></i> Sản phẩm
+        </div>
         <div class="embed-responsive embed-responsive-16by9">
           <canvas class="embed-responsive-item" id="lineChart"></canvas>
         </div>
@@ -222,6 +225,9 @@
     <div class="col-md-6">
       <div class="tile">
         <h3 class="tile-title">DOANH THU HÀNG THÁNG</h3>
+        <div>
+          <i class="fas fa-square" style="color: rgb(120,227,184);"></i> Số tiền
+        </div>
         <div class="embed-responsive embed-responsive-16by9">
           <canvas class="embed-responsive-item" id="barChart"></canvas>
         </div>
@@ -262,7 +268,7 @@
   var data1 = {
     labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
     datasets: [{
-      label: "Dữ liệu",
+      label: "Số tiền",
       fillColor: "rgb(120,227,184)",
       strokeColor: "Green",
       pointColor: "rgb(220, 64, 59)",
@@ -302,6 +308,31 @@
 </script>
 <script>
   document.getElementById("admin-revenue").classList.add("active");
+</script>
+<script>
+  function formatPriceElements() {
+    const priceElements = document.getElementsByClassName('priceSystas');
+
+    for (let i = 0; i < priceElements.length; i++) {
+      const priceString = priceElements[i].innerText;
+      const formattedPrice = formatNumberWithCommas(priceString).replace(/,/g, '.') + ' đ';
+      priceElements[i].innerText = formattedPrice;
+    }
+  }
+
+  function formatNumberWithCommas(numberString) {
+    const number = parseFloat(numberString);
+
+    if (isNaN(number)) {
+      return "Invalid number";
+    }
+
+    const formattedNumber = number.toLocaleString('en-US');
+    return formattedNumber;
+  }
+
+  // Gọi hàm để chuyển đổi các thành phần có lớp "price"
+  formatPriceElements();
 </script>
 </body>
 

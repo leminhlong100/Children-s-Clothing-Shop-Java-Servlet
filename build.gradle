@@ -60,8 +60,8 @@ publishing {
 apply plugin: 'org.hidetake.ssh'
 remotes {
     host {
-        host = '34.142.255.5'
-        user = 'g20130316'
+        host = '34.124.142.121'
+        user = 'g20130253'
         identity = file('C:/Users/Admin/.ssh/id_rsa')
     }
 }
@@ -74,7 +74,7 @@ task docker_app_start {
         ssh.run {
             session(remotes.host) {
                 execute 'docker stop tomcat9', ignoreError: true
-                execute 'docker run -it --rm -d ' +
+                execute 'docker run -it -d ' +
                         '--name tomcat9 ' +
                         '-v /usr/deploy:/usr/local/tomcat/webapps ' +
                         '-p 80:8080 ' +

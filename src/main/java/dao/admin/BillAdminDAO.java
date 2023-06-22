@@ -19,12 +19,12 @@ public class BillAdminDAO {
 	}
 	public static List<Order> getListOrderLimit() {
 		Jdbi me = DBContext.me();
-		String query = "SELECT od.id,od.createAt,deliveryAt,statusPay,od.status,od.idAccount,acc.accountName,od.totalPrice  FROM orders od join accounts acc on od.idAccount = acc.id order by id desc limit 4";
-		return me.withHandle(handle -> handle.createQuery(query).map((rs, ctx) -> new Order(rs.getInt("id"), rs.getString("createAt"),rs.getString("deliveryAt"), rs.getString("statusPay"), rs.getString("status"), new Account(rs.getInt("idAccount"), rs.getString("accountName")),rs.getDouble("totalPrice"))).list());
+		String query = "SELECT od.id,od.createAt,deliveryAt,statusPay,od.status,od.idAccount,acc.fullName,od.totalPrice  FROM orders od join accounts acc on od.idAccount = acc.id order by id desc limit 4";
+		return me.withHandle(handle -> handle.createQuery(query).map((rs, ctx) -> new Order(rs.getInt("id"), rs.getString("createAt"),rs.getString("deliveryAt"), rs.getString("statusPay"), rs.getString("status"), new Account(rs.getInt("idAccount"), rs.getString("fullName")),rs.getDouble("totalPrice"))).list());
 	}
 	public static Order getOrderById(String idOrder) {
 		Jdbi me = DBContext.me();
-		String query = "SELECT id,createAt,deliveryAt,statusPay,idAccount,feeship,totalPrice,status,address,wardId,districtId,note FROM kidstore.orders where id = ?";
+		String query = "SELECT id,createAt,deliveryAt,statusPay,idAccount,feeship,totalPrice,status,address,wardId,districtId,note FROM orders where id = ?";
 		return me.withHandle(handle -> handle.createQuery(query).bind(0,idOrder).mapToBean(Order.class).findFirst().orElse(null));
 	}
 
@@ -56,7 +56,26 @@ public class BillAdminDAO {
 	}
 
 	public static int getTotalAcceptProduct() {
-		String query = "SELECT count(createAt) FROM orders where status = 'Hoàn thành'and month(createAt) = month(current_date())";
+		String query = "SELECT count(createAt) FROM orders where status = 'Hoàn thành'and month (createAt) = month(current_date())";
+		try (Handle handle = DBContext.me().open()) {
+			return handle.createQuery(query)
+					.mapTo(Integer.class)
+					.findOne()
+					.orElse(0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	public static int getTotalNoYetOrder() {
+		String query = "SELECT COUNT(p.id) AS so_san_pham_chua_ban\n" +
+				"FROM products p\n" +
+				"WHERE p.id NOT IN (\n" +
+				"  SELECT od.idProduct\n" +
+				"  FROM orders o\n" +
+				"  JOIN order_details od ON o.id = od.idOrder\n" +
+				"  WHERE MONTH(o.createAt) = MONTH(CURRENT_DATE())\n" +
+				");";
 		try (Handle handle = DBContext.me().open()) {
 			return handle.createQuery(query)
 					.mapTo(Integer.class)
@@ -159,7 +178,7 @@ public class BillAdminDAO {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(sumBillInMonth(5));
+		System.out.println(getTotalNoYetOrder());
 	}
 
 }

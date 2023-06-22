@@ -60,17 +60,14 @@
                         </div>
 
                         <div class="col-sm-2">
-                            <a class="btn btn-excel btn-sm" href="" title="In"><i class="fas fa-file-excel"></i> Xuất
-                                Excel</a>
+                            <button class="btn btn-excel btn-sm" href="" title="In" id="exportButton"><i
+                                    class="fas fa-file-excel"></i> Xuất Excel
+                            </button>
                         </div>
                         <div class="col-sm-2">
                             <a class="btn btn-delete btn-sm pdf-file" type="button" title="In"
                                onclick="myFunction(this)"><i
                                     class="fas fa-file-pdf"></i> Xuất PDF</a>
-                        </div>
-                        <div class="col-sm-2">
-                            <a class="btn btn-delete btn-sm" type="button" title="Xóa" onclick="myFunction(this)"><i
-                                    class="fas fa-trash-alt"></i> Xóa tất cả </a>
                         </div>
                     </div>
                     <table class="table table-hover table-bordered" id="sampleTable">
@@ -201,7 +198,7 @@
                 <div class="row">
                     <div class="form-group  col-md-12">
               <span class="thong-tin-thanh-toan">
-                <h5>Chỉnh mã giảm giá</h5>
+                <h5>Tạo giảm giá</h5>
               </span>
                     </div>
                 </div>
@@ -498,6 +495,27 @@
 </script>
 <script>
     document.getElementById("admin-discount").classList.add("active");
+    $("#exportButton").click(function () {
+        var table = $("#sampleTable").DataTable(); // Khởi tạo DataTable từ bảng có id là "sampleTable"
+        var data = table.rows().data().toArray(); // Trích xuất toàn bộ dữ liệu từ DataTable thành một mảng
+
+        var filteredData = data.map(function(row) {
+            return row.slice(1, -1); // Loại bỏ cột đầu tiên và hai cột cuối cùng
+        });
+
+        var workbook = new ExcelJS.Workbook();
+        var worksheet = workbook.addWorksheet("Sheet 1");
+
+        // Ghi dữ liệu từ mảng đã lọc vào worksheet
+        worksheet.addRows(filteredData);
+
+        // Xuất tệp Excel
+        workbook.xlsx.writeBuffer().then(function (buffer) {
+            var blob = new Blob([buffer], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+            saveAs(blob, "example.xlsx"); // Tải xuống tệp Excel
+        });
+    });
+
 </script>
 </body>
 
