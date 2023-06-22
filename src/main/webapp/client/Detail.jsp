@@ -348,11 +348,14 @@
                                                 <div style="margin-top: 1%;">${lists.gettimeover()}</div>
                                                 <div class="cmts"><h5 style="color: #1d2124">Đánh giá sản
                                                     phẩm:</h5>  ${lists.content}</div>
-                                                <button style="padding: 10px 23px; border: 0; background-color: #79bd9a; text-transform: uppercase; font-weight: 700; color: #fff"
-                                                        type="button" class="reply_btn" style="margin-top: 2%"
-                                                        onclick="formContext(this,`show`)">
-                                                    Trả lời
-                                                </button>
+                                                <c:if test="${sessionScope.acc.fullName !=null}">
+
+                                                    <button style="padding: 10px 23px; border: 0; background-color: #79bd9a; text-transform: uppercase; font-weight: 700; color: #fff"
+                                                            type="button" class="reply_btn" style="margin-top: 2%"
+                                                            onclick="formContext(this,`show`)">
+                                                        Trả lời
+                                                    </button>
+                                                </c:if>
                                                 <div class="repuser" id="repcmt">
                                                     <c:forEach items="${lists.listreply}" var="listrep">
                                                         <form id="form-reply">
@@ -364,14 +367,10 @@
                                                                     hồi:</h5>  ${listrep.content}</div>
 
                                                             </div>
-                                                                <%--                                                        <button type="button" class="updatetext" id="update" onclick="updatecontent()">Chỉnh sửa</button>--%>
 
                                                         </form>
 
-                                                        <%--                                                    <div id = "like-box" class="likebth">--%>
-                                                        <%--                                                        <button type="button" id ="click" onclick="likebutton()"><i class="fa-light fa-heart"></i></button>--%>
-                                                        <%--                                                        <span id="number" type="text">0</span>--%>
-                                                        <%--                                                    </div>--%>
+
                                                     </c:forEach>
 
                                                 </div>
@@ -396,10 +395,12 @@
                                         </c:forEach>
 
                                     </div>
-                                    <button type="button"
-                                            style="padding: 10px 23px; border: 0; background-color: #79bd9a; text-transform: uppercase; font-weight: 700; color: #fff;margin-top: 10px"
-                                            class="btn-load" id="load" onclick="showmorerep()">Hiển thị thêm
-                                    </button>
+                                    <c:if test="${requestScope.Checknumber>5}">
+                                        <button type="button"
+                                                style="padding: 10px 23px; border: 0; background-color: #79bd9a; text-transform: uppercase; font-weight: 700; color: #fff;margin-top: 10px"
+                                                class="btn-load" id="load" onclick="showmorerep()">Hiển thị thêm
+                                        </button>
+                                    </c:if>
                                 </div>
                             </div>
                             <script>
@@ -419,11 +420,11 @@
                                         success: function (data) {
                                             let datarespone = JSON.parse(data);
                                             let dataafter = JSON.parse(datarespone.comment_user);
-                                            var commentHtml = '<div  id="cmt-box" style="border-bottom: 1px #b3b7bb solid; padding-top: 5% ;margin-bottom: 5%">' +
-                                                '<div>' + dataafter.nameAccount + '</div>' +
-                                                '<div>' + dataafter.differencetime + '</div>' +
-                                                '<div class="cmts"><h5 style="color: #1d2124">Đánh giá sản phẩm:</h5> ' + dataafter.content + '</div>'
-                                            '</div>';
+                                            var commentHtml = ` <div  id="cmt-box" style="border-bottom: 1px #b3b7bb solid; padding-top: 5% ;margin-bottom: 5%">` +
+                                                `<div> ` + dataafter.nameAccount + ` </div>` +
+                                                `<div>` + dataafter.differencetime + `</div>` +
+                                                `<div clascs="cmts"><h5 style="color: #1d2124">Đánh giá sản phẩm:</h5> ` + dataafter.content + ` </div>
+                                            </div>`;
                                             console.log(dataafter);
                                             $('#cmt-box').prepend(commentHtml);
 
@@ -456,11 +457,11 @@
 
                                                 let responereply = JSON.parse(data);
                                                 let afterresponereply = JSON.parse(responereply.comment_reply);
-                                                let varreply = '<div class ="cssformcomment">' +
-                                                    '<div id="cmt-reply-box" class="rep">' + afterresponereply.nameAccount + '</div>'
-                                                    + '<div style=" margin-left: 6%;margin-top: 1%;">' + afterresponereply.differencetime + '</div>' +
-                                                    '<div class="cmtr" style="padding-left: 6%"><h5 style="color: #1d2124">Đã phản hồi bình luận:</h5> ' + afterresponereply.content + '</div>'
-                                                '</div>'
+                                                let varreply = `<div class ="cssformcomment">` +
+                                                    `<div id="cmt-reply-box" class="rep">` + afterresponereply.nameAccount + `</div>`
+                                                    + `<div style=" margin-left: 6%;margin-top: 1%;">` + afterresponereply.differencetime + `</div>` +
+                                                    `<div class="cmtr" style="padding-left: 6%"><h5 style="color: #1d2124">Đã phản hồi bình luận:</h5> ` + afterresponereply.content + `</div>
+                                                </div>`
                                                 $(formreplynguoidung).append(varreply);
                                                 $('#form-reply')[0].reset();
 
@@ -552,7 +553,6 @@
 
 
                             </script>
-
                             <div role="tabpanel" class="tab-pane " id="pd-thong-tin">
                                 <p>Chất liệu vải là tiêu chí đầu tiên khi các bậc làm cha mẹ chọn lựa quần áo cho bé
                                     .</p>
@@ -560,7 +560,7 @@
                                 <p>Váy thô cho bé gái được làm từ chất liệu cotton mềm, giặt nhiều không sờn, không bạc
                                     màu là sự lựa chọn tối ưu cho bé gái.</p>
 
-                                <p><img src="//bizweb.dktcdn.net/100/117/632/products/aovay11.jpg?v=1473606362390"/></p>
+                                <p><img src="./images/${requestScope.detail.imageProducts.get(0).getImage()}"/></p>
 
                                 <p>Được làm từ chất liệu cotton rất mềm mại cho bé cảm giác thoải mái khi mặc trong
                                     những ngày hè nóng bức.</p>
@@ -646,188 +646,6 @@
                         </div>
 
                     </div>
-                    <div class="sk-related-product-list">
-                        <div class="product-care-title">
-                            <h2>
-                                Sản phẩm liên quan
-                            </h2>
-                        </div>
-                        <div class="sk-related-product-listing">
-                            <div class="discounts-product-right sk-related-product-item col-md-3 col-sm-6 col-xs-12">
-
-                                <div class="sale-box text-center">
-								<span class="price">-
-							9% </span>
-                                </div>
-
-                                <div class="discounts-product-image">
-                                    <a href="/vay-lien-than-kids-02">
-                                        <img src="//bizweb.dktcdn.net/100/117/632/products/aovay12.jpg?v=1473606357990"
-                                             alt="Váy liên thân KIDS-02" class="img-responsive"/>
-                                    </a>
-                                    <div class="price-box">
-                                        <span class="price">250.000₫</span>
-
-                                        <span class="price-compare">
-
-										275.000₫
-
-									</span>
-
-                                    </div>
-                                </div>
-                                <div class="discounts-product-info">
-                                    <h3 class="item-title">
-                                        <a href="/vay-lien-than-kids-02" title="Váy liên thân KIDS-02">Váy liên thân
-                                            KIDS-02</a>
-                                    </h3>
-                                </div>
-                                <div class="text-center">
-
-                                    <form action="/cart/add" method="post" class="variants" id="product-actions-3915974"
-                                          enctype="multipart/form-data">
-                                        <input type="hidden" name="variantId" value="6383988"/>
-                                        <button class="button btn-cart btn-more product-atc"
-                                                onclick="window.location.href='/vay-lien-than-kids-02'"
-                                                title="Mua hàng"><span><img
-                                                src="//bizweb.dktcdn.net/100/117/632/themes/157694/assets/btn-buy.png?1564585558451"
-                                                alt=""/></span></button>
-                                    </form>
-
-                                </div>
-                            </div>
-
-                            <div class="discounts-product-right sk-related-product-item col-md-3 col-sm-6 col-xs-12">
-                                <div class="sale-box text-center">
-								<span class="price">-
-							9% </span>
-                                </div>
-
-                                <div class="discounts-product-image">
-                                    <a href="/vay-lien-than-kids-09">
-                                        <img src="//bizweb.dktcdn.net/100/117/632/products/aovay10-b5526dcd-b7d6-4897-b574-5a975a7d60de.jpg?v=1473603768963"
-                                             alt="Váy liền thân KIDS - 09" class="img-responsive"/>
-                                    </a>
-                                    <div class="price-box">
-                                        <span class="price">250.000₫</span>
-
-                                        <span class="price-compare">
-
-										275.000₫
-
-									</span>
-
-                                    </div>
-                                </div>
-                                <div class="discounts-product-info">
-                                    <h3 class="item-title">
-                                        <a href="/vay-lien-than-kids-09" title="Váy liền thân KIDS - 09">Váy liền thân
-                                            KIDS - 09</a>
-                                    </h3>
-                                </div>
-                                <div class="text-center">
-
-                                    <form action="/cart/add" method="post" class="variants" id="product-actions-3915740"
-                                          enctype="multipart/form-data">
-                                        <input type="hidden" name="variantId" value="6383623"/>
-                                        <button class="button btn-cart btn-more product-atc"
-                                                onclick="window.location.href='/vay-lien-than-kids-09'"
-                                                title="Mua hàng"><span><img
-                                                src="//bizweb.dktcdn.net/100/117/632/themes/157694/assets/btn-buy.png?1564585558451"
-                                                alt=""/></span></button>
-                                    </form>
-
-                                </div>
-                            </div>
-
-                            <div class="discounts-product-right sk-related-product-item col-md-3 col-sm-6 col-xs-12">
-                                <div class="sale-box text-center">
-								<span class="price">-
-							9% </span>
-                                </div>
-
-                                <div class="discounts-product-image">
-                                    <a href="/vay-lien-than-kids-kf5">
-                                        <img src="//bizweb.dktcdn.net/100/117/632/products/aovay9.jpg?v=1473603722000"
-                                             alt="Váy liên thân KIDS - KF5" class="img-responsive"/>
-                                    </a>
-                                    <div class="price-box">
-                                        <span class="price">250.000₫</span>
-
-                                        <span class="price-compare">
-
-										275.000₫
-
-									</span>
-
-                                    </div>
-                                </div>
-                                <div class="discounts-product-info">
-                                    <h3 class="item-title">
-                                        <a href="/vay-lien-than-kids-kf5" title="Váy liên thân KIDS - KF5">Váy liên thân
-                                            KIDS - KF5</a>
-                                    </h3>
-                                </div>
-                                <div class="text-center">
-
-                                    <form action="/cart/add" method="post" class="variants" id="product-actions-3915726"
-                                          enctype="multipart/form-data">
-                                        <input type="hidden" name="variantId" value="6383594"/>
-                                        <button class="button btn-cart btn-more product-atc"
-                                                onclick="window.location.href='/vay-lien-than-kids-kf5'"
-                                                title="Mua hàng"><span><img
-                                                src="//bizweb.dktcdn.net/100/117/632/themes/157694/assets/btn-buy.png?1564585558451"
-                                                alt=""/></span></button>
-                                    </form>
-
-                                </div>
-                            </div>
-
-                            <div class="discounts-product-right sk-related-product-item col-md-3 col-sm-6 col-xs-12">
-
-                                <div class="sale-box text-center">
-								<span class="price">-
-							20% </span>
-                                </div>
-
-                                <div class="discounts-product-image">
-                                    <a href="/vay-lien-than-kids">
-                                        <img src="//bizweb.dktcdn.net/100/117/632/products/aovay1.jpg?v=1473603655000"
-                                             alt="Váy liên thân KIDS" class="img-responsive"/>
-                                    </a>
-                                    <div class="price-box">
-                                        <span class="price">220.000₫</span>
-
-                                        <span class="price-compare">
-
-										275.000₫
-
-									</span>
-
-                                    </div>
-                                </div>
-                                <div class="discounts-product-info">
-                                    <h3 class="item-title">
-                                        <a href="/vay-lien-than-kids" title="Váy liên thân KIDS">Váy liên thân KIDS</a>
-                                    </h3>
-                                </div>
-                                <div class="text-center">
-
-                                    <form action="/cart/add" method="post" class="variants" id="product-actions-3915724"
-                                          enctype="multipart/form-data">
-                                        <input type="hidden" name="variantId" value="6383573"/>
-                                        <button class="button btn-cart btn-more product-atc"
-                                                onclick="window.location.href='/vay-lien-than-kids'" title="Mua hàng">
-                                            <span><img
-                                                    src="//bizweb.dktcdn.net/100/117/632/themes/157694/assets/btn-buy.png?1564585558451"
-                                                    alt=""/></span></button>
-                                    </form>
-
-                                </div>
-                            </div>
-
-                        </div>
-                    </div><!-- End .sk-related-product-list -->
                 </article>
 
             </div>

@@ -17,10 +17,12 @@ import dao.client.AuthDAO;
 import entity.Account;
 import entity.Role;
 import bean.Log;
+
 @WebServlet("/admin/AdminLoginController")
 public class AdminLoginController extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    String namelog="Login";
+    String namelog = "Login";
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         getServletContext().getRequestDispatcher("/view/admin/login.jsp").forward(request, response);
@@ -30,18 +32,20 @@ public class AdminLoginController extends HttpServlet {
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
-        String ipAddress =request.getRemoteAddr();
-        Log log = new Log(Log.INFO,ipAddress,-1,this.namelog,"",0);
+        String ipAddress = request.getRemoteAddr();
+        Log log = new Log(Log.INFO, ipAddress, -1, this.namelog, "", 0);
         try {
             String username = request.getParameter("admin-username");
             String password = request.getParameter("admin-password");
             HttpSession session = request.getSession();
             Account a = LoginAdminDAO.loginAdmin(username, password);
             if (a != null) {
-                if (SecurityDAO.hasPermission("/admin-index", a.getAccountName(), "read")) {
+                if (SecurityDAO.hasPermission(SecurityDAO.getIdResource("/admin-index"), a.getAccountName(), "read")) {
                     session.setAttribute("admin", a);
+                    Account acc = AuthDAO.login(username, password, password);
+                    session.setAttribute("acc", acc);
                     log.setSrc(namelog + " LOGIN ADMIN");
-                    log.setContent("LOGIN ADMIN SUCCESS: USER "+ a.getAccountName());
+                    log.setContent("LOGIN ADMIN SUCCESS: USER " + a.getAccountName());
                     log.setUserId(a.getId());
                     DB.me().insert(log);
                     RequestDispatcher rd = request.getRequestDispatcher("/admin-index");
@@ -55,7 +59,7 @@ public class AdminLoginController extends HttpServlet {
                     RequestDispatcher rd = request.getRequestDispatcher("/admin/admin-login.jsp");
                     rd.forward(request, response);
                 }
-            }else {
+            } else {
                 log.setSrc(namelog + " LOGIN ");
                 log.setContent("LOGIN ADMIN FAIL");
                 log.setLevel(Log.WARNING);
@@ -64,7 +68,7 @@ public class AdminLoginController extends HttpServlet {
                 RequestDispatcher rd = request.getRequestDispatcher("/admin/admin-login.jsp");
                 rd.forward(request, response);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

@@ -196,7 +196,7 @@ MODAL
                 content = `<div class="modal fade show" id="ModalUP" style="display: block">
           <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-       <form id"edit" action="${pageContext.request.contextPath}/admin-products/Editcolor" method="post" >
+       <form id="edit" action="${pageContext.request.contextPath}/admin-products/Editcolor" method="post" >
             <div class="modal-body">
                 <div class="row">
                     <div class="form-group  col-md-12">
@@ -255,6 +255,7 @@ MODAL
 
 
     function save(button, idSize) {
+        if (!checkFormNotEmpty('edit')) return;
         let success = $(button).closest("form");
         let dataform = $(success).serialize();
         let newinvent = "";

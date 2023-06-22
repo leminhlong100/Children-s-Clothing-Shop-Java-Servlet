@@ -62,16 +62,45 @@
 <script type="text/javascript"
         src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <!-- Header -->
+<!-- Messenger Plugin chat Code -->
+<div id="fb-root"></div>
+
+<!-- Your Plugin chat code -->
+<div id="fb-customer-chat" class="fb-customerchat">
+</div>
+
+<script>
+    var chatbox = document.getElementById('fb-customer-chat');
+    chatbox.setAttribute("page_id", "102999359507848");
+    chatbox.setAttribute("attribution", "biz_inbox");
+</script>
+
+<!-- Your SDK code -->
+<script>
+    window.fbAsyncInit = function() {
+        FB.init({
+            xfbml            : true,
+            version          : 'v17.0'
+        });
+    };
+
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
 <header class="header">
     <div class="navbar navbar-default sk-top-menu" role="navigation">
         <div class="container">
             <div class="row">
                 <ul class="nav navbar-nav navbar-left sk-top-nav-left"
                     style="position: relative; z-index: 9;">
-                    <c:url var="edit" value="/account/EditControl"></c:url>
                     <c:url var="logout" value="/LogoutControl"></c:url>
                     <c:if test="${sessionScope.acc != null}">
-                        <li><a href="${pageContext.request.contextPath}/${edit}"><i
+                        <li><a href="${pageContext.request.contextPath}/client/Account.jsp"><i
                                 class="fa fa-user"></i> <fmt:message key="Hello"
                                                                      bundle="${lang}"></fmt:message>: ${sessionScope.acc.fullName}
                         </a></li>
@@ -105,7 +134,7 @@
                         <%--                            <c:if test="${sessionScope.LANG == 'vi_VN' }"><a--%>
                         <%--                                    href="?${fn:substring(query, 0, query.length()-12)}&&lang=en_US">English</a></c:if>--%>
                         <%--                        </c:if>--%>
-                        <div id="google_translate_element"></div>
+                        <div id="google_translate_element" style="margin-top: 11px"></div>
                     </li>
                     <li><c:url var="searchct" value="SearchControl"></c:url>
                         <form action="${pageContext.request.contextPath}/${searchct}" method="get"

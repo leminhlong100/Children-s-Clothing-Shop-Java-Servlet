@@ -48,7 +48,14 @@ public class ProductDAO {
 		return 0;
 
 	}
-
+	public static int numberofcomment() {
+		Jdbi me = DBContext.me();
+		String query = "SELECT COUNT(id) FROM comments WHERE idParent IS NULL";
+		return me.withHandle(handle -> handle.createQuery(query)
+				.mapTo(Integer.class)
+				.findFirst()
+				.orElse(0));
+	}
 	public static List<Product> pagingProduct(int index, int cid, String sort, String type) {
 		List<Product> list = new ArrayList<>();
 		String query = "";

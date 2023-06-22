@@ -161,6 +161,8 @@
                                     location.reload(); // Load lại trang
                                 }
                             });
+                        }else {
+                            Swal.fire('Xóa không thành công do bạn không đủ quyền xóa', '', 'info');
                         }
                     },
                     error: function (data) {
@@ -386,6 +388,8 @@
                                     location.reload(); // Load lại trang
                                 }
                             });
+                        }else {
+                            Swal.fire('Xóa không thành công do bạn không đủ quyền xóa', '', 'info');
                         }
                     },
                     error: function (data) {

@@ -416,8 +416,11 @@
                             var currentPage = oTable.page(); // lưu trang hiện tại
                             oTable.row(row).remove().draw();
                             oTable.page(currentPage).draw(false); // thiết lập lại trang hiện tại sau khi vẽ lại bảng dữ liệu
+                            Swal.fire('Xóa đơn hàng thành công', '', 'success');
+                        }else {
+                            Swal.fire('Xóa đơn hàng không thành công do bạn không đủ quyền xóa', '', 'info');
                         }
-                        Swal.fire('Xóa đơn hàng thành công', '', 'success');
+
                     },
                     error: function (data) {
                         console.log(data)

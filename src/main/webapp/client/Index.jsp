@@ -69,35 +69,35 @@
                 <aside class="col-lg-3 col-md-3 hidden-sm hidden-xs">
                     <div class="sk-leftSidebar-widget trademark-widget">
                         <div class="col-md-6 col-sm-6 trademark-widget-item">
-                            <a href="#"
+                            <a href="${pageContext.request.contextPath}/ShowProductControl"
                                style="background-image: url('//bizweb.dktcdn.net/100/117/632/themes/157694/assets/logo1.png?1564585558451');"></a>
                         </div>
                         <div class="col-md-6 col-sm-6 trademark-widget-item">
-                            <a href="#"
+                            <a href="${pageContext.request.contextPath}/ShowProductControl"
                                style="background-image: url('//bizweb.dktcdn.net/100/117/632/themes/157694/assets/logo2.png?1564585558451');"></a>
                         </div>
                         <div class="col-md-6 col-sm-6 trademark-widget-item">
-                            <a href="hjasdf"
+                            <a href="${pageContext.request.contextPath}/ShowProductControl"
                                style="background-image: url('//bizweb.dktcdn.net/100/117/632/themes/157694/assets/logo3.png?1564585558451');"></a>
                         </div>
                         <div class="col-md-6 col-sm-6 trademark-widget-item">
-                            <a href="#"
+                            <a href="${pageContext.request.contextPath}/ShowProductControl"
                                style="background-image: url('//bizweb.dktcdn.net/100/117/632/themes/157694/assets/logo4.png?1564585558451');"></a>
                         </div>
                         <div class="col-md-6 col-sm-6 trademark-widget-item">
-                            <a href="#"
+                            <a href="${pageContext.request.contextPath}/ShowProductControl"
                                style="background-image: url('//bizweb.dktcdn.net/100/117/632/themes/157694/assets/logo5.png?1564585558451');"></a>
                         </div>
                         <div class="col-md-6 col-sm-6 trademark-widget-item">
-                            <a href="#"
+                            <a href="${pageContext.request.contextPath}/ShowProductControl"
                                style="background-image: url('//bizweb.dktcdn.net/100/117/632/themes/157694/assets/logo6.png?1564585558451');"></a>
                         </div>
                         <div class="col-md-6 col-sm-6 trademark-widget-item">
-                            <a href="#"
+                            <a href="${pageContext.request.contextPath}/ShowProductControl"
                                style="background-image: url('//bizweb.dktcdn.net/100/117/632/themes/157694/assets/logo7.png?1564585558451');"></a>
                         </div>
                         <div class="col-md-6 col-sm-6 trademark-widget-item">
-                            <a href="#"
+                            <a href="${pageContext.request.contextPath}/ShowProductControl"
                                style="background-image: url('//bizweb.dktcdn.net/100/117/632/themes/157694/assets/logo8.png?1564585558451');"></a>
                         </div>
                         <div class="clearfix"></div>

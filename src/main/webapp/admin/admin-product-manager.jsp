@@ -215,8 +215,10 @@
                                 var currentPage = oTable.page(); // lưu trang hiện tại
                                 oTable.row(row).remove().draw();
                                 oTable.page(currentPage).draw(false); // thiết lập lại trang hiện tại sau khi vẽ lại bảng dữ liệu
+                                Swal.fire('Xóa sản phẩm thành công', '', 'success');
+                            }else{
+                                Swal.fire('Xóa sản phẩm không thành công do bạn không đủ quyền xóa', '', 'info');
                             }
-                            Swal.fire('Xóa sản phẩm thành công', '', 'success');
                         },
                         error: function (data) {
                             console.log(data)
@@ -238,6 +240,8 @@
                     idproduct: idproduct,
                 },
                 success: function (data) {
+                    let isSuc = JSON.parse(data).isSuc;
+                    if(isSuc){
                     let datarepsone = JSON.parse(data);
                     let pardata = JSON.parse(datarepsone.products)
                     let categories = JSON.parse(datarepsone.listcate);
@@ -249,7 +253,7 @@
                     content = `<div class="modal fade show" id="ModalUP" style="display: block">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-           <form id"edit" action="${pageContext.request.contextPath}/admin-products/ProductEditController" method="post" >
+           <form id="edit" action="${pageContext.request.contextPath}/admin-products/ProductEditController" method="post" >
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-group  col-md-12">
@@ -310,7 +314,9 @@
             </div>
         </div>
     </div>`
-                    document.getElementById("showproduct").innerHTML = content;
+                    document.getElementById("showproduct").innerHTML = content;}else {
+                        Swal.fire('Bạn không đủ quyền', '', 'info');
+                    }
                 },
                 error: function (data) {
                     console.log("error");
@@ -325,6 +331,7 @@
 
 
         function save(button, idP) {
+            if (!checkFormNotEmpty('edit')) return;
             let success = $(button).closest("form");
             let dataform = $(success).serialize();
             let newdata = "";

@@ -450,21 +450,23 @@ MODAL
                         oTable.page(currentPage).draw(false); // thiết lập lại trang hiện tại sau khi vẽ lại bảng dữ liệu
                         let listAcc = JSON.parse(JSON.parse(data).listAccount);
                         let isAdmin = JSON.parse(data).isAdmin;
-                        for (let i = 0; i < listAcc.length; i++) {
-                            reRoles = "";
-                            isaccountActive = "";
-                            if (listAcc[i].isActive === true) {
-                                isaccountActive = `Đang hoạt động`;
-                            } else {
-                                isaccountActive = `Bị khóa`;
-                            }
-                            for (let j = 0; j < listAcc[i].roles.length; j++) {
-                                reRoles += listAcc[i].roles[j].name;
-                                if (j < listAcc[i].roles.length - 1) {
-                                    reRoles += ", ";
+                        let isSuc = JSON.parse(data).isSuc;
+                        if (isSuc) {
+                            for (let i = 0; i < listAcc.length; i++) {
+                                reRoles = "";
+                                isaccountActive = "";
+                                if (listAcc[i].isActive === true) {
+                                    isaccountActive = `Đang hoạt động`;
+                                } else {
+                                    isaccountActive = `Bị khóa`;
                                 }
-                            }
-                            re += ` <tr>
+                                for (let j = 0; j < listAcc[i].roles.length; j++) {
+                                    reRoles += listAcc[i].roles[j].name;
+                                    if (j < listAcc[i].roles.length - 1) {
+                                        reRoles += ", ";
+                                    }
+                                }
+                                re += ` <tr>
                                 <td width="10"><input type="checkbox" name="check1" value="1"></td>
                                 <td >` + listAcc[i].id + `</td>
                                 <td>` + listAcc[i].accountName + `</td>
@@ -485,11 +487,14 @@ MODAL
                                     </button>
                                 </td>
                             </tr>`
+                            }
+                            document.getElementById("renderListAccount").innerHTML = re;
+                            closeModal();
+                            // console.log(result)
+                            Swal.fire('Xóa user thành công', '', 'success');
+                        } else {
+                            Swal.fire('Xóa đơn hàng không thành công do bạn không đủ quyền xóa', '', 'info');
                         }
-                        document.getElementById("renderListAccount").innerHTML = re;
-                        closeModal();
-                        // console.log(result)
-                        Swal.fire('Xóa user thành công', '', 'success');
                     },
                     error: function (data) {
                         console.log(data)
