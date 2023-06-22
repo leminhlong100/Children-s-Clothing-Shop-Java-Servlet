@@ -24,7 +24,11 @@ public class PermissionListController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         Account account = (Account) session.getAttribute("admin");
-        if (SecurityDAO.hasPermission("/admin-user", account.getAccountName(), "read")) {
+        if (account==null){
+            RequestDispatcher rd = request.getRequestDispatcher("/admin/admin-login.jsp");
+            return;
+        }
+        if (SecurityDAO.hasPermission(SecurityDAO.getIdResource("/admin-user"), account.getAccountName(), "read")) {
             List<Role> roles = AccountDAO.getAllRoles();
             request.setAttribute("roles", roles);
             request.getRequestDispatcher("/admin/admin-roles-manager.jsp").forward(request, response);

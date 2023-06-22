@@ -53,8 +53,6 @@ public class EditColorController extends HttpServlet {
         JsonObject obj = new JsonObject();
         obj.addProperty("products", gson.toJson(products));
         obj.addProperty("colorSize", gson.toJson(size));
-
-
         response.getWriter().println(gson.toJson(obj));
     }
 

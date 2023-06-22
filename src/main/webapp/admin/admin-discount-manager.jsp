@@ -105,7 +105,7 @@
                                     <td style="color: green">Có thể sử dụng</td>
                                 </c:if>
                                 <c:if test="${o.status==0}">
-                                    <td style="color: red">Không thể sự dụng</td>
+                                    <td style="color: red">Không thể sử dụng</td>
                                 </c:if>
                                 <td>
                                     <div class="button-container">
@@ -167,8 +167,11 @@
                             var currentPage = oTable.page(); // lưu trang hiện tại
                             oTable.row(row).remove().draw();
                             oTable.page(currentPage).draw(false); // thiết lập lại trang hiện tại sau khi vẽ lại bảng dữ liệu
+                            Swal.fire('Xóa mã giảm giá thành công', '', 'success');
+                        } else {
+                            Swal.fire('Xóa đơn hàng không thành công do bạn không đủ quyền xóa', '', 'info');
                         }
-                        Swal.fire('Xóa mã giảm giá thành công', '', 'success');
+
                     },
                     error: function (data) {
                         console.log(data)
@@ -185,6 +188,11 @@
     }
 
     function addDiscount() {
+        let status = ` <label class="control-label">Trạng thái</label>
+                                <select class="form-control" name="status" id="">
+                                    <option value="1">Có thể sử dụng</option>
+                                    <option selected value="0">Không thể sử dụng</option>
+                                </select>`
         let re = `<div class="modal fade show" id="ModalUP" style="display: block">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -227,8 +235,7 @@
                         <input class="form-control" name="endTime" type="date" >
                     </div>
                     <div class="form-group col-md-6">
-                       <label class="control-label">Trạng thái</label>
-                        <input class="form-control" name="status" type="text" >
+                        ` + status + `
                     </div>
                 </div>
                 <BR>
@@ -261,9 +268,11 @@
                 let isSuc = JSON.parse(data).isSuc;
                 if (isSuc) {
                     closeModal();
-                    Swal.fire('Thêm thành công :))))) ', '', 'success').then(() => {
+                    Swal.fire('Thêm thành công', '', 'success').then(() => {
                         location.reload();
                     });
+                } else {
+                    Swal.fire('Thêm thất bại do bạn không có đủ quyền', '', 'success')
                 }
             },
 
@@ -276,6 +285,7 @@
 
     function editDiscount(id) {
         let re = "";
+        let status = ""
         $.ajax({
             url: "${pageContext.request.contextPath}/admin-discount/update",
             type: "GET",
@@ -284,7 +294,22 @@
             },
             success: function (data) {
                 let discount = JSON.parse(data).discount;
-                re = `<div class="modal fade show" id="ModalUP" style="display: block">
+                let isSuc = JSON.parse(data).isSuc;
+                if (isSuc) {
+                    if (discount.status === 0) {
+                        status = ` <label class="control-label">Trạng thái</label>
+                                <select class="form-control" name="status" id="">
+                                    <option value="1">Có thể sử dụng</option>
+                                    <option selected value="0">Không thể sử dụng</option>
+                                </select>`
+                    } else {
+                        status = ` <label class="control-label">Trạng thái</label>
+                                <select class="form-control" name="status" id="">
+                                    <option selected value="1">Có thể sử dụng</option>
+                                    <option value="0">Không thể sử dụng</option>
+                                </select>`
+                    }
+                    re = `<div class="modal fade show" id="ModalUP" style="display: block">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
        <form id="edit" action="${pageContext.request.contextPath}/admin-discount/update" method="post" >
@@ -330,8 +355,7 @@
                         <input class="form-control" name="endTime" type="date" value="` + discount.endTime + `">
                     </div>
                     <div class="form-group col-md-6">
-                       <label class="control-label">Trạng thái</label>
-                        <input class="form-control" name="status" type="text" value="` + discount.status + `">
+                           ` + status + `
                     </div>
                 </div>
                 <BR>
@@ -348,8 +372,11 @@
         </div>
     </div>
 </div>`
-                document.getElementById("showEdit").innerHTML = re;
-                // Lấy thẻ select
+                    document.getElementById("showEdit").innerHTML = re;
+                    // Lấy thẻ select
+                } else {
+                    Swal.fire('Bạn không đủ quyền sửa', '', 'info');
+                }
             },
             error: function (data) {
                 console.log(data)
@@ -406,6 +433,7 @@
             }
         });
     }
+
     oTable = $('#sampleTable').DataTable();
     $('#all').click(function (e) {
         $('#sampleTable tbody :checkbox').prop('checked', $(this).is(':checked'));

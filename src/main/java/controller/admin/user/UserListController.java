@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,15 +28,20 @@ public class UserListController extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         Account account = (Account) session.getAttribute("admin");
-        if (SecurityDAO.hasPermission("/admin-user", account.getAccountName(), "read")) {
+        if (account==null){
+            RequestDispatcher rd = request.getRequestDispatcher("/admin/admin-login.jsp");
+            return;
+        }
+        if (SecurityDAO.hasPermission(SecurityDAO.getIdResource("/admin-user"), account.getAccountName(), "read")) {
             List<Account> accounts = AccountDAO.getListAccount();
             request.setAttribute("accounts", accounts);
             request.getRequestDispatcher("/admin/admin-account-manager.jsp").forward(request, response);
-        }else{
+        } else {
             request.getRequestDispatcher("/client/403.jsp").forward(request, response);
         }
 
     }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         doGet(request, response);

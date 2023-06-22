@@ -1,8 +1,11 @@
 package controller.admin.log;
 
+import dao.AuthDAO.SecurityDAO;
 import dao.admin.LogDAO;
+import entity.Account;
 import entity.Log;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -18,10 +21,18 @@ public class ShowLogController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		List<Log> logs = LogDAO.getListLog();
-		request.setAttribute("logs", logs);
-		request.getRequestDispatcher("/admin/admin-log-manager.jsp").forward(request, response);
-
+		Account account = (Account) request.getSession().getAttribute("admin");
+		if (account==null){
+			RequestDispatcher rd = request.getRequestDispatcher("/admin/admin-login.jsp");
+			return;
+		}
+		if (SecurityDAO.hasPermission(SecurityDAO.getIdResource("/admin-log"), account.getAccountName(), "read")) {
+			List<Log> logs = LogDAO.getListLog();
+			request.setAttribute("logs", logs);
+			request.getRequestDispatcher("/admin/admin-log-manager.jsp").forward(request, response);
+		}else {
+			request.getRequestDispatcher("/client/403.jsp").forward(request, response);
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

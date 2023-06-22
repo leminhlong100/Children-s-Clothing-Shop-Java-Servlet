@@ -31,6 +31,8 @@ public class DetailControl extends HttpServlet {
             Product p = UtilDAO.findProductById(Integer.parseInt(id));
             String pid = request.getParameter("pid");
             List<Comment> listcmt = ProductDAO.displayfiveproduct(p.getId(), null, true);
+            int num = ProductDAO.numberofcomment();
+            request.setAttribute("Checknumber",num);
             request.setAttribute("list", listcmt);
             response.getWriter().println(listcmt);
             request.setAttribute("detail", p);

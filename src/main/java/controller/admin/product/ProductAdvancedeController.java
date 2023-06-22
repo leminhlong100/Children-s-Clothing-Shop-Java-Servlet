@@ -23,9 +23,7 @@ public class ProductAdvancedeController extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         try{
-
             String id = request.getParameter("id");
             Product render = UtilDAO.findProductById(Integer.parseInt(id));
             request.setAttribute("rendercolorsize", render);

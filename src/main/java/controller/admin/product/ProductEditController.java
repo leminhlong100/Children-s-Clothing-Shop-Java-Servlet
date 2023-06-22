@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -19,6 +20,7 @@ import bean.Log;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import context.DB;
+import dao.AuthDAO.SecurityDAO;
 import dao.admin.ProductAdminDAO;
 import dao.client.AuthDAO;
 import dao.client.UtilDAO;
@@ -31,17 +33,30 @@ public class ProductEditController extends HttpServlet {
     String namelog="Update";
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        String idp = request.getParameter("idproduct");
-        Gson gson = new Gson();
-        Product products = UtilDAO.findProductById(Integer.parseInt(idp));
+        Account account = (Account) request.getSession().getAttribute("admin");
+        if (account==null){
+            RequestDispatcher rd = request.getRequestDispatcher("/admin/admin-login.jsp");
+            return;
+        }
+        if (SecurityDAO.hasPermission(SecurityDAO.getIdResource("/admin-products"), account.getAccountName(), "write")) {
+            response.setContentType("text/html;charset=UTF-8");
+            String idp = request.getParameter("idproduct");
+            Gson gson = new Gson();
+            Product products = UtilDAO.findProductById(Integer.parseInt(idp));
 
-        List<Category> list = ProductAdminDAO.listcate();
-        request.setAttribute("product", products);
-        JsonObject obj = new JsonObject();
-        obj.addProperty("listcate", gson.toJson(list));
-        obj.addProperty("products", gson.toJson(products));
-        response.getWriter().println(gson.toJson(obj));
+            List<Category> list = ProductAdminDAO.listcate();
+            request.setAttribute("product", products);
+            JsonObject obj = new JsonObject();
+            obj.addProperty("listcate", gson.toJson(list));
+            obj.addProperty("isSuc", true);
+            obj.addProperty("products", gson.toJson(products));
+            response.getWriter().println(gson.toJson(obj));
+        }else {
+            Gson gson = new Gson();
+            JsonObject obj = new JsonObject();
+            obj.addProperty("isSuc", false);
+            response.getWriter().println(gson.toJson(obj));
+        }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import context.DB;
 import controller.admin.webSocket.UpdateAccountEndPoint;
+import dao.AuthDAO.SecurityDAO;
 import dao.admin.AccountDAO;
 import dao.admin.DiscountDAO;
 import dao.client.AuthDAO;
@@ -29,7 +30,13 @@ public class UpdateDiscountController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            String id = request.getParameter("id");
+            Account account = (Account) request.getSession().getAttribute("admin");
+            if (account==null){
+                RequestDispatcher rd = request.getRequestDispatcher("/admin/admin-login.jsp");
+                return;
+            }
+            if (SecurityDAO.hasPermission(SecurityDAO.getIdResource("/admin-discount"), account.getAccountName(), "write")) {
+                String id = request.getParameter("id");
             Discount discount = DiscountDAO.getDiscountById(id);
             LocalDateTime startTime = LocalDateTime.parse(discount.getStartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             String startTimeString = startTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -39,8 +46,15 @@ public class UpdateDiscountController extends HttpServlet {
             discount.setEndTime(endTimeString);
             Gson gson = new Gson();
             JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("isSuc", true);
             jsonObject.add("discount", gson.toJsonTree(discount));
             response.getWriter().println(jsonObject);
+            } else {
+                boolean isSuc = false;
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("isSuc", isSuc);
+                response.getWriter().println(jsonObject);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

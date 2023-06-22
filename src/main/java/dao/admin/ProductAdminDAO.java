@@ -2,6 +2,7 @@ package dao.admin;
 
 import java.sql.*;
 import java.util.*;
+
 import context.*;
 import dao.client.UtilDAO;
 import entity.*;
@@ -11,7 +12,7 @@ public class ProductAdminDAO {
     public static List<Product> getListProduct(int index) {
         Jdbi me = DBContext.me();
         String query = "SELECT p.id,p.nameProduct,pp.listPrice,pp.discount,pp.discountPrice,p.isActive FROM products p join suppliers s on p.idSupplier = s.id join product_prices pp on pp.idProduct = p.id where p.isActive = '1' and s.isActive ='1' order by p.id limit ?,10";
-        return me.withHandle(handle -> handle.createQuery(query).bind(0,((index - 1) * 10))
+        return me.withHandle(handle -> handle.createQuery(query).bind(0, ((index - 1) * 10))
                 .map((rs, ctx) -> new Product(rs.getInt("id"), rs.getString("nameProduct"),
                         rs.getDouble("listPrice"), UtilDAO.findListImageByIdProduct(rs.getInt("id")),
                         rs.getInt("discount"), rs.getDouble("discountPrice"), rs.getString("isActive")))
@@ -32,6 +33,7 @@ public class ProductAdminDAO {
 
         return 0;
     }
+
     public static int getTotalProductOuOtOfStock() {
         String query = "select count(p.nameProduct) from products p join product_prices pp on p.id = pp.idProduct where p.id = (SELECT idProduct FROM inventorys where idProduct = p.id having  SUM(quantity) < 20)";
         try (Connection conn = DBContext.getConnection();
@@ -46,6 +48,7 @@ public class ProductAdminDAO {
 
         return 0;
     }
+
     public static int getTotalActiveProduct() {
         String query = "select count(id) from products where isActive = '1'";
         try (Handle handle = DBContext.me().open()) {
@@ -116,118 +119,122 @@ public class ProductAdminDAO {
         String query = "SELECT p.id, p.nameProduct, pp.listPrice, pp.discount, ct.nameCategorie, sp.size, sp.color FROM products p join product_prices pp on p.id = pp.idProduct join inventorys invent on invent.idProduct = p.id join categories ct on p.idCategorie = ct.id join size_color_products sp on invent.id_size_color = sp.id where p.id IN (select p1.id  from products p1 join inventorys i on p1.id = i.idProduct WHERE i.quantity = 0) GROUP BY p.id, sp.size, sp.color";
         try (Handle handle = DBContext.me().open()) {
             return handle.createQuery(query)
-                    .map((rs, ctx) -> new Product(rs.getInt("id"), rs.getString("nameProduct")+"_"+rs.getString("size")+"/"+rs.getString("color"), rs.getDouble("listPrice"), new Category(rs.getString("nameCategorie")))).list();
+                    .map((rs, ctx) -> new Product(rs.getInt("id"), rs.getString("nameProduct") + "_" + rs.getString("size") + "/" + rs.getString("color"), rs.getDouble("listPrice"), new Category(rs.getString("nameCategorie")))).list();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
-    public static List<Product> showlistproduct(){
+
+    public static List<Product> showlistproduct() {
         List<Product> list;
         Jdbi me = DBContext.me();
-        String query="select distinct p.id,p.nameProduct,pd.nameProducer,p.status ,pp.listPrice,pp.discount,pp.discountPrice,cate.nameCategorie , p.isActive,p.isDelete  \n" +
+        String query = "select distinct p.id,p.nameProduct,pd.nameProducer,p.status ,pp.listPrice,pp.discount,pp.discountPrice,cate.nameCategorie , p.isActive,p.isDelete  \n" +
                 "                                    from products p join  product_prices pp on p.id = pp.idProduct \n" +
                 "                                      join categories cate on cate.id = p.idCategorie \n" +
                 "                                    join size_color_products sizepro on sizepro.idProduct = p.id\n" +
                 "                                      join producers pd on pd.id = p.idProducer           \n" +
                 "                    where p.isActive =1 ";
-        return  list = me.withHandle(handle -> {
-            return handle.createQuery(query).map((rs, ctx) ->new Product(rs.getInt("id"),rs.getString("nameProduct")
-                    ,rs.getDouble("listPrice"),new Category(rs.getString("nameCategorie")),new Producer(rs.getString("nameProducer")),UtilDAO.findListImageByIdProduct(rs.getInt("id")),UtilDAO.findListSizeColorByIdProduct(rs.getInt("id"))
-                    ,rs.getString("isActive"),rs.getString("isDelete"),rs.getInt("discount"),rs.getDouble("discountPrice"),rs.getString("status"))).list();
+        return list = me.withHandle(handle -> {
+            return handle.createQuery(query).map((rs, ctx) -> new Product(rs.getInt("id"), rs.getString("nameProduct")
+                    , rs.getDouble("listPrice"), new Category(rs.getString("nameCategorie")), new Producer(rs.getString("nameProducer")), UtilDAO.findListImageByIdProduct(rs.getInt("id")), UtilDAO.findListSizeColorByIdProduct(rs.getInt("id"))
+                    , rs.getString("isActive"), rs.getString("isDelete"), rs.getInt("discount"), rs.getDouble("discountPrice"), rs.getString("status"))).list();
         });
     }
 
-    public static boolean deleteproduct(String idpro){
+    public static boolean deleteproduct(String idpro) {
         Jdbi me = DBContext.me();
-        String query ="UPdate products p\n" +
+        String query = "UPdate products p\n" +
                 "set p.isActive = 0 , p.isDelete =1\n" +
                 "where id = ?";
 
-        return me.withHandle(handle ->  handle.createUpdate(query).bind(0,idpro).execute()==1) ;
+        return me.withHandle(handle -> handle.createUpdate(query).bind(0, idpro).execute() == 1);
     }
 
-    public static int updatenameproduct(Product p){
+    public static int updatenameproduct(Product p) {
         Jdbi me = DBContext.me();
         String query = "update products set nameProduct = ? where id = ? ";
-        return me.withHandle(handle -> handle.createUpdate(query).bind(0,p.getNameProduct()).bind(1,p.getId()).execute());
+        return me.withHandle(handle -> handle.createUpdate(query).bind(0, p.getNameProduct()).bind(1, p.getId()).execute());
 
     }
 
-    public static int updatecost(Product p){
+    public static int updatecost(Product p) {
         Jdbi me = DBContext.me();
         String query = "update product_prices set listPrice = ? where idProduct = ? ";
         return me.withHandle(handle ->
-                handle.createUpdate(query).bind(0,p.getListPrice()).bind(1,p.getId()).execute());
+                handle.createUpdate(query).bind(0, p.getListPrice()).bind(1, p.getId()).execute());
 
     }
 
-    public static int updatediscount(Product p){
+    public static int updatediscount(Product p) {
         Jdbi me = DBContext.me();
         String query = "update product_prices set discount = ? where idProduct = ? ";
         return me.withHandle(handle ->
-                handle.createUpdate(query).bind(0,p.getDiscount()).bind(1,p.getId()).execute());
+                handle.createUpdate(query).bind(0, p.getDiscount()).bind(1, p.getId()).execute());
     }
 
-    public static int updatequantity(Product p){
+    public static int updatequantity(Product p) {
         Jdbi me = DBContext.me();
         String query = "update products set nameProduct = ? where id = ? ";
         return me.withHandle(handle ->
-                handle.createUpdate(query).bind(0,p.getNameProduct()).bind(1,p.getId()).execute());
+                handle.createUpdate(query).bind(0, p.getNameProduct()).bind(1, p.getId()).execute());
     }
 
-    public static int updatestatus(Product p){
+    public static int updatestatus(Product p) {
         Jdbi me = DBContext.me();
         String query = "update products set status = ?  where id = ? ";
-        return me.withHandle(handle -> handle.createUpdate(query).bind(0,p.getStatus()).bind(1,p.getId()).execute());
+        return me.withHandle(handle -> handle.createUpdate(query).bind(0, p.getStatus()).bind(1, p.getId()).execute());
     }
 
-    public static List<Category> listcate(){
+    public static List<Category> listcate() {
         Jdbi me = DBContext.me();
         List<Category> list;
-        String query ="select  id , nameCategorie from categories ";
+        String query = "select  id , nameCategorie from categories ";
         list = me.withHandle(handle -> {
-            return handle.createQuery(query).map((rs, ctx) -> new Category(rs.getInt("id"),rs.getString("nameCategorie"))).list();
+            return handle.createQuery(query).map((rs, ctx) -> new Category(rs.getInt("id"), rs.getString("nameCategorie"))).list();
 
         });
         return list;
     }
 
-    public static int idproduct (String name){
+    public static int idproduct(String name) {
         Jdbi me = DBContext.me();
-        String query="Select id from categories where nameCategorie =?";
-        return me.withHandle(handle -> handle.createQuery(query).bind(0,name).mapTo(Integer.class).one());
+        String query = "Select id from categories where nameCategorie =?";
+        return me.withHandle(handle -> handle.createQuery(query).bind(0, name).mapTo(Integer.class).one());
 
     }
 
-    public static int updateidcate(Product p){
+    public static int updateidcate(Product p) {
         Jdbi me = DBContext.me();
         String query = "update products set idCategorie = ?  where id = ? ";
-        return me.withHandle(handle -> handle.createUpdate(query).bind(0,p.getIdCategory()).bind(1,p.getId()).execute());
+        return me.withHandle(handle -> handle.createUpdate(query).bind(0, p.getIdCategory()).bind(1, p.getId()).execute());
 
     }
-    public static int quantityofsize(Product p){
+
+    public static int quantityofsize(Product p) {
         Jdbi me = DBContext.me();
-        String query="select i.quantity from size_color_products s join inventorys i \n" +
+        String query = "select i.quantity from size_color_products s join inventorys i \n" +
                 "on i.id_size_color = s.id where i.idProduct = ? and i.id_size_color =?";
-        return me.withHandle(handle -> handle.createQuery(query).bind(0,p.getId()).bind(1,p.getInventory())).mapTo(Integer.class).one();
+        return me.withHandle(handle -> handle.createQuery(query).bind(0, p.getId()).bind(1, p.getInventory())).mapTo(Integer.class).one();
     }
 
-    public static int updatecolor (SizeColorProduct s){
+    public static int updatecolor(SizeColorProduct s) {
         Jdbi me = DBContext.me();
         String query = "update size_color_products set color = ? where idProduct = ? and id = ?";
-        return me.withHandle(handle -> handle.createUpdate(query).bind(0,s.getColor()).bind(1,s.getIdProduct()).bind(2,s.getId()).execute());
+        return me.withHandle(handle -> handle.createUpdate(query).bind(0, s.getColor()).bind(1, s.getIdProduct()).bind(2, s.getId()).execute());
     }
-    public static int updatenumber(Inventory i){
+
+    public static int updatenumber(Inventory i) {
         Jdbi me = DBContext.me();
         String query = "update inventorys set quantity = ? where id_size_color = ? and idProduct=?";
-        return me.withHandle(handle -> handle.createUpdate(query).bind(0,i.getQuantity()).bind(1,i.getId_size_color()).bind(2,i.getIdProduct()).execute());
+        return me.withHandle(handle -> handle.createUpdate(query).bind(0, i.getQuantity()).bind(1, i.getId_size_color()).bind(2, i.getIdProduct()).execute());
 
     }
-    public static SizeColorProduct colorsize(SizeColorProduct s ){
+
+    public static SizeColorProduct colorsize(SizeColorProduct s) {
         Jdbi me = DBContext.me();
-    String query="select s.id,s.idProduct,s.color,i.quantity from size_color_products s join inventorys i on s.id =i.id_size_color where s.id =? and s.idProduct =?";
-    return me.withHandle(handle -> handle.createQuery(query).bind(0,s.getId()).bind(1,s.getIdProduct()).map((rs, ctx) -> new SizeColorProduct(rs.getInt("id"),rs.getInt("idProduct"),rs.getString("color"),rs.getInt("quantity"))).findFirst().orElse(null));
+        String query = "select s.id,s.idProduct,s.color,i.quantity from size_color_products s join inventorys i on s.id =i.id_size_color where s.id =? and s.idProduct =?";
+        return me.withHandle(handle -> handle.createQuery(query).bind(0, s.getId()).bind(1, s.getIdProduct()).map((rs, ctx) -> new SizeColorProduct(rs.getInt("id"), rs.getInt("idProduct"), rs.getString("color"), rs.getInt("quantity"))).findFirst().orElse(null));
     }
 
     public static int insertProduct(String nameProduct, int idSupplier, int idCattegory, int idProducer, String description) {
@@ -308,9 +315,10 @@ public class ProductAdminDAO {
     }
 
     public static int insertPriceAndSell(int idProduct, String nameProduct, String price, String sell) {
-        String query = "insert into product_prices (idProduct, nameProduct, listPrice, discount) values(?, ?, ?, ?)";
+        double discountPrice = Math.round(Double.valueOf(price) - (Double.valueOf(price) * Double.valueOf(sell) / 100));
+        String query = "insert into product_prices (idProduct, nameProduct, listPrice, discount,discountPrice) values(?, ?, ?, ?,?)";
         Jdbi me = DBContext.me();
-        return me.withHandle(handle -> handle.createUpdate(query).bind(0, idProduct).bind(1, nameProduct).bind(2, price).bind(3, sell).execute());
+        return me.withHandle(handle -> handle.createUpdate(query).bind(0, idProduct).bind(1, nameProduct).bind(2, price).bind(3, sell).bind(4, discountPrice).execute());
     }
 
     public static int getIdProduct(String nameProduct) {
@@ -321,9 +329,9 @@ public class ProductAdminDAO {
                     .findOne()
                     .orElse(0);
         } catch (Exception e) {
-            e.printStackTrace();
+            return 0;
         }
-        return 0;
+
     }
 
     public static int insertSizeColor(SizeColorProduct sizeColorProduct) {
@@ -354,10 +362,38 @@ public class ProductAdminDAO {
         return me.withHandle(handle -> handle.createUpdate(query).bind(0, idProduct).bind(1, mainImageFileName).execute());
     }
 
-    public static int getChildImage(int idProduct, String descriptionImageFileName){
+    public static int getChildImage(int idProduct, String descriptionImageFileName) {
         String query = "INSERT INTO image_products (idProduct, image) VALUES (?, ?)";
         Jdbi me = DBContext.me();
         return me.withHandle(handle -> handle.createUpdate(query).bind(0, idProduct).bind(1, descriptionImageFileName).execute());
+    }
+    public static boolean checkNameProductEq(String nameProduct) {
+        Jdbi jdbi = DBContext.me();
+        String query = "SELECT COUNT(*) FROM products WHERE nameProduct = :nameProduct";
+
+        return jdbi.withHandle(handle -> handle.createQuery(query)
+                .bind("nameProduct", nameProduct)
+                .mapTo(Integer.class)
+                .findFirst()
+                .orElse(0) > 0);
+    }
+    public static boolean addProducer(String nameProducer) {
+        String query = "INSERT INTO producers (nameProducer,isActive) VALUES (?, 1)";
+        Jdbi me = DBContext.me();
+        return me.withHandle(handle -> handle.createUpdate(query).bind(0, nameProducer).execute()==1);
+    }
+    public static boolean addSupplier(String nameSupplier) {
+        String query = "INSERT INTO suppliers (nameSupplier,isActive) VALUES (?, 1)";
+        Jdbi me = DBContext.me();
+        return me.withHandle(handle -> handle.createUpdate(query).bind(0, nameSupplier).execute()==1);
+    }
+    public static boolean addCategorie(String nameCategorie) {
+        String query = "INSERT INTO categories (nameCategorie) VALUES (?)";
+        Jdbi me = DBContext.me();
+        return me.withHandle(handle -> handle.createUpdate(query).bind(0, nameCategorie).execute()==1);
+    }
+    public static void main(String[] args) {
+        System.out.println(checkNameProductEq("Áo đẹsp"));
     }
 
 }

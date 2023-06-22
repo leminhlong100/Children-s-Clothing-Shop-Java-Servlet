@@ -17,7 +17,7 @@ import util.EnCode;
 public class AccountDAO {
     public static List<Account> getListAccount() {
         Jdbi me = DBContext.me();
-        String query = "SELECT DISTINCT a.id, accountName, password, fullName, address, email, phone, " +
+        String query = "SELECT DISTINCT a.id, accountName, password, fullName, address, email, phone,isDelete,isActive, " +
                 "GROUP_CONCAT(r.id) AS roleIds, GROUP_CONCAT(r.name) AS roleNames " +
                 "FROM accounts a " +
                 "JOIN account_roles ar ON a.id = ar.idAccount " +
@@ -35,6 +35,8 @@ public class AccountDAO {
                 account.setAddress(rs.getString("address"));
                 account.setEmail(rs.getString("email"));
                 account.setPhone(rs.getString("phone"));
+                account.setActive(rs.getBoolean("isActive"));
+                account.setDelete(rs.getBoolean("isDelete"));
                 String roleIds = rs.getString("roleIds");
                 String roleNames = rs.getString("roleNames");
 
@@ -57,7 +59,6 @@ public class AccountDAO {
 
                 // Gán danh sách vai trò vào trường roles của tài khoản
                 account.setRoles(new HashSet<>(roleList));
-
                 return account;
             }).list();
         });
@@ -131,10 +132,10 @@ public class AccountDAO {
     }
 
 
-    public static int removeAccount(String uid) {
+    public static boolean removeAccount(String uid) {
         String query = "update accounts set isDelete = 1 where id = ?";
         Jdbi me = DBContext.me();
-        return me.withHandle(handle -> handle.createUpdate(query).bind(0, uid).execute());
+        return me.withHandle(handle -> handle.createUpdate(query).bind(0, uid).execute()==1);
     }
 
     public static int removeAccountPermission(String pid) {
@@ -266,5 +267,9 @@ public class AccountDAO {
         String query = "insert into roles (name) values(?)";
         Jdbi me = DBContext.me();
         return me.withHandle(handle -> handle.createUpdate(query).bind(0, name).execute());
+    }
+
+    public static void main(String[] args) {
+        System.out.println(getListAccount());
     }
 }
